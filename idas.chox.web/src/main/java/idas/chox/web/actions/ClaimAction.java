@@ -130,10 +130,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private List<String> intelligentNotes;
     private List<String> intelligentNotes2;
     private IntelligentNoteDisplayEngine intelligentNoteDisplayEngine;
-    private int claimOwnerId = -1;
     private int escalateWorkgroupId = -1;
     private int oasWorkgroupId = -1;
-    private int uosWorkgroupId = -1;
     private Integer reasonOfRejectionId;
     private LiabilityStatus fLiabilityStatus;
     private BigDecimal fPercentageLiabilityAccepted;
@@ -903,118 +901,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return SUCCESS;
     }
 
-//    @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS"})
-    public String updateClaimWorkgroupAndOwner() {
-        String oldOwnerName = "N/A";
-
-        if (claim.getInsurer().isWorkgroupEnable()) {
-
-            if (this.claimOwnerId > 0 && this.uosWorkgroupId > 0) {
-
-                try {
-
-                    WebUser newClaimOwner = userService.getWebUser(claimOwnerId);
-
-                    // SET COMMENT
-                    if (claim.getClaimOwner() != null) {
-                        oldOwnerName = claim.getClaimOwner().getFullName();
-                    }
-                    if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                        Comment comment = Comment.newComment(0, "Insurer Claims Handler changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
-                        claim.addComment(comment);
-                    } else {
-                        Comment comment = Comment.newComment(0, "Insurer Claims Handler changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
-                        claim.addComment(comment);
-                    }
-                    Workgroup workgroup = workgroupService.getWorkgroup(uosWorkgroupId);
-
-                    // Check workgroup belongs to the Insurer
-                    if (workgroup.getInsurer().getId() != claim.getInsurer().getId().intValue()) {
-                        throw new AccessDeniedException("Workgroup does not belong to Insurer");
-                    }
-                    // Check user belongs to the Insurer
-                    if (newClaimOwner.getInsurer().getId() != claim.getInsurer().getId().intValue()) {
-                        throw new AccessDeniedException("The selected Claim Owner does not belong to the Insurer of the claim.");
-                    }
-
-                    claim.setClaimOwner(newClaimOwner);
-                    claim.setWorkgroup(workgroup);
-                    if (claim.getBreBand() == null) {
-                        BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-                        claim.setBreBand(choBand);
-                    }
-                    if (claim.getInvoice() != null && claim.getBreBand().isPaymentTeamActive() && !claim.getWorkgroup().isStpExcluded()
-                            && ((ClaimType.isGTA(claim.getClaimType()) && claim.getInsurer().isGtaPaymentsTeamEnable())
-                            || (ClaimType.isSubscriber(claim.getClaimType()) && claim.getInsurer().isSubscriberPaymentsTeamEnable())
-                            || (ClaimType.isInsurerUpload(claim.getClaimType()) && claim.getInsurer().isInsurerManualPaymentsTeamEnable())
-                            || (ClaimType.isInsurerVsInsurer(claim.getClaimType()) && claim.getInsurer().isInsurerVsInsurerPaymentsTeamEnable())
-                            || (ClaimType.isFixedFee(claim.getClaimType()) && claim.getInsurer().isFixedFeePaymentsTeamEnable())
-                            || (ClaimType.isCollaborationProtocol(claim.getClaimType()) && claim.getInsurer().isCollaborationPaymentsTeamEnable()))) {
-                        claim.getInvoice().setPaymentTeam(true);
-                    } else if (claim.getInvoice() != null && claim.getInvoice().isPaymentTeam()) {
-                        claim.getInvoice().setPaymentTeam(false);
-                    }
-                    this.claimService.updateClaim(claim);
-
-                } catch (Exception ex) {
-                    LOG.error("Error updating claim workgroup and owner for claim {}: {}", claim.getChoReference(), ex.getMessage());
-                    handleException(ex);
-                    updateRedirectionParamInSession();
-                    return ERROR;
-                }
-            } else {
-                LOG.error("Cannot update workgroup and owner of claim {}: claimOwner={}, workgroup={}", new Object[]{claim.getChoReference(), claimOwnerId, uosWorkgroupId});
-                return ERROR;
-            }
-
-            updateRedirectionParamInSession();
-            return SUCCESS;
-        } else if (claim.getInsurer().isClaimOwnershipEnable()) {
-            if (this.claimOwnerId > 0) {
-
-                try {
-
-                    WebUser newClaimOwner = userService.getWebUser(claimOwnerId);
-
-                    // SET COMMENT
-                    if (claim.getClaimOwner() != null) {
-                        oldOwnerName = claim.getClaimOwner().getFullName();
-                    }
-                    Comment comment = Comment.newComment(0, "Claim owner changed from '" + oldOwnerName + "' to '" + newClaimOwner.getFullName() + "'");
-                    claim.addComment(comment);
-                    if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
-                        Comment comment2 = Comment.newComment(0, "Insurer Claims Handler is '" + newClaimOwner.getFullName() + "' (contact number: " + newClaimOwner.getTelephone() + ")");
-                        claim.addComment(comment2);
-                    }
-
-                    // Check user belongs to the Insurer
-                    if (newClaimOwner.getInsurer().getId() != claim.getInsurer().getId().intValue()) {
-                        throw new AccessDeniedException("The selected Claim Owner does not belong to the Insurer of the claim.");
-                    }
-
-                    claim.setClaimOwner(newClaimOwner);
-                    this.claimService.updateClaim(claim);
-
-                } catch (Exception ex) {
-                    LOG.error("Error updating claim workgroup and owner for claim {}: {}", claim.getChoReference(), ex.getMessage());
-                    handleException(ex);
-                    updateRedirectionParamInSession();
-                    return ERROR;
-                }
-
-                updateRedirectionParamInSession();
-                return SUCCESS;
-
-            } else {
-                LOG.error("Cannot update owner of claim {} to claimOwner={}", claim.getChoReference(), claimOwnerId);
-                return ERROR;
-            }
-        } else {
-            LOG.debug("Error updating claim workgroup and owner for claim {} as workgroup and claim ownership is not enabled", claim.getChoReference());
-            return ERROR;
-        }
-    }
-
     public String updateSaveLiabilityStatus() {
         LOG.debug("updateSaveLiabilityStatus");
         try {
@@ -1574,14 +1460,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setOasWorkgroupId(int oasWorkgroupId) {
         this.oasWorkgroupId = oasWorkgroupId;
-    }
-
-    public int getUosWorkgroupId() {
-        return uosWorkgroupId;
-    }
-
-    public void setUosWorkgroupId(int uosWorkgroupId) {
-        this.uosWorkgroupId = uosWorkgroupId;
     }
 
     public List<String> getIntelligentNotes() {
@@ -2149,14 +2027,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setReasonOfRejectionId(Integer reasonOfRejectionId) {
         this.reasonOfRejectionId = reasonOfRejectionId;
-    }
-
-    public int getClaimOwnerId() {
-        return claimOwnerId;
-    }
-
-    public void setClaimOwnerId(int claimOwnerId) {
-        this.claimOwnerId = claimOwnerId;
     }
 
     public int getVehicleClassId() {

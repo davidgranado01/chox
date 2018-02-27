@@ -24,7 +24,6 @@ import idas.chox.core.services.UserWorkgroupService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.core.workflow.WorkflowContext;
-import idas.chox.events.BaseActivityEvent;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.workflow.event.ActivityEventGenerator;
 import idas.chox.service.workflow.ClaimProcessWorkflowContext;

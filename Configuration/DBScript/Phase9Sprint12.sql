@@ -54,9 +54,25 @@ INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check)
     select  'activity.UpdateSupplierClaimOwner' || substring(a.name from 37), false, false
     from accessibility a where  a.name ilike 'extraAction.updateClaimSupplierOwner%';
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-    SELECT id, 'ROLE_CHO_OPR', 2 FROM accessibility WHERE name like 'activity.UpdateSupplierClaimOwner%';
+    SELECT id, 'ROLE_CHO_OPR', 1 FROM accessibility WHERE name like 'activity.UpdateSupplierClaimOwner%';
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
-    SELECT id, 'ROLE_CHO_MNG', 2 FROM accessibility WHERE name like 'activity.UpdateSupplierClaimOwner%';
+    SELECT id, 'ROLE_CHO_MNG', 1 FROM accessibility WHERE name like 'activity.UpdateSupplierClaimOwner%';
+--
+-- End of CHOX-472
+--
+
+--
+-- CHOX-476: More action to Update Insurer Workgroup and Claim Owner should be moved to activity.
+--
+INSERT INTO accessibility(name, is_workgroup_check, is_ownership_check, check_workgroup_enabled, check_claimownership_enabled)
+    select  'activity.AssignOwner' || substring(a.name from 41), false, false, true, true
+    from accessibility a where  a.name ilike 'extraAction.updateClaimWorkgroupAndOwner%';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_INS_MNG', 1 FROM accessibility WHERE name like 'activity.AssignOwner%' and name not like '%ClaimUnacknowledgedUnassigned' and name not like '%InvoiceUnassigned';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_INS_COM', 1 FROM accessibility WHERE name like 'activity.AssignOwner%' and name not like '%ClaimUnacknowledgedUnassigned' and name not like '%InvoiceUnassigned';
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_CHOX_ADMIN', 1 FROM accessibility WHERE name like 'activity.AssignOwner%' and name not like '%ClaimUnacknowledgedUnassigned' and name not like '%InvoiceUnassigned';
 --
 -- End of CHOX-472
 --
