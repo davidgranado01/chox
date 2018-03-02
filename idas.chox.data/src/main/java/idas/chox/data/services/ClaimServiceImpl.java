@@ -229,7 +229,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
                 claim.setStatus(auditTrail.getOriginalStatus());
 
-                if (claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA) && claim.getInvoice() != null) {
+                // If reverted back from AwaitingInvoicePayment, we need to clear the payment dispute flag
+                if (auditTrail.getNewStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
+                    claim.setPaymentDispute(false);
+                } else if (claim.getStatus().equals(ClaimStatus.CLAIM_AWAITING_INVOICE_DATA) && claim.getInvoice() != null) {
                     LOG.debug("This claim has invoice and will be deleted as reverting the status");
                     Invoice oldInvoice = claim.getInvoice();
                     claim.setInvoice(null);
