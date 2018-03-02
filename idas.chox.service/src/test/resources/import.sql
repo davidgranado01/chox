@@ -735,6 +735,7 @@ INSERT INTO accessibility(id, name, is_workgroup_check, is_ownership_check, chec
 INSERT INTO accessibility(id, name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled, check_fnol_enabled, check_workgroup_enabled, check_claimownership_enabled, check_supplier_ownership, check_engineer_enabled) SELECT 427, 'activity.ClaimMatchedReview.ManualInvoiceUnassigned', false, false, false, false, false, false, false, false, false;
 INSERT INTO accessibility(id, name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled, check_fnol_enabled, check_workgroup_enabled, check_claimownership_enabled, check_supplier_ownership, check_engineer_enabled, claim_type) SELECT 428, 'activity.NewInvoice.null', false, false, false, false, false, false, false, false, false, 3;
 INSERT INTO accessibility(id, name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled, check_fnol_enabled, check_workgroup_enabled, check_claimownership_enabled, check_supplier_ownership, check_engineer_enabled, claim_type) SELECT 429, 'activity.NewTpiClaim.InvoiceDataCalculationIncorrect', false, false, false, false, false, false, false, false, false,3;
+INSERT INTO accessibility(id, name, is_workgroup_check, is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled, check_fnol_enabled, check_workgroup_enabled, check_claimownership_enabled, check_supplier_ownership, check_engineer_enabled) SELECT 430, 'activity.UpdateSupplierClaimOwner.AwaitingCarHireInfo', false, false, false, false, false, false, false, false, false;
 
 INSERT INTO accessibility_item( id, accessibility_id, role, access_right) SELECT  1, 1, 'ALL', 1;
 INSERT INTO accessibility_item( id, accessibility_id, role, access_right) SELECT  2, 2, 'ALL', 1;
@@ -1164,3 +1165,4 @@ INSERT INTO accessibility_item( id, accessibility_id, role, access_right) SELECT
 INSERT INTO accessibility_item( id, accessibility_id, role, access_right) SELECT  427, 427, 'ALL', 1;
 INSERT INTO accessibility_item( id, accessibility_id, role, access_right) SELECT  428, 428, 'ALL', 1;
 INSERT INTO accessibility_item( id, accessibility_id, role, access_right) SELECT  429, 429, 'ALL', 1;
+INSERT INTO accessibility_item( id, accessibility_id, role, access_right) SELECT  430, 430, 'ALL', 1;

@@ -27,7 +27,7 @@ public class UpdateSupplierClaimOwnerTest extends BaseTest {
         activity.setSupplierClaimOwnerId(2);
         
         activity.process(claim);
-        Assert.assertEquals("Supplier Claims Handler is 'Operative CHO' (contact number: 009876540987654)", claim.getComments().get(0).getComment());
+        Assert.assertEquals("Supplier Claim Owner is 'Operative CHO' (contact number: 009876540987654)", claim.getComments().get(0).getComment());
     }
     
 }
