@@ -448,8 +448,9 @@ public class ExcelGeneratorAction extends BaseAction {
     @Override
     public String execute() {
         String result;
- 
-        if (!getCanExport()) {
+
+        // Not needed as checked on doExportExcel?
+        if (!getCanExportGrid()) {
             LOG.error("Illegal attempt to generate 'Export To Excel' Report by user '{}'", getAuthenticatedUser().getDisplayName());
             throw new AccessDeniedException("Illegal attempt to generate Export file.");
         }
