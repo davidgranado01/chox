@@ -40,12 +40,5 @@ public class UpdateCustomerClaimNumber extends BaseActivity {
         // Set the customerClaimNumber to the original value so that this can be used in the event
         setCustomerClaimNumber(originalCustomerClaimNumber);
     }
-
-    @Override
-    protected void afterProcess(Claim claim) throws Exception {
-        activityEventGenerator.getEvents(claim, this).forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-        });
-    }
     
 }

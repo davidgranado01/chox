@@ -25,7 +25,7 @@
             }
         }
 
-        $("#uosWorkgroupId").val(selectedWorkgroupId);
+        $("#oasWorkgroupId").val(selectedWorkgroupId);
 
 
         // SETUP FORM VALIDATION
@@ -34,11 +34,11 @@
         {
             errorLabelContainer: "#OwnershipMessageBox",
             rules: {
-                uosWorkgroupId:{min:1},
+                oasWorkgroupId:{min:1},
                 claimOwnerId:{min:1}
             },
             messages: {
-                uosWorkgroupId: {min:"You must supply a value for 'Workgroup'"},
+                oasWorkgroupId: {min:"You must supply a value for 'Workgroup'"},
                 claimOwnerId: {min:"You must supply a value for 'Claim Owner'"}
             }
         });
@@ -47,8 +47,8 @@
     });
 
     function doUpdateOwnershipWorkgroupChange(){
-        if($("#uosWorkgroupId").val()!==null){
-            selectedWorkgroupId = $("#uosWorkgroupId").val();
+        if($("#oasWorkgroupId").val()!==null){
+            selectedWorkgroupId = $("#oasWorkgroupId").val();
         }
         claimOwnerId = -1;
         doUpdateOwnershipShowClaimHandler(selectedWorkgroupId);
@@ -66,7 +66,7 @@
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
-    <form action="<%=request.getContextPath()%>/prv/updateClaimWorkgroupAndOwner.action" method="post" id="formOwnershipAction" name="formOwnershipAction">
+    <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formOwnershipAction" name="formOwnershipAction">
         <fieldset class="x-fieldset">
             <s:if test="insurer.workgroupEnable">
             <legend>Update Workgroup/Claim Owner - Action Required</legend>
@@ -76,6 +76,7 @@
             </s:else>
             <div>
                 <s:hidden id="claimId" name="id" />
+                <s:hidden id="name" name="name" value="assignOwner" />
                 <input type="hidden" id="claimWorkgroupId" name="claimWorkgroupId" value="<s:property value="workgroup.id"/>">
                 <input type="hidden" id="claimClaimOwnerId" name="claimClaimOwnerId" value="<s:property value="claimOwner.id"/>">
                 <input type="hidden" id="claimWorkgroupEnable" name="claimWorkgroupEnable" value="<s:property value="insurer.workgroupEnable"/>">
@@ -95,8 +96,8 @@
                                     <td align="right" width="10%"><label>Workgroup:</label></td>
                                     <td width="20%">
                                         <s:select
-                                            name="uosWorkgroupId"
-                                            id="uosWorkgroupId"
+                                            name="oasWorkgroupId"
+                                            id="oasWorkgroupId"
                                             list="insurerWorkgroups"
                                             headerKey="-1"
                                             listKey="id"

@@ -21,7 +21,6 @@ import idas.chox.core.services.AutomaticRoutingService;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.DateHelper;
-import idas.chox.events.BaseActivityEvent;
 import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 import idas.chox.service.xml.util.NodeHelper;
 
@@ -137,10 +136,9 @@ public class WorkgroupRouting extends BaseActivity {
         getDataService().save(claim);
         logTransaction(claim);
         if (routed) {
-//            activityEventGenerator.generate(claim, this);
-        for (BaseActivityEvent event : activityEventGenerator.getEvents(claim, this)) {
+            activityEventGenerator.getEvents(claim, this).forEach((event) -> {
                 ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-            }
+            });
         }
 
         if (getChainActivity() != null) {

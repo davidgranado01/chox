@@ -13,7 +13,6 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.events.AwaitingLitigationOutcomeEvent;
 import idas.chox.events.BaseActivityEvent;
-import idas.chox.events.ChoOwnerAssignedEvent;
 import idas.chox.events.ClaimAcknowledgedEvent;
 import idas.chox.events.ClaimAuditReviewUpdatedEvent;
 import idas.chox.events.ClaimClosedEvent;
@@ -67,6 +66,7 @@ import idas.chox.events.SwitchInsEvent;
 import idas.chox.events.UpdateCaseWithSolicitorEvent;
 import idas.chox.events.UpdateCustomerClaimNumberEvent;
 import idas.chox.events.UpdateInsurerClaimNumberEvent;
+import idas.chox.events.UpdateSupplierClaimOwnerEvent;
 import idas.chox.events.UpdateSupplierReferenceEvent;
 import idas.chox.service.workflow.activities.AcknowledgeClaim;
 import idas.chox.service.workflow.activities.AddNote;
@@ -97,6 +97,7 @@ import idas.chox.service.workflow.activities.SwitchClaim;
 import idas.chox.service.workflow.activities.SwitchClaimToMultipleInsurer;
 import idas.chox.service.workflow.activities.UpdateCaseWithSolicitor;
 import idas.chox.service.workflow.activities.UpdateCustomerClaimNumber;
+import idas.chox.service.workflow.activities.UpdateSupplierClaimOwner;
 import idas.chox.service.workflow.activities.UpdateInsurerClaimNumber;
 import idas.chox.service.workflow.activities.UpdateInterimPaymentFullAndFinal;
 import idas.chox.service.workflow.activities.UpdateInterimPaymentReceived;
@@ -197,10 +198,6 @@ public class ActivityEventGenerator {
                 case "AssignManualInvoiceOwner":
                 case "AssignOwner":
                     events.add(new InsurerOwnerAssignedEvent(claim, activityName));
-                    break;
-                
-                case "AssignSupplierOwner":
-                    events.add(new ChoOwnerAssignedEvent(claim, activityName));
                     break;
                 
                 case "AwaitingLitigationOutcome":
@@ -506,6 +503,10 @@ public class ActivityEventGenerator {
                 
                 case "UpdateCustomerClaimNumber":
                     events.add(new UpdateCustomerClaimNumberEvent(claim, activityName, String.valueOf(((UpdateCustomerClaimNumber) activity).getCustomerClaimNumber())));
+                    break;
+                
+                case "UpdateSupplierClaimOwner":
+                    events.add(new UpdateSupplierClaimOwnerEvent(claim, activityName, ((UpdateSupplierClaimOwner) activity).getOldClaimOwner()));
                     break;
                 
                 case "SaveOrSubmitClaimAuditReview":

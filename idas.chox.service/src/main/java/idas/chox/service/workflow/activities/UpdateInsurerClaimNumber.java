@@ -39,12 +39,5 @@ public class UpdateInsurerClaimNumber extends BaseActivity {
     protected void doProcess(Claim claim) {
         claim.setClaimNumber(claimNumber);
     }
-
-    @Override
-    protected void afterProcess(Claim claim) throws Exception {
-        activityEventGenerator.getEvents(claim, this).forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
-        });
-    }
     
 }

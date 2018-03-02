@@ -545,7 +545,7 @@
 
     <div id="supplierClaimOwnerSelectionDlgHolder" class="x-hidden">
         <div id="supplierClaimOwnerSelectionPanel">
-            <form id="supplierOwnershipClaimForm" name="supplierOwnershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?name=assignSupplierOwner" class="XXentity-form" method="POST">
+            <form id="supplierOwnershipClaimForm" name="supplierOwnershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?name=updateSupplierClaimOwner" class="XXentity-form" method="POST">
                 <input name="selectedClaimIds" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>

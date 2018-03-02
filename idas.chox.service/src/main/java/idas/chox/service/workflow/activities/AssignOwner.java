@@ -1,6 +1,5 @@
 package idas.chox.service.workflow.activities;
 
-
 import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Claim;
@@ -68,6 +67,11 @@ public class AssignOwner extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) throws Exception {
+        String oldOwnerName = null;
+        if (claim.getClaimOwner() != null) {
+            oldOwnerName = claim.getClaimOwner().getFullName();
+        }
+
         claim.setClaimOwner(claimOwner);
         if (workgroupsEnabled) {
             claim.setWorkgroup(workgroup);
@@ -84,7 +88,7 @@ public class AssignOwner extends BaseActivity {
         } else if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getTpiClaimStatus())
                 && claim.getInvoice().isPaymentTeam()) {
             if (!ClaimType.isInsurerVsInsurer(claim.getClaimType())
-                && (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
+                    && (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
                     || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN
                     || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_DISPUTED
                     || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED)) {
@@ -95,10 +99,18 @@ public class AssignOwner extends BaseActivity {
         } else {
             claim.setStatus(claim.getTpiClaimStatus());
         }
-        if (claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
-            Comment comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").");
-            claim.addComment(comment);
+        Comment comment;
+        if (oldOwnerName == null && claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
+            comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").");
+        } else if (oldOwnerName == null && (claimOwner.getTelephone() == null || claimOwner.getTelephone().length() == 0)) {
+            comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "'.");
+        } else if (oldOwnerName != null && claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
+            comment = Comment.newComment(0, "Insurer Claims Handler changed from '" + oldOwnerName + "' to '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ")");
+        } else {
+            comment = Comment.newComment(0, "Insurer Claims Handler changed from '" + oldOwnerName + "' to '" + claimOwner.getFullName() + "'");
         }
+        claim.addComment(comment);
+
     }
 
     public int getOasWorkgroupId() {

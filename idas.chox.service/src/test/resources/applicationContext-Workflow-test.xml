@@ -27,7 +27,6 @@
         <property name="workgroupService" ref="workgroupService" />
     </bean>
     <bean id="assignOwner" class="idas.chox.service.workflow.activities.AssignOwner" scope="prototype"/>
-    <bean id="assignSupplierOwner" class="idas.chox.service.workflow.activities.AssignSupplierOwner" scope="prototype"/>
     <bean id="assignWorkgroup" class="idas.chox.service.workflow.activities.AssignWorkgroup" scope="prototype"/>
     <bean id="assignManualInvoiceOwner" class="idas.chox.service.workflow.activities.AssignManualInvoiceOwner" scope="prototype"/>
     <bean id="acknowledgeClaim" class="idas.chox.service.workflow.activities.AcknowledgeClaim" scope="prototype"/>
@@ -179,5 +178,8 @@
 
     </bean>
     <bean id="acknowledgeFraudCheck" class="idas.chox.service.workflow.activities.AcknowledgeFraudCheck" scope="prototype"/>
+    <bean id="updateSupplierClaimOwner" class="idas.chox.service.workflow.activities.UpdateSupplierClaimOwner" scope="prototype">
+        <property name="userService" ref="userService" />
+    </bean>
 
 </beans>
