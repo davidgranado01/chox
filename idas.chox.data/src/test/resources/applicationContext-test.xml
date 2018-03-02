@@ -106,13 +106,12 @@
                 <value>hbm/ClaimMatchingBand.hbm.xml</value>
                 <value>hbm/ClaimMatchingEntry.hbm.xml</value>
                 <value>hbm/ClaimMatchingImportEntry.hbm.xml</value>
+                <value>hbm/PaidInvoiceEntry.hbm.xml</value>
+                <value>hbm/events/AwaitingLitigationOutcomeEvent.hbm.xml</value>
                 <value>hbm/events/BaseActivityEvent.hbm.xml</value>
                 <value>hbm/events/ClaimRoutedEvent.hbm.xml</value>
                 <value>hbm/events/ClaimAcknowledgedEvent.hbm.xml</value>
                 <value>hbm/events/ClaimNumberUpdatedEvent.hbm.xml</value>
-                <value>hbm/events/LiabilityUpdatedEvent.hbm.xml</value>
-                <value>hbm/events/AwaitingLitigationOutcomeEvent.hbm.xml</value>
-                <value>hbm/events/ChoOwnerAssignedEvent.hbm.xml</value>
                 <value>hbm/events/ClaimAuditReviewUpdatedEvent.hbm.xml</value>
                 <value>hbm/events/ClaimClosedEvent.hbm.xml</value>
                 <value>hbm/events/ClaimMatchingEvent.hbm.xml</value>
@@ -139,6 +138,7 @@
                 <value>hbm/events/InvoiceAcceptedEvent.hbm.xml</value>
                 <value>hbm/events/InvoiceCreatedEvent.hbm.xml</value>
                 <value>hbm/events/InvoicePaidEvent.hbm.xml</value>
+                <value>hbm/events/InvoicePaymentReceivedEvent.hbm.xml</value>
                 <value>hbm/events/InvoiceReferredToCHEvent.hbm.xml</value>
                 <value>hbm/events/InvoiceReferredToEngEvent.hbm.xml</value>
                 <value>hbm/events/InvoiceRejectedEvent.hbm.xml</value>
@@ -147,12 +147,23 @@
                 <value>hbm/events/InvoiceSubmittedEvent.hbm.xml</value>
                 <value>hbm/events/InvoiceSwitchedFromPaymentsTeamEvent.hbm.xml</value>
                 <value>hbm/events/InvoiceUploadedEvent.hbm.xml</value>
+                <value>hbm/events/LiabilityUpdatedEvent.hbm.xml</value>
                 <value>hbm/events/NewClaimEvent.hbm.xml</value>
                 <value>hbm/events/NoteAddedEvent.hbm.xml</value>
                 <value>hbm/events/SlaExtensionGrantedEvent.hbm.xml</value>
                 <value>hbm/events/SubscriberClaimRejectedToGtaEvent.hbm.xml</value>
                 <value>hbm/events/SwitchChoEvent.hbm.xml</value>
+                <value>hbm/events/SwitchInsEvent.hbm.xml</value>
                 <value>hbm/events/UpdateCaseWithSolicitorEvent.hbm.xml</value>
+                <value>hbm/events/UpdateInsurerClaimNumberEvent.hbm.xml</value>
+                <value>hbm/events/UpdateSupplierReferenceEvent.hbm.xml</value>
+                <value>hbm/events/UpdateCustomerClaimNumberEvent.hbm.xml</value>
+                <value>hbm/events/ClaimUpdatedEvent.hbm.xml</value>
+                <value>hbm/events/InsurerHireMonitoringInfoProvidedEvent.hbm.xml</value>
+                <value>hbm/events/InsurerHireVehicleUpdatedEvent.hbm.xml</value>
+                <value>hbm/events/InvoiceUpdatedEvent.hbm.xml</value>
+                <value>hbm/events/InsurerEcdUpdatedEvent.hbm.xml</value>
+                <value>hbm/events/UpdateSupplierClaimOwnerEvent.hbm.xml</value>
             </list>
         </property>
     </bean>
