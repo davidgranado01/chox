@@ -24,7 +24,7 @@ import idas.chox.core.util.XMLUtils;
 public class BordereauSchemaValidation {
 
     private static final Logger LOG = LoggerFactory.getLogger(BordereauSchemaValidation.class);
-    private static final String VALID_XMLVERSIONS = "2.11";
+    private static final String VALID_XMLVERSIONS = "2.15";
     public static String W3C_XML_SCHEMA_NS_URI = "http://www.w3.org/2001/XMLSchema";
     public static String V_SCHEMA_ERROR = "Incorrect schema";
     public static String V_XML_VERSION_ERROR = "Incorrect xml version";
@@ -48,8 +48,8 @@ public class BordereauSchemaValidation {
                     } else {
                         xmlVersion = macroVersion;
                     }
-                } else if (xmlVersion.equals("2.8") || xmlVersion.equals("2.9")) {
-                    // Allow xml versions 2.8 and 2.9
+                } else if (xmlVersion.equals("2.8") || xmlVersion.equals("2.9") || xmlVersion.equals("2.11")) {
+                    // Allow xml versions 2.8 and 2.9 & 2.11
                         xmlVersion = VALID_XMLVERSIONS;
                 }
                 
