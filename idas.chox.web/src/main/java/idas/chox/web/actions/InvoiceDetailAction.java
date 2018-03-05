@@ -555,6 +555,10 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         return invoiceOriginal.getBabySeatQtyOriginal();
     }
 
+    public Integer getVedQtyOriginal() {
+        return invoiceOriginal.getVedQtyOriginal();
+    }
+
     public Integer getTowBarsQtyOriginal() {
         return invoiceOriginal.getTowBarsQtyOriginal();
     }
@@ -589,6 +593,10 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
     public java.math.BigDecimal getBabySeatFeeOriginal() {
         return invoiceOriginal.getBabySeatFeeOriginal();
+    }
+
+    public java.math.BigDecimal getVedFeeOriginal() {
+        return invoiceOriginal.getVedFeeOriginal();
     }
 
     public java.math.BigDecimal getTowBarsFeeOriginal() {
