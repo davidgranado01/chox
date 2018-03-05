@@ -24,7 +24,7 @@ import idas.chox.core.util.XMLUtils;
 public class BordereauSchemaValidation {
 
     private static final Logger LOG = LoggerFactory.getLogger(BordereauSchemaValidation.class);
-    private static final String VALID_XMLVERSIONS = "2.15";
+    private static final String LATEST_XMLVERSIONS = "2.15";
     public static String W3C_XML_SCHEMA_NS_URI = "http://www.w3.org/2001/XMLSchema";
     public static String V_SCHEMA_ERROR = "Incorrect schema";
     public static String V_XML_VERSION_ERROR = "Incorrect xml version";
@@ -37,20 +37,19 @@ public class BordereauSchemaValidation {
             Element root = document.getDocumentElement();
 
             if (root != null && root.getTagName().equals("chox")) {
-
+                boolean bordereauValidVersion = false;
                 String macroVersion = XMLUtils.getElementValue(root, "macroversion");
                 String xmlVersion = XMLUtils.getElementValue(root, "xmlversion");
 
-                // If no xml version present, allow macro versions 2.8 & 2.9
+                // If no xml version, set to macroVersion if available
                 if (macroVersion != null && xmlVersion == null) {
-                    if (macroVersion.equals("2.8") || macroVersion.equals("2.9")) {
-                        xmlVersion = VALID_XMLVERSIONS;
-                    } else {
-                        xmlVersion = macroVersion;
-                    }
-                } else if (xmlVersion.equals("2.8") || xmlVersion.equals("2.9") || xmlVersion.equals("2.11")) {
-                    // Allow xml versions 2.8 and 2.9 & 2.11
-                        xmlVersion = VALID_XMLVERSIONS;
+                    xmlVersion = macroVersion;
+                }
+                
+                // Allow xml versions 2.8 and 2.9, 2.11, 2.14 & 2.15. NB. 2.14 is insurer upload
+                if (xmlVersion != null && (xmlVersion.equals("2.8") || xmlVersion.equals("2.9") || xmlVersion.equals("2.11")
+                            || xmlVersion.equals("2.14") || xmlVersion.equals("2.15"))) {
+                    bordereauValidVersion = true;
                 }
                 
                 bordereau.setMacroVersion(macroVersion);
@@ -59,9 +58,9 @@ public class BordereauSchemaValidation {
                 if (macroVersion == null) {
                     bordereau.setValid(false);
                     bordereau.setMessage(V_XML_VERSION_ERROR + ": no macro version defined. ");
-                } else if (!VALID_XMLVERSIONS.equals(xmlVersion)) {
+                } else if (!bordereauValidVersion) {
                     bordereau.setValid(false);
-                    bordereau.setMessage(V_XML_VERSION_ERROR + ": valid versions is : " + VALID_XMLVERSIONS + " but found " + macroVersion + ". Please contact support.");
+                    bordereau.setMessage(V_XML_VERSION_ERROR + ": current valid versions is : " + LATEST_XMLVERSIONS + " but found " + macroVersion + ". Please contact support.");
                 } else {
                     List<Element> elements = XMLUtils.getElements(document, root, "rental");
 
