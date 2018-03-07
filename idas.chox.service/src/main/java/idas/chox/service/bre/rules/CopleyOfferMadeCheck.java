@@ -26,7 +26,7 @@ public class CopleyOfferMadeCheck implements IBusinessRule {
 
         boolean success = true;
 
-        if (ClaimType.isInsurerUpload(claim.getClaimType()) && claim.getInsurer().isCopleyQuestion() && claim.getBreBand().isCopleyOfferMadeCheck()) {
+        if (claim.getInsurer().isCopleyQuestion() && claim.getBreBand().isCopleyOfferMadeCheck()) {
 
             if (claim.isCopleyOfferMade() != null && claim.isCopleyOfferMade()) {
                 success = false;

@@ -3235,11 +3235,13 @@
                             <label class="chox-form-check-label">Full Total Requested Ceiling Check</label>
                             <div class="chox-form-check-description">Check to ensure the Full Total Requested billed by the CHO does not exceed the Maximum Full Total Requested Ceiling as detailed above.</div>
                         </div>
+<s:if test="copleyOfferEnabled">
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="copleyOfferMadeCheck" value="copleyOfferMadeCheck" /></div>
                             <label class="chox-form-check-label">Copley Offer Made Check</label>
                             <div class="chox-form-check-description">Check to ensure the CHO is not claiming where a Copley offer has been made.</div>
                         </div>
+</s:if>
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>
                 </div>
