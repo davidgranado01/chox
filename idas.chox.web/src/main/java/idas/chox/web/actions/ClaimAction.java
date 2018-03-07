@@ -3119,6 +3119,6 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
 
     public boolean isCopleyOfferEnabled() {
-        return ClaimType.isInsurerUpload(claim.getClaimType()) && claim.getInsurer().isCopleyQuestion();
+        return claim.getInsurer().isCopleyQuestion();
     }
 }
