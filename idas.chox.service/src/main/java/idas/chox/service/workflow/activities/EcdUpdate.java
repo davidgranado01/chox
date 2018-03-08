@@ -9,8 +9,6 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.jsoup.nodes.Document.OutputSettings;
 
 import idas.chox.core.model.Claim;
@@ -20,7 +18,6 @@ import idas.chox.core.services.HireMonitoringEcdService;
 import idas.chox.core.services.ReasonOfDelayService;
 
 public class EcdUpdate extends BaseActivity {
-    static final Logger LOG = LoggerFactory.getLogger(EcdUpdate.class);
     private HireMonitoringEcdService hireMonitoringEcdService;
     private ReasonOfDelayService reasonOfDelayService;
     private int reasonOfDelayId = -1;
@@ -102,7 +99,6 @@ public class EcdUpdate extends BaseActivity {
             reason = reasonOfDelayObject.getName();
         }
         if (reason == null) {
-            LOG.warn("ECD delay reason is null. Can not update ECD.");
             throw new Exception("ECD delay reason is null. Can not update ECD.");
         }
         String supportingNoteClean = StringEscapeUtils.unescapeHtml4(Jsoup.clean(supportingNote.replaceAll("\n", "<br />"), "", Whitelist.basic(), new OutputSettings().prettyPrint(false)));
@@ -115,7 +111,6 @@ public class EcdUpdate extends BaseActivity {
         List<HireMonitoringEcd> existingECDs = hireMonitoringEcdService.getHireMonitoringEcdsByClaimId(claim.getId());
         for (HireMonitoringEcd existingECD : existingECDs) {
             if (existingECD.getEcdDate().compareTo(ecdDate) == 0 && existingECD.getReason().compareTo(reason) == 0) {
-                LOG.warn("ECD Update Already Exists.");
                 throw new Exception("ECD Update Already Exists");
             }
         }
