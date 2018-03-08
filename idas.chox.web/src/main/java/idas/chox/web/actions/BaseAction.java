@@ -128,7 +128,11 @@ public class BaseAction extends ActionSupport implements SessionAware {
                     LOG.warn("No user is session: {}", getSession(), new Exception());
                 }
             } catch (Exception ex) {
-                LOG.error("Exception: {}", ex.getMessage(), ex);
+                if (ex.getMessage().contains("Session already invalidated")) {
+//                    LOG.warn("Exception: {}", ex.getMessage(), ex); -- do nothing
+                } else {
+                    LOG.error("Exception: {}", ex.getMessage(), ex);
+                }
             }
         }
         return user;
