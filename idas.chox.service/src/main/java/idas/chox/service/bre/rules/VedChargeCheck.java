@@ -1,6 +1,7 @@
 package idas.chox.service.bre.rules;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import idas.chox.core.bre.IBusinessRule;
 import idas.chox.core.bre.RuleEvaluation;
@@ -26,7 +27,7 @@ public class VedChargeCheck implements IBusinessRule {
             boolean success = true;
             BigDecimal vedDailyRate = claim.getInvoice().getVedFee();
             if (claim.getInvoice().getVedQty() != null && claim.getInvoice().getVedQty() > 0) {
-                vedDailyRate = vedDailyRate.divide(new BigDecimal(claim.getInvoice().getVedQty()));
+                vedDailyRate = vedDailyRate.divide(new BigDecimal(claim.getInvoice().getVedQty()), 2, RoundingMode.HALF_UP);
             }
             
             if (vedDailyRate.compareTo(claim.getBreBand().getVedChargeCeiling()) > 0) {
