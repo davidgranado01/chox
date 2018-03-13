@@ -3074,12 +3074,17 @@
                             <label class="chox-form-check-label">Dual Control Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
                         </div>
+                         <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="insurancePremiumTaxCheck" value="insurancePremiumTaxCheck" /></div>
+                            <label class="chox-form-check-label">Insurance Premium Tax Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the supplier is charging the correct fee for the Insurance Premium Tax or Non Standard Risk Insurance Premium Tax.</div>
+                        </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="vedChargeCheck" value="vedChargeCheck" /></div>
                             <label class="chox-form-check-label">VED Charge Check</label>
                             <div class="chox-form-check-description">Check to ensure that the VED Charge billed by the CHO does not exceed the specified VED Charge Ceiling.</div>
                         </div>
-                        <div class="chox-form-checkboxitem">
+                       <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="dateRepairCommencedChkForNonMobileVehicle" value="dateRepairCommencedChkForNonMobileVehicle" /></div>
                             <label class="chox-form-check-label">Date Repair Commenced Following Hire Start Check For Non-Mobile Vehicles</label>
                             <div class="chox-form-check-description">This check looks at the maximum number of days the hire can commence prior to the date repairs commenced for un-driveable/non-usable/non-mobile vehicles.</div>
@@ -3129,11 +3134,6 @@
                             <div class="chox-form-checkbox"><s:checkbox name="autoRestoreOneDayRepairCheck" value="autoRestoreOneDayRepairCheck" /></div>
                             <label class="chox-form-check-label">Repairer Fixed Hire Days Check</label>
                             <div class="chox-form-check-description">Check on the number of hire days when the vehicle is driveable/usable/mobile, check should only allow the given fixed number of hire days for the specified repairer.</div>
-                        </div>
-                        <div class="chox-form-checkboxitem">
-                            <div class="chox-form-checkbox"><s:checkbox name="insurancePremiumTaxCheck" value="insurancePremiumTaxCheck" /></div>
-                            <label class="chox-form-check-label">Insurance Premium Tax Check</label>
-                            <div class="chox-form-check-description">Check to ensure that the supplier is charging the correct fee for the Insurance Premium Tax or Non Standard Risk Insurance Premium Tax.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="subscriberCheckRejectedClaims" value="subscriberCheckRejectedClaims" /></div>
