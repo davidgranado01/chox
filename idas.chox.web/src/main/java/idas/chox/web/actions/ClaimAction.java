@@ -682,7 +682,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             } else if (cho != null) {
                 orgName = String.format("(%1$s)", cho.getName());
             }
-            desc = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+            if ((user.getFirstName() != null && user.getFirstName().startsWith("~~"))
+                    || (user.getLastName() != null && user.getLastName().startsWith("~~"))) {
+                desc = String.format("GDPR: Data Removed %1$s", orgName);
+            } else {
+                desc = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+            }
         }
         return desc;
     }
@@ -868,7 +873,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 if (getAuthenticatedUser().isCHO()) {
                     claim.setFinalReviewCho(finalReviewRequired);
                     if (finalReviewRequired) {
-                        claim.addComment(Comment.newComment(2, "Final Review Reason: " + finalReviewReason));
+                        claim.addComment(Comment.newComment(2, "Final Review Reason: " + finalReviewReason, true));
                         claim.setFinalReviewByCho(getAuthenticatedUser());
                         claim.setFinalReviewDateCho(new Date());
                     } else {
@@ -878,7 +883,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                 } else if (getAuthenticatedUser().isAnInsurer()) {
                     claim.setFinalReviewIns(finalReviewRequired);
                     if (finalReviewRequired) {
-                        claim.addComment(Comment.newComment(1, "Final Review Reason: " + finalReviewReason));
+                        claim.addComment(Comment.newComment(1, "Final Review Reason: " + finalReviewReason, true));
                         claim.setFinalReviewByIns(getAuthenticatedUser());
                         claim.setFinalReviewDateIns(new Date());
                     } else {
@@ -1616,6 +1621,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     // </editor-fold>
+    
+    public boolean isClaimHashed() {
+        return claim.isHashed();
+    }
     
     public boolean isFraudCheckPanelVisible() {
         return getIsInsurer() && claim.getBreBand().isFraudCheckEnable() && (claim.getFraudCheckStatus() == 3 || claim.getFraudCheckStatus() == -1) && !claim.isFraudResultAcknowledged() &&

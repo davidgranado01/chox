@@ -36,7 +36,7 @@ import idas.chox.service.ActionResponse;
 import idas.chox.service.workflow.event.EventBusWrapper;
 
 public class BaseAction extends ActionSupport implements SessionAware {
-
+    public static final String GDPR_REMOVED_STRING = "GDPR: data removed";
     private static final Logger LOG = LoggerFactory.getLogger(BaseAction.class);
     private static final Object LOCK = new Object();
     protected ActionResponse actionResponse;

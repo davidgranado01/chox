@@ -52,17 +52,17 @@ public class LastReviewDate extends BaseActivity {
         claim.setLastReviewDate(lastReviewDate);
         
         // Add Note
-        if (lastReviewDate!=null && lastReviewNote!=null && !lastReviewNote.isEmpty() ) {
-            claim.addComment(Comment.newComment(1, "Date of Last Review: " + DateHelper.getLocalDateFormat().format(lastReviewDate) + ". Review Note: " + lastReviewNote));
-        }
-        else if (lastReviewDate!=null) {
+
+        if (lastReviewDate!=null) {
             claim.addComment(Comment.newComment(1, "Date of Last Review: " + DateHelper.getLocalDateFormat().format(lastReviewDate) + "."));
-        } else if (lastReviewNote == null || lastReviewNote.isEmpty()) {
-            claim.addComment(Comment.newComment(1, "The Date of Last Review has been removed."));
+            if (lastReviewNote != null && !lastReviewNote.isEmpty()) {
+                claim.addComment(Comment.newComment(1, "Last Review Note: " + lastReviewNote, true));
+            }
         } else {
-            claim.addComment(Comment.newComment(1, "The Date of Last Review has been removed: " + lastReviewNote));
-        }
+            claim.addComment(Comment.newComment(1, "The Date of Last Review has been removed."));
+            if (lastReviewNote != null && !lastReviewNote.isEmpty()) {
+                claim.addComment(Comment.newComment(1, "Last Review Removal Note: " + lastReviewNote, true));
+            }
+        } 
     }
-
-
 }

@@ -89,6 +89,14 @@ public class Claim extends Entity implements Serializable {
     private KeoghsRequest keoghsRequest;
     private Boolean copleyOfferMade;
     private Date copleyOfferMadeDate;
+    private boolean hashed;
+    private Date hashedDate;
+    private boolean removedNotes;
+    private Date removedNotesDate;
+    private boolean removedTasks;
+    private Date removedTasksDate;
+    private boolean removedAttachments;
+    private Date removedAttachmentsDate;
 
     public Claim() {
         this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
@@ -96,6 +104,70 @@ public class Claim extends Entity implements Serializable {
         this.autoPenaltyChargeEnabled = true;
         this.noAttachments = 0;
         this.matchStatus = 0;
+    }
+
+    public boolean isHashed() {
+        return hashed;
+    }
+
+    public void setHashed(boolean hashed) {
+        this.hashed = hashed;
+    }
+
+    public Date getHashedDate() {
+        return hashedDate;
+    }
+
+    public void setHashedDate(Date hashedDate) {
+        this.hashedDate = hashedDate;
+    }
+
+    public boolean isRemovedNotes() {
+        return removedNotes;
+    }
+
+    public void setRemovedNotes(boolean removedNotes) {
+        this.removedNotes = removedNotes;
+    }
+
+    public Date getRemovedNotesDate() {
+        return removedNotesDate;
+    }
+
+    public boolean isRemovedTasks() {
+        return removedTasks;
+    }
+
+    public void setRemovedTasks(boolean removedTasks) {
+        this.removedTasks = removedTasks;
+    }
+
+    public Date getRemovedTasksDate() {
+        return removedTasksDate;
+    }
+
+    public void setRemovedTasksDate(Date removedTasksDate) {
+        this.removedTasksDate = removedTasksDate;
+    }
+
+    public void setRemovedNotesDate(Date removedNotesDate) {
+        this.removedNotesDate = removedNotesDate;
+    }
+
+    public boolean isRemovedAttachments() {
+        return removedAttachments;
+    }
+
+    public void setRemovedAttachments(boolean removedAttachments) {
+        this.removedAttachments = removedAttachments;
+    }
+
+    public Date getRemovedAttachmentsDate() {
+        return removedAttachmentsDate;
+    }
+
+    public void setRemovedAttachmentsDate(Date removedAttachmentsDate) {
+        this.removedAttachmentsDate = removedAttachmentsDate;
     }
 
     public boolean isPaymentsTeamReturn() {

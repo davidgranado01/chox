@@ -165,9 +165,17 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
     @Override
     public List<WebUser> getAllClaimHandlersByInsurerWorkgroup(int insurerId, Set<Integer> selectedWorkgroupId, boolean workgroupEnable) {
+        return getAllClaimHandlersByInsurerWorkgroup(insurerId, selectedWorkgroupId, workgroupEnable, false);
+    }
+
+    @Override
+    public List<WebUser> getAllClaimHandlersByInsurerWorkgroup(int insurerId, Set<Integer> selectedWorkgroupId, boolean workgroupEnable, boolean getHashed) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class);
         criteria.createAlias("this.roles", "role", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
         criteria.add(Restrictions.eq("role.name", "ROLE_INS_CH"));
+        if (!getHashed) {
+            criteria.add(Restrictions.eq("hashed", false));
+        }
 
         if (workgroupEnable && selectedWorkgroupId.size() > 0 && !selectedWorkgroupId.contains(-1)) {
             criteria.createAlias("this.workgroups", "wgs", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
@@ -194,13 +202,20 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         return findByCriteria(criteria);
     }
 
-    @Override
+   @Override
     public SearchResult getUsers(int organisationId, int organisationTypeId, int userRoleId, int start, int limit, String sort, String dir, boolean activeUsersOnly) {
+        return getUsers(organisationId, organisationTypeId, userRoleId, start, limit, sort, dir, activeUsersOnly, false);
+    }
+
+    @Override
+    public SearchResult getUsers(int organisationId, int organisationTypeId, int userRoleId, int start, int limit, String sort, String dir, boolean activeUsersOnly, boolean getHashed) {
         List<WebUser> users = new ArrayList<>();
 
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(WebUser.class);
         if (activeUsersOnly) {
             criteria.add(Restrictions.eq("status", true));
+        } else if (!getHashed) {
+            criteria.add(Restrictions.eq("hashed", false));
         }
         if (organisationTypeId > 0) {
             switch (organisationTypeId) {

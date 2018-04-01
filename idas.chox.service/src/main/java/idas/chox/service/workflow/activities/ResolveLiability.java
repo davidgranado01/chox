@@ -70,7 +70,7 @@ public class ResolveLiability extends BaseActivity {
         getWorkflowContext().getClaimService().updateLiabilityPayment(claim);
         LOG.debug("claim status " + claim.getLiabilityStatus());
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
-            claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + engineerClaimReviewNotes));
+            claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + engineerClaimReviewNotes, true));
         }
         if ( !ClaimType.isInsurerVsInsurer(claim.getClaimType()) &&
             ( claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_DISPUTED

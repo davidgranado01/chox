@@ -168,7 +168,7 @@ public class AdminUserService extends SecureDataService {
     }
 
     public SearchResult getUsers(int organisationId, int organisationTypeId, int userRoleId, int start, int limit, String sort, String dir, boolean activeUsersOnly) {
-        return this.userService.getUsers(organisationId, organisationTypeId, userRoleId, start, limit, sort, dir, activeUsersOnly);
+        return this.userService.getUsers(organisationId, organisationTypeId, userRoleId, start, limit, sort, dir, activeUsersOnly, true);
     }
     
 
@@ -222,6 +222,11 @@ public class AdminUserService extends SecureDataService {
             // CHOX-313: clear last_login_date when user activated
             if (webUser.getStatus()) {
                 webUser.setLastLoginDate(null);
+                webUser.setHashed(false);
+                webUser.setHashedDate(null);
+                webUser.setDeactivatedDate(new Date());
+            } else { // set date de-activated
+                webUser.setDeactivatedDate(new Date());
             }
         }
 

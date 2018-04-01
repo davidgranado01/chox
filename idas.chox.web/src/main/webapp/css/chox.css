@@ -487,6 +487,14 @@ label.chox-claim-header-label
 {
     vertical-align:top;
 }
+label.chox-claim-header-label-big
+{
+    vertical-align:top;
+    color: red;
+    font: bold 11px tahoma,arial,verdana,sans-serif;
+    text-align: center;
+    margin: 5px 0 5px 0;
+}
 label.chox-claim-header-text
 {
     font-weight: bold;

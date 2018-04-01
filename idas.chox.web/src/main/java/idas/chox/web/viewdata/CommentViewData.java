@@ -51,7 +51,12 @@ public class CommentViewData {
                     this.reviewRequired = "";
                 }
             }
-            createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+            if ((user.getFirstName() != null && user.getFirstName().startsWith("~~"))
+                    || (user.getLastName() != null && user.getLastName().startsWith("~~"))) {
+                createdBy = String.format("GDPR: data removed %1$s", orgName);
+            } else {
+                createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+            }
         } else {
             createdBy = "unknown";
         }

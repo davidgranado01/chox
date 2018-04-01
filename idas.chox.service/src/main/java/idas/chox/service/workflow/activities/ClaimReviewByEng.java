@@ -46,14 +46,14 @@ public class ClaimReviewByEng extends BaseActivity {
 
         if (StringHelper.isNotEmpty(getEngineerClaimReviewNotes())) {
             if(!disablePrivateNotes){
-                claim.addComment(Comment.newComment(1, getEngineerClaimReviewNotes()));
+                claim.addComment(Comment.newComment(1, getEngineerClaimReviewNotes(), true));
             }else{
-                claim.addComment(Comment.newComment(0, getEngineerClaimReviewNotes()));
+                claim.addComment(Comment.newComment(0, getEngineerClaimReviewNotes(), true));
             }
         }
 
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-            claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + supportingLiabilityNotes));
+            claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + supportingLiabilityNotes, true));
         }
         claim.setStatus(ClaimStatus.CLAIM_UPDATE_BY_ENG);
     }

@@ -32,11 +32,38 @@ public class WebUser extends Entity implements Serializable {
     private boolean blocked;
     private int failedLoginAttempts;
     private Date blockedDate;
+    private boolean hashed;
+    private Date hashedDate;
+    private Date deactivatedDate;
 
     // </editor-fold>
     public WebUser() {
         isExpired = false;
         showSplash = true;
+    }
+
+    public boolean isHashed() {
+        return hashed;
+    }
+
+    public void setHashed(boolean hashed) {
+        this.hashed = hashed;
+    }
+
+    public Date getHashedDate() {
+        return hashedDate;
+    }
+
+    public void setHashedDate(Date hashedDate) {
+        this.hashedDate = hashedDate;
+    }
+
+    public Date getDeactivatedDate() {
+        return deactivatedDate;
+    }
+
+    public void setDeactivatedDate(Date deactivatedDate) {
+        this.deactivatedDate = deactivatedDate;
     }
 
     public boolean isBlocked() {
@@ -80,7 +107,7 @@ public class WebUser extends Entity implements Serializable {
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">
-    public java.lang.String getEmail() {
+    public String getEmail() {
         return email;
     }
 
@@ -88,7 +115,7 @@ public class WebUser extends Entity implements Serializable {
         this.email = email;
     }
 
-    public java.lang.String getFirstName() {
+    public String getFirstName() {
         return firstName;
     }
 
@@ -96,7 +123,7 @@ public class WebUser extends Entity implements Serializable {
         this.firstName = firstName;
     }
 
-    public java.lang.String getLastName() {
+    public String getLastName() {
         return lastName;
     }
 
@@ -104,7 +131,7 @@ public class WebUser extends Entity implements Serializable {
         this.lastName = lastName;
     }
 
-    public java.lang.String getPassword() {
+    public String getPassword() {
         return password;
     }
 
@@ -121,6 +148,9 @@ public class WebUser extends Entity implements Serializable {
     }
 
     public void setStatus(boolean status) {
+        if (!status && this.status) {
+            deactivatedDate = new Date();
+        }
         this.status = status;
         if (status && blocked) {
             blocked = false;
@@ -217,11 +247,11 @@ public class WebUser extends Entity implements Serializable {
     }
 
     public String getDisplayName() {
-        return String.format("%1$s, %2$s", this.getLastName(), this.getFirstName());
+        return hashed ?  "GDPR: data removed" : String.format("%1$s, %2$s", this.getLastName(), this.getFirstName());
     }
 
     public String getFullName() {
-        return String.format("%1$s %2$s", this.getFirstName(), this.getLastName());
+        return hashed ?  "GDPR: data removed" : String.format("%1$s %2$s", this.getFirstName(), this.getLastName());
     }
 
     public void setClaimHandler(boolean claimHandler) {

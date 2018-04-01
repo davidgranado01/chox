@@ -8,16 +8,18 @@ import idas.chox.core.util.DateHelper;
 
 public class AuditTrailViewData {
 
-    private int id;
-    private String modifiedDate;
-    private String modifiedBy;
-    private String status;
-    private boolean reverted;
+    private final int id;
+    private final String modifiedDate;
+    private final String modifiedBy;
+    private final String status;
+    private final boolean reverted;
 
     public AuditTrailViewData(AuditTrail auditTrail) {
 
         this.id = auditTrail.getId();
         this.modifiedDate = DateHelper.getLocalDateTimeFormatWithSecs().format(auditTrail.getUpdateDate());
+        this.status = auditTrail.getNewStatus();
+        this.reverted = auditTrail.getReverted();
 
         String orgName = "";
         WebUser user = auditTrail.getCreatedBy();
@@ -31,9 +33,14 @@ public class AuditTrailViewData {
                 orgName = String.format("(%1$s)", cho.getName());
             }
 
-            this.modifiedBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
-            this.status = auditTrail.getNewStatus();
-            this.reverted = auditTrail.getReverted();
+            if ((user.getFirstName() != null && user.getFirstName().startsWith("~~"))
+                    || (user.getLastName() != null && user.getLastName().startsWith("~~"))) {
+                modifiedBy = String.format("GDPR: data removed %1$s", orgName);
+            } else {
+                modifiedBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+            }
+        } else {
+            modifiedBy = "unknown";
         }
     }
 

@@ -172,13 +172,13 @@ public class AcknowledgeClaim extends BaseActivity {
     protected void doProcess(Claim claim) {
 
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
-            claim.addComment(Comment.newComment(0, engineerClaimReviewNotes));
+            claim.addComment(Comment.newComment(0, engineerClaimReviewNotes, true));
         }
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-            claim.addComment(Comment.newComment(0, "Supporting Liability Note: " + supportingLiabilityNotes));
+            claim.addComment(Comment.newComment(0, "Supporting Liability Note: " + supportingLiabilityNotes, true));
         }
         if (StringHelper.isNotEmpty(acceptanceReason)) {
-            claim.addComment(Comment.newComment(0, "Claim Acceptance Reason: " + acceptanceReason));
+            claim.addComment(Comment.newComment(0, "Claim Acceptance Reason: " + acceptanceReason, true));
         }
  
         claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);

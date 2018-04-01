@@ -137,7 +137,12 @@ public class TaskViewData {
             } else if (cho != null) {
                 orgName = String.format("(%1$s)", cho.getName());
             }
-            this.createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+            if ((user.getFirstName() != null && user.getFirstName().startsWith("~~"))
+                    || (user.getLastName() != null && user.getLastName().startsWith("~~"))) {
+                createdBy = String.format("GDPR: data demoved %1$s", orgName);
+            } else {
+                createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+            }
         }
         user = task.getCompletedBy();
         if (user != null) {
@@ -149,7 +154,12 @@ public class TaskViewData {
             } else if (cho != null) {
                 orgName = String.format("(%1$s)", cho.getName());
             }
-            this.completedBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+            if ((user.getFirstName() != null && user.getFirstName().startsWith("~~"))
+                    || (user.getLastName() != null && user.getLastName().startsWith("~~"))) {
+                completedBy = String.format("GDPR: data removed %1$s", orgName);
+            } else {
+                completedBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+            }
         }
     }
 

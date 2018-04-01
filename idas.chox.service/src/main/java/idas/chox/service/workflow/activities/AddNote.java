@@ -84,7 +84,7 @@ public class AddNote extends BaseActivity {
     @Override
     @Secured ({"ROLE_INS", "ROLE_CHO"})
     protected void doProcess(Claim claim) {
-        note = Comment.newComment(visibilityType, reviewRequired, comment.replaceAll("\n", "<br />"));
+        note = Comment.newComment(visibilityType, reviewRequired, comment.replaceAll("\n", "<br />"), true);
         if (reviewRequired && visibilityType == 0 && canCreateTask) {
             // Create task for comment review required
             Task task = new Task();

@@ -231,17 +231,17 @@ public class ClaimRejection extends BaseActivity {
     protected void doProcess(Claim claim) {
 
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
-            claim.addComment(Comment.newComment(0, engineerClaimReviewNotes));
+            claim.addComment(Comment.newComment(0, engineerClaimReviewNotes, true));
         }
 
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-            claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + supportingLiabilityNotes));
+            claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + supportingLiabilityNotes, true));
         }
 
         if (reasonOfRejection != null) {
             claim.addComment(Comment.newComment(0, "Reason For Rejection: " + reasonOfRejection.getRorName()));
             if (rejectionDescription != null && !rejectionDescription.equals("")) {
-                claim.addComment(Comment.newComment(0, "Supporting Rejection Notes: " + rejectionDescription));
+                claim.addComment(Comment.newComment(0, "Supporting Rejection Notes: " + rejectionDescription, true));
             }
         } else {
             LOG.error("No 'Reason of Rejection' specified for claim '{}': {}", claim.getChoReference(), reasonOfRejectionId);

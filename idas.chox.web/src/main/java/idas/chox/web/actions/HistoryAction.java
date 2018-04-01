@@ -35,14 +35,11 @@ public class HistoryAction extends ClaimModelAction<History> {
 
         List<HistoryViewData> histories = new ArrayList<>();
 
-        for (History h : claim.getHistories()) {
-
-            if (h.getType().equalsIgnoreCase("Error") && (h.getIsPublic() || !this.getIsCHO())) {
-                // SHOW ERROR TYPE ONLY
-                // REJECT isPublic is FALSE && Is CHO USER
-                histories.add(new HistoryViewData(h));
-            }
-        }
+        claim.getHistories().stream().filter((h) -> (h.getType().equalsIgnoreCase("Error") && (h.getIsPublic() || !this.getIsCHO()))).forEachOrdered((h) -> {
+            // SHOW ERROR TYPE ONLY
+            // REJECT isPublic is FALSE && Is CHO USER
+            histories.add(new HistoryViewData(h));
+        });
 
         Collections.sort(histories);
         

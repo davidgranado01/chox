@@ -81,7 +81,7 @@ public class MakeInterimPayment extends BaseActivity {
                     + " The total interim payment amount is now £" + claim.getInvoice().getInterimPaymentMade());
         }
         claim.addComment(comment);
-        comment = Comment.newComment(0, supportingInterimNotes);
+        comment = Comment.newComment(0, supportingInterimNotes, true);
         claim.addComment(comment);
     }
 

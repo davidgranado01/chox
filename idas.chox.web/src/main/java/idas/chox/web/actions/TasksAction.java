@@ -430,6 +430,9 @@ public class TasksAction extends BaseAction {
                 if (taskClaim == null) {
                     throw new Exception(String.format("No such claim with Supplier Reference %s.", choReference));
                 }
+                if (taskClaim.isHashed()) {
+                    throw new Exception(String.format("Cannot add a task to claim %s as the claim data has already been hashed due to GDPR requirements.", choReference));
+                }
                 task.setClaim(taskClaim);
             }
             taskService.createNewTask(task);
@@ -442,6 +445,15 @@ public class TasksAction extends BaseAction {
         return SUCCESS;
     }
 
+    public boolean isClaimHashed() {
+        if (claimId > 0) {// Must be in Claim Detail task panel
+            LOG.debug("Getting claim with id: {}", claimId);
+            Claim claim = claimService.getClaim(claimId);
+            return claim.isHashed();
+        }
+        return false;
+    }
+    
     public String markTaskAsComplete() {
         try {
             taskService.markTaskAsComplete(getAuthenticatedUser().getId(), selectedTaskId);

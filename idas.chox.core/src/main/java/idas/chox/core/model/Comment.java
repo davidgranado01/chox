@@ -14,8 +14,17 @@ public class Comment extends Entity implements Serializable {
     private int visibilityType; // 0 - ALL, 1 - INSURER ONLY, 2 - CREDIT HIRE ONLY
     private WebUser raisedBy;
     private boolean reverted;
+    private boolean userComment;
     private Boolean reviewRequired;
     private Task task;
+
+    public boolean isUserComment() {
+        return userComment;
+    }
+
+    public void setUserComment(boolean userComment) {
+        this.userComment = userComment;
+    }
     
     public WebUser getRaisedBy() {
         return raisedBy;
@@ -58,13 +67,21 @@ public class Comment extends Entity implements Serializable {
     }
 
     public static Comment newComment(int visibilityType, String msg) {
-        return newComment(visibilityType, false, msg);
+        return newComment(visibilityType, false, msg, false);
+    }
+    
+    public static Comment newComment(int visibilityType, String msg, boolean userComment) {
+        return newComment(visibilityType, false, msg, userComment);
     }
     
     public static Comment newComment(int visibilityType, boolean reviewRequired, String msg) {
+        return newComment(visibilityType, reviewRequired, msg, false);
+    }
+    public static Comment newComment(int visibilityType, boolean reviewRequired, String msg, boolean userComment) {
         Comment comment = new Comment();
         comment.setVisibilityType(visibilityType);
         comment.setComment(msg);
+        comment.setUserComment(userComment);
         if (reviewRequired) {
             comment.setReviewRequired(Boolean.TRUE);
         }

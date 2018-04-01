@@ -63,6 +63,9 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
     public boolean isInsurerUploadedClaim() {
         return ClaimType.isInsurerUpload(claim.getClaimType());
     }
+    public boolean isClaimHashed() {
+        return claim.isHashed();
+    }
     // </editor-fold>
 
     @Override

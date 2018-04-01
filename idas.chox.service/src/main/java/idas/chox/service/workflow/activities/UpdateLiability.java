@@ -59,7 +59,7 @@ public class UpdateLiability extends BaseActivity {
         LOG.debug("claim liab " + claim.getLiabilityStatus());
         claimService.setLiability(claim, liabilityStatus);
         if (StringHelper.isNotEmpty(claimReviewNotes)) {
-            claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + claimReviewNotes));
+            claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + claimReviewNotes, true));
         }
         claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);

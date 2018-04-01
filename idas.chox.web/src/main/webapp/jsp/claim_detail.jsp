@@ -630,6 +630,9 @@
             <fieldset class="x-fieldset loaded open-by-default">
                 <legend>Claim Summary</legend>
                 <table cellpadding="0" cellspacing="0" border="0">
+<s:if test="claimHashed">
+                    <tr><td colspan="3" align="center"><label class="chox-claim-header-label-big">Personal information has been automatically removed for GDPR compliance. These fields are now read-only.</label></td></tr>
+</s:if>
                     <tr>
                         <td><label class="chox-claim-header-label">Third Party Insurer</label><label class="chox-claim-header-text"><s:property value="thirdParty.insurer.name" /></label></td>
                         <td><label class="chox-claim-header-label">Credit Hire Organisation</label><label class="chox-claim-header-text"><s:property value="chorganisation.name" /></label></td>

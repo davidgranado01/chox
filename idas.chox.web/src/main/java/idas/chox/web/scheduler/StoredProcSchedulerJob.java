@@ -29,7 +29,83 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
     private ApplicationContext applicationContext;
     private Session session;
     private Transaction hibernateTransaction;
-    
+    private boolean hashData;
+    private int hashDataPeriod;
+    private boolean closeClaims;
+    private int closeClaimsPeriod;
+    private boolean removeNotes;
+    private int removeNotesPeriod;
+    private boolean removeAttachments;
+    private int removeAttachmentsPeriod;
+    private boolean removeTasks;
+    private int removeTasksPeriod;
+    private boolean deactivateUsers;
+    private int deactivateUsersPeriod;
+    private boolean hashUserData;
+    private int hashUserDataPeriodFromDeactivate;
+    private int hashUserDataPeriodFromLastLogin;
+
+    public void setHashData(boolean hashData) {
+        this.hashData = hashData;
+    }
+
+    public void setHashDataPeriod(int hashDataPeriod) {
+        this.hashDataPeriod = hashDataPeriod;
+    }
+
+    public void setCloseClaims(boolean closeClaims) {
+        this.closeClaims = closeClaims;
+    }
+
+    public void setCloseClaimsPeriod(int closeClaimsPeriod) {
+        this.closeClaimsPeriod = closeClaimsPeriod;
+    }
+
+    public void setRemoveNotes(boolean removeNotes) {
+        this.removeNotes = removeNotes;
+    }
+
+    public void setRemoveNotesPeriod(int removeNotesPeriod) {
+        this.removeNotesPeriod = removeNotesPeriod;
+    }
+
+    public void setRemoveAttachments(boolean removeAttachments) {
+        this.removeAttachments = removeAttachments;
+    }
+
+    public void setRemoveAttachmentsPeriod(int removeAttachmentsPeriod) {
+        this.removeAttachmentsPeriod = removeAttachmentsPeriod;
+    }
+
+    public void setRemoveTasks(boolean removeTasks) {
+        this.removeTasks = removeTasks;
+    }
+
+    public void setRemoveTasksPeriod(int removeTasksPeriod) {
+        this.removeTasksPeriod = removeTasksPeriod;
+    }
+
+    public void setDeactivateUsers(boolean deactivateUsers) {
+        this.deactivateUsers = deactivateUsers;
+    }
+
+    public void setDeactivateUsersPeriod(int deactivateUsersPeriod) {
+        this.deactivateUsersPeriod = deactivateUsersPeriod;
+    }
+
+    public void setHashUserData(boolean hashUserData) {
+        this.hashUserData = hashUserData;
+    }
+
+    public void setHashUserDataPeriodFromDeactivate(int hashUserDataPeriodFromDeactivate) {
+        this.hashUserDataPeriodFromDeactivate = hashUserDataPeriodFromDeactivate;
+    }
+
+    public void setHashUserDataPeriodFromLastLogin(int hashUserDataPeriodFromLastLogin) {
+        this.hashUserDataPeriodFromLastLogin = hashUserDataPeriodFromLastLogin;
+    }
+      
+
     @Override
     public void execute() throws JobExecutionException {
         LOG.info("calling stored proc '{}' with '{}'", storedProcName, baseDataService);
@@ -54,6 +130,55 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
                     break;
                 case "updateRemainingSlaDays":
                     baseDataService.callUpdateRemainingSlaDays(999);
+                    break;
+                case "hashClaims":
+                    if (hashData) {
+                        baseDataService.callHashClaims(hashDataPeriod);
+                    } else {
+                        LOG.info("Hashing of claim data has been deactivated.");
+                    }
+                    break;
+                case "closeOldClaims":
+                    if (closeClaims) {
+                        baseDataService.callCloseOldClaims(closeClaimsPeriod);
+                    } else {
+                        LOG.info("Closing of old claims has been deactivated.");
+                    }
+                    break;
+                case "removeNotes":
+                    if (removeNotes) {
+                        baseDataService.callRemoveNotes(removeNotesPeriod);
+                    } else {
+                        LOG.info("Note removal has been deactivated.");
+                    }
+                    break;
+                case "removeTasks":
+                    if (removeTasks) {
+                        baseDataService.callRemoveTasks(removeTasksPeriod);
+                    } else {
+                        LOG.info("Task removal has been deactivated.");
+                    }
+                    break;
+                case "removeAttachments":
+                    if (removeAttachments) {
+                        baseDataService.callRemoveAttachments(removeAttachmentsPeriod);
+                    } else {
+                        LOG.info("Attachment removal has been deactivated.");
+                    }
+                    break;
+                case "deactivateUsers":
+                    if (deactivateUsers) {
+                        baseDataService.callDeactivateUsers(deactivateUsersPeriod);
+                    } else {
+                        LOG.info("Deactivation of users has been deactivated.");
+                    }
+                    break;
+                case "hashUsers":
+                    if (hashUserData) {
+                        baseDataService.callHashUsers(hashUserDataPeriodFromDeactivate, hashUserDataPeriodFromLastLogin);
+                    } else {
+                        LOG.info("Deactivation of users has been deactivated.");
+                    }
                     break;
             }
             LOG.info("stored proc '{}' job finished.", storedProcName);

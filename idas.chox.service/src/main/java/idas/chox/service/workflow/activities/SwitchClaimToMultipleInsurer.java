@@ -144,6 +144,16 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
             claim.setSlaExtDays(0);
         }
 
+        if (claim.isHashed()) {
+            claim.setHashed(false);
+//            claim.setHashedDate(null);
+            claim.setRemovedNotes(false);
+//            claim.setRemovedNotesDate(null);
+            claim.setRemovedAttachments(false);
+//            claim.setRemovedAttachmentsDate(null);
+            claim.setRemovedTasks(false);
+//            claim.setRemovedTasksDate(null);
+        }
         LOG.debug("Switching Claim : Claim details has been updated");
 
         notificationService.removeAllNotifications(claim.getId());

@@ -27,7 +27,8 @@
                 {name:'category'},
                 {name:'remarks'},
                 {name:'createdDate', type: 'date', dateFormat: 'd/m/Y H:i'},
-                {name:'delete'}
+                {name:'delete'},
+                {name:'removed'}
             ]
         });
 
@@ -49,12 +50,12 @@
             viewConfig:{forceFit:true},
             columns: [
                 {header: "File Name", width: 250, dataIndex: 'fileName', sortable: true, resizable: true, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>" + value + "</a>";}},
+                        if (r.get('removed')) return value; else return "<a href='#' class='high-light-item'>" + value + "</a>";}},
                 {header: "Attachment Type", width: 150, dataIndex: 'category', sortable: true, resizable: true},
                 {header: "Description", width: 300, dataIndex: 'remarks', sortable: true, resizable: true},
                 {header: "Created Date", width: 150, dataIndex: 'createdDate', sortable: true, resizable: true,renderer: Ext.util.Format.dateRenderer('d/m/Y H:i')},
                 {header: "", width: 60, dataIndex: 'delete', sortable: false, resizable: false, renderer:function(value,p,r){
-                        return "<a href='#' class='high-light-item'>" + value + "</a>";}}
+                        if (r.get('removed')) return ""; else return "<a href='#' class='high-light-item'>" + value + "</a>";}}
             ],
             width:990,
             height:160
@@ -220,11 +221,12 @@
         var attachment = attachmentGrid.getStore().getAt(rowIndex);
         var fileId = attachment.get("id");
         var fileName = attachment.get("fileName");
+        var removed = attachment.get("removed");
 
         if (columnIndex === 4) {
             deleteAttachment(fileId);
             gridClickInProgress = false;
-        }else{
+        }else if (!removed) {
             if (timeoutId === -1) {
                 timeoutId = setTimeout(function() {
                     if (!gridClickInProgress){timeoutId = -1; return;}
@@ -405,7 +407,7 @@
                     <tr>
                         <td>&nbsp;</td>
                         <td>
-                            <input type="submit" id="claimDetailAttachmentSubmitButton" value="Add Attachment" />
+                            <input type="submit" id="claimDetailAttachmentSubmitButton" <s:if test="claimHashed"> disabled="true"</s:if> value="Add Attachment" />
                         </td>
                     </tr>
                 </table>

@@ -41,7 +41,7 @@ public class InvoiceRejection extends BaseActivity {
 
         claim.addComment(Comment.newComment(0, "Reason For Rejection: " + getReasonOfRejection().getRorName()));
         if(rejectionDescription != null && !rejectionDescription.equals("")) {
-            claim.addComment(Comment.newComment(0, "Supporting Rejection Notes: " + rejectionDescription));
+            claim.addComment(Comment.newComment(0, "Supporting Rejection Notes: " + rejectionDescription, true));
         }
         
         claim.getInvoice().setReasonOfRejection(getReasonOfRejection());

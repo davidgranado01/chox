@@ -520,7 +520,7 @@
                                 <tr>
                                     <td colspan="2">
                                         <div class="chox-form-item">
-                                            <input type="button" id="claimTaskCreateId" value="Add Task" onclick="addNewTask();"/>
+                                            <input type="button" id="claimTaskCreateId" <s:if test="claimHashed">disabled="true"</s:if> value="Add Task" onclick="addNewTask();"/>
                                         </div>
                                     </td>
                                 </tr>

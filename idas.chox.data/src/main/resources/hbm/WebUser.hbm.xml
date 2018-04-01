@@ -27,6 +27,9 @@
     <property column="blocked" name="blocked" not-null="true"/>
     <property column="failed_login_attempts" name="failedLoginAttempts" not-null="true"/>
     <property column="blocked_date" name="blockedDate"/>
+    <property column="hashed" name="hashed"  not-null="true"/>
+    <property column="hashed_date" name="hashedDate"/>
+    <property column="deactivated_date" name="deactivatedDate"/>
     <many-to-one class="idas.chox.core.model.Chorganisation" column="chorganisation_id" lazy="false" name="chorganisation"/>
     <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" lazy="false" name="insurer"/>
 

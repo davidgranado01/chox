@@ -19,7 +19,7 @@ public class AwaitingLitigationOutcome extends BaseActivity {
         LOG.debug("Processing AwaitingLitigationOutcome activity.");
 
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-            claim.addComment(Comment.newComment(0, supportingLiabilityNotes));
+            claim.addComment(Comment.newComment(0, supportingLiabilityNotes, true));
         }
 
         claim.setCaseWithClientsSolicitor(false);

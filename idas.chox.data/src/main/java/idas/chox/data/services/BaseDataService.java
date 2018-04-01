@@ -206,8 +206,141 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         getCurrentSession().doWork((Connection connection) -> {
             Statement s = connection.createStatement();
             try {
-                s.execute("select update_user_service(id) from insurer where status=true");
-                s.execute("select update_workgroup_service(id) from insurer where status=true");
+                s.execute("select update_user_service(" + userId + ") from insurer where status=true");
+                s.execute("select update_workgroup_service(" + userId + ") from insurer where status=true");
+            } catch (SQLException ex) {
+                if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                    throw ex;
+                }
+            } finally {
+                getCurrentSession().flush();
+                s.close();
+            }
+        });
+    }
+
+    public void callHashClaims(int age) throws SQLException {
+        LOG.debug("Calling stored procedure hashClaims({})....", age);
+        getCurrentSession().flush();
+
+        getCurrentSession().doWork((Connection connection) -> {
+            Statement s = connection.createStatement();
+            try {
+                s.execute("select hashClaims(" + age + ")");
+            } catch (SQLException ex) {
+                if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                    throw ex;
+                }
+            } finally {
+                getCurrentSession().flush();
+                s.close();
+            }
+        });
+    }
+
+    public void callCloseOldClaims(int age) throws SQLException {
+        LOG.debug("Calling stored procedure closeOldClaims({})....", age);
+        getCurrentSession().flush();
+
+        getCurrentSession().doWork((Connection connection) -> {
+            Statement s = connection.createStatement();
+            try {
+                s.execute("select closeOldClaims(" + age + ")");
+            } catch (SQLException ex) {
+                if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                    throw ex;
+                }
+            } finally {
+                getCurrentSession().flush();
+                s.close();
+            }
+        });
+    }
+
+    public void callRemoveNotes(int age) throws SQLException {
+        LOG.debug("Calling stored procedure removeNotes({})....", age);
+        getCurrentSession().flush();
+
+        getCurrentSession().doWork((Connection connection) -> {
+            Statement s = connection.createStatement();
+            try {
+                s.execute("select removeNotes(" + age + ")");
+            } catch (SQLException ex) {
+                if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                    throw ex;
+                }
+            } finally {
+                getCurrentSession().flush();
+                s.close();
+            }
+        });
+    }
+
+    public void callRemoveTasks(int age) throws SQLException {
+        LOG.debug("Calling stored procedure removeTasks({})....", age);
+        getCurrentSession().flush();
+
+        getCurrentSession().doWork((Connection connection) -> {
+            Statement s = connection.createStatement();
+            try {
+                s.execute("select removeTasks(" + age + ")");
+            } catch (SQLException ex) {
+                if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                    throw ex;
+                }
+            } finally {
+                getCurrentSession().flush();
+                s.close();
+            }
+        });
+    }
+
+    public void callRemoveAttachments(int age) throws SQLException {
+        LOG.debug("Calling stored procedure removeAttachments({})....", age);
+        getCurrentSession().flush();
+
+        getCurrentSession().doWork((Connection connection) -> {
+            Statement s = connection.createStatement();
+            try {
+                s.execute("select removeAttachments(" + age + ")");
+            } catch (SQLException ex) {
+                if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                    throw ex;
+                }
+            } finally {
+                getCurrentSession().flush();
+                s.close();
+            }
+        });
+    }
+
+    public void callDeactivateUsers(int age) throws SQLException {
+        LOG.debug("Calling stored procedure deactivateUsers({})....", age);
+        getCurrentSession().flush();
+
+        getCurrentSession().doWork((Connection connection) -> {
+            Statement s = connection.createStatement();
+            try {
+                s.execute("select deactivateUsers(" + age + ")");
+            } catch (SQLException ex) {
+                if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                    throw ex;
+                }
+            } finally {
+                getCurrentSession().flush();
+                s.close();
+            }
+        });
+    }
+
+    public void callHashUsers(int age1, int age2) throws SQLException {
+        LOG.debug("Calling stored procedure hashUsers({},{})....", age1, age2);
+        getCurrentSession().flush();
+
+        getCurrentSession().doWork((Connection connection) -> {
+            Statement s = connection.createStatement();
+            try {
+                s.execute("select deactivateUsers(" + age1 + "," + age2 + ")");
             } catch (SQLException ex) {
                 if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
                     throw ex;

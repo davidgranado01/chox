@@ -162,10 +162,10 @@ public class ClaimPending extends BaseActivity {
     protected void doProcess(Claim claim) {
 
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
-            claim.addComment(Comment.newComment(0, engineerClaimReviewNotes));
+            claim.addComment(Comment.newComment(0, engineerClaimReviewNotes, true));
         }
         if (StringHelper.isNotEmpty(supportingLiabilityNotes)) {
-            claim.addComment(Comment.newComment(0, new StringBuilder().append("Supporting Liability Notes: ").append(supportingLiabilityNotes).toString()));
+            claim.addComment(Comment.newComment(0, new StringBuilder().append("Supporting Liability Notes: ").append(supportingLiabilityNotes).toString(), true));
         }
         if (indemnityStance != null && !indemnityStance.isEmpty() && (claim.getIndemnityStance() == null || !claim.getIndemnityStance().equals(indemnityStance))) {
             claim.setIndemnityStance(indemnityStance);

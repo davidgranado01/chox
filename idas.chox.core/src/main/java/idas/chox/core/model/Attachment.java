@@ -14,6 +14,15 @@ public class Attachment extends Entity implements Serializable {
     private String fileType;
     private AttachmentFile attachment;
     private boolean deleted;
+    private boolean removed;
+
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public void setRemoved(boolean removed) {
+        this.removed = removed;
+    }
 
     public String getCategory() {
         return StringEscapeUtils.unescapeHtml4(Jsoup.clean(category, Whitelist.none()));

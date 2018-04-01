@@ -54,7 +54,7 @@ public class CloseClaim extends BaseActivity {
             claim.addComment(Comment.newComment(0, String.format("Claim Closed: %s", closeReason)));
         }
         if (closeNote != null && !closeNote.isEmpty()) {
-            claim.addComment(Comment.newComment(0, String.format("Claim Closed Note: %s", closeNote)));
+            claim.addComment(Comment.newComment(0, String.format("Claim Closed Note: %s", closeNote, true)));
         }
     }
 }

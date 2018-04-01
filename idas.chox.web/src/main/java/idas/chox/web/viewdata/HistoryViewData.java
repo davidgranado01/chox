@@ -20,11 +20,11 @@ import org.slf4j.LoggerFactory;
 public class HistoryViewData implements Comparable<HistoryViewData> {
 
     private static final Logger LOG = LoggerFactory.getLogger(HistoryViewData.class);
-    private int id;
-    private String createdBy;
-    private String createdDate;
-    private String narrative;
-    private boolean isOld;
+    private final int id;
+    private final String createdBy;
+    private final String createdDate;
+    private final String narrative;
+    private final boolean isOld;
 
     public HistoryViewData(History history) {
         this.id = history.getId();
@@ -43,7 +43,14 @@ public class HistoryViewData implements Comparable<HistoryViewData> {
             } else if (cho != null) {
                 orgName = String.format("(%1$s)", cho.getName());
             }
-            this.createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+            if ((user.getFirstName() != null && user.getFirstName().startsWith("~~"))
+                    || (user.getLastName() != null && user.getLastName().startsWith("~~"))) {
+                createdBy = String.format("GDPR: data demoved %1$s", orgName);
+            } else {
+                createdBy = String.format("%1$s %2$s %3$s", user.getFirstName(), user.getLastName(), orgName);
+            }
+        } else {
+            createdBy = "unknown";
         }
     }
 

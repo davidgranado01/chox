@@ -227,6 +227,17 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     LOG.debug("auditReview deleted!!!");
                 }
 
+                if (claim.isHashed()) {
+                    claim.setHashed(false);
+//                    claim.setHashedDate(null);
+                    claim.setRemovedNotes(false);
+//                    claim.setRemovedNotesDate(null);
+                    claim.setRemovedAttachments(false);
+//                    claim.setRemovedAttachmentsDate(null);
+                    claim.setRemovedTasks(false);
+//                    claim.setRemovedTasksDate(null);
+                }
+
                 claim.setStatus(auditTrail.getOriginalStatus());
 
                 // If reverted back from AwaitingInvoicePayment, we need to clear the payment dispute flag

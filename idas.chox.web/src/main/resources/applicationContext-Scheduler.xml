@@ -320,6 +320,70 @@
         <property name="sessionFactory" ref="quartzSessionFactory"/>
     </bean>
 
+    <!--  Stored Procedure call: hashClaims -->
+    <bean id="hashClaimsJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
+        <property name="baseDataService" ref="quartzBaseDataService" />
+        <property name="storedProcName" value="hashClaims"/>
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
+        <property name="hashData" value="${gdpr.hashData}"/>
+        <property name="hashDataPeriod" value="${gdpr.hashDataPeriod}"/>
+    </bean>
+
+    <!--  Stored Procedure call: closeOldClaims -->
+    <bean id="closeOldClaimsJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
+        <property name="baseDataService" ref="quartzBaseDataService" />
+        <property name="storedProcName" value="closeOldClaims"/>
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
+        <property name="closeClaims" value="${gdpr.closeClaims}"/>
+        <property name="closeClaimsPeriod" value="${gdpr.closeClaimsPeriod}"/>
+    </bean>
+
+    <!--  Stored Procedure call: removeNotes -->
+    <bean id="removeNotesJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
+        <property name="baseDataService" ref="quartzBaseDataService" />
+        <property name="storedProcName" value="removeNotes"/>
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
+        <property name="removeNotes" value="${gdpr.removeNotes}"/>
+        <property name="removeNotesPeriod" value="${gdpr.removeNotesPeriod}"/>
+    </bean>
+
+    <!--  Stored Procedure call: removeTasks -->
+    <bean id="removeTasksJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
+        <property name="baseDataService" ref="quartzBaseDataService" />
+        <property name="storedProcName" value="removeTasks"/>
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
+        <property name="removeTasks" value="${gdpr.removeTasks}"/>
+        <property name="removeTasksPeriod" value="${gdpr.removeTasksPeriod}"/>
+    </bean>
+
+    <!--  Stored Procedure call: removeAttachments -->
+    <bean id="removeAttachmentsJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
+        <property name="baseDataService" ref="quartzBaseDataService" />
+        <property name="storedProcName" value="removeAttachments"/>
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
+        <property name="removeAttachments" value="${gdpr.removeAttachments}"/>
+        <property name="removeAttachmentsPeriod" value="${gdpr.removeAttachmentsPeriod}"/>
+    </bean>
+
+    <!--  Stored Procedure call: deactivateUsers -->
+    <bean id="deactivateUsersJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
+        <property name="baseDataService" ref="quartzBaseDataService" />
+        <property name="storedProcName" value="deactivateUsers"/>
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
+        <property name="deactivateUsers" value="${gdpr.deactivateUsers}"/>
+        <property name="deactivateUsersPeriod" value="${gdpr.deactivateUsersPeriod}"/>
+    </bean>
+
+    <!--  Stored Procedure call: hashUserData -->
+    <bean id="hashUserData" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
+        <property name="baseDataService" ref="quartzBaseDataService" />
+        <property name="storedProcName" value="hashUserData"/>
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
+        <property name="hashUserData" value="${gdpr.hashUserData}"/>
+        <property name="hashUserDataPeriodFromDeactivate" value="${gdpr.hashUserDataPeriodFromDeactivate}"/>
+        <property name="hashUserDataPeriodFromLastLogin" value="${gdpr.hashUserDataPeriodFromLastLogin}"/>
+    </bean>
+
     <bean id="keoghsDbJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="keoghsDbJob" />
         <property name="targetMethod" value="execute" />
@@ -440,7 +504,49 @@
         <property name="concurrent" value="false" />
     </bean>
     
-	<!-- Cron Trigger -->
+    <bean id="hashClaimsJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="hashClaimsJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    
+    <bean id="closeOldClaimsJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="closeOldClaimsJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    
+    <bean id="removeNotesJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="removeNotesJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    
+    <bean id="removeTasksJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="removeTasksJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    
+    <bean id="removeAttachmentsJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="removeAttachmentsJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    
+    <bean id="deactivateUsersJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="deactivateUsersJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    
+    <bean id="hashUserDataJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="hashUserData" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    
+    <!-- Cron Trigger -->
     <bean id="cronRefDbUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="referenceUpdateDbJobDetail" /> 
         <property name="cronExpression" value="0 1 18 ? * 2-6" /> 
@@ -497,6 +603,34 @@
     <bean id="updateRemainingSlaDaysTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="updateRemainingSlaDaysJobDetail" /> 
         <property name="cronExpression" value="0 2 0 ? * 1-7" /> 
+    </bean>
+    <bean id="hashClaimsTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="hashClaimsJobDetail" /> 
+        <property name="cronExpression" value="0 5 0 ? * 1-7" /> 
+    </bean>
+    <bean id="closeOldClaimsTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="closeOldClaimsJobDetail" /> 
+        <property name="cronExpression" value="0 20 0 ? * 1-7" /> 
+    </bean>
+    <bean id="removeNotesTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="removeNotesJobDetail" /> 
+        <property name="cronExpression" value="0 25 0 ? * 1-7" /> 
+    </bean>
+    <bean id="removeTasksTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="removeTasksJobDetail" /> 
+        <property name="cronExpression" value="0 30 0 ? * 1-7" /> 
+    </bean>
+    <bean id="removeAttachmentsTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="removeAttachmentsJobDetail" /> 
+        <property name="cronExpression" value="0 35 0 ? * 1-7" /> 
+    </bean>
+    <bean id="deactivateUsersTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="deactivateUsersJobDetail" /> 
+        <property name="cronExpression" value="0 40 0 ? * 1-7" /> 
+    </bean>
+    <bean id="hashUserDataTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="hashUserDataJobDetail" /> 
+        <property name="cronExpression" value="0 45 0 ? * 1-7" /> 
     </bean>
     <bean id="cronECDMailUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="ecdUpdateMailJobDetail" /> 
@@ -577,6 +711,13 @@
                 <ref bean="addInvoicePenaltyTaskJobDetail" />
                 <ref bean="applyAutoPenaltyChargeJobDetail" />
                 <ref bean="updateRemainingSlaDaysJobDetail" />
+                <ref bean="hashClaimsJobDetail" />
+                <ref bean="closeOldClaimsJobDetail" />
+                <ref bean="removeNotesJobDetail" />
+                <ref bean="removeTasksJobDetail" />
+                <ref bean="removeAttachmentsJobDetail" />
+                <ref bean="deactivateUsersJobDetail" />
+                <ref bean="hashUserDataJobDetail" />
                 <ref bean="updateDashboardJobDetail" />
                 <ref bean="ecdUpdateMailJobDetail" />
                 <ref bean="hireUpdateMailJobDetail" />
@@ -602,6 +743,13 @@
                 <ref bean="addInvoicePenaltyTaskTriggerDaily" />
                 <ref bean="applyAutoPenaltyChargeTriggerDaily" />
                 <ref bean="updateRemainingSlaDaysTriggerDaily" />
+                <ref bean="hashClaimsTriggerDaily" />
+                <ref bean="closeOldClaimsTriggerDaily" />
+                <ref bean="removeNotesTriggerDaily" />
+                <ref bean="removeTasksTriggerDaily" />
+                <ref bean="removeAttachmentsTriggerDaily" />
+                <ref bean="deactivateUsersTriggerDaily" />
+                <ref bean="hashUserDataTriggerDaily" />
                 <ref bean="updateDashboardTriggerDaily" />
                 <ref bean="cronECDMailUpdateTriggerWeek" />
                 <ref bean="cronECDMailUpdateTriggerWeekend" />

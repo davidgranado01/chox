@@ -28,7 +28,7 @@ public class ClaimRegisterByFnol extends BaseActivity {
         claim.setIsFnolReviewed(true);
 
         if (StringHelper.isNotEmpty(reasonForRejection)) {
-            claim.addComment(Comment.newComment(1, reasonForRejection));
+            claim.addComment(Comment.newComment(1, reasonForRejection, true));
         }
         
     }
