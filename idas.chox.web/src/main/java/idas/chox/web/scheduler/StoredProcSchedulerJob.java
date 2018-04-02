@@ -180,6 +180,9 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
                         LOG.info("Deactivation of users has been deactivated.");
                     }
                     break;
+                default:
+                    LOG.error("'{}' stired procedure doesn't exist", storedProcName);
+                    break;
             }
             LOG.info("stored proc '{}' job finished.", storedProcName);
         } catch (Exception ex) {

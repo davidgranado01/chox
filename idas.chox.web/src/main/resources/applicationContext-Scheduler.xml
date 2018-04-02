@@ -375,9 +375,9 @@
     </bean>
 
     <!--  Stored Procedure call: hashUserData -->
-    <bean id="hashUserData" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
+    <bean id="hashUsersJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
         <property name="baseDataService" ref="quartzBaseDataService" />
-        <property name="storedProcName" value="hashUserData"/>
+        <property name="storedProcName" value="hashUsers"/>
         <property name="sessionFactory" ref="quartzSessionFactory"/>
         <property name="hashUserData" value="${gdpr.hashUserData}"/>
         <property name="hashUserDataPeriodFromDeactivate" value="${gdpr.hashUserDataPeriodFromDeactivate}"/>
@@ -541,7 +541,7 @@
     </bean>
     
     <bean id="hashUserDataJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <property name="targetObject" ref="hashUserData" />
+        <property name="targetObject" ref="hashUsersJob" />
         <property name="targetMethod" value="execute" />
         <property name="concurrent" value="false" />
     </bean>

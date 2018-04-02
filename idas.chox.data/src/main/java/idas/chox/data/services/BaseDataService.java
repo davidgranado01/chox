@@ -340,7 +340,7 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         getCurrentSession().doWork((Connection connection) -> {
             Statement s = connection.createStatement();
             try {
-                s.execute("select deactivateUsers(" + age1 + "," + age2 + ")");
+                s.execute("select hashUsers(" + age1 + "," + age2 + ")");
             } catch (SQLException ex) {
                 if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
                     throw ex;
