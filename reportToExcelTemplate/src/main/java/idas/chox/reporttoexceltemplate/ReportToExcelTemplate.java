@@ -104,7 +104,11 @@ public class ReportToExcelTemplate {
 
         int i = 0;
         for (String headerString : tokens) {
-            bodyValues[i++] = headerString.trim();
+            if (headerString.trim().startsWith("~~")) {
+                bodyValues[i++] = "GDPR: data removed";
+            } else {
+                bodyValues[i++] = headerString.trim();
+            }
         }
 
         return bodyValues;

@@ -120,7 +120,12 @@ public class ExcelWorkbook {
                 columnNo = 0;
                 for (Object cell : row) {
                     if (cell instanceof String) {
-                        Label label = new Label(columnNo++, rowNo, (String) cell, bodyCellFormat);
+                        Label label;
+                        if (((String)cell).startsWith("~~")) {
+                            label = new Label(columnNo++, rowNo, "GDPR: data removed", bodyCellFormat);
+                        } else {
+                            label = new Label(columnNo++, rowNo, (String) cell, bodyCellFormat);
+                        }
                         try {
                             sheet.addCell(label);
                         } catch (WriteException ex) {
