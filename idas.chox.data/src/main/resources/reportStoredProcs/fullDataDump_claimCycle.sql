@@ -45,7 +45,7 @@ left outer join web_user wu on (a.created_by = wu.id)
 left outer join insurer ins on (wu.insurer_id = ins.id)
 left outer join chorganisation cho on (wu.chorganisation_id = cho.id)
 where c.insurer_id = ANY(insIds)
-  and c.claim_type = ANY(claimTypes)
+  and (claimTypes is null or c.claim_type = ANY(claimTypes))
   and c.created_date >= DATE_FROM and c.created_date < DATE_TO
 order by c.created_date, c.cho_reference, a.created_date;
 

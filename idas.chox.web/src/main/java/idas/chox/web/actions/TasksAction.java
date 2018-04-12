@@ -454,6 +454,15 @@ public class TasksAction extends BaseAction {
         return false;
     }
     
+    public boolean isRemovedTasks() {
+        if (claimId > 0) {// Must be in Claim Detail task panel
+            LOG.debug("Getting claim with id: {}", claimId);
+            Claim claim = claimService.getClaim(claimId);
+            return claim.isRemovedTasks();
+        }
+        return false;
+    }
+    
     public String markTaskAsComplete() {
         try {
             taskService.markTaskAsComplete(getAuthenticatedUser().getId(), selectedTaskId);

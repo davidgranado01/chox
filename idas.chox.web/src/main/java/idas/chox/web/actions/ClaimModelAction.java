@@ -66,6 +66,16 @@ public abstract class ClaimModelAction<T extends Entity> extends BaseAction impl
     public boolean isClaimHashed() {
         return claim.isHashed();
     }
+    public boolean isRemovedAttachments() {
+        return claim.isRemovedAttachments();
+    }
+    public boolean isRemovedNotes() {
+        return claim.isRemovedNotes();
+    }
+    public boolean isRemovedTasks() {
+        return claim.isRemovedTasks();
+    }
+   
     // </editor-fold>
 
     @Override

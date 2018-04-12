@@ -250,7 +250,7 @@
                             <label>&nbsp;Require Insurer Review</label>
                         </s:elseif>
                 </div>
-                    <input type="submit" id="claimDetailsCommentId" <s:if test='claimHashed || isChoxAdmin'>disabled="true"</s:if> value="Add Note"/>
+                    <input type="submit" id="claimDetailsCommentId" <s:if test='removedNotes || isChoxAdmin'>disabled="true"</s:if> value="Add Note"/>
                 <div class="action-error-msg" id="claimCommentFormMsgBox"></div>
             </fieldset>
         </div>
