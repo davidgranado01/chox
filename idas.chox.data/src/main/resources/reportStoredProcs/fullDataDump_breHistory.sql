@@ -41,7 +41,7 @@ from claim c
 join history h on (c.id = h.claim_id)
 where h.type != 'INFO' and h.is_public
   and c.insurer_id = ANY(insIds)
-  and c.claim_type = ANY(claimTypes)
+  and (claimTypes is null or c.claim_type = ANY(claimTypes))
   and c.created_date >= DATE_FROM and c.created_date < DATE_TO
 order by c.created_date, c.cho_reference, h.process_date, h.rule_id;
 
@@ -50,7 +50,6 @@ END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-
 
 
 GRANT EXECUTE ON FUNCTION fullDataDump_breHistory(
