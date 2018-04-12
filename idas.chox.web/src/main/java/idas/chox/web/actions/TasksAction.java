@@ -430,8 +430,8 @@ public class TasksAction extends BaseAction {
                 if (taskClaim == null) {
                     throw new Exception(String.format("No such claim with Supplier Reference %s.", choReference));
                 }
-                if (taskClaim.isHashed()) {
-                    throw new Exception(String.format("Cannot add a task to claim %s as the claim data has already been hashed due to GDPR requirements.", choReference));
+                if (taskClaim.isRemovedTasks()) {
+                    throw new Exception("Task cannot be added as tasks have already been removed to comply with GDPR.");
                 }
                 task.setClaim(taskClaim);
             }
