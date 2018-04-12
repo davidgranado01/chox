@@ -407,7 +407,7 @@
                     <tr>
                         <td>&nbsp;</td>
                         <td>
-                            <input type="submit" id="claimDetailAttachmentSubmitButton" <s:if test="claimHashed"> disabled="true"</s:if> value="Add Attachment" />
+                            <input type="submit" id="claimDetailAttachmentSubmitButton" <s:if test="removedAttachments"> disabled="true"</s:if> value="Add Attachment" />
                         </td>
                     </tr>
                 </table>

@@ -281,6 +281,11 @@ public class AttachmentAction extends ClaimModelAction<Attachment> {
     public String createNewAttachment() throws Exception {
         try {
 
+            if (claim.isRemovedAttachments()) {
+                this.getActionResponse().AddError("Attachments cannot be added as they have already been removed to comply with GDPR");
+                return SUCCESS;
+            }
+            
             if (!FileHelper.isFileValid(this.attachmentFile)) {
                 this.getActionResponse().AddError("Unknown File Format");
                 return SUCCESS;
