@@ -72,6 +72,11 @@ public class AddNote extends BaseActivity {
             throw new Exception("Note can't be added. Insufficient priviliges!");
         }
         
+        // Check if notes have been removed due to GDPR - id so, cannot add new notes
+        if (claim.isRemovedNotes()) {
+            throw new Exception("Note cannot be added as notes have already been removed to comply with GDPR.");
+        }
+        
         // Determine if an external task can be created on the claim
         canCreateTask = false;
         if (getCurrentUser().isAnInsurer() && claim.getChorganisation().isTaskManagementEnable()) {
