@@ -7,7 +7,7 @@ DECLARE
         cutOff := now()::date  - ($1 || ' days')::interval;
 
         update comment
-            set comment = 'GDPR: notes content has been removed.',
+            set comment = 'GDPR: note content has been removed.',
                 version = comment.version + 1,
                 last_modified_by = 999,
                 last_modified_date = now()

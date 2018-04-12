@@ -75,16 +75,16 @@ public class UpdateSupplierClaimOwner extends BaseActivity {
             if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
                 comment = Comment.newComment(0, "Supplier Claim Owner changed from '" + oldClaimOwner
                         + "' to '" + newClaimOwner.getFullName()
-                        + "' (contact number: " + newClaimOwner.getTelephone() + ")");
+                        + "' (contact number: " + newClaimOwner.getTelephone() + ")", true);
             } else {
                 comment = Comment.newComment(0, "Supplier Claim Owner changed from '" + oldClaimOwner
-                        + "' to '" + newClaimOwner.getFullName() + "'");
+                        + "' to '" + newClaimOwner.getFullName() + "'", true);
             }
         } else if (newClaimOwner.getTelephone() != null && newClaimOwner.getTelephone().length() > 0) {
             comment = Comment.newComment(0, "Supplier Claim Owner is '" + newClaimOwner.getFullName()
-                    + "' (contact number: " + newClaimOwner.getTelephone() + ")");
+                    + "' (contact number: " + newClaimOwner.getTelephone() + ")", true);
         } else {
-            comment = Comment.newComment(0, "Supplier Claim Owner is '" + newClaimOwner.getFullName() + "'");
+            comment = Comment.newComment(0, "Supplier Claim Owner is '" + newClaimOwner.getFullName() + "'", true);
         }
         claim.addComment(comment);
         claim.setSupplierClaimOwner(newClaimOwner);
