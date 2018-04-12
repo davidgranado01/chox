@@ -101,13 +101,13 @@ public class AssignOwner extends BaseActivity {
         }
         Comment comment;
         if (oldOwnerName == null && claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
-            comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").");
+            comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").", true);
         } else if (oldOwnerName == null && (claimOwner.getTelephone() == null || claimOwner.getTelephone().length() == 0)) {
-            comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "'.");
+            comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "'.", true);
         } else if (oldOwnerName != null && claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
-            comment = Comment.newComment(0, "Insurer Claims Handler changed from '" + oldOwnerName + "' to '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ")");
+            comment = Comment.newComment(0, "Insurer Claims Handler changed from '" + oldOwnerName + "' to '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ")", true);
         } else {
-            comment = Comment.newComment(0, "Insurer Claims Handler changed from '" + oldOwnerName + "' to '" + claimOwner.getFullName() + "'");
+            comment = Comment.newComment(0, "Insurer Claims Handler changed from '" + oldOwnerName + "' to '" + claimOwner.getFullName() + "'", true);
         }
         claim.addComment(comment);
 

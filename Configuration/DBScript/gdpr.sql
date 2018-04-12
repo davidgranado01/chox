@@ -16,8 +16,6 @@ UPDATE comment set user_comment = true, version=version+1
 WHERE comment not like 'Reason For Rejection:%'
   AND comment not like 'CHO contact number is%'
   AND comment not like 'New CHO contact number is%'
-  AND comment not like 'Insurer Claims Handler is%'
-  AND comment not like 'Insurer Claims Handler changed from%'
   AND comment not like 'The Keoghs Fraud Check result has been acknowledged%'
   AND comment not like 'An interim payment of%'
   AND comment not like 'Supplier Reference updated from%'
@@ -32,9 +30,6 @@ WHERE comment not like 'Reason For Rejection:%'
   AND comment not like 'The interim payment has been removed%'
   AND comment not like 'The interim payment made has been modified to a new total of%'
   AND comment not like 'An additional interim payment of%'
-  AND comment not like 'Supplier Claim Owner changed from%'
-  AND comment not like 'Supplier Claim Owner is%'
-  AND comment not like 'Supplier Claims Handler is%'
   AND comment not like 'Claim Acceptance Reason:%'
   AND comment not like 'This claim has been referred to Keoghs%'
   AND comment not like 'Hire rate adjusted from%'
@@ -53,8 +48,7 @@ WHERE comment not like 'Reason For Rejection:%'
   AND comment not like 'Liability status changed to%'
   AND comment not like 'Liability status changed from%'
   AND comment not like 'An invoice amendment has been%'
-  AND comment not like 'Claim switched from%'
-  AND comment not like 'Supplier Claim owner changed from%';
+  AND comment not like 'Claim switched from%';
 
 --GDPR getHash function
 --    Need to install crypto extension: CREATE EXTENSION pgcrypto;
@@ -383,7 +377,7 @@ DECLARE
         cutOff := now()::date  - ($1 || ' days')::interval;
 
         update comment
-            set comment = 'GDPR: notes content has been removed.',
+            set comment = 'GDPR: note content has been removed.',
                 version = comment.version + 1,
                 last_modified_by = 999,
                 last_modified_date = now()
