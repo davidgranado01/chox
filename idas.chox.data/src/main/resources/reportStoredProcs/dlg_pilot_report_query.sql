@@ -785,7 +785,7 @@ BEGIN
 -- Repair Net and 'CHO Managing Repair?' as 'No'. Use the average based on the number of invoices with the relevant
 -- data not against all invoices in that time period as this data is often not included in the claim.
     queryString = queryString || 'select 23 as id, ''Average DLG Dealing Repair Duration'' as title, ';
-    queryString = queryString || '(select avg(hmd.repair_completion_date::Date - hmd.repair_commenced_date::Date + 1) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, hire_monitoring_detail hmd ';
+    queryString = queryString || '(select round(avg(hmd.repair_completion_date::Date - hmd.repair_commenced_date::Date + 1), 1) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, hire_monitoring_detail hmd ';
     queryString = queryString || 'where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id and c.created_date > ''' || claimUploadStart || ''' ';
     queryString = queryString || 'and (vh is null or vh.rental_start is null or vh.rental_start >= ''' || rentalStart || ''') ';
     queryString = queryString || 'and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null and hmd.is_non_fault_insurer_managing_repair = false ';
@@ -797,7 +797,7 @@ BEGIN
     queryString = queryString || 'and i.created_date between to_date(to_char(params.startDate, ''MM'') || ''-01-'' || to_char(params.startDate, ''yyyy''), ''mm-dd-yyyy'') - interval ''' || months+1 || ' months'' ';
     queryString = queryString || 'and to_date(to_char(params.startDate + interval ''1 month'', ''MM'') || ''-01-'' || to_char(params.startDate + interval ''1 month'', ''yyyy''), ''mm-dd-yyyy''))  as total';
     FOR i IN 0..months LOOP
-        queryString = queryString || ',(select avg(hmd.repair_completion_date::Date - hmd.repair_commenced_date::Date + 1) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, hire_monitoring_detail hmd ';
+        queryString = queryString || ',(select round(avg(hmd.repair_completion_date::Date - hmd.repair_commenced_date::Date + 1), 1) from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id), invoice i, hire_monitoring_detail hmd ';
         queryString = queryString || 'where c.invoice_id=i.id and c.hire_monitoring_detail_id = hmd.id and c.created_date > ''' || claimUploadStart || ''' ';
         queryString = queryString || 'and (vh is null or vh.rental_start is null or vh.rental_start >= ''' || rentalStart || ''') ';
         queryString = queryString || 'and hmd.repair_commenced_date is not null and hmd.repair_completion_date is not null and hmd.is_non_fault_insurer_managing_repair = false ';
