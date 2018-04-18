@@ -377,10 +377,8 @@ DECLARE
         cutOff := now()::date  - ($1 || ' days')::interval;
 
         update comment
-            set comment = 'GDPR: note content has been removed.',
-                version = comment.version + 1,
-                last_modified_by = 999,
-                last_modified_date = now()
+            set comment = 'GDPR: note content removed.',
+                version = comment.version + 1
         from claim c
         where comment.claim_id = c.id and comment.user_comment = true
           and removed_notes = false and c.hashed = true and c.hashed_date < cutOff;
@@ -403,10 +401,8 @@ DECLARE
         cutOff := now()::date  - ($1 || ' days')::interval;
 
         update task
-            set description = 'GDPR: description content has been removed.',
-                version = task.version + 1,
-                last_modified_by = 999,
-                last_modified_date = now()
+            set description = 'GDPR: task description removed.',
+                version = task.version + 1
         from claim c
         where task.claim_id = c.id
           and removed_tasks = false and c.hashed = true and c.hashed_date < cutOff;
@@ -517,3 +513,6 @@ DECLARE
 $BODY$
 LANGUAGE plpgsql;
 GRANT EXECUTE on FUNCTION hashUsers(integer, integer) to chox_user;
+
+UPDATE task set description = getHash(description, 6000), version=version+1 WHERE id=563116;
+ALTER TABLE task ALTER COLUMN visibility_role TYPE character varying(24);
