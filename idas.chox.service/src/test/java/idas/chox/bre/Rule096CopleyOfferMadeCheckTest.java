@@ -64,21 +64,7 @@ public class Rule096CopleyOfferMadeCheckTest extends BaseTest {
 
     }
 
-    
-    @Test
-    public void testSkipped_invalidClaimType() throws IOException {
-        Claim claim = getTestClaim();
-        claim.setClaimType(ClaimType.GTA);
-        CopleyOfferMadeCheck rule = new CopleyOfferMadeCheck();
-        RuleEvaluation rv = rule.applyToClaim(claim);
-        assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
-        assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
-        assertFalse(rv.getIsVisibleToCHO());
-
-    }
-
-    
+        
     @Test
     public void testPassed() throws IOException {
         Claim claim = getTestClaim();
