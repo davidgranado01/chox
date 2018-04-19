@@ -147,21 +147,21 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
                     break;
                 case "removeNotes":
                     if (removeNotes) {
-                        baseDataService.callRemoveNotes(removeNotesPeriod);
+                        baseDataService.callRemoveNotes(hashDataPeriod+removeNotesPeriod);
                     } else {
                         LOG.info("Note removal has been deactivated.");
                     }
                     break;
                 case "removeTasks":
                     if (removeTasks) {
-                        baseDataService.callRemoveTasks(removeTasksPeriod);
+                        baseDataService.callRemoveTasks(hashDataPeriod+removeTasksPeriod);
                     } else {
                         LOG.info("Task removal has been deactivated.");
                     }
                     break;
                 case "removeAttachments":
                     if (removeAttachments) {
-                        baseDataService.callRemoveAttachments(removeAttachmentsPeriod);
+                        baseDataService.callRemoveAttachments(hashDataPeriod+removeAttachmentsPeriod);
                     } else {
                         LOG.info("Attachment removal has been deactivated.");
                     }

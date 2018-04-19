@@ -362,11 +362,11 @@ DECLARE
         END LOOP;
 
         CLOSE claim_curs;
-
     END;
 $BODY$
 LANGUAGE plpgsql;
 GRANT EXECUTE on FUNCTION closeOldClaims(integer) to chox_user;
+
 
 CREATE OR REPLACE FUNCTION removeNotes(claimAge integer)
      RETURNS void AS
@@ -381,16 +381,20 @@ DECLARE
                 version = comment.version + 1
         from claim c
         where comment.claim_id = c.id and comment.user_comment = true
-          and removed_notes = false and c.hashed = true and c.hashed_date < cutOff;
+          and removed_notes = false
+          and c.status in ('PaymentReceived', 'ManualInvoicePaid', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted')
+          and c.status_modified_date::date < cutOff;
 
         update claim
             set removed_notes = true, removed_notes_date = now(), version=version+1, last_modified_date=now(), last_modified_by=999
-        where removed_notes = false and hashed = true and hashed_date < cutOff;
+        where removed_notes = false
+        and status in ('PaymentReceived', 'ManualInvoicePaid', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted')
+        and status_modified_date::date < cutOff;
      END;
-
 $BODY$
 LANGUAGE plpgsql;
 GRANT EXECUTE on FUNCTION removeNotes(integer) to chox_user;
+
 
 CREATE OR REPLACE FUNCTION removeTasks(claimAge integer)
      RETURNS void AS
@@ -405,13 +409,17 @@ DECLARE
                 version = task.version + 1
         from claim c
         where task.claim_id = c.id
-          and removed_tasks = false and c.hashed = true and c.hashed_date < cutOff;
+          and removed_tasks = false
+          and c.status in ('PaymentReceived', 'ManualInvoicePaid', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted')
+          and c.status_modified_date::date < cutOff;
 
         update claim
             set removed_tasks = true, removed_tasks_date = now(), version=version+1, last_modified_date=now(), last_modified_by=999
-        where removed_tasks = false and hashed = true and hashed_date < cutOff;
-     END;
+        where removed_tasks = false
+          and status in ('PaymentReceived', 'ManualInvoicePaid', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted')
+          and status_modified_date::date < cutOff;
 
+     END;
 $BODY$
 LANGUAGE plpgsql;
 GRANT EXECUTE on FUNCTION removeTasks(integer) to chox_user;
@@ -432,7 +440,9 @@ DECLARE
                 last_modified_date = now()
         from claim c, attachment a
         where attachment_file.attachment_id = a.id and a.claim_id = c.id
-          and removed_attachments = false and a.removed = false and c.hashed = true and c.hashed_date < cutOff;
+          and removed_attachments = false and a.removed = false
+          and c.status in ('PaymentReceived', 'ManualInvoicePaid', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted')
+          and c.status_modified_date::date < cutOff;
 
         update attachment
             set removed = true,
@@ -442,13 +452,18 @@ DECLARE
                 last_modified_date = now()
         from claim c
         where attachment.claim_id = c.id
-          and removed_attachments = false and c.hashed = true and c.hashed_date < cutOff;
+          and removed_attachments = false
+          and c.status in ('PaymentReceived', 'ManualInvoicePaid', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted')
+          and c.status_modified_date::date < cutOff;
+
 
         update claim
             set removed_attachments = true, removed_attachments_date = now(), version=version+1, last_modified_date=now(), last_modified_by=999
-        where removed_attachments = false and hashed = true and hashed_date < cutOff;
-    END;
+        where removed_attachments = false
+        and status in ('PaymentReceived', 'ManualInvoicePaid', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted')
+        and status_modified_date::date < cutOff;
 
+    END;
 $BODY$
 LANGUAGE plpgsql;
 GRANT EXECUTE on FUNCTION removeAttachments(integer) to chox_user;
