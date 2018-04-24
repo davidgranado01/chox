@@ -345,6 +345,7 @@
         <property name="sessionFactory" ref="quartzSessionFactory"/>
         <property name="removeNotes" value="${gdpr.removeNotes}"/>
         <property name="removeNotesPeriod" value="${gdpr.removeNotesPeriod}"/>
+        <property name="hashDataPeriod" value="${gdpr.hashDataPeriod}"/>
     </bean>
 
     <!--  Stored Procedure call: removeTasks -->
@@ -354,7 +355,8 @@
         <property name="sessionFactory" ref="quartzSessionFactory"/>
         <property name="removeTasks" value="${gdpr.removeTasks}"/>
         <property name="removeTasksPeriod" value="${gdpr.removeTasksPeriod}"/>
-    </bean>
+         <property name="hashDataPeriod" value="${gdpr.hashDataPeriod}"/>
+   </bean>
 
     <!--  Stored Procedure call: removeAttachments -->
     <bean id="removeAttachmentsJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
@@ -363,6 +365,7 @@
         <property name="sessionFactory" ref="quartzSessionFactory"/>
         <property name="removeAttachments" value="${gdpr.removeAttachments}"/>
         <property name="removeAttachmentsPeriod" value="${gdpr.removeAttachmentsPeriod}"/>
+        <property name="hashDataPeriod" value="${gdpr.hashDataPeriod}"/>
     </bean>
 
     <!--  Stored Procedure call: deactivateUsers -->
@@ -553,7 +556,7 @@
     </bean>
     <bean id="cronKeoghsDbTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="keoghsDbJobDetail" /> 
-        <property name="cronExpression" value="0 1/5 0-1,4-23 ? * 1-7" /> 
+        <property name="cronExpression" value="0 1/5 7-19 ? * 1-7" /> 
     </bean>
     <bean id="cronClaimMatchingDbTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="claimMatchingDbJobDetail" /> 
@@ -700,7 +703,7 @@
         <property name="jobDetails">
             <list>
                 <ref bean="referenceUpdateMailJobDetail" />
-                <ref bean="keoghsDbJobDetail" />
+                <!--ref bean="keoghsDbJobDetail" /-->
                 <ref bean="claimMatchingDbJobDetail" />
                 <ref bean="paidInvoicesDbJobDetail" />
                 <ref bean="referenceUpdateDbJobDetail" />
@@ -736,7 +739,7 @@
                 <ref bean="cronRefDbUpdateTriggerWeek" />
                 <ref bean="cronClaimMatchingDbTriggerDaily" />
                 <ref bean="cronPaidInvoicesDbTriggerDaily" />
-                <ref bean="cronKeoghsDbTriggerDaily" />
+                <!--ref bean="cronKeoghsDbTriggerDaily" /-->
                 <ref bean="cronImsChaseTriggerDaily" />
                 <ref bean="cronImsStopChaseTriggerDaily" />
                 <ref bean="addMissingEcdTaskTriggerDaily" />
