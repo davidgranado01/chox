@@ -607,7 +607,7 @@
             <version>3.21.0-GA</version>
         </dependency>
 
-<!-- https://mvnrepository.com/artifact/org.owasp.esapi/esapi -->
+        <!-- https://mvnrepository.com/artifact/org.owasp.esapi/esapi -->
         <dependency>
             <groupId>org.owasp.esapi</groupId>
             <artifactId>esapi</artifactId>
@@ -659,9 +659,16 @@
             <artifactId>commons-text</artifactId>
             <version>1.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-gmail -->
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-gmail</artifactId>
+            <version>v1-rev83-1.23.0</version>
+            <!--version>1.23.0</version-->
+        </dependency>
 
         <!-- Runtime Dependencies -->
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>org.jboss.logging</groupId>
             <artifactId>jboss-logging</artifactId>
             <version>3.3.0.Final</version>

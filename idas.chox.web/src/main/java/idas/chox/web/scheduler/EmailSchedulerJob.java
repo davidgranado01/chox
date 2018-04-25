@@ -18,6 +18,7 @@ public abstract class EmailSchedulerJob extends SchedulerJobBase {
 
     private static final Logger LOG = LoggerFactory.getLogger(EmailSchedulerJob.class);
     protected ImapMailReceiver imapMailReceiver;
+    protected GmailReceiver gmailReceiver;
     private boolean active;
 
     protected abstract void processEmail(Message message, String emailSubject, String sender, String bccReceivers, boolean replyToSender) throws MessagingException;
@@ -30,11 +31,16 @@ public abstract class EmailSchedulerJob extends SchedulerJobBase {
         this.imapMailReceiver = imapMailReceiver;
     }
 
+    public void setGmailReceiver(GmailReceiver gmailReceiver) {
+        this.gmailReceiver = gmailReceiver;
+    }
+
     @Override
     protected void process(String emailSubject, SchedulerJob schedulerJob) throws MessagingException {
         if (!active) return;
 
         String sender;
+        List<com.google.api.services.gmail.model.Message> listOfmails2 = gmailReceiver.receiveMailsWithSubject(emailSubject);
         List<Message> listOfmails = imapMailReceiver.receiveMailsWithSubject(emailSubject);
         LOG.debug("Total no of mails are {}.", listOfmails.size());
         try {
@@ -66,6 +72,7 @@ public abstract class EmailSchedulerJob extends SchedulerJobBase {
             throw ex;
         } finally {
             imapMailReceiver.clean();
+//            gmailReceiver.clean();
         }
     }
 }

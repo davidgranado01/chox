@@ -13,7 +13,10 @@
         <property name="emailAccount" value="${emailAccount}"/>
         <property name="emailAccountPassword" value="${emailAccountPassword}"/>
     </bean>
-	
+    
+    <bean id="gmailReceiver" class="idas.chox.web.scheduler.GmailReceiver" scope="prototype">
+    </bean>
+
     <bean id ="serverConfig" class="idas.chox.web.scheduler.ServerConfig" scope="singleton"/>
 	
     <bean id="mailSecurityAthenticator" class="idas.chox.web.scheduler.MailSecurityAthenticator">
@@ -123,6 +126,7 @@
 	<property name="active" value="${scheduler.email.active}"/>	
         <property name="serverConfig" ref="serverConfig"/>
         <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="gmailReceiver" ref="gmailReceiver" />
         <property name="claimService" ref="claimService" />
     </bean>
 	
@@ -142,6 +146,7 @@
         <property name="hostName" value="${HOSTNAME}"/>
         <property name="serverConfig" ref="serverConfig"/>
         <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="gmailReceiver" ref="gmailReceiver" />
         <property name="claimService" ref="claimService" />
 	<property name="active" value="${scheduler.email.active}"/>	
     </bean>
@@ -161,6 +166,7 @@
 	<property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
         <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="gmailReceiver" ref="gmailReceiver" />
 	<property name="active" value="${scheduler.email.active}"/>	
     </bean>
     
@@ -178,6 +184,7 @@
 	<property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
         <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="gmailReceiver" ref="gmailReceiver" />
         <property name="claimService" ref="claimService" />
         <property name="activityFactory" ref="activityFactory" />
 	<property name="active" value="${scheduler.email.active}"/>	
@@ -197,6 +204,7 @@
 	<property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
         <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="gmailReceiver" ref="gmailReceiver" />
         <property name="claimService" ref="claimService" />
         <property name="vehicleClassService" ref="vehicleClassService" />
         <property name="activityFactory" ref="activityFactory" />
@@ -217,6 +225,7 @@
 	<property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
         <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="gmailReceiver" ref="gmailReceiver" />
         <property name="claimService" ref="claimService" />
         <property name="activityFactory" ref="activityFactory" />
 	<property name="active" value="${scheduler.email.active}"/>	
@@ -236,6 +245,7 @@
 	<property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
         <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="gmailReceiver" ref="gmailReceiver" />
         <property name="claimService" ref="claimService" />
         <property name="attachmentService" ref="attachmentService" />
 	<property name="active" value="${scheduler.email.active}"/>	
@@ -255,6 +265,7 @@
 	<property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
         <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="gmailReceiver" ref="gmailReceiver" />
         <property name="claimService" ref="claimService" />
         <property name="attachmentService" ref="attachmentService" />
 	<property name="active" value="${scheduler.email.active}"/>	
@@ -273,6 +284,7 @@
 	<property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
         <property name="imapMailReceiver" ref="imapMailReceiver" />
+        <property name="gmailReceiver" ref="gmailReceiver" />
         <property name="claimService" ref="claimService" />
         <property name="activityFactory" ref="activityFactory" />
 	<property name="active" value="${scheduler.email.active}"/>	

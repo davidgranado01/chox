@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "empyrean-caster-202210",
+  "private_key_id": "694b729fd768e5146f6f40c5217ef33535b74719",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCPPo7Ovnqxifxc\n9gc9yKQZgClg2Yw8tiH5FSeECZPGf/T2/KEpCsIKEpLpS9xJ6pAxbeg0gQRuqJws\nNJs142apvZNxf/+VM1tXwxFO6jv47vlgmaXhlo+2yVqcGU9tnBsOUkNLy/maFwFJ\nxJzTJ3nhpM6OvyJwzybvUWlwjclGsAKyc/C0pyCWYyZleGTzLfXn6Xu1LCeCCFlz\nUcDRn1xZqW3j+vgVbJHTrDsC0PT/KcIQ+4ro9U+xIdgHzFhpD2cWu4ZIYCVXZRR5\nDAyh42yl72IhS5Q/Ge/Dyui7wN22faO+u+Yhn/vwJqE/JzBd0i8cfrl+kYQOM4sC\n02x3cv/nAgMBAAECggEAAQOYaf18qBc0lvs3HSFbGV9WZIpnfsz5uEKFk+zgw8Qj\ny2q0TutZaRUtWy3GsNaZiNR9aH+Fijur5D8cM7sR4l+fW8DV8C+fRqObYO1cIIyf\nNMPOIhikCpZi4OE9NjULFuDrpkLh5jBpK1AE8xScS3CUg8K89mZ6y7E/548hZc4y\nklgRL5MXng6buPa6vZVSv6b5VwIcu2PRaEnNcUvwhFyUavq7UfLoqQ0z4b9dn+J2\nKvMaYwcPVyYxVG+ULDNmPf0OmL+4GkFa84elctEhIukClieSbfBUcShmrMRiu81w\nYvaqaniXwgy933TdKipNHtBtkovQFgoXfzwPcUKK7QKBgQDJo2bR/CR8oKoh8Ltl\n5gEMjS9RbFmM7G7L5Hu6Nmrl07Ljdiz430XyXZMiTbIfhXhs7RElgdKLSWbaPid7\nQKv1Hp6ZLaxxTA/b5LP4W2QAGXjvW+7AhhPcsScqRKDRh/RuPOzIfFuf0l5SDJLk\n6AGAgC1I8PAjgiZJjPtsZkGZuwKBgQC13PIYsgq8GEy2VoIeLXs0iLWh8Narx9ix\nB0lQhaiAx6JMv8FDWZWYVy5wQUq14puhbaUNgRGUziFr3DXFhZISgpHjrXzh04iL\nz1TvBOoRY7Ph/QleTuAooU17LT5tIbgJmf9nFLF1DVn+dy1Zg8gvsk09vdJxtBS+\n/xXTYR5pxQKBgHlueoGDQ8X6S/tcqr7XIVKZxCFZCyUfTipkU071brMyJs1tYfAP\nJmSrjexetiLdkoSm0GiyIkXX0qUkQUqsy+I2qnS9WNhyYiqfNPMgtryImpgr2UEA\nff2uglOmOON26PFqp36lxdgeLMdk4yIPxrfIeX0v/K6ltsEcsl25x0/5AoGBAKP2\nNVbKfh8jEVZ7HAi1HJU6g/ciuYhaPyUr2o98UXT5h3wGjel4xQR55WZTl1Xwnjum\nLN7F9OHiDgO+n8QbLpz9lyZb7XF0U3EpVfvAxH81EqK2jVG3byVyd/aLzfJ6KgCO\nFNQMtglAJljjfcFsrHlEGZuGnkrg/qtMM5NFxjO5AoGAbNbqStx74Tuacg+ZzOTM\nOOIHRBL/ns7DKGMaXf+xtbJ1l12YltJ7F6qVcfqbYPCspsFvkaPCDlKyARpF+Uru\nfAfYpgNI7GGo60iXwDtZMAmjFjTKDnJ7Q+u+mIhGLvoVt9HwbzmZFrfCDgr1oYTv\ntf+RmNG5+Qa345ZsTKd2m+s=\n-----END PRIVATE KEY-----\n",
+  "client_email": "chox-automation@empyrean-caster-202210.iam.gserviceaccount.com",
+  "client_id": "109899432525280733508",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/chox-automation%40empyrean-caster-202210.iam.gserviceaccount.com"
+}
