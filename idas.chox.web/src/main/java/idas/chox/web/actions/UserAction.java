@@ -1,10 +1,8 @@
 package idas.chox.web.actions;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.beanutils.BeanUtils;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,7 +33,6 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     private int userRoleId = -1;
     private String objectId;
     private WebUser model;
-    private WebUser originalModel;
     private Integer insurerId = -1;
     private Integer supplierId = -1;
     private Integer tabIndex;
@@ -195,23 +192,13 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         } catch (Exception ex) {
             handleException(ex);
         }
-        try {
-            originalModel = (WebUser) BeanUtils.cloneBean(model);
-        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
-            LOG.error("Exception cloning customer: {}", ex.getMessage(), ex);
+               
+
+        if (model.isHashed()) {
+            if (model.getEmail() != null && model.getEmail().startsWith("~~")) model.setEmail(GDPR_REMOVED_STRING);
+            if (model.getFirstName() != null && model.getFirstName().startsWith("~~")) model.setFirstName(GDPR_REMOVED_STRING);
+            if (model.getLastName() != null && model.getLastName().startsWith("~~")) model.setLastName(GDPR_REMOVED_STRING);
         }
-        
-       if (model.isHashed()) {
-            if (model.getEmail() != null && !model.getEmail().isEmpty()) model.setEmail(GDPR_REMOVED_STRING);
-            if (model.getFirstName() != null && !model.getFirstName().isEmpty()) model.setFirstName(GDPR_REMOVED_STRING);
-            if (model.getLastName() != null && !model.getLastName().isEmpty()) model.setLastName(GDPR_REMOVED_STRING);
-        }
-       
-        // If claim has been re-opened after being hashed..
-        if (model.getEmail() != null && model.getEmail().startsWith("~~")) model.setEmail(GDPR_REMOVED_STRING);
-        if (model.getFirstName() != null && model.getFirstName().startsWith("~~")) model.setFirstName(GDPR_REMOVED_STRING);
-        if (model.getLastName() != null && model.getLastName().startsWith("~~")) model.setLastName(GDPR_REMOVED_STRING);
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="GET SET">
@@ -303,9 +290,9 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             SearchResult searchResult = adminUserService.getUsers(organisationId, organisationTypeId, userRoleId, start, limit, sort, dir, activeUsersOnly);
             List<WebUser> userData = searchResult.getResult();
             totalCount = searchResult.getTotalCount();
-            for (WebUser h : userData) {
+            userData.forEach((h) -> {
                 users.add(new UserViewData(h));
-            }
+            });
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;
@@ -337,13 +324,16 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
                 throw new AccessDeniedException("Trying to create a user not of my organisation (POSSIBLE HACK ATTEMPT)");
             }
             
+            if (model.isHashed() && !model.getStatus()) {
+                throw new Exception("Cannot update an inactive user that has been hashed - this user must be activated to update.");
+            }
+            if (model.isHashed() && model.getStatus()) {
+                model.setHashed(false);
+            }
+
             checkVersion(model);
             
             ActionResponse response;
-            
-            if (GDPR_REMOVED_STRING.equals(model.getFirstName())) model.setFirstName(originalModel.getFirstName());
-            if (GDPR_REMOVED_STRING.equals(model.getLastName())) model.setLastName(originalModel.getLastName());
-            if (GDPR_REMOVED_STRING.equals(model.getEmail())) model.setEmail(originalModel.getEmail());
             
             if (getIsNew()) {
                 response = adminUserService.doAddNewUser(model, this.insurerId, this.supplierId, this.organisationTypeId);
@@ -354,7 +344,10 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
                 }
                 response = adminUserService.updateUser(model);
             } else { // user is in-active - check no open claims
-                if (claimService.isUserHasOpenClaim(model.getId(), (model.getInsurer() != null))) {
+                if (model.isHashed()) {
+                    response = new ActionResponse();
+                    response.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "Cannot update a hashed in-active user. Please activate this if you would like to update");
+                } else if (claimService.isUserHasOpenClaim(model.getId(), (model.getInsurer() != null))) {
                     response = new ActionResponse();
                     response.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "This user currently has assigned claims. Please reassign these claims before de-activating this user account");
                 } else {
