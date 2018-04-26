@@ -547,7 +547,7 @@ DECLARE
               last_modified_by = 999,
               last_modified_date = now()
         from claim c
-        where c.customer_id = customer.id and c.removed_vrns = false
+        where c.customer_id = customer.id and c.hashed_vrns = false
           and c.status in ('PaymentReceived', 'ManualInvoicePaid', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted')
           and c.status_modified_date::date < closedCutOff
           and c.created_date::date < creationCutOff;
@@ -558,7 +558,7 @@ DECLARE
               last_modified_by = 999,
               last_modified_date = now()
         from claim c
-        where c.third_party = third_party.id and c.removed_vrns = false
+        where c.third_party_id = third_party.id and c.hashed_vrns = false
           and c.status in ('PaymentReceived', 'ManualInvoicePaid', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted')
           and c.status_modified_date::date < closedCutOff
           and c.created_date::date < creationCutOff;
@@ -569,22 +569,22 @@ DECLARE
               last_modified_by = 999,
               last_modified_date = now()
         from claim c
-        where c.vehicle_hire = vehicle_hire.id and c.removed_vrns = false
+        where c.vehicle_hire_id = vehicle_hire.id and c.hashed_vrns = false
           and c.status in ('PaymentReceived', 'ManualInvoicePaid', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted')
           and c.status_modified_date::date < closedCutOff
           and c.created_date::date < creationCutOff;
 
         update claim
-            set removed_vrns = true, removed_vrns_date = now(), version=version+1, last_modified_date=now(), last_modified_by=999
-        where removed_vrns = false
+            set hashed_vrns = true, hashed_vrns_date = now(), version=version+1, last_modified_date=now(), last_modified_by=999
+        where hashed_vrns = false
         and status in ('PaymentReceived', 'ManualInvoicePaid', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted')
         and status_modified_date::date < closedCutOff
-        and created_date::date < creationCutOff;;
+        and created_date::date < creationCutOff;
     END;
 
 $BODY$
 LANGUAGE plpgsql;
-GRANT EXECUTE on FUNCTION hashUsers(integer, integer) to chox_user;
+GRANT EXECUTE on FUNCTION hashVrns(integer, integer) to chox_user;
 
 
 UPDATE task set description = getHash(description, 6000), version=version+1 WHERE id=563116;
