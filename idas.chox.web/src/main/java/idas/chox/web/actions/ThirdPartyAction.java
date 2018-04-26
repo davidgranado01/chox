@@ -51,6 +51,7 @@ public class ThirdPartyAction extends ClaimModelAction<ThirdParty> {
             originalModel.setTelephoneDay(thirdParty.getTelephoneDay());
             originalModel.setTelephoneEvening(thirdParty.getTelephoneEvening());
             originalModel.setEmail(thirdParty.getEmail());
+            originalModel.setVehicleRegistration(thirdParty.getVehicleRegistration());
         } catch (Exception ex) {
             LOG.error("Exception cloning Third Party: {}", ex.getMessage(), ex);
         }
@@ -81,11 +82,13 @@ public class ThirdPartyAction extends ClaimModelAction<ThirdParty> {
             model.setTelephoneEvening(originalModel.getTelephoneEvening());
             model.setEmail(originalModel.getEmail());
         }
+
+        if (claim.isHashedVrns()) { // should never be true as a hashed claim should not be updated
+            model.setVehicleRegistration(originalModel.getVehicleRegistration());
+        }
         
          // If claim has been re-opened after being hashed..
-        if (GDPR_REMOVED_STRING.equals(model.getTitle())) {
-            model.setTitle(originalModel.getTitle());
-        }
+        if (GDPR_REMOVED_STRING.equals(model.getTitle())) model.setTitle(originalModel.getTitle());
         if (GDPR_REMOVED_STRING.equals(model.getFirstName())) model.setFirstName(originalModel.getFirstName());
         if (GDPR_REMOVED_STRING.equals(model.getLastName())) model.setLastName(originalModel.getLastName());
         if (GDPR_REMOVED_STRING.equals(model.getAddress1())) model.setAddress1(originalModel.getAddress1());
@@ -97,6 +100,7 @@ public class ThirdPartyAction extends ClaimModelAction<ThirdParty> {
         if (GDPR_REMOVED_STRING.equals(model.getTelephoneDay())) model.setTelephoneDay(originalModel.getTelephoneDay());
         if (GDPR_REMOVED_STRING.equals(model.getTelephoneEvening())) model.setTelephoneEvening(originalModel.getTelephoneEvening());
         if (GDPR_REMOVED_STRING.equals(model.getEmail())) model.setEmail(originalModel.getEmail());
+        if (GDPR_REMOVED_STRING.equals(model.getVehicleRegistration())) model.setVehicleRegistration(originalModel.getVehicleRegistration());
 
         claim.setThirdParty(model);
 
@@ -192,6 +196,7 @@ public class ThirdPartyAction extends ClaimModelAction<ThirdParty> {
         if (thirdParty.getTelephoneDay() != null && thirdParty.getTelephoneDay().startsWith("~~")) thirdParty.setTelephoneDay(GDPR_REMOVED_STRING);
         if (thirdParty.getTelephoneEvening() != null && thirdParty.getTelephoneEvening().startsWith("~~")) thirdParty.setTelephoneEvening(GDPR_REMOVED_STRING);
         if (thirdParty.getEmail() != null && thirdParty.getEmail().startsWith("~~")) thirdParty.setEmail(GDPR_REMOVED_STRING);
+        if (thirdParty.getVehicleRegistration() != null && thirdParty.getVehicleRegistration().startsWith("~~")) thirdParty.setVehicleRegistration(GDPR_REMOVED_STRING);
     }
 
 }

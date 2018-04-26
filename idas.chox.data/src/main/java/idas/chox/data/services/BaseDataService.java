@@ -352,6 +352,25 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         });
     }
 
+    public void callHashVrns(int age1, int age2) throws SQLException {
+        LOG.debug("Calling stored procedure hashVrns({},{})....", age1, age2);
+        getCurrentSession().flush();
+
+        getCurrentSession().doWork((Connection connection) -> {
+            Statement s = connection.createStatement();
+            try {
+                s.execute("select hashVrns(" + age1 + "," + age2 + ")");
+            } catch (SQLException ex) {
+                if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
+                    throw ex;
+                }
+            } finally {
+                getCurrentSession().flush();
+                s.close();
+            }
+        });
+    }
+
     public void callUpdateRemainingSlaDays(int userId) throws SQLException {
         LOG.debug("Calling stored procedure updateRemainingSlaDays()....");
         getCurrentSession().flush();

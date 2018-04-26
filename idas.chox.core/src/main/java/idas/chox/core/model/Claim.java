@@ -97,6 +97,8 @@ public class Claim extends Entity implements Serializable {
     private Date removedTasksDate;
     private boolean removedAttachments;
     private Date removedAttachmentsDate;
+    private boolean hashedVrns;
+    private Date hashedVrnsDate;
 
     public Claim() {
         this.liabilityStatus = LiabilityStatus.LIABILITY_NULL;
@@ -168,6 +170,22 @@ public class Claim extends Entity implements Serializable {
 
     public void setRemovedAttachmentsDate(Date removedAttachmentsDate) {
         this.removedAttachmentsDate = removedAttachmentsDate;
+    }
+
+    public boolean isHashedVrns() {
+        return hashedVrns;
+    }
+
+    public void setHashedVrns(boolean hashedVrns) {
+        this.hashedVrns = hashedVrns;
+    }
+
+    public Date getHashedVrnsDate() {
+        return hashedVrnsDate;
+    }
+
+    public void setHashedVrnsDate(Date hashedVrnsDate) {
+        this.hashedVrnsDate = hashedVrnsDate;
     }
 
     public boolean isPaymentsTeamReturn() {

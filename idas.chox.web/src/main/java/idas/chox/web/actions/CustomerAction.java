@@ -93,7 +93,10 @@ public class CustomerAction extends ClaimModelAction<Customer> {
             model.setEmail(originalModel.getEmail());
             model.setOccupation(originalModel.getOccupation());
         }
-        
+        if (claim.isHashedVrns()) { // should never be true as a hashed claim should not be updated
+            model.setVehicleRegistration(originalModel.getVehicleRegistration());
+        }
+
         // If claim has been re-opened after being hashed..
         if (GDPR_REMOVED_STRING.equals(model.getTitle())) model.setTitle(originalModel.getTitle());
         if (GDPR_REMOVED_STRING.equals(model.getFirstName())) model.setFirstName(originalModel.getFirstName());
@@ -108,6 +111,7 @@ public class CustomerAction extends ClaimModelAction<Customer> {
         if (GDPR_REMOVED_STRING.equals(model.getTelephoneEvening())) model.setTelephoneEvening(originalModel.getTelephoneEvening());
         if (GDPR_REMOVED_STRING.equals(model.getEmail())) model.setEmail(originalModel.getEmail());
         if (GDPR_REMOVED_STRING.equals(model.getOccupation())) model.setOccupation(originalModel.getOccupation());
+        if (GDPR_REMOVED_STRING.equals(model.getVehicleRegistration())) model.setVehicleRegistration(originalModel.getVehicleRegistration());
 
         // If cusomer car is now usable, we need to check for hire anomolies
         if (!((isUsableOriginal != null && isUsableOriginal) || isUsableOriginal == null) && model.getIsUsable()!=null && model.getIsUsable()) {
@@ -186,5 +190,6 @@ public class CustomerAction extends ClaimModelAction<Customer> {
         if (model.getTelephoneEvening() != null && model.getTelephoneEvening().startsWith("~~")) model.setTelephoneEvening(GDPR_REMOVED_STRING);
         if (model.getEmail() != null && model.getEmail().startsWith("~~")) model.setEmail(GDPR_REMOVED_STRING);
         if (model.getOccupation() != null && model.getOccupation().startsWith("~~")) model.setOccupation(GDPR_REMOVED_STRING);
+        if (model.getVehicleRegistration() != null && model.getVehicleRegistration().startsWith("~~")) model.setVehicleRegistration(GDPR_REMOVED_STRING);
     }
 }

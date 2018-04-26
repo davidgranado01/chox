@@ -67,6 +67,8 @@
     <property column="removed_tasks_date" name="removedTasksDate"/>
     <property column="removed_attachments" name="removedAttachments"  not-null="true"/>
     <property column="removed_attachments_date" name="removedAttachmentsDate"/>
+    <property column="hashed_vrns" name="hashedVrns"  not-null="true"/>
+    <property column="hashed_vrns_date" name="hashedVrnsDate"/>
     <many-to-one class="idas.chox.core.model.KeoghsRequest" column="keoghs_request_id" name="keoghsRequest"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="final_review_by_cho" name="finalReviewByCho" />
     <many-to-one class="idas.chox.core.model.WebUser" column="final_review_by_ins" name="finalReviewByIns" />

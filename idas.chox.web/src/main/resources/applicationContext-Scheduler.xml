@@ -329,6 +329,14 @@
         <property name="hashDataPeriod" value="${gdpr.hashDataPeriod}"/>
     </bean>
 
+    <bean id="hashVrnsJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
+        <property name="baseDataService" ref="quartzBaseDataService" />
+        <property name="storedProcName" value="hashVrns"/>
+        <property name="sessionFactory" ref="quartzSessionFactory"/>
+        <property name="hashVrnsPeriodFromCreation" value="${gdpr.hashVrnsPeriodFromCreation}"/>
+        <property name="hashVrnsPeriodFromClosure" value="${gdpr.hashVrnsPeriodFromClosure}"/>
+    </bean>
+
     <!--  Stored Procedure call: closeOldClaims -->
     <bean id="closeOldClaimsJob" class="idas.chox.web.scheduler.StoredProcSchedulerJob">
         <property name="baseDataService" ref="quartzBaseDataService" />
@@ -513,6 +521,12 @@
         <property name="concurrent" value="false" />
     </bean>
     
+    <bean id="hashVrnsJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="hashVrnsJob" />
+        <property name="targetMethod" value="execute" />
+        <property name="concurrent" value="false" />
+    </bean>
+    
     <bean id="closeOldClaimsJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="closeOldClaimsJob" />
         <property name="targetMethod" value="execute" />
@@ -635,6 +649,10 @@
         <property name="jobDetail" ref="hashUserDataJobDetail" /> 
         <property name="cronExpression" value="0 45 0 ? * 1-7" /> 
     </bean>
+    <bean id="hashVrnsTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+        <property name="jobDetail" ref="hashVrnsJobDetail" /> 
+        <property name="cronExpression" value="0 50 0 ? * 1-7" /> 
+    </bean>
     <bean id="cronECDMailUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="ecdUpdateMailJobDetail" /> 
         <property name="cronExpression" value="0 6/30 7-19 ? * 2-6" /> 
@@ -715,6 +733,7 @@
                 <ref bean="applyAutoPenaltyChargeJobDetail" />
                 <ref bean="updateRemainingSlaDaysJobDetail" />
                 <ref bean="hashClaimsJobDetail" />
+                <ref bean="hashVrnsJobDetail" />
                 <ref bean="closeOldClaimsJobDetail" />
                 <ref bean="removeNotesJobDetail" />
                 <ref bean="removeTasksJobDetail" />
@@ -747,6 +766,7 @@
                 <ref bean="applyAutoPenaltyChargeTriggerDaily" />
                 <ref bean="updateRemainingSlaDaysTriggerDaily" />
                 <ref bean="hashClaimsTriggerDaily" />
+                <ref bean="hashVrnsTriggerDaily" />
                 <ref bean="closeOldClaimsTriggerDaily" />
                 <ref bean="removeNotesTriggerDaily" />
                 <ref bean="removeTasksTriggerDaily" />
