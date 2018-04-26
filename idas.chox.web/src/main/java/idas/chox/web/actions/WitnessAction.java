@@ -1,11 +1,10 @@
 package idas.chox.web.actions;
 
-import java.lang.reflect.InvocationTargetException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Incident;
@@ -32,33 +31,12 @@ public class WitnessAction extends ClaimModelAction<Witness> {
         }
 
         try {
-            originalModel = (Witness) BeanUtils.cloneBean(witness);
-        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
+            originalModel = (Witness) SerializationUtils.clone(witness);
+        } catch (Exception ex) {
             LOG.error("Exception cloning witness: {}", ex.getMessage(), ex);
         }
 
-        if (claim.isHashed()) {
-            if (witness.getName() != null && !witness.getName().isEmpty()) witness.setName(GDPR_REMOVED_STRING);
-            if (witness.getAddress1() != null && !witness.getAddress1().isEmpty()) witness.setAddress1(GDPR_REMOVED_STRING);
-            if (witness.getAddress2() != null && !witness.getAddress2().isEmpty()) witness.setAddress2(GDPR_REMOVED_STRING);
-            if (witness.getAddress3() != null && !witness.getAddress3().isEmpty()) witness.setAddress3(GDPR_REMOVED_STRING);
-            if (witness.getAddress4() != null && !witness.getAddress4().isEmpty()) witness.setAddress4(GDPR_REMOVED_STRING);
-            if (witness.getAddress5() != null && !witness.getAddress5().isEmpty()) witness.setAddress5(GDPR_REMOVED_STRING);
-            if (witness.getTelephoneDay() != null && !witness.getTelephoneDay().isEmpty()) witness.setTelephoneDay(GDPR_REMOVED_STRING);
-            if (witness.getTelephoneEvening() != null && !witness.getTelephoneEvening().isEmpty()) witness.setTelephoneEvening(GDPR_REMOVED_STRING);
-            if (witness.getEmail() != null && !witness.getEmail().isEmpty()) witness.setEmail(GDPR_REMOVED_STRING);
-        }
-
-        // If claim has been re-opened after being hashed..
-        if (witness.getName() != null && witness.getName().startsWith("~~")) witness.setName(GDPR_REMOVED_STRING);
-        if (witness.getAddress1() != null && witness.getAddress1().startsWith("~~")) witness.setAddress1(GDPR_REMOVED_STRING);
-        if (witness.getAddress2() != null && witness.getAddress2().startsWith("~~")) witness.setAddress2(GDPR_REMOVED_STRING);
-        if (witness.getAddress3() != null && witness.getAddress3().startsWith("~~")) witness.setAddress3(GDPR_REMOVED_STRING);
-        if (witness.getAddress4() != null && witness.getAddress4().startsWith("~~")) witness.setAddress4(GDPR_REMOVED_STRING);
-        if (witness.getAddress5() != null && witness.getAddress5().startsWith("~~")) witness.setAddress5(GDPR_REMOVED_STRING);
-        if (witness.getTelephoneDay() != null && witness.getTelephoneDay().startsWith("~~")) witness.setTelephoneDay(GDPR_REMOVED_STRING);
-        if (witness.getTelephoneEvening() != null && witness.getTelephoneEvening().startsWith("~~")) witness.setTelephoneEvening(GDPR_REMOVED_STRING);
-        if (witness.getEmail() != null && witness.getEmail().startsWith("~~")) witness.setEmail(GDPR_REMOVED_STRING);
+        replaceHashedStrings(witness);
 
         return witness;
     }
@@ -99,7 +77,11 @@ public class WitnessAction extends ClaimModelAction<Witness> {
         model.setIncident(incident);
         claim.setIncident(incident);
 
-        return super.updateModel();
+        super.updateModel();
+
+        replaceHashedStrings(model);
+
+        return SUCCESS;
     }
 
     @Override
@@ -120,5 +102,18 @@ public class WitnessAction extends ClaimModelAction<Witness> {
         } else {
             LOG.info(" WitnessAction validation not done as claim or cho or insurer is null");
         }
+    }
+    
+    public void replaceHashedStrings(Witness witness) {
+        // If claim has been re-opened after being hashed..
+        if (witness.getName() != null && witness.getName().startsWith("~~")) witness.setName(GDPR_REMOVED_STRING);
+        if (witness.getAddress1() != null && witness.getAddress1().startsWith("~~")) witness.setAddress1(GDPR_REMOVED_STRING);
+        if (witness.getAddress2() != null && witness.getAddress2().startsWith("~~")) witness.setAddress2(GDPR_REMOVED_STRING);
+        if (witness.getAddress3() != null && witness.getAddress3().startsWith("~~")) witness.setAddress3(GDPR_REMOVED_STRING);
+        if (witness.getAddress4() != null && witness.getAddress4().startsWith("~~")) witness.setAddress4(GDPR_REMOVED_STRING);
+        if (witness.getAddress5() != null && witness.getAddress5().startsWith("~~")) witness.setAddress5(GDPR_REMOVED_STRING);
+        if (witness.getTelephoneDay() != null && witness.getTelephoneDay().startsWith("~~")) witness.setTelephoneDay(GDPR_REMOVED_STRING);
+        if (witness.getTelephoneEvening() != null && witness.getTelephoneEvening().startsWith("~~")) witness.setTelephoneEvening(GDPR_REMOVED_STRING);
+        if (witness.getEmail() != null && witness.getEmail().startsWith("~~")) witness.setEmail(GDPR_REMOVED_STRING);
     }
 }

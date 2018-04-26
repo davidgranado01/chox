@@ -1,6 +1,8 @@
 package idas.chox.core.model;
 
-public class Solicitor {
+import java.io.Serializable;
+
+public class Solicitor  implements Serializable{
 
     /**
      * This attribute maps to the column name in the solicitor table.
