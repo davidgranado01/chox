@@ -27,7 +27,7 @@ public class UserViewData {
 
         this.id = object.getId();
         this.userName = object.getUserName();
-        this.email = object.getEmail().startsWith("~~") ? "GPR: data removed" : object.getEmail();
+        this.email = object.getEmail().startsWith("~~") ? "GDPR: data removed" : object.getEmail();
         this.name = object.getFullName();
         this.createdBy = object.getCreatedBy().getDisplayName();
         this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
