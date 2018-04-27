@@ -333,6 +333,7 @@
         <property name="baseDataService" ref="quartzBaseDataService" />
         <property name="storedProcName" value="hashVrns"/>
         <property name="sessionFactory" ref="quartzSessionFactory"/>
+        <property name="hashVrns" value="${gdpr.hashVrns}"/>
         <property name="hashVrnsPeriodFromCreation" value="${gdpr.hashVrnsPeriodFromCreation}"/>
         <property name="hashVrnsPeriodFromClosure" value="${gdpr.hashVrnsPeriodFromClosure}"/>
     </bean>
