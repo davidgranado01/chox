@@ -2,9 +2,8 @@ package idas.chox.web.actions;
 
 import java.util.Arrays;
 import java.util.List;
-import java.lang.reflect.InvocationTargetException;
 
-import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -42,48 +41,20 @@ public class CustomerAction extends ClaimModelAction<Customer> {
             returnCustomer = claim.getCustomer();
         }
         try {
-            originalModel = (Customer) BeanUtils.cloneBean(returnCustomer);
-        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
+            originalModel = (Customer) SerializationUtils.clone(returnCustomer);
+        } catch (Exception ex) {
             LOG.error("Exception cloning customer: {}", ex.getMessage(), ex);
         }
-       if (claim.isHashed()) {
-            if (returnCustomer.getTitle() != null && !returnCustomer.getTitle().isEmpty()) returnCustomer.setTitle(GDPR_REMOVED_STRING);
-            if (returnCustomer.getFirstName() != null && !returnCustomer.getFirstName().isEmpty()) returnCustomer.setFirstName(GDPR_REMOVED_STRING);
-            if (returnCustomer.getLastName() != null && !returnCustomer.getLastName().isEmpty()) returnCustomer.setLastName(GDPR_REMOVED_STRING);
-            if (returnCustomer.getAddress1() != null && !returnCustomer.getAddress1().isEmpty()) returnCustomer.setAddress1(GDPR_REMOVED_STRING);
-            if (returnCustomer.getAddress2() != null && !returnCustomer.getAddress2().isEmpty()) returnCustomer.setAddress2(GDPR_REMOVED_STRING);
-            if (returnCustomer.getAddress3() != null && !returnCustomer.getAddress3().isEmpty()) returnCustomer.setAddress3(GDPR_REMOVED_STRING);
-            if (returnCustomer.getAddress4() != null && !returnCustomer.getAddress4().isEmpty()) returnCustomer.setAddress4(GDPR_REMOVED_STRING);
-            if (returnCustomer.getAddress5() != null && !returnCustomer.getAddress5().isEmpty()) returnCustomer.setAddress5(GDPR_REMOVED_STRING);
-            if (returnCustomer.getTelephoneDay() != null && !returnCustomer.getTelephoneDay().isEmpty()) returnCustomer.setTelephoneDay(GDPR_REMOVED_STRING);
-            if (returnCustomer.getTelephoneEvening() != null && !returnCustomer.getTelephoneEvening().isEmpty()) returnCustomer.setTelephoneEvening(GDPR_REMOVED_STRING);
-            if (returnCustomer.getEmail() != null && !returnCustomer.getEmail().isEmpty()) returnCustomer.setEmail(GDPR_REMOVED_STRING);
-            if (returnCustomer.getOccupation() != null && !returnCustomer.getOccupation().isEmpty()) returnCustomer.setOccupation(GDPR_REMOVED_STRING);
-        }
-       
-        // If claim has been re-opened after being hashed..
-        if (returnCustomer.getTitle() != null && returnCustomer.getTitle().startsWith("~~")) returnCustomer.setTitle(GDPR_REMOVED_STRING);
-        if (returnCustomer.getFirstName() != null && returnCustomer.getFirstName().startsWith("~~")) returnCustomer.setFirstName(GDPR_REMOVED_STRING);
-        if (returnCustomer.getLastName() != null && returnCustomer.getLastName().startsWith("~~")) returnCustomer.setLastName(GDPR_REMOVED_STRING);
-        if (returnCustomer.getAddress1() != null && returnCustomer.getAddress1().startsWith("~~")) returnCustomer.setAddress1(GDPR_REMOVED_STRING);
-        if (returnCustomer.getAddress2() != null && returnCustomer.getAddress2().startsWith("~~")) returnCustomer.setAddress2(GDPR_REMOVED_STRING);
-        if (returnCustomer.getAddress3() != null && returnCustomer.getAddress3().startsWith("~~")) returnCustomer.setAddress3(GDPR_REMOVED_STRING);
-        if (returnCustomer.getAddress4() != null && returnCustomer.getAddress4().startsWith("~~")) returnCustomer.setAddress4(GDPR_REMOVED_STRING);
-        if (returnCustomer.getAddress5() != null && returnCustomer.getAddress5().startsWith("~~")) returnCustomer.setAddress5(GDPR_REMOVED_STRING);
-        if (returnCustomer.getTelephoneDay() != null && returnCustomer.getTelephoneDay().startsWith("~~")) returnCustomer.setTelephoneDay(GDPR_REMOVED_STRING);
-        if (returnCustomer.getTelephoneEvening() != null && returnCustomer.getTelephoneEvening().startsWith("~~")) returnCustomer.setTelephoneEvening(GDPR_REMOVED_STRING);
-        if (returnCustomer.getEmail() != null && returnCustomer.getEmail().startsWith("~~")) returnCustomer.setEmail(GDPR_REMOVED_STRING);
-        if (returnCustomer.getOccupation() != null && returnCustomer.getOccupation().startsWith("~~")) returnCustomer.setOccupation(GDPR_REMOVED_STRING);
+
+        replaceHashedStrings(returnCustomer);
 
         return returnCustomer;
     }
 
     @Override
     public String updateModel() {
-        LOG.debug("Updating customer model: oldvrn={}, newvrn={}", oldVRN, model.getVehicleRegistration());
 
         if (!oldVRN.equalsIgnoreCase(model.getVehicleRegistration())) {
-            LOG.debug("VRN has changed - performing HPI check/retrieval");
             try {
                 HpiResponse response = Hpi.getHpiInfo(model.getVehicleRegistration());
                 model.setHpiVehicleManufacturer(response.getManufacturer());
@@ -106,7 +77,7 @@ public class CustomerAction extends ClaimModelAction<Customer> {
                 model.setHpiFirstRegistration(null);
             }
         }
-        if (claim.isHashed()) {
+        if (claim.isHashed()) { // should never be true as a hashed claim should not be updated
             // Hashed fields should not be changed
             model.setTitle(originalModel.getTitle());
             model.setFirstName(originalModel.getFirstName());
@@ -122,7 +93,10 @@ public class CustomerAction extends ClaimModelAction<Customer> {
             model.setEmail(originalModel.getEmail());
             model.setOccupation(originalModel.getOccupation());
         }
-        
+        if (claim.isHashedVrns()) { // should never be true as a hashed claim should not be updated
+            model.setVehicleRegistration(originalModel.getVehicleRegistration());
+        }
+
         // If claim has been re-opened after being hashed..
         if (GDPR_REMOVED_STRING.equals(model.getTitle())) model.setTitle(originalModel.getTitle());
         if (GDPR_REMOVED_STRING.equals(model.getFirstName())) model.setFirstName(originalModel.getFirstName());
@@ -137,6 +111,7 @@ public class CustomerAction extends ClaimModelAction<Customer> {
         if (GDPR_REMOVED_STRING.equals(model.getTelephoneEvening())) model.setTelephoneEvening(originalModel.getTelephoneEvening());
         if (GDPR_REMOVED_STRING.equals(model.getEmail())) model.setEmail(originalModel.getEmail());
         if (GDPR_REMOVED_STRING.equals(model.getOccupation())) model.setOccupation(originalModel.getOccupation());
+        if (GDPR_REMOVED_STRING.equals(model.getVehicleRegistration())) model.setVehicleRegistration(originalModel.getVehicleRegistration());
 
         // If cusomer car is now usable, we need to check for hire anomolies
         if (!((isUsableOriginal != null && isUsableOriginal) || isUsableOriginal == null) && model.getIsUsable()!=null && model.getIsUsable()) {
@@ -150,7 +125,10 @@ public class CustomerAction extends ClaimModelAction<Customer> {
         if (vehicleClassId >= 0) {
             claim.getCustomer().setVehicleClass(this.vehicleClassService.getVehicleClass(vehicleClassId));
         }
-        return super.updateModel();
+        
+        super.updateModel();
+        replaceHashedStrings(model);
+        return SUCCESS;
     }
     
     @Override
@@ -196,5 +174,22 @@ public class CustomerAction extends ClaimModelAction<Customer> {
 
     public List<Insurer> getInsurer() {
         return this.lookupService.getInsurers();
+    }
+        
+    public void replaceHashedStrings(Customer model) {
+        // If claim has been re-opened after being hashed..
+        if (model.getTitle() != null && model.getTitle().startsWith("~~")) model.setTitle(GDPR_REMOVED_STRING);
+        if (model.getFirstName() != null && model.getFirstName().startsWith("~~")) model.setFirstName(GDPR_REMOVED_STRING);
+        if (model.getLastName() != null && model.getLastName().startsWith("~~")) model.setLastName(GDPR_REMOVED_STRING);
+        if (model.getAddress1() != null && model.getAddress1().startsWith("~~")) model.setAddress1(GDPR_REMOVED_STRING);
+        if (model.getAddress2() != null && model.getAddress2().startsWith("~~")) model.setAddress2(GDPR_REMOVED_STRING);
+        if (model.getAddress3() != null && model.getAddress3().startsWith("~~")) model.setAddress3(GDPR_REMOVED_STRING);
+        if (model.getAddress4() != null && model.getAddress4().startsWith("~~")) model.setAddress4(GDPR_REMOVED_STRING);
+        if (model.getAddress5() != null && model.getAddress5().startsWith("~~")) model.setAddress5(GDPR_REMOVED_STRING);
+        if (model.getTelephoneDay() != null && model.getTelephoneDay().startsWith("~~")) model.setTelephoneDay(GDPR_REMOVED_STRING);
+        if (model.getTelephoneEvening() != null && model.getTelephoneEvening().startsWith("~~")) model.setTelephoneEvening(GDPR_REMOVED_STRING);
+        if (model.getEmail() != null && model.getEmail().startsWith("~~")) model.setEmail(GDPR_REMOVED_STRING);
+        if (model.getOccupation() != null && model.getOccupation().startsWith("~~")) model.setOccupation(GDPR_REMOVED_STRING);
+        if (model.getVehicleRegistration() != null && model.getVehicleRegistration().startsWith("~~")) model.setVehicleRegistration(GDPR_REMOVED_STRING);
     }
 }

@@ -1693,7 +1693,8 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
     
     // <editor-fold defaultstate="collapsed" desc="VehicleHireAction">
     private void updateHpi() {
-        if (!oldVRN.equalsIgnoreCase(vehicleHire.getVehicleRegistration())) {
+        if (!oldVRN.equalsIgnoreCase(vehicleHire.getVehicleRegistration()) && !vehicleHire.getVehicleRegistration().startsWith("~~")
+                && !GDPR_REMOVED_STRING.equals(vehicleHire.getVehicleRegistration())) {
             try {
                 LOG.debug("VRN has changed - performing HPI check/retrieval");
                 HpiResponse response = Hpi.getHpiInfo(vehicleHire.getVehicleRegistration());
@@ -1962,11 +1963,11 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
 
 
     public java.lang.String getVehicleRegistration() {
-        return vehicleHire.getVehicleRegistration();
+        return vehicleHire.getVehicleRegistration() != null && vehicleHire.getVehicleRegistration().startsWith("~~") ? GDPR_REMOVED_STRING : vehicleHire.getVehicleRegistration();
     }
 
     public void setVehicleRegistration(java.lang.String vehicleRegistration) {
-        if (actionSelected != reset && vehicleHire != null) {
+        if (actionSelected != reset && vehicleHire != null && !GDPR_REMOVED_STRING.equals(vehicleRegistration)) {
             vehicleHire.setVehicleRegistration(vehicleRegistration);
         }
     }

@@ -216,6 +216,7 @@ public class AdminUserService extends SecureDataService {
             webUser.setFailedLoginAttempts(0);
             webUser.setBlockedDate(null);
             webUser.setStatus(true);
+            webUser.setHashed(false);
         }
         else {
             webUser.setStatus(!webUser.getStatus());
@@ -223,7 +224,6 @@ public class AdminUserService extends SecureDataService {
             if (webUser.getStatus()) {
                 webUser.setLastLoginDate(null);
                 webUser.setHashed(false);
-                webUser.setHashedDate(null);
                 webUser.setDeactivatedDate(new Date());
             } else { // set date de-activated
                 webUser.setDeactivatedDate(new Date());

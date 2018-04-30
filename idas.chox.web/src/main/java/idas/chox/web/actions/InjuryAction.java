@@ -1,9 +1,6 @@
 package idas.chox.web.actions;
 
-import java.lang.reflect.InvocationTargetException;
-
-import org.apache.commons.beanutils.BeanUtils;
-
+import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -34,34 +31,13 @@ public class InjuryAction extends ClaimModelAction<Injury> {
         }
 
         try {
-            originalModel = (Injury) BeanUtils.cloneBean(injury);
-        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
-            LOG.error("Exception cloning witness: {}", ex.getMessage(), ex);
+            originalModel = (Injury) SerializationUtils.clone(injury);
+        } catch (Exception ex) {
+            LOG.error("Exception cloning injury: {}", ex.getMessage(), ex);
         }
 
-        if (claim.isHashed()) {
-            if (injury.getName() != null && !injury.getName().isEmpty()) injury.setName(GDPR_REMOVED_STRING);
-            if (injury.getAddress1() != null && !injury.getAddress1().isEmpty()) injury.setAddress1(GDPR_REMOVED_STRING);
-            if (injury.getAddress2() != null && !injury.getAddress2().isEmpty()) injury.setAddress2(GDPR_REMOVED_STRING);
-            if (injury.getAddress3() != null && !injury.getAddress3().isEmpty()) injury.setAddress3(GDPR_REMOVED_STRING);
-            if (injury.getAddress4() != null && !injury.getAddress4().isEmpty()) injury.setAddress4(GDPR_REMOVED_STRING);
-            if (injury.getAddress5() != null && !injury.getAddress5().isEmpty()) injury.setAddress5(GDPR_REMOVED_STRING);
-            if (injury.getTelephoneDay() != null && !injury.getTelephoneDay().isEmpty()) injury.setTelephoneDay(GDPR_REMOVED_STRING);
-            if (injury.getTelephoneEvening() != null && !injury.getTelephoneEvening().isEmpty()) injury.setTelephoneEvening(GDPR_REMOVED_STRING);
-            if (injury.getEmail() != null && !injury.getEmail().isEmpty()) injury.setEmail(GDPR_REMOVED_STRING);
-        }
+        replaceHashedStrings(injury);
         
-        // If claim has been re-opened after being hashed..
-        if (injury.getName() != null && injury.getName().startsWith("~~")) injury.setName(GDPR_REMOVED_STRING);
-        if (injury.getAddress1() != null && injury.getAddress1().startsWith("~~")) injury.setAddress1(GDPR_REMOVED_STRING);
-        if (injury.getAddress2() != null && injury.getAddress2().startsWith("~~")) injury.setAddress2(GDPR_REMOVED_STRING);
-        if (injury.getAddress3() != null && injury.getAddress3().startsWith("~~")) injury.setAddress3(GDPR_REMOVED_STRING);
-        if (injury.getAddress4() != null && injury.getAddress4().startsWith("~~")) injury.setAddress4(GDPR_REMOVED_STRING);
-        if (injury.getAddress5() != null && injury.getAddress5().startsWith("~~")) injury.setAddress5(GDPR_REMOVED_STRING);
-        if (injury.getTelephoneDay() != null && injury.getTelephoneDay().startsWith("~~")) injury.setTelephoneDay(GDPR_REMOVED_STRING);
-        if (injury.getTelephoneEvening() != null && injury.getTelephoneEvening().startsWith("~~")) injury.setTelephoneEvening(GDPR_REMOVED_STRING);
-        if (injury.getEmail() != null && injury.getEmail().startsWith("~~")) injury.setEmail(GDPR_REMOVED_STRING);
-
         return injury;
     }
 
@@ -101,7 +77,10 @@ public class InjuryAction extends ClaimModelAction<Injury> {
         model.setIncident(incident);
         claim.setIncident(incident);
 
-        return super.updateModel();
+        super.updateModel();
+        replaceHashedStrings(model);
+
+        return SUCCESS;
     }
 
     @Override
@@ -120,5 +99,17 @@ public class InjuryAction extends ClaimModelAction<Injury> {
             LOG.debug("InjuryAction validate success");
         }
         LOG.debug(" InjuryAction validation is not done as claim is null");
+    }
+    
+    public void replaceHashedStrings(Injury injury) {
+        if (injury.getName() != null && injury.getName().startsWith("~~")) injury.setName(GDPR_REMOVED_STRING);
+        if (injury.getAddress1() != null && injury.getAddress1().startsWith("~~")) injury.setAddress1(GDPR_REMOVED_STRING);
+        if (injury.getAddress2() != null && injury.getAddress2().startsWith("~~")) injury.setAddress2(GDPR_REMOVED_STRING);
+        if (injury.getAddress3() != null && injury.getAddress3().startsWith("~~")) injury.setAddress3(GDPR_REMOVED_STRING);
+        if (injury.getAddress4() != null && injury.getAddress4().startsWith("~~")) injury.setAddress4(GDPR_REMOVED_STRING);
+        if (injury.getAddress5() != null && injury.getAddress5().startsWith("~~")) injury.setAddress5(GDPR_REMOVED_STRING);
+        if (injury.getTelephoneDay() != null && injury.getTelephoneDay().startsWith("~~")) injury.setTelephoneDay(GDPR_REMOVED_STRING);
+        if (injury.getTelephoneEvening() != null && injury.getTelephoneEvening().startsWith("~~")) injury.setTelephoneEvening(GDPR_REMOVED_STRING);
+        if (injury.getEmail() != null && injury.getEmail().startsWith("~~")) injury.setEmail(GDPR_REMOVED_STRING);
     }
 }

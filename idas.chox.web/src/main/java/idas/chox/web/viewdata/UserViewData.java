@@ -24,10 +24,9 @@ public class UserViewData {
     private final String isExpired;
 
     public UserViewData(WebUser object) {
-
         this.id = object.getId();
         this.userName = object.getUserName();
-        this.email = object.getEmail().startsWith("~~") ? "GPR: data removed" : object.getEmail();
+        this.email = object.getEmail().startsWith("~~") ? "GDPR: data removed" : object.getEmail();
         this.name = object.getFullName();
         this.createdBy = object.getCreatedBy().getDisplayName();
         this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
@@ -46,44 +45,35 @@ public class UserViewData {
         }
 
         if (object.isCHOXAdmin()) {
-
             this.orgType = 1;
             this.orgName = "Audatex";
-
         } else {
-
             if (object.getInsurer() != null) {
                 this.orgType = 2;
             } else {
                 this.orgType = 3;
             }
-
             this.orgName = object.getOrganisationName();
-
         }
 
         this.role = getRoleString(object.getRoles());
     }
 
+    
     private String getRoleString(Set roles) {
 
         Integer iRoles = roles.size();
         String sRole = "";
-
-
-
+        
         if (iRoles > 0) {
-
-
             Iterator itr = roles.iterator();
             while (itr.hasNext()) {
                 WebUserRole webUserrole = (WebUserRole) itr.next();
-                if (!webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHO) && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHOX) && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_INS)) {
-
+                if (!webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHO) && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_CHOX)
+                        && !webUserrole.getName().equalsIgnoreCase(WebUserRole.ROLE_INS)) {
                     sRole = sRole + webUserrole.getDescription() + ", ";
                 }
             }
-
         }
 
         if ((sRole.trim()).length() <= 0) {

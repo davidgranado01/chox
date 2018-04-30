@@ -229,13 +229,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
                 if (claim.isHashed()) {
                     claim.setHashed(false);
-//                    claim.setHashedDate(null);
                     claim.setRemovedNotes(false);
-//                    claim.setRemovedNotesDate(null);
                     claim.setRemovedAttachments(false);
-//                    claim.setRemovedAttachmentsDate(null);
                     claim.setRemovedTasks(false);
-//                    claim.setRemovedTasksDate(null);
+                    claim.setHashedVrns(false);
                 }
 
                 claim.setStatus(auditTrail.getOriginalStatus());

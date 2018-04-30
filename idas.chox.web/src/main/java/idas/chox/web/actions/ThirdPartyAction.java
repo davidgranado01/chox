@@ -1,11 +1,10 @@
 package idas.chox.web.actions;
 
 import java.util.List;
-import java.lang.reflect.InvocationTargetException;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.ThirdParty;
@@ -38,44 +37,32 @@ public class ThirdPartyAction extends ClaimModelAction<ThirdParty> {
         }
 
         try {
-            originalModel = (ThirdParty) BeanUtils.cloneBean(thirdParty);
-        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
+//            originalModel = (ThirdParty) SerializationUtils.clone(ThirdParty); -- ising this causes a hibernate no session error when trying to access originalModel fields
+            originalModel = new ThirdParty();
+            originalModel.setTitle(thirdParty.getTitle());
+            originalModel.setFirstName(thirdParty.getFirstName());
+            originalModel.setLastName(thirdParty.getLastName());
+            originalModel.setAddress1(thirdParty.getAddress1());
+            originalModel.setAddress2(thirdParty.getAddress2());
+            originalModel.setAddress3(thirdParty.getAddress3());
+            originalModel.setAddress4(thirdParty.getAddress4());
+            originalModel.setAddress5(thirdParty.getAddress5());
+            originalModel.setPostcode(thirdParty.getPostcode());
+            originalModel.setTelephoneDay(thirdParty.getTelephoneDay());
+            originalModel.setTelephoneEvening(thirdParty.getTelephoneEvening());
+            originalModel.setEmail(thirdParty.getEmail());
+            originalModel.setVehicleRegistration(thirdParty.getVehicleRegistration());
+        } catch (Exception ex) {
             LOG.error("Exception cloning Third Party: {}", ex.getMessage(), ex);
         }
 
-        if (claim.isHashed()) {
-            if (thirdParty.getTitle() != null && !thirdParty.getTitle().isEmpty()) thirdParty.setTitle(GDPR_REMOVED_STRING);
-            if (thirdParty.getFirstName() != null && !thirdParty.getFirstName().isEmpty()) thirdParty.setFirstName(GDPR_REMOVED_STRING);
-            if (thirdParty.getLastName() != null && !thirdParty.getLastName().isEmpty()) thirdParty.setLastName(GDPR_REMOVED_STRING);
-            if (thirdParty.getAddress1() != null && !thirdParty.getAddress1().isEmpty()) thirdParty.setAddress1(GDPR_REMOVED_STRING);
-            if (thirdParty.getAddress2() != null && !thirdParty.getAddress2().isEmpty()) thirdParty.setAddress2(GDPR_REMOVED_STRING);
-            if (thirdParty.getAddress3() != null && !thirdParty.getAddress3().isEmpty()) thirdParty.setAddress3(GDPR_REMOVED_STRING);
-            if (thirdParty.getAddress4() != null && !thirdParty.getAddress4().isEmpty()) thirdParty.setAddress4(GDPR_REMOVED_STRING);
-            if (thirdParty.getAddress5() != null && !thirdParty.getAddress5().isEmpty()) thirdParty.setAddress5(GDPR_REMOVED_STRING);
-            if (thirdParty.getTelephoneDay() != null && !thirdParty.getTelephoneDay().isEmpty()) thirdParty.setTelephoneDay(GDPR_REMOVED_STRING);
-            if (thirdParty.getTelephoneEvening() != null && !thirdParty.getTelephoneEvening().isEmpty()) thirdParty.setTelephoneEvening(GDPR_REMOVED_STRING);
-            if (thirdParty.getEmail() != null && !thirdParty.getEmail().isEmpty()) thirdParty.setEmail(GDPR_REMOVED_STRING);
-        }
+        replaceHashedStrings(thirdParty);
         
-        // If claim has been re-opened after being hashed..
-        if (thirdParty.getTitle() != null && thirdParty.getTitle().startsWith("~~")) thirdParty.setTitle(GDPR_REMOVED_STRING);
-        if (thirdParty.getFirstName() != null && thirdParty.getFirstName().startsWith("~~")) thirdParty.setFirstName(GDPR_REMOVED_STRING);
-        if (thirdParty.getLastName() != null && thirdParty.getLastName().startsWith("~~")) thirdParty.setLastName(GDPR_REMOVED_STRING);
-        if (thirdParty.getAddress1() != null && thirdParty.getAddress1().startsWith("~~")) thirdParty.setAddress1(GDPR_REMOVED_STRING);
-        if (thirdParty.getAddress2() != null && thirdParty.getAddress2().startsWith("~~")) thirdParty.setAddress2(GDPR_REMOVED_STRING);
-        if (thirdParty.getAddress3() != null && thirdParty.getAddress3().startsWith("~~")) thirdParty.setAddress3(GDPR_REMOVED_STRING);
-        if (thirdParty.getAddress4() != null && thirdParty.getAddress4().startsWith("~~")) thirdParty.setAddress4(GDPR_REMOVED_STRING);
-        if (thirdParty.getAddress5() != null && thirdParty.getAddress5().startsWith("~~")) thirdParty.setAddress5(GDPR_REMOVED_STRING);
-        if (thirdParty.getTelephoneDay() != null && thirdParty.getTelephoneDay().startsWith("~~")) thirdParty.setTelephoneDay(GDPR_REMOVED_STRING);
-        if (thirdParty.getTelephoneEvening() != null && thirdParty.getTelephoneEvening().startsWith("~~")) thirdParty.setTelephoneEvening(GDPR_REMOVED_STRING);
-        if (thirdParty.getEmail() != null && thirdParty.getEmail().startsWith("~~")) thirdParty.setEmail(GDPR_REMOVED_STRING);
-
         return thirdParty;
     }
 
     @Override
     public String updateModel() {
-
         if (vehicleClassId >= 0) {
             model.setVehicleClass(this.vehicleClassService.getVehicleClass(vehicleClassId));
         }
@@ -95,6 +82,10 @@ public class ThirdPartyAction extends ClaimModelAction<ThirdParty> {
             model.setTelephoneEvening(originalModel.getTelephoneEvening());
             model.setEmail(originalModel.getEmail());
         }
+
+        if (claim.isHashedVrns()) { // should never be true as a hashed claim should not be updated
+            model.setVehicleRegistration(originalModel.getVehicleRegistration());
+        }
         
          // If claim has been re-opened after being hashed..
         if (GDPR_REMOVED_STRING.equals(model.getTitle())) model.setTitle(originalModel.getTitle());
@@ -109,11 +100,32 @@ public class ThirdPartyAction extends ClaimModelAction<ThirdParty> {
         if (GDPR_REMOVED_STRING.equals(model.getTelephoneDay())) model.setTelephoneDay(originalModel.getTelephoneDay());
         if (GDPR_REMOVED_STRING.equals(model.getTelephoneEvening())) model.setTelephoneEvening(originalModel.getTelephoneEvening());
         if (GDPR_REMOVED_STRING.equals(model.getEmail())) model.setEmail(originalModel.getEmail());
+        if (GDPR_REMOVED_STRING.equals(model.getVehicleRegistration())) model.setVehicleRegistration(originalModel.getVehicleRegistration());
 
         claim.setThirdParty(model);
 
-        return super.updateModel();
+        super.updateModel();
+        
+        replaceHashedStrings(model);
+
+        return SUCCESS;
     }
+
+    @Override
+    public void validate() {
+        if (claim != null) {
+            if ((getIsInsurer() && claim.getInsurer().getId().intValue() != getAuthenticatedUser().getInsurer().getId().intValue())
+                    || (getIsCHO() && claim.getChorganisation().getId().intValue() != getAuthenticatedUser().getChorganisation().getId().intValue())) {
+                LOG.error("ThirtPartyAction validation failed, Attempt to access a claim that you do not own.");
+                throw new AccessDeniedException("Attempt to access a claim that you do not own.");
+            }
+            LOG.debug("ThirtPartyAction validate success");
+        }
+        else {
+            LOG.debug(" ThirtPartyAction validation is not done as claim is null");
+        }
+    }
+
 
     @Override
     String getTabName() {
@@ -171,4 +183,20 @@ public class ThirdPartyAction extends ClaimModelAction<ThirdParty> {
 
         return this.model.getInsurer().getName();
     }
+    
+    public void replaceHashedStrings(ThirdParty thirdParty) {
+        if (thirdParty.getTitle() != null && thirdParty.getTitle().startsWith("~~")) thirdParty.setTitle(GDPR_REMOVED_STRING);
+        if (thirdParty.getFirstName() != null && thirdParty.getFirstName().startsWith("~~")) thirdParty.setFirstName(GDPR_REMOVED_STRING);
+        if (thirdParty.getLastName() != null && thirdParty.getLastName().startsWith("~~")) thirdParty.setLastName(GDPR_REMOVED_STRING);
+        if (thirdParty.getAddress1() != null && thirdParty.getAddress1().startsWith("~~")) thirdParty.setAddress1(GDPR_REMOVED_STRING);
+        if (thirdParty.getAddress2() != null && thirdParty.getAddress2().startsWith("~~")) thirdParty.setAddress2(GDPR_REMOVED_STRING);
+        if (thirdParty.getAddress3() != null && thirdParty.getAddress3().startsWith("~~")) thirdParty.setAddress3(GDPR_REMOVED_STRING);
+        if (thirdParty.getAddress4() != null && thirdParty.getAddress4().startsWith("~~")) thirdParty.setAddress4(GDPR_REMOVED_STRING);
+        if (thirdParty.getAddress5() != null && thirdParty.getAddress5().startsWith("~~")) thirdParty.setAddress5(GDPR_REMOVED_STRING);
+        if (thirdParty.getTelephoneDay() != null && thirdParty.getTelephoneDay().startsWith("~~")) thirdParty.setTelephoneDay(GDPR_REMOVED_STRING);
+        if (thirdParty.getTelephoneEvening() != null && thirdParty.getTelephoneEvening().startsWith("~~")) thirdParty.setTelephoneEvening(GDPR_REMOVED_STRING);
+        if (thirdParty.getEmail() != null && thirdParty.getEmail().startsWith("~~")) thirdParty.setEmail(GDPR_REMOVED_STRING);
+        if (thirdParty.getVehicleRegistration() != null && thirdParty.getVehicleRegistration().startsWith("~~")) thirdParty.setVehicleRegistration(GDPR_REMOVED_STRING);
+    }
+
 }

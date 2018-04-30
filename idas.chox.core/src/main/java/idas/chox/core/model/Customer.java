@@ -403,9 +403,10 @@ public class Customer extends Entity implements Serializable {
      * @param vehicleRegistration
      */
     public void setVehicleRegistration(java.lang.String vehicleRegistration) {
-        this.vehicleRegistration = vehicleRegistration;
-        if (this.vehicleRegistration != null) {
-            this.vehicleRegistration = this.vehicleRegistration.replaceAll(" ", "");
+        if (vehicleRegistration != null && !vehicleRegistration.equals("GDPR: data removed")) {
+            this.vehicleRegistration = vehicleRegistration.replaceAll(" ", "");
+        } else {
+            this.vehicleRegistration = vehicleRegistration;
         }
     }
 

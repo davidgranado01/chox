@@ -11,6 +11,8 @@ ALTER TABLE web_user ADD COLUMN hashed_date timestamp without time zone;
 ALTER TABLE web_user ADD COLUMN deactivated_date timestamp without time zone;
 ALTER TABLE comment ADD COLUMN user_comment boolean not null default false;
 ALTER TABLE attachment ADD COLUMN removed boolean not null default false;
+ALTER TABLE claim ADD COLUMN hashed_vrns boolean not null default false;
+ALTER TABLE claim ADD COLUMN hashed_vrns_date timestamp without time zone;
 
 UPDATE comment set user_comment = true, version=version+1
 WHERE comment not like 'Reason For Rejection:%'
@@ -65,7 +67,7 @@ DECLARE
    BEGIN
       -- if string already hashed, just return it
       startString = substring(stringToHash from 1 for 2);
-      IF startString = '~~' THEN
+      IF startString = '~~' or stringToHash = '' THEN
         RETURN stringToHash;
       END IF;
       -- NORMALIZE: make all characters capitals and replace spaces with underscores
@@ -480,12 +482,12 @@ DECLARE
         update web_user
             set status = false, deactivated_date = now()
         where status = true and last_login_date < cutOff
-          and user_name not like 'admin@%' and id not in (999, 4391, 5454, 3757, 6410, 3893);
+          and user_name not like 'admin@%' and id not in (999, 4391, 5454, 3757, 6410, 3893,6148);
 
         update web_user
             set status = false, deactivated_date = now()
         where status = true and last_login_date is null and created_date < cutOff
-          and user_name not like 'admin@%' and id not in (999, 4391, 5454, 3757, 6410, 3893);
+          and user_name not like 'admin@%' and id not in (999, 4391, 5454, 3757, 6410, 3893,6148);
     END;
 
 $BODY$
@@ -528,6 +530,62 @@ DECLARE
 $BODY$
 LANGUAGE plpgsql;
 GRANT EXECUTE on FUNCTION hashUsers(integer, integer) to chox_user;
+
+CREATE OR REPLACE FUNCTION hashVrns(claimCreationAge integer, claimClosureAge integer)
+    RETURNS void AS
+$BODY$
+DECLARE
+    creationCutOff date;
+    closedCutOff date;
+    BEGIN
+        creationCutOff := now()::date  - (claimCreationAge || ' days')::interval;
+        closedCutOff := now()::date  - (claimClosureAge || ' days')::interval;
+
+        update customer
+          set vehicle_registration = getHash(vehicle_registration, 16),
+              version = customer.version + 1,
+              last_modified_by = 999,
+              last_modified_date = now()
+        from claim c
+        where c.customer_id = customer.id and c.hashed_vrns = false
+          and c.status in ('PaymentReceived', 'ManualInvoicePaid', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted')
+          and c.status_modified_date::date < closedCutOff
+          and c.created_date::date < creationCutOff;
+
+        update third_party
+          set vehicle_registration = getHash(vehicle_registration, 16),
+              version = third_party.version + 1,
+              last_modified_by = 999,
+              last_modified_date = now()
+        from claim c
+        where c.third_party_id = third_party.id and c.hashed_vrns = false
+          and c.status in ('PaymentReceived', 'ManualInvoicePaid', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted')
+          and c.status_modified_date::date < closedCutOff
+          and c.created_date::date < creationCutOff;
+
+        update vehicle_hire
+          set vehicle_registration = getHash(vehicle_registration, 16),
+              version = vehicle_hire.version + 1,
+              last_modified_by = 999,
+              last_modified_date = now()
+        from claim c
+        where c.vehicle_hire_id = vehicle_hire.id and c.hashed_vrns = false
+          and c.status in ('PaymentReceived', 'ManualInvoicePaid', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted')
+          and c.status_modified_date::date < closedCutOff
+          and c.created_date::date < creationCutOff;
+
+        update claim
+            set hashed_vrns = true, hashed_vrns_date = now(), version=version+1, last_modified_date=now(), last_modified_by=999
+        where hashed_vrns = false
+        and status in ('PaymentReceived', 'ManualInvoicePaid', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted')
+        and status_modified_date::date < closedCutOff
+        and created_date::date < creationCutOff;
+    END;
+
+$BODY$
+LANGUAGE plpgsql;
+GRANT EXECUTE on FUNCTION hashVrns(integer, integer) to chox_user;
+
 
 UPDATE task set description = getHash(description, 6000), version=version+1 WHERE id=563116;
 ALTER TABLE task ALTER COLUMN visibility_role TYPE character varying(24);

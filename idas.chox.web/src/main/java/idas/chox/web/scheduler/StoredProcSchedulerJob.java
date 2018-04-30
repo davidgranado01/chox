@@ -44,6 +44,9 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
     private boolean hashUserData;
     private int hashUserDataPeriodFromDeactivate;
     private int hashUserDataPeriodFromLastLogin;
+    private boolean hashVrns;
+    private int hashVrnsPeriodFromCreation;
+    private int hashVrnsPeriodFromClosure;
 
     public void setHashData(boolean hashData) {
         this.hashData = hashData;
@@ -75,6 +78,18 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
 
     public void setRemoveAttachmentsPeriod(int removeAttachmentsPeriod) {
         this.removeAttachmentsPeriod = removeAttachmentsPeriod;
+    }
+
+    public void setHashVrns(boolean hashVrns) {
+        this.hashVrns = hashVrns;
+    }
+
+    public void setHashVrnsPeriodFromCreation(int hashVrnsPeriodFromCreation) {
+        this.hashVrnsPeriodFromCreation = hashVrnsPeriodFromCreation;
+    }
+
+    public void setHashVrnsPeriodFromClosure(int hashVrnsPeriodFromClosure) {
+        this.hashVrnsPeriodFromClosure = hashVrnsPeriodFromClosure;
     }
 
     public void setRemoveTasks(boolean removeTasks) {
@@ -178,6 +193,13 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
                         baseDataService.callHashUsers(hashUserDataPeriodFromDeactivate, hashUserDataPeriodFromLastLogin);
                     } else {
                         LOG.info("Deactivation of users has been deactivated.");
+                    }
+                    break;
+                case "hashVrns":
+                    if (hashVrns) {
+                        baseDataService.callHashVrns(hashVrnsPeriodFromCreation, hashVrnsPeriodFromClosure);
+                    } else {
+                        LOG.info("Hashin of VRNs has been deactivated.");
                     }
                     break;
                 default:
