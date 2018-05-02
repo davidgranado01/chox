@@ -126,6 +126,7 @@ public class BatchUpdateAction extends BaseAction {
             Comment comment = new Comment();
             comment.setVisibilityType(noteVisibilityType);
             comment.setComment(strPrefix + sComment);
+            comment.setUserComment(true);
 
             claim.addComment(comment);
 
