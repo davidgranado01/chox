@@ -253,18 +253,6 @@ public class InboxAction extends BaseAction {
      */
 
 
-
-//    public Integer getTab() {
-//        if (getSession().containsKey("tabIndex")) {
-//            LOG.debug("getTab is called and the returning value is '{}'", getSession().get("tabIndex"));
-//            return (Integer) getSession().get("tabIndex");
-//        } else {
-//            LOG.debug("getTab is called and the returning value is 0");
-//            return 0;
-//        }
-//    }
-    
-
     // This is to avoid showing the 'Task' tab as default active tab when the user logs in. 
     public int getPreSelectedActiveTab() {
         int activeTab = 0;
@@ -345,9 +333,9 @@ public class InboxAction extends BaseAction {
 
     public String getSuppliersJsonString() {
         List<LookupItem> luItems = new ArrayList<>(getSuppliers().size());
-        for (Chorganisation supplier : suppliers) {
+        suppliers.forEach((supplier) -> {
             luItems.add(new LookupItem(supplier.getName(), supplier.getId().toString()));
-        }
+        });
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = null;
         try {
@@ -360,9 +348,9 @@ public class InboxAction extends BaseAction {
 
     public String getInsurersJsonString() {
         List<LookupItem> luItems = new ArrayList<>(getInsurers().size());
-        for (Insurer insurer : insurers) {
+        insurers.forEach((insurer) -> {
             luItems.add(new LookupItem(insurer.getName(), insurer.getId().toString()));
-        }
+        });
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = null;
         try {
