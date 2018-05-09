@@ -70,11 +70,7 @@
     <!--See http://logback.qos.ch/manual/appenders.html#SMTPAppender-->
     <!--for documentation-->
         <Subject>CHOX Application Error \(Production\)</Subject>
-        <smtpHost>smtp.gmail.com</smtpHost>
-        <smtpPort>465</smtpPort>
-        <SSL>true</SSL>
-        <username>chox@idaschox.com</username>
-        <password>ch0x_3m4il</password>
+        <SMTPHost>localhost</SMTPHost>
         <To>John.Dowson@valexa.com,SecureEmail@scsdev.net</To>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>

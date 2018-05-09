@@ -16,25 +16,6 @@
         </rollingPolicy>
     </appender>
     
-    <appender name="mail" class="ch.qos.logback.classic.net.SMTPAppender">
-    <!--See http://logback.qos.ch/manual/appenders.html#SMTPAppender-->
-    <!--for documentation-->
-        <Subject>CHOX Application Error \(Training\)</Subject>
-        <SMTPHost>localhost</SMTPHost>
-        <To>John.Dowson@valexa.com</To>
-        <From>chox@chox-uk01.idasnetwork.com</From>
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
-        </layout>
-        <cyclicBufferTracker>
-      <!-- send just one log entry per email -->
-            <bufferSize>1</bufferSize>
-        </cyclicBufferTracker>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>ERROR</level>
-        </filter>
-    </appender>
-    
     <appender name="W" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
         <File>${catalina.base}/logs/webServices.log</File>
@@ -158,62 +139,50 @@
     </logger>
     <logger name="org.springframework.scheduling" level="INFO" additivity="false">
         <appender-ref ref="Q"/>
-        <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="idas.chox.web.scheduler" level="INFO" additivity="false">
         <appender-ref ref="Q"/>
-        <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="org.apache" level="WARN" additivity="false">
         <appender-ref ref="S"/>
-        <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="org.apache.cxf" level="ERROR" additivity="false">
         <appender-ref ref="W"/>
-        <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="idas.chox.web.ws" level="INFO" additivity="false">
         <appender-ref ref="W"/>
-        <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="net.sf.ehcache" level="WARN" additivity="false">
         <appender-ref ref="C"/>
-        <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="org.acegisecurity" level="WARN" additivity="false">
         <appender-ref ref="S"/>
-        <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="org.hibernate" level="WARN" additivity="false">
         <appender-ref ref="H"/>
-        <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="net.sf.jxls" level="ERROR" additivity="false">
         <appender-ref ref="S"/>
-        <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="com.opensymphony" level="WARN" additivity="false">
         <appender-ref ref="S"/>
-        <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="org.springframework" level="WARN" additivity="false">
         <appender-ref ref="S"/>
-        <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="org.quartz" level="INFO" additivity="false">
         <appender-ref ref="Q"/>
-        <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <!-- Set following to DEBUG to log POST requests, to TRACE to log all requests and the POST response-->
@@ -223,7 +192,6 @@
     </logger>
     <logger name="idas.chox" level="INFO" additivity="false">
         <appender-ref ref="R"/>
-        <appender-ref ref="mail"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <!-- Stop warnings when generating ecel from report: the warnings are juust for null/empty parameters -->
