@@ -1,7 +1,6 @@
 package idas.chox.web.scheduler;
 
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +25,7 @@ public class PaidInvoicesSchedulerJob extends DbSchedulerJob {
     private PaidInvoiceService paidInvoiceService;
 
     @Override
-    public final Map<Integer, List<String>> doJob() {
+    public final boolean doJob() {
         try {
             LOG.debug("Checking for paid invoice entries for insurer '{}'...", insurerName);
             List<PaidInvoiceEntry> paidInvoiceEntries = paidInvoiceService.getPaidInvoiceEntries(insurerName);
@@ -34,7 +33,7 @@ public class PaidInvoicesSchedulerJob extends DbSchedulerJob {
             if (paidInvoiceEntries != null && paidInvoiceEntries.size() > 0) {
                 // Start new transaction
                 handleHibernateTransactionIntricacies();
-                for (PaidInvoiceEntry paidInvoiceEntry : paidInvoiceEntries) {
+                paidInvoiceEntries.stream().map((paidInvoiceEntry) -> {
                     // Find corresponding claim
                     try {
                         List<Claim> claims = claimService.getClaimByCHOReferenceAndClaimNumber(paidInvoiceEntry.getChoReference(), paidInvoiceEntry.getClaimNumber());
@@ -61,18 +60,22 @@ public class PaidInvoicesSchedulerJob extends DbSchedulerJob {
                         LOG.error("Exception thrown trying to process paid invoice claim with cho reference='{}' and claim number='{}' (id={}): ", new Object[]{
                             paidInvoiceEntry.getChoReference(), paidInvoiceEntry.getClaimNumber(), paidInvoiceEntry.getId(), ex});
                     }
+                    return paidInvoiceEntry;
+                }).map((paidInvoiceEntry) -> {
                     // Delete paid invoice entry
                     claimService.delete(paidInvoiceEntry);
+                    return paidInvoiceEntry;
+                }).forEachOrdered((paidInvoiceEntry) -> {
                     LOG.debug("Paid invoice entry with cho reference='{}' and claim number ='{}' (id={}) removed.", new Object[]{
-                                paidInvoiceEntry.getChoReference(), paidInvoiceEntry.getClaimNumber(), paidInvoiceEntry.getId()});
-                }
+                        paidInvoiceEntry.getChoReference(), paidInvoiceEntry.getClaimNumber(), paidInvoiceEntry.getId()});
+                });
                 releaseHibernateSessionConditionally();
             }
         } catch (Exception ex) {
             LOG.error("Exception thrown checking for paid invoices: {}", ex.getMessage(), ex);
         }
 
-        return null;
+        return true;
     }
 
     @Override

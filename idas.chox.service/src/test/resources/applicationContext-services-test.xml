@@ -7,9 +7,6 @@
     <bean id="baseDataService" class="idas.chox.data.services.BaseDataService" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="quartzBaseDataService" class="idas.chox.data.services.BaseDataService" scope="prototype">
-        <property name="sessionFactory" ref="quartzSessionFactory"/>
-    </bean>
     <bean id="config" class="idas.chox.data.services.Config" scope="singleton">
         <property name="activityMonitorRequestInterval" value="5000"/>
     </bean>
@@ -342,7 +339,7 @@
     </bean>
     
     <bean id="schedulerJobService" class="idas.chox.data.services.SchedulerJobServiceImpl" scope="prototype">
-        <property name="sessionFactory" ref="quartzSessionFactory"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     
     <bean id="hireMonitoringEcdService" class="idas.chox.data.services.HireMonitoringEcdServiceImpl" scope="prototype">

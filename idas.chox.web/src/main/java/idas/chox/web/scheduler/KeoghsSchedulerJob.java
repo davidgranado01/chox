@@ -1,7 +1,6 @@
 package idas.chox.web.scheduler;
 
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +32,7 @@ public class KeoghsSchedulerJob extends DbSchedulerJob {
     }
 
     @Override
-    public final Map<Integer, List<String>> doJob() {
+    public final boolean doJob() {
         int noRequestsToQueue = maxQueuedRequests;
         try {
             // Start new transaction?
@@ -59,7 +58,7 @@ public class KeoghsSchedulerJob extends DbSchedulerJob {
              releaseHibernateSessionConditionally();
         }
 
-        return null;
+        return true;
     }
 
     @Override

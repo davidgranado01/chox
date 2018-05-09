@@ -1,5 +1,6 @@
-package idas.chox.web.scheduler;
+package idas.chox.service.workflow.scheduleActivities;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -10,6 +11,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +21,14 @@ public class XlsFileParser {
 
     private static final Logger LOG = LoggerFactory.getLogger(XlsFileParser.class);
     private static final int CELLS_PER_ROW = 4;
+
+    public Map<Integer, List<String>> processExcelFile(byte[] input) {
+        ByteArrayInputStream bis = new ByteArrayInputStream(input);
+        
+        
+        return readExcelFile(bis);
+    }
+
 
     /**
      * Reads the excel file and populates the Map readable cell data.

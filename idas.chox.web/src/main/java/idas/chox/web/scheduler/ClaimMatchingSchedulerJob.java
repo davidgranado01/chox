@@ -1,21 +1,21 @@
 package idas.chox.web.scheduler;
 
-import idas.chox.core.model.Claim;
-import idas.chox.core.model.ClaimMatchingEntry;
-import idas.chox.core.model.ClaimMatchingImportEntry;
-import idas.chox.core.model.Insurer;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimMatchingEntry;
+import idas.chox.core.model.ClaimMatchingImportEntry;
+import idas.chox.core.model.Insurer;
 import idas.chox.core.model.SchedulerJob;
 import idas.chox.core.services.ClaimMatchingService;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.service.workflow.activities.ClaimMatching;
+
 
 public class ClaimMatchingSchedulerJob extends DbSchedulerJob {
 
@@ -27,13 +27,13 @@ public class ClaimMatchingSchedulerJob extends DbSchedulerJob {
     private ClaimMatchingService claimMatchingService;
 
     @Override
-    public final Map<Integer, List<String>> doJob() {
+    public final boolean doJob() {
         int matchStatus;
         Insurer ins = getSecurityInfoProvider().getCurrentUser().getInsurer();
         
         if (!ins.isEnableClaimMatching()) {
             LOG.warn("Claim Matching not enabled for insurer '{}' but scheduler job is active", insurerName);
-            return null;
+            return false;
         }
         
         try {
@@ -102,7 +102,7 @@ public class ClaimMatchingSchedulerJob extends DbSchedulerJob {
             LOG.error("Exception thrown checking fo claim matching: {}", ex.getMessage(), ex);
         }
 
-        return null;
+        return true;
     }
 
     @Override

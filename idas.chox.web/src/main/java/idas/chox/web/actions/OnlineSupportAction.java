@@ -1,6 +1,7 @@
 package idas.chox.web.actions;
 
 import java.util.Properties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,7 +10,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import idas.chox.core.util.DateHelper;
-import idas.chox.core.util.EmailHelper;
+import idas.chox.core.util.GmailUtils;
 
 
 public class OnlineSupportAction extends BaseAction {
@@ -42,6 +43,7 @@ public class OnlineSupportAction extends BaseAction {
     }
 
 
+    @Override
     public String getActionResult() {
         return actionResult;
     }
@@ -82,16 +84,10 @@ public class OnlineSupportAction extends BaseAction {
         	props = PropertiesLoaderUtils.loadProperties(resource);
 
             String onlineSupportDefaultEmail = props.getProperty("onlineSupportDefaultEmail");
-            String smtpHostName = props.getProperty("smtpHostName");
-            String smtpPort = props.getProperty("smtpPort");
-            String smtpEmailUser = props.getProperty("smtpEmailUser");
-            String smtpEmailUserPassword = props.getProperty("smtpEmailPassword");
+ 
 
-            String[] recipients = {onlineSupportDefaultEmail};
-
-            EmailHelper emailHelper = new EmailHelper(smtpHostName, smtpPort, smtpEmailUser, smtpEmailUserPassword);
             String emailMessage = doConstructEmailMessage(iSubject, iSupplierReference, iMessage, iEmail, iPhone);
-            emailHelper.postMail(iSubject, emailMessage, recipients);
+            GmailUtils.sendMessage(onlineSupportDefaultEmail, null, iSubject, emailMessage);
             this.getActionResponse().AssignMessageResult("Your support request has been sent successfully. A member of the CHOX support team will be in touch shortly.");
 
         } catch (Exception ex) {

@@ -1,7 +1,6 @@
 package idas.chox.web.scheduler;
 
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,23 +17,23 @@ public class TotalLossChaseDbSchedulerJob extends DbSchedulerJob {
 
     @Secured({"ROLE_CHO"})
     @Override
-    public Map<Integer, List<String>> doJob() {
+    public boolean doJob() {
 
         try {
             // Start new transaction?
             handleHibernateTransactionIntricacies();
-            ((SecureDataService)claimService).setSecurityInfoProvider(((SecureDataService)claimService).getSecurityInfoProvider());
+            ((SecureDataService) claimService).setSecurityInfoProvider(((SecureDataService) claimService).getSecurityInfoProvider());
             List<Claim> claims = claimService.getTotalLossChaseClaims();
             if (claims != null && claims.size() > 0) {
                 LOG.debug("total no. claims to chase is {}", claims.size());
 
-                for (Claim claim : claims) {
+                claims.forEach((claim) -> {
                     int status = claimService.createChaseTask(claim);
                     if (status == 1 && LOG.isDebugEnabled()) {
                         LOG.debug("Chase task created for claim {} [{}]: {}",
-                            new Object[]{claim.getChoReference(), claim.getId(), status});
+                                new Object[]{claim.getChoReference(), claim.getId(), status});
                     }
-                }
+                });
 
             } else {
                 LOG.debug("No claims to chase.");
@@ -44,9 +43,10 @@ public class TotalLossChaseDbSchedulerJob extends DbSchedulerJob {
         } finally {
             releaseHibernateSessionConditionally();
         }
-        return null;
+        return true;
     }
 
+    
     @Override
     protected List<SchedulerJob> getSchedulerJobs() {
         return getSchedulerJobService().getSchedulerJobs(JOB_NAME);

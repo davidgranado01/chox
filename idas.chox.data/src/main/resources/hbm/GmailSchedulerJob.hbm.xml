@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="idas.chox.core.model.SchedulerJob" table="scheduler_job">
+    <class name="idas.chox.core.model.GmailSchedulerJob" table="gmail_scheduler_job">
         <cache usage="nonstrict-read-write"/>
         <id column="id" name="id">
             <generator class="sequence">
@@ -12,7 +12,13 @@
         <property column="login_username" name="loginUserName" not-null="true"/>
         <property column="login_password" name="loginPassword" not-null="true"/>
         <property column="job_name" name="jobName" not-null="true"/>
+        <property column="email_subject" name="emailSubject" not-null="true"/>
+        <property column="bcc_receiver" name="bccReceivers" not-null="true"/>
+        <property column="authorised_user" name="privilegedUsers" not-null="true"/>
+        <property column="error_message_receiver" name="errorMessageReceivers" not-null="true"/>
+        <property column="processed_label" name="processedLabel" not-null="true"/>
         <property column="active" name="active" />
+        <property column="reply_to_sender" name="replyToSender"  not-null="true"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
         <property column="created_date" name="createdDate"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

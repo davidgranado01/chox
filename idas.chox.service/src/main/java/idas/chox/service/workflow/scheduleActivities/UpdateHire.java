@@ -1,0 +1,231 @@
+package idas.chox.service.workflow.scheduleActivities;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+
+import idas.chox.core.model.Claim;
+import idas.chox.core.model.EmailAttachment;
+import idas.chox.core.model.VehicleClass;
+import idas.chox.core.model.VehicleHire;
+import idas.chox.core.services.VehicleClassService;
+import idas.chox.core.util.DateHelper;
+import idas.chox.core.workflow.Activity;
+import idas.chox.service.workflow.ActivityFactory;
+import idas.chox.service.workflow.activities.HireUpdate;
+
+/**
+ *
+ * @author john
+ */
+public class UpdateHire extends BaseScheduleActivity {
+
+    private static final Logger LOG = LoggerFactory.getLogger(UpdateHire.class);
+    private final List<String> statusMessages = new ArrayList<>();
+    private Map<Integer, List<String>> xlsDataMap;
+    private ActivityFactory activityFactory;
+    private XlsFileParser xlsFileParser;
+    private VehicleClassService vehicleClassService;
+
+    public void setVehicleClassService(VehicleClassService vehicleClassService) {
+        this.vehicleClassService = vehicleClassService;
+    }
+
+    public void setXlsFileParser(XlsFileParser xlsFileParser) {
+        this.xlsFileParser = xlsFileParser;
+    }
+
+    public void setActivityFactory(ActivityFactory activityFactory) {
+        this.activityFactory = activityFactory;
+    }
+
+    @Override
+    public boolean process(String body, List<EmailAttachment> attachments, String from, String subject) throws Exception {
+
+        for (EmailAttachment attachment : attachments) {
+            if (!attachment.getName().endsWith("xls")) {
+                LOG.debug("Incorrect attachment type found: '{}'", attachment.getName());
+                continue;
+            }
+            xlsDataMap = xlsFileParser.processExcelFile(attachment.getContent());
+
+            Set<Integer> rowNumbers = xlsDataMap.keySet();
+
+            for (Integer row : rowNumbers) {
+                // first row is header
+                if (row != 0) { // ignore first row - should contain header
+                    List<String> cells = xlsDataMap.get(row);
+
+                    if (cells.size() < 4) {
+                        //ignore row
+                        LOG.debug("Ignoring row {} - only has {} cells.", row, cells.size());
+                        continue;
+                    }
+
+                    StringBuilder statusString = new StringBuilder();
+
+                    /* Check is valid referenceNumber provided and claim is in valid status.*/
+                    String referenceNumber = cells.get(0).trim();
+                    Claim claim = validateClaimReferenceNumber(referenceNumber, statusString);
+
+                    /* Check vehicle class is valid */
+                    String vehicleClassString = null;
+                    if (cells.size() > 1) {
+                        vehicleClassString = cells.get(1).trim();
+                    }
+                    VehicleClass vehicleClass = null;
+                    if (vehicleClassString != null && !vehicleClassString.isEmpty()) {
+                        vehicleClass = validateVehicleClass(vehicleClassString, statusString);
+                    }
+
+                    /* Check Hire Start date provided is valid and parse the string date to java date.*/
+                    String hireStartString = null;
+                    if (cells.size() > 2) {
+                        hireStartString = cells.get(2).trim();
+                    }
+                    Date hireStartDate = validateDate(hireStartString, statusString, "Hire Start (Date)");
+
+                    /* Check Hire Start time provided is valid */
+                    String hireStartTime = null;
+                    if (cells.size() > 3) {
+                        hireStartTime = cells.get(3).trim();
+                    }
+                    if (hireStartTime != null && hireStartTime.isEmpty()) {
+                        hireStartTime = null;
+                    } else if (hireStartTime != null) {
+                        hireStartTime = validateTime(hireStartTime, statusString);
+                    }
+
+
+                    /* Check update insurer column is valid, if present */
+                    boolean updateInsurer = false;
+                    if (cells.size() > 4) {
+                        updateInsurer = validateUpdateInsurer(cells.get(4).trim(), statusString);
+                    }
+
+                    // Check values have changed, otherwise do not update
+                    if (claim != null) {
+                        VehicleHire vh = claim.getVehicleHire();
+                        Date hireStartDateTime;
+                        // Merge date and time
+                        if (hireStartTime != null) {
+                            try {
+                                Date time = DateHelper.getTimeFormat().parse(hireStartTime);
+                                hireStartDateTime = DateHelper.mergeTimeToDate(hireStartDate, time);
+                            } catch (ParseException ex) {
+                                LOG.error("Exception thrown merging time '{}' into date '{}': {}", new Object[]{hireStartTime, hireStartDate, ex.getMessage()});
+                                hireStartDateTime = hireStartDate;
+                            }
+                        } else {
+                            hireStartDateTime = hireStartDate;
+                        }
+
+                        if (vh != null && vh.getVehicleClass() != null && vehicleClass != null && vh.getRentalStart() != null
+                                && vh.getVehicleClass().getName().equals(vehicleClass.getName())
+                                && vh.getRentalStart().compareTo(hireStartDateTime) == 0) {
+                            statusString.append("Failed: No change from existing Vehicle Class or Hire Start details");
+                        }
+                    }
+                    /* If validation passed add the new hire monitoring ECD.*/
+                    if (statusString.toString().isEmpty()) {
+                        try {
+                            Activity activity = (HireUpdate) activityFactory.getActivity("hireUpdate");
+                            ((HireUpdate) activity).setVehicleClass(vehicleClass);
+                            ((HireUpdate) activity).setHireStartDate(hireStartDate);
+                            ((HireUpdate) activity).setHireStartTime(hireStartTime);
+                            ((HireUpdate) activity).setUpdateInsurer(updateInsurer);
+                            activity.process(claim);
+                            statusString.append("Success: Updated.");
+                            LOG.debug("Updated claim '{}' ('{}') [row:{}]", new Object[]{referenceNumber, claim == null ? "null" : claim.getChoReference(), row});
+                        } catch (AccessDeniedException ex) {
+                            statusString.append("Failed: No Access to Hire Update Activity (Invalid Claim Status '")
+                                    .append(claim == null ? "null" : claim.getStatus()).append("')");
+                            LOG.warn("AccessDenied Exception thrown when updating Hire Start via email scheduler job for claim '{}' [row:{}]", claim == null ? "null" : claim.getChoReference(), row);
+                        } catch (Exception ex) {
+                            statusString.append("Failed: An Internal Error Occurred.");
+                            LOG.warn("Exception occurred when updating hire start via email scheduler job job for claim '{}' [row:{}]", claim == null ? "null" : claim.getChoReference(), row, ex);
+                        }
+                    } else {
+                        LOG.debug("Failed Update of claim '{}' - {} [row:{}]", new Object[]{referenceNumber, statusString, row});
+                        statusString.insert(0, "Failed:");
+                    }
+
+                    /* update the result message into column 5 for each row.*/
+                    if (xlsDataMap.get(row).size() < 5) {
+                        xlsDataMap.get(row).add("dummy column");
+                    }
+                    if (xlsDataMap.get(row).size() < 6) {
+                        xlsDataMap.get(row).add(statusString.toString());
+                    } else {
+                        xlsDataMap.get(row).set(5, statusString.toString());
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public String getResponse(String subject, String from) {
+        StringBuilder emailMsg = new StringBuilder();
+        emailMsg.append("======================================================================\n");
+        emailMsg.append("Submitted By Email: ").append(from).append("\n");
+        emailMsg.append("Date: ").append(DateHelper.getCurrentDateWithFormat(EMAIL_DATE_FORMAT)).append("\n");
+        emailMsg.append("Subject: ").append(subject).append("\n");
+        emailMsg.append("======================================================================\n\n");
+        if (xlsDataMap != null) {
+            emailMsg.append("Reference Number           Message\n");
+            emailMsg.append("-----------------------------------------------------------------------------------------------\n");
+            Set<Integer> rowNumbers = xlsDataMap.keySet();
+
+            rowNumbers.stream().filter((row) -> (row != 0)).map((row) -> xlsDataMap.get(row)).filter((cells) -> (cells.size() >= 5)).map((cells) -> {
+                // We expect at least three columns
+                emailMsg.append(String.format("%-22s", cells.get(0).trim()));
+                return cells;
+            }).map((cells) -> {
+                emailMsg.append("\t\t");
+                emailMsg.append(cells.get(5).trim());
+                return cells;
+            }).forEachOrdered((_item) -> {
+                emailMsg.append("\n");
+            });
+
+        } else {
+            emailMsg.append("No xls attachement found in email, please check and re-submit.\n");
+            emailMsg.append("-----------------------------------------------------------------------------------------------\n");
+        }
+        LOG.debug("Message to send is: \n*********\n{}\n*********", emailMsg.toString());
+        return emailMsg.toString();
+    }
+
+    private VehicleClass validateVehicleClass(String vehicleClassString, StringBuilder statusString) {
+        VehicleClass vehicleclass = vehicleClassService.getVehicleClassByName(vehicleClassString);
+        if (vehicleclass == null) {
+            statusString.append(" Invalid Replacement Vehicle Class Provided.");
+        }
+
+        return vehicleclass;
+    }
+
+    private boolean validateUpdateInsurer(String updateInsurerString, StringBuilder statusString) {
+        boolean updateInsurer = false;
+
+        if (updateInsurerString != null && !updateInsurerString.isEmpty()) {
+            if (updateInsurerString.trim().equalsIgnoreCase("y") || updateInsurerString.trim().equalsIgnoreCase("yes")) {
+                updateInsurer = true;
+            } else if (!updateInsurerString.trim().equalsIgnoreCase("n") && !updateInsurerString.trim().equalsIgnoreCase("no")) {
+                statusString.append(" Invalid Format for Update Insurer.");
+            }
+        }
+        return updateInsurer;
+    }
+
+}

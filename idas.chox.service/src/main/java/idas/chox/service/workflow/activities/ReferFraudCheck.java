@@ -1,14 +1,15 @@
 package idas.chox.service.workflow.activities;
 
+import java.io.IOException;
+import javax.mail.MessagingException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
-import idas.chox.core.util.EmailHelper;
-import java.io.UnsupportedEncodingException;
-import javax.mail.MessagingException;
+import idas.chox.core.util.GmailUtils;
 
 /**
  *
@@ -16,28 +17,9 @@ import javax.mail.MessagingException;
  */
 public class ReferFraudCheck extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ReferFraudCheck.class);
-    private String smtpHostName;
-    private String smtpPort;
-    private String smtpEmailUser;
-    private String smtpEmailPassword;
     private String keoghsReceiver;
     private String keoghsBccReceiver;
 
-    public void setSmtpHostName(String smtpHostName) {
-        this.smtpHostName = smtpHostName;
-    }
-
-    public void setSmtpPort(String smtpPort) {
-        this.smtpPort = smtpPort;
-    }
-
-    public void setSmtpEmailUser(String smtpEmailUser) {
-        this.smtpEmailUser = smtpEmailUser;
-    }
-
-    public void setSmtpEmailPassword(String smtpEmailPassword) {
-        this.smtpEmailPassword = smtpEmailPassword;
-    }
 
     public void setKeoghsReceiver(String keoghsReceiver) {
         this.keoghsReceiver = keoghsReceiver;
@@ -75,19 +57,13 @@ public class ReferFraudCheck extends BaseActivity {
         String[] bccReceivers = keoghsBccReceiver != null ? keoghsBccReceiver.split(",") : null;
         LOG.debug("sending mails to receivers {} and bccreceivers {} ", receivers, bccReceivers);
         try {
-            EmailHelper emailHelper = new EmailHelper(smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword);
-            if (bccReceivers != null && bccReceivers.length > 0) {
-                emailHelper.postMail(subject, emailMessage, receivers, bccReceivers);
-            } else {
-                emailHelper.postMail(subject, emailMessage, receivers);
-            }
-        } catch (UnsupportedEncodingException e) {
-            LOG.error("Encoding Exception thrown sending email to Keoghs with smtpHostName={}, smtpPort={}, smtpEmailUser={}, smtpEmailPassword={}: ",
-                    new Object[]{smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword, e});
-        } catch (MessagingException e) {
-            LOG.error("Messaging Exception thrown sending email to Keoghs with smtpHostName={}, smtpPort={}, smtpEmailUser={}, smtpEmailPassword={}: ",
-                    new Object[]{smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword, e});
-        }
+                GmailUtils.sendMessage(keoghsReceiver, keoghsBccReceiver, subject, emailMessage);
+        } catch (IOException ex) {
+            LOG.error("Encoding Exception thrown sending email to Keoghs with: {}", ex.getMessage(), ex);
+        } catch (MessagingException ex) {
+            LOG.error("Messaging Encoding Exception thrown sending email to Keoghs with: {}", ex.getMessage(), ex);
+
+        } 
     }
     
 }

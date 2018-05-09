@@ -1,5 +1,6 @@
 package idas.chox.service.workflow.activities;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import org.apache.commons.text.StringEscapeUtils;
@@ -14,7 +15,6 @@ import idas.chox.core.model.VehicleHire;
 import idas.chox.core.services.NotificationService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.data.notifications.HireVehicleUpdatedNotification;
-import idas.chox.events.BaseActivityEvent;
 import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 
@@ -90,7 +90,7 @@ public class HireUpdate extends BaseActivity {
             try {
                 Date time = DateHelper.getTimeFormat().parse(hireStartTime);
                 hireStartDateTime = DateHelper.mergeTimeToDate(hireStartDate, time);
-            } catch (Exception ex) {
+            } catch (ParseException ex) {
                 LOG.error("Exception thrown merging time into date: {}", hireStartDate, hireStartTime);
                 throw new Exception("Error setting Hire Start date/time");
             }
@@ -131,7 +131,6 @@ public class HireUpdate extends BaseActivity {
     @Override
     protected void afterProcess(Claim claim) {
         getDataService().save(claim);
-//        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).forEach((event) -> {
             ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
         });

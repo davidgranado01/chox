@@ -1,15 +1,13 @@
 package idas.chox.service.admin;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
+import javax.mail.MessagingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import idas.chox.core.model.AutomaticRoutingPolicy;
 import idas.chox.core.model.AutomaticRoutingPrice;
@@ -40,11 +38,9 @@ import idas.chox.core.services.UserService;
 import idas.chox.core.services.VehicleClassCeilingService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.services.WorkgroupService;
-import idas.chox.core.util.EmailHelper;
+import idas.chox.core.util.GmailUtils;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.ActionResponse;
-import java.io.IOException;
-import javax.mail.MessagingException;
 
 public class AdminInsurerService extends SecureDataService {
 
@@ -216,9 +212,9 @@ public class AdminInsurerService extends SecureDataService {
         List<IdLookupItem> items = new ArrayList<>();
         List<Workgroup> availableWorkgroups = workgroupService.getAvailableAutoRoutingWorkgroupsByInsurer(insurerId, isActiveOnly);
 
-        for (Workgroup s : availableWorkgroups) {
+        availableWorkgroups.forEach((s) -> {
             items.add(new IdLookupItem(s.getId(), s.getName()));
-        }
+        });
 
         return items;
     }
@@ -324,27 +320,14 @@ public class AdminInsurerService extends SecureDataService {
                     // Email Audatex Staff of new BRE Band Creation
                     LOG.debug("Sending email to '{}' from {}", emailReceivers, hostName);
                     try {
-                        Resource resource = new ClassPathResource("/application.properties");
-                        Properties props = PropertiesLoaderUtils.loadProperties(resource);
-
-                        String smtpHostName = props.getProperty("smtpHostName");
-                        String smtpPort = props.getProperty("smtpPort");
-                        String smtpEmailUser = props.getProperty("smtpEmailUser");
-                        String smtpEmailUserPassword = props.getProperty("smtpEmailPassword");
-
-                        String[] recipients = emailReceivers.split(",");
-
                         String emailSubject;
                         if ("PRODUCTION".equals(hostName)) {
                             emailSubject = "New BRE Band Created";
                         } else {
                             emailSubject = "New BRE Band Created (" + hostName + ")";
                         }
-                        LOG.debug("Initialising emailHelper with smtpHostName={}, smtpPort={}, smtpEmailUser={}, smtpEmailUserPassword={}",
-                                new Object[]{smtpHostName, smtpPort, smtpEmailUser, smtpEmailUserPassword});
-                        EmailHelper emailHelper = new EmailHelper(smtpHostName, smtpPort, smtpEmailUser, smtpEmailUserPassword);
                         String emailMessage = "Insurer " + breBand.getInsurer().getName() + ", User " + breBand.getCreatedBy().getFullName() + " Has Added A New BRE Band Called " + breBand.getName() + " On " + breBand.getCreatedDate().toString() + ".";
-                        emailHelper.postMail(emailSubject, emailMessage, recipients);
+                        GmailUtils.sendMessage(emailReceivers, null, emailSubject, emailMessage);
                         LOG.debug("Email sent: {}", emailSubject);
                     } catch (IOException | MessagingException ex) {
                         LOG.error("Error sending email for new RE Band '{}' Creation: {}", breBand.getName(), ex.getMessage());

@@ -1,8 +1,5 @@
 package idas.chox.web.scheduler;
 
-import java.util.List;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,19 +13,18 @@ public abstract class DbSchedulerJob extends SchedulerJobBase {
 
     private static final Logger LOG = LoggerFactory.getLogger(DbSchedulerJob.class);
 
-    public String buildMessage(String subject, Map<Integer, List<String>> xlsDataMap) {
+    public abstract boolean doJob();
+    public String buildMessage() {
         return null;
     }
 
-    public abstract Map<Integer, List<String>> doJob();
-
     @Override
-    protected void process(String emailSubject, SchedulerJob schedulerJob) {
-        Map<Integer, List<String>> resultMap = doJob();
-        String emailMessage = buildMessage(emailSubject, resultMap);
-        if (emailMessage != null) {
-            sendMail(schedulerJob.getPrivilegedUsers(), schedulerJob.getBccReceivers(), emailSubject, emailMessage);
-            LOG.info("{} with subject '{}' job finished.", getClass().getSimpleName(), emailSubject);
+    protected void process(SchedulerJob schedulerJob) {
+        if (doJob()) {
+            String results = buildMessage();
+            LOG.info("{} job finished with results:\n", getClass().getSimpleName(), results);
+        } else {
+            LOG.info("{} job finished.", getClass().getSimpleName());
         }
     }
 }

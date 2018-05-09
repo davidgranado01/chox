@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
@@ -17,7 +18,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
-import org.hibernate.type.LongType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -466,7 +466,13 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
     }
 
     public Session getCurrentSession() {
-        return getSessionFactory().getCurrentSession();
+        Session session;
+        try {
+            session = getSessionFactory().getCurrentSession();
+        } catch (HibernateException ex) {
+            session = getSessionFactory().openSession();
+        }
+        return session;
     }
 
     @Override

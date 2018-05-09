@@ -1,25 +1,44 @@
-package idas.chox.web.scheduler;
+package idas.chox.service.workflow.scheduleActivities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.annotation.Secured;
 
-import idas.chox.core.model.SchedulerJob;
+import idas.chox.core.model.EmailAttachment;
 import idas.chox.core.util.DateHelper;
 import idas.chox.data.services.SecureDataService;
+import idas.chox.service.workflow.ActivityFactory;
 
-public class PenaltyChargeUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob {
+/**
+ *
+ * @author john
+ */
+public class PenaltyUpdate extends BaseScheduleActivity {
 
-    private static final Logger LOG = LoggerFactory.getLogger(PenaltyChargeUpdateEmailSchedulerJob.class);
-    public static final String JOB_NAME = "PENALTY_UPDATE";
+    private static final Logger LOG = LoggerFactory.getLogger(PenaltyUpdate.class);
+    private final List<String> statusMessages = new ArrayList<>();
+    private Map<Integer, List<String>> xlsDataMap;
+    private XlsFileParser xlsFileParser;
 
-    @Secured({"ROLE_CHOX_ADMIN"})
+
+    public void setXlsFileParser(XlsFileParser xlsFileParser) {
+        this.xlsFileParser = xlsFileParser;
+    }
+
     @Override
-    protected Map<Integer, List<String>> doJob(Map<Integer, List<String>> xlsDataMap, String sender) {
+    public boolean process(String body, List<EmailAttachment> attachments, String from, String subject) throws Exception {
+
+        for (EmailAttachment attachment : attachments) {
+            if (!attachment.getName().endsWith("xls")) {
+                LOG.debug("Incorrect attachment type found: '{}'", attachment.getName());
+                continue;
+            }
+            xlsDataMap = xlsFileParser.processExcelFile(attachment.getContent());
+
         Set<Integer> rowNumbers = xlsDataMap.keySet();
         // This is specific for the excel file with two columns and
         // first row is a header.
@@ -60,15 +79,16 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob
                 }
             }
         }
+        }
 
-        return xlsDataMap;
+        return true;
     }
 
     @Override
-    protected String buildMessage(String email, String subject, Map<Integer, List<String>> xlsDataMap) {
+    public String getResponse(String subject, String from) {
         StringBuilder emailMsg = new StringBuilder();
         emailMsg.append("======================================================================\n");
-        emailMsg.append("Submitted By Email: ").append(email).append("\n");
+        emailMsg.append("Submitted By Email: ").append(from).append("\n");
         emailMsg.append("Date: ").append(DateHelper.getCurrentDateWithFormat(EMAIL_DATE_FORMAT)).append("\n");
         emailMsg.append("Subject: ").append(subject).append("\n");
         emailMsg.append("======================================================================\n\n");
@@ -80,15 +100,13 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob
             // first row is a header.
             // We don't do update on first line and we assume we will always
             // have only two columns.
-            for (Integer row : rowNumbers) {
-                if (row != 0) {
-                    List<String> cells = xlsDataMap.get(row);
-                    if (cells.size() >= 2) { // We expect at least two columns
-                        emailMsg.append(cells.get(0).trim()).append("\t\t\t");
-                        emailMsg.append(cells.get(1).trim()).append("\n");
-                    }
-                }
-            }
+            rowNumbers.stream().filter((row) -> (row != 0)).map((row) -> xlsDataMap.get(row)).filter((cells) -> (cells.size() >= 2)).map((cells) -> {
+                // We expect at least two columns
+                emailMsg.append(cells.get(0).trim()).append("\t\t\t");
+                return cells;
+            }).forEachOrdered((cells) -> {
+                emailMsg.append(cells.get(1).trim()).append("\n");
+            });
   
         } else {
             emailMsg.append("No attachement on email, please check and re-submit.\n");
@@ -98,8 +116,5 @@ public class PenaltyChargeUpdateEmailSchedulerJob extends ExcelEmailSchedulerJob
         return emailMsg.toString();
     }
 
-    @Override
-    protected List<SchedulerJob> getSchedulerJobs() {
-        return getSchedulerJobService().getSchedulerJobs(JOB_NAME);
-    }
+
 }

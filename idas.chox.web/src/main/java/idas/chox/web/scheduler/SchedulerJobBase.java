@@ -1,6 +1,5 @@
 package idas.chox.web.scheduler;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,7 +31,6 @@ import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.SchedulerJobService;
 import idas.chox.core.util.DateHelper;
-import idas.chox.core.util.EmailHelper;
 import idas.chox.data.services.SecureDataService;
 
 /**
@@ -45,11 +43,6 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     protected static final String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
     private static final String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])?$";
     protected MailSecurityAthenticator mailSecurityAthenticator;
-    protected MailUtil mailUtil;
-    private String smtpHostName;
-    private String smtpPort;
-    private String smtpEmailUser;
-    private String smtpEmailPassword;
     private SecurityInfoProvider securityInfoProvider;
     private Session session;
     private SessionFactory sessionFactory;
@@ -61,7 +54,7 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     protected ClaimService claimService;
     
     protected abstract List<SchedulerJob> getSchedulerJobs();
-    protected abstract void process(String emailSubject, SchedulerJob schedulerJob) throws MessagingException;
+    protected abstract void process(SchedulerJob schedulerJob) throws MessagingException;
 
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
@@ -84,31 +77,21 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
             }
             for (SchedulerJob schedulerJob : schedulerJobs) {
 
-                // ADD PREFIX TO THE EMAIL SUBJECT IF THE APPLICATION DO NOT RUN ON PRODUCTION SERVER.
-                if (!hostName.equalsIgnoreCase("PRODUCTION")) {
-                    String emailSubjectPrefix = hostName + "-";
-                    if (!serverConfig.getServletContext().getContextPath().isEmpty()) {
-                        emailSubjectPrefix = emailSubjectPrefix + serverConfig.getServletContext().getContextPath().replace("/", "") + ":";
-                    }
-                    emailSubject = emailSubjectPrefix + schedulerJob.getEmailSubject();
-                } else {
-                    emailSubject = schedulerJob.getEmailSubject();
-                }
             
-                LOG.info("{} with subject '{}' job started.", getClass().getSimpleName(), emailSubject);
+                LOG.info("{} job started.", getClass().getSimpleName());
                 loginUsername = schedulerJob.getLoginUserName();
                 loginPassword = schedulerJob.getLoginPassword();
                 try {
                     mailSecurityAthenticator.authenticateSender(loginUsername, loginPassword);
                     LOG.debug("Mapped login user {} is authenticated.", loginUsername);
 
-                    process(emailSubject, schedulerJob);
+                    process(schedulerJob);
                 } catch (AccessDeniedException | AuthenticationException e) {
                     LOG.error("The user for scheduler job {} is not authenticated: username='{}', password='{}' \n", new Object[]{ getClass().getSimpleName(), loginUsername, loginPassword, e});
                 } catch (Exception e) {
                     LOG.error("An exception was thrown during {} update:  \n", getClass().getSimpleName(), e);
                 } finally {
-                    LOG.info("{} with subject '{}' job finished.", getClass().getSimpleName(), emailSubject);
+                    LOG.info("{} job finished.", getClass().getSimpleName());
                 }
             }
         } catch (Exception ex) {
@@ -116,26 +99,6 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
         }
     }
     
-    protected final void sendMail(String receiver, String bccReceiver, String subject, String emailMessage) {
-        String[] receivers = receiver != null ? receiver.split(",") : null;
-        String[] bccReceivers = bccReceiver != null ? bccReceiver.split(",") : null;
-        LOG.debug("sending mails to receivers {} and bccreceivers {} ", receivers, bccReceivers);
-        try {
-            EmailHelper emailHelper = new EmailHelper(smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword);
-            if (bccReceivers != null && bccReceivers.length > 0) {
-                emailHelper.postMail(subject, emailMessage, receivers, bccReceivers);
-            } else {
-                emailHelper.postMail(subject, emailMessage, receivers);
-            }
-        } catch (UnsupportedEncodingException e) {
-            LOG.error("Encoding Exception thrown sending email with smtpHostName={}, smtpPort={}, smtpEmailUser={}, smtpEmailPassword={}: ",
-                    new Object[]{smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword, e});
-        } catch (MessagingException e) {
-            LOG.error("Messaging Exception thrown sending email with smtpHostName={}, smtpPort={}, smtpEmailUser={}, smtpEmailPassword={}: ",
-                    new Object[]{smtpHostName, smtpPort, smtpEmailUser, smtpEmailPassword, e});
-        }
-    }
-
     protected BigDecimal validateNumeric(String valueString, StringBuilder statusString, String column) {
         BigDecimal value = null;
         
@@ -154,27 +117,6 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
             MailSecurityAthenticator mailSecurityAthenticator) {
         this.mailSecurityAthenticator = mailSecurityAthenticator;
     }
-
-    public void setMailUtil(MailUtil mailUtil) {
-        this.mailUtil = mailUtil;
-    }
-
-    public void setSmtpHostName(String smtpHostName) {
-        this.smtpHostName = smtpHostName;
-    }
-
-    public void setSmtpPort(String smtpPort) {
-        this.smtpPort = smtpPort;
-    }
-
-    public void setSmtpEmailUser(String smtpEmailUser) {
-        this.smtpEmailUser = smtpEmailUser;
-    }
-
-    public void setSmtpEmailPassword(String smtpEmailPassword) {
-        this.smtpEmailPassword = smtpEmailPassword;
-    }
-
 
     public SecurityInfoProvider getSecurityInfoProvider() {
         return securityInfoProvider;
@@ -200,16 +142,6 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
             session = sessionFactory.openSession();
         }
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
-//        if (!TransactionSynchronizationManager.isActualTransactionActive()) {
-//            try {
-//                hibernateTransaction = session.beginTransaction();
-//                LOG.debug("Hibernate Transaction started: {}", hibernateTransaction);
-//            } catch (HibernateException ex) {
-//                LOG.error("Exception thrown starting hibernate transaction: {}\n", ex.getMessage(), ex);
-//            }
-//        } else {
-//            LOG.debug("Transaction already active: {}", TransactionSynchronizationManager.getCurrentTransactionName());
-//        }
     }
 
     public void releaseHibernateSessionConditionally() {

@@ -18,13 +18,12 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReferenceUpdateDbSchedulerJob.class);
     public static final String JOB_NAME = "DB_REFERENCE_UPDATE";
+    private Map<Integer, List<String>> results = new HashMap<>();
 
 
     @Secured({"ROLE_CHO"})
     @Override
-    public final Map<Integer, List<String>> doJob() {
-
-        Map<Integer, List<String>> xlsDataMap = new HashMap<>();
+    public final boolean doJob() {
 
         List<QueuedTicket> queuedTickets = claimService.getQueuedTicket();
 
@@ -63,7 +62,7 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
                     cellStringList.add(statusString);
                     cellStringList.add(queuedTicket.getSender());
                     cellStringList.add(DateHelper.getSdf().format(queuedTicket.getCreatedDate()));
-                    xlsDataMap.put(i++, cellStringList);
+                    results.put(i++, cellStringList);
                     LOG.debug("CHO reference updated: {} -> {} : {} [{}]",
                             new Object[]{queuedTicket.getOldReference(), queuedTicket.getNewReference(),
                                 statusString, getSecurityInfoProvider().getCurrentUser().getChorganisation().getId()});
@@ -76,26 +75,24 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
         } catch (Exception ex) {
             LOG.error("exception on ReferenceUpdateDbSchedulerJob", ex);
         }
-        return xlsDataMap;
+        return true;
     }
 
     @Override
-    public String buildMessage(String subject, Map<Integer, List<String>> xlsDataMap) {
+    public String buildMessage() {
         StringBuilder emailMsg = new StringBuilder();
         emailMsg.append("======================================================================\n");
-        emailMsg.append("Subject: ").append(subject).append("\n");
-        emailMsg.append("======================================================================\n\n");
-        if (xlsDataMap != null) {
+        if (results != null) {
             emailMsg.append("Date Added    Sender                                 Original CHO Reference    New CHO Reference    Status\n");
             emailMsg.append("---------------------------------------------------------------------------------------------------------------------------------------------\n");
-            Set<Integer> rowNumbers = xlsDataMap.keySet();
+            Set<Integer> rowNumbers = results.keySet();
             // This is specific for the excel file with two columns and
             // first row is a header.
             // We don't do update on first line and we assume we will always
             // have only two columns.
             for (Integer row : rowNumbers) {
                 if (row != 0) {
-                    List<String> cells = xlsDataMap.get(row);
+                    List<String> cells = results.get(row);
                     if (cells.size() >= 3) { // We expect at least three columns
                         emailMsg.append(String.format("%-10s", cells.get(4).trim()));
                         emailMsg.append("    ");
@@ -112,7 +109,7 @@ public class ReferenceUpdateDbSchedulerJob extends DbSchedulerJob {
             }
 
         } else {
-            emailMsg.append("No attachement on email, please check and re-submit.\n");
+            emailMsg.append("Nothing to report\n");
             emailMsg.append("-----------------------------------------------------------------------------------------------\n");
         }
         LOG.debug("Message to send is: \n*********\n{}\n*********", emailMsg.toString());

@@ -1,25 +1,20 @@
-package idas.chox.web.scheduler;
-
-import java.io.InputStream;
+package idas.chox.core.model;
 
 /**
  *
  * @author John
  */
 public class EmailAttachment {
-    private final InputStream is;
     private final String name;
     private final long size;
+    private final byte[] content;
     
-    public EmailAttachment(String name, InputStream is, long size) {
+    public EmailAttachment(String name, byte[] content) {
         this.name = name;
-        this.is = is;
-        this.size = size;
+        this.content = content;
+        this.size = content.length;
     }
 
-    public InputStream getIs() {
-        return is;
-    }
 
     public String getName() {
         return name;
@@ -27,6 +22,10 @@ public class EmailAttachment {
 
     public long getSize() {
         return size;
+    }
+
+    public byte[] getContent() {
+        return content;
     }
     
 }

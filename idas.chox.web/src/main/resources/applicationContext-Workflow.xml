@@ -170,10 +170,6 @@
         <property name="keoghs" ref="keoghs" />
     </bean>
     <bean id="referFraudCheck" class="idas.chox.service.workflow.activities.ReferFraudCheck" scope="prototype">
-        <property name="smtpHostName" value="${smtpHostName}"/>
-        <property name="smtpPort" value="${smtpPort}"/>
-        <property name="smtpEmailUser" value="${smtpEmailUser}"/>
-        <property name="smtpEmailPassword" value="${smtpEmailPassword}"/>
         <property name="keoghsReceiver" value="${keoghsReceiver}"/>
         <property name="keoghsBccReceiver" value="${keoghsBccReceiver}"/>
 
