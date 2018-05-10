@@ -36,7 +36,7 @@ from scheduler_job where job_name in ('ECD_UPDATE', 'HIRE_UPDATE', 'LOU_UPDATE',
 delete from scheduler_job where job_name in ('ECD_UPDATE', 'HIRE_UPDATE', 'LOU_UPDATE', 'TOTALLOSS_PACK', 'PENALTY_UPDATE', 'REFERENCE_UPDATE', 'TOTALLOSS_NOTIFICATION', 'TL_TASK', 'TOTALLOSS_STOP_CHASE_TASK');
 
 update gmail_scheduler_job
-    set processed_label = 'Processed ECD Update',
+    set processed_label = 'Processed ECD Updates',
         job_name='updateEcds'
 where job_name = 'ECD_UPDATE';
 update gmail_scheduler_job
