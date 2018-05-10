@@ -73,7 +73,7 @@
         <fieldset class="x-fieldset">
             <legend>Customer Claim Number</legend>
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="name" name="name" value="updateCustomerClaimNumber" />
+            <s:hidden id="nameId" name="name" value="updateCustomerClaimNumber" />
             <div>
                 <div class="status-control-set">
                     <table class="status-table">

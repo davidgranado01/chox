@@ -140,7 +140,7 @@
             <legend>Update Claim Owner - Action Required</legend>
             <div>
                 <s:hidden id="claimId" name="id" />
-                <s:hidden id="name" name="name" value="updateSupplierClaimOwner" />
+                <s:hidden id="nameId" name="name" value="updateSupplierClaimOwner" />
                 <div>
                     <div class="status-info">
                         Update the Claim Owner by using the drop down menus provided below.

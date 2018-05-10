@@ -10,7 +10,7 @@
             <div>
                 <s:hidden id="claimId" name="id" />
                 <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
-                <s:hidden id="name" name="name" />
+                <s:hidden id="name" name="name" value="resolveLiability" />
                 <input id="claimNumber" name="claimNumber" type="hidden"/>
                 <div>
  
