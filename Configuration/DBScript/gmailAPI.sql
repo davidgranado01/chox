@@ -40,7 +40,7 @@ update gmail_scheduler_job
         job_name='updateEcds'
 where job_name = 'ECD_UPDATE';
 update gmail_scheduler_job
-    set processed_label = 'Processed Hire Update Requests',
+    set processed_label = 'Processed Hire Updates',
         job_name='updateHire'
 where job_name = 'HIRE_UPDATE';
 update gmail_scheduler_job
