@@ -10,10 +10,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import idas.chox.core.util.DateHelper;
-import idas.chox.core.util.GmailUtils;
-
+import idas.chox.core.util.EmailHelper;
 
 public class OnlineSupportAction extends BaseAction {
+
     static final Logger LOG = LoggerFactory.getLogger(OnlineSupportAction.class);
 
     private String iSupplierReference;
@@ -23,8 +23,8 @@ public class OnlineSupportAction extends BaseAction {
     private String iPhone;
     private String actionResult;
     private Properties props;
-    private static final String email_date_format = "dd MMMM yyyy";
-    private static final String propertiesFile = "/application.properties";
+    private static final String EMAIL_DATE_FORMAT = "dd MMMM yyyy";
+    private static final String PROPERTIES_FILE = "/application.properties";
 
     public String getiEmail() {
         return iEmail;
@@ -42,12 +42,12 @@ public class OnlineSupportAction extends BaseAction {
         this.iPhone = iPhone;
     }
 
-
     @Override
     public String getActionResult() {
         return actionResult;
     }
 
+    @Override
     public void setActionResult(String actionResult) {
         this.actionResult = actionResult;
     }
@@ -68,7 +68,6 @@ public class OnlineSupportAction extends BaseAction {
         this.iSubject = iSubject;
     }
 
-
     public String getiSupplierReference() {
         return iSupplierReference;
     }
@@ -80,14 +79,18 @@ public class OnlineSupportAction extends BaseAction {
     public String saveMessage() {
 
         try {
-        	Resource resource = new ClassPathResource(propertiesFile);
-        	props = PropertiesLoaderUtils.loadProperties(resource);
+            Resource resource = new ClassPathResource(PROPERTIES_FILE);
+            props = PropertiesLoaderUtils.loadProperties(resource);
 
             String onlineSupportDefaultEmail = props.getProperty("onlineSupportDefaultEmail");
+            String smtpEmailUser = props.getProperty("smtpEmailUser");
+            String[] recipients = {onlineSupportDefaultEmail};
  
-
+ 
+            EmailHelper emailHelper = new EmailHelper(smtpEmailUser);
             String emailMessage = doConstructEmailMessage(iSubject, iSupplierReference, iMessage, iEmail, iPhone);
-            GmailUtils.sendMessage(onlineSupportDefaultEmail, null, iSubject, emailMessage);
+            emailHelper.postMail(iSubject, emailMessage, recipients);
+//            GmailUtils.sendMessage(onlineSupportDefaultEmail, null, iSubject, emailMessage);
             this.getActionResponse().AssignMessageResult("Your support request has been sent successfully. A member of the CHOX support team will be in touch shortly.");
 
         } catch (Exception ex) {
@@ -109,7 +112,7 @@ public class OnlineSupportAction extends BaseAction {
         emailMsg.append("\n");
         emailMsg.append("Phone Number: ").append(sPhone);
         emailMsg.append("\n");
-        emailMsg.append("Date: ").append(DateHelper.getCurrentDateWithFormat(email_date_format));
+        emailMsg.append("Date: ").append(DateHelper.getCurrentDateWithFormat(EMAIL_DATE_FORMAT));
         emailMsg.append("\n");
         emailMsg.append("======================================================================\n");
         emailMsg.append("Supplier Reference Number: ").append(sSupplierReference);
@@ -126,6 +129,6 @@ public class OnlineSupportAction extends BaseAction {
 
     @Override
     public String execute() {
-            return SUCCESS;
+        return SUCCESS;
     }
 }

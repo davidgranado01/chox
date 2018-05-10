@@ -171,8 +171,8 @@
     </bean>
     <bean id="referFraudCheck" class="idas.chox.service.workflow.activities.ReferFraudCheck" scope="prototype">
         <property name="keoghsReceiver" value="${keoghsReceiver}"/>
+        <property name="smtpEmailUser" value="${smtpEmailUser}"/>
         <property name="keoghsBccReceiver" value="${keoghsBccReceiver}"/>
-
     </bean>
     <bean id="acknowledgeFraudCheck" class="idas.chox.service.workflow.activities.AcknowledgeFraudCheck" scope="prototype"/>
     <bean id="updateSupplierClaimOwner" class="idas.chox.service.workflow.activities.UpdateSupplierClaimOwner" scope="prototype">

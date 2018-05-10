@@ -194,6 +194,12 @@
     <logger name="idas.chox.web.scheduler" level="INFO" additivity="false">
         <appender-ref ref="Quartz"/>
     </logger>
+    <logger name="idas.chox.web.scheduler.GmailSchedulerJob" level="DEBUG" additivity="false">
+        <appender-ref ref="Quartz"/>
+    </logger>
+    <logger name="idas.chox.web.scheduler.GmailReceiver" level="DEBUG" additivity="false">
+        <appender-ref ref="Quartz"/>
+    </logger>
     <logger name="idas.chox.web.scheduler.KeoghsCheckJob" level="INFO" additivity="false">
         <appender-ref ref="Quartz"/>
     </logger>

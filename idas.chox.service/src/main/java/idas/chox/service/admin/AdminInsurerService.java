@@ -4,10 +4,14 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import javax.mail.MessagingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import idas.chox.core.model.AutomaticRoutingPolicy;
 import idas.chox.core.model.AutomaticRoutingPrice;
@@ -38,7 +42,7 @@ import idas.chox.core.services.UserService;
 import idas.chox.core.services.VehicleClassCeilingService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.core.services.WorkgroupService;
-import idas.chox.core.util.GmailUtils;
+import idas.chox.core.util.EmailHelper;
 import idas.chox.data.services.SecureDataService;
 import idas.chox.service.ActionResponse;
 
@@ -316,10 +320,15 @@ public class AdminInsurerService extends SecureDataService {
 
             if (isNew) {
                 this.actionResponse.AssignNewIdResult(breBand.getId());
-                if (emailOnBreBandCreation && !getSecurityInfoProvider().getIsCHOXAdmin()) {
+                if (emailOnBreBandCreation && !getSecurityInfoProvider().getIsCHOXAdmin() && "LOCAL".equals(hostName)) {
                     // Email Audatex Staff of new BRE Band Creation
                     LOG.debug("Sending email to '{}' from {}", emailReceivers, hostName);
                     try {
+                        Resource resource = new ClassPathResource("/application.properties");
+                        Properties props = PropertiesLoaderUtils.loadProperties(resource);
+
+                        String smtpEmailUser = props.getProperty("smtpEmailUser");
+                        String[] recipients = emailReceivers.split(",");
                         String emailSubject;
                         if ("PRODUCTION".equals(hostName)) {
                             emailSubject = "New BRE Band Created";
@@ -327,7 +336,10 @@ public class AdminInsurerService extends SecureDataService {
                             emailSubject = "New BRE Band Created (" + hostName + ")";
                         }
                         String emailMessage = "Insurer " + breBand.getInsurer().getName() + ", User " + breBand.getCreatedBy().getFullName() + " Has Added A New BRE Band Called " + breBand.getName() + " On " + breBand.getCreatedDate().toString() + ".";
-                        GmailUtils.sendMessage(emailReceivers, null, emailSubject, emailMessage);
+                        EmailHelper emailHelper = new EmailHelper(smtpEmailUser);
+                        emailHelper.postMail(emailSubject, emailMessage, recipients);
+
+//                        GmailUtils.sendMessage(emailReceivers, null, emailSubject, emailMessage);
                         LOG.debug("Email sent: {}", emailSubject);
                     } catch (IOException | MessagingException ex) {
                         LOG.error("Error sending email for new RE Band '{}' Creation: {}", breBand.getName(), ex.getMessage());

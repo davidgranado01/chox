@@ -1,6 +1,7 @@
 package idas.chox.service.workflow.activities;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import javax.mail.MessagingException;
 
 import org.slf4j.Logger;
@@ -9,7 +10,7 @@ import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;
-import idas.chox.core.util.GmailUtils;
+import idas.chox.core.util.EmailHelper;
 
 /**
  *
@@ -19,6 +20,11 @@ public class ReferFraudCheck extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ReferFraudCheck.class);
     private String keoghsReceiver;
     private String keoghsBccReceiver;
+    private String smtpEmailUser;
+
+    public void setSmtpEmailUser(String smtpEmailUser) {
+        this.smtpEmailUser = smtpEmailUser;
+    }
 
 
     public void setKeoghsReceiver(String keoghsReceiver) {
@@ -57,13 +63,23 @@ public class ReferFraudCheck extends BaseActivity {
         String[] bccReceivers = keoghsBccReceiver != null ? keoghsBccReceiver.split(",") : null;
         LOG.debug("sending mails to receivers {} and bccreceivers {} ", receivers, bccReceivers);
         try {
-                GmailUtils.sendMessage(keoghsReceiver, keoghsBccReceiver, subject, emailMessage);
+            
+ //               GmailUtils.sendMessage(keoghsReceiver, keoghsBccReceiver, subject, emailMessage);
+            EmailHelper emailHelper = new EmailHelper(smtpEmailUser);
+            if (bccReceivers != null && bccReceivers.length > 0) {
+                emailHelper.postMail(subject, emailMessage, receivers, bccReceivers);
+            } else {
+                emailHelper.postMail(subject, emailMessage, receivers);
+            }
+        } catch (UnsupportedEncodingException e) {
+            LOG.error("Encoding Exception thrown sending email to Keoghs with smtpEmailUser={}: ",
+                    new Object[]{smtpEmailUser, e});
+        } catch (MessagingException e) {
+            LOG.error("Messaging Exception thrown sending email to Keoghs with smtpEmailUser={}: ",
+                    new Object[]{smtpEmailUser, e});
         } catch (IOException ex) {
             LOG.error("Encoding Exception thrown sending email to Keoghs with: {}", ex.getMessage(), ex);
-        } catch (MessagingException ex) {
-            LOG.error("Messaging Encoding Exception thrown sending email to Keoghs with: {}", ex.getMessage(), ex);
-
-        } 
+        }
     }
     
 }
