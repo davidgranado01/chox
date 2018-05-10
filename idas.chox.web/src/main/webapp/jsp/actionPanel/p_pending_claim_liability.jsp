@@ -14,12 +14,67 @@ Ext.onReady(function() {
         renderTo         : 'rejectionDescJspfId',
         disabled         : '<s:property value="rejectButtonEnabled"/>' === 'false'
     });
+
+<s:if test="copleyOfferEnabled">
+
+        var copleyOfferMadeDatePicker = new Ext.form.DateField({
+            name: 'copleyOfferMadeDate',
+            id: 'copleyOfferMadeDate',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="copleyOfferMadeDate" />',
+            renderTo: 'copleyOfferMadeDatePH'
+        });
+</s:if>
+
+<s:if test="acceptanceReasosnsEnabled">
+
+    var acceptanceReasonsJsonReader = new Ext.data.JsonReader({
+        totalProperty: 'totalCount',
+        root: 'results',
+        fields: [
+            {name:'text'},
+            {name:'value'}
+        ]
+    });
     
+    var acceptanceReasonsStore = new Ext.data.Store({
+        reader : acceptanceReasonsJsonReader
+    });
+
+    var   acceptanceReasonsCombo = new Ext.form.ComboBox({
+            store: acceptanceReasonsStore,
+            width: 300,
+            renderTo: 'acceptanceReasonsDiv',
+            valueField: 'text',
+            id: 'acceptanceReasonsComboId',
+            hiddenName: 'acceptanceReason',
+            displayField:'text',
+            typeAhead: false,
+            mode: 'local',
+            listWidth: 300,
+            forceSelection: true,
+            triggerAction: 'all',
+            emptyText : 'Please Select a Reason',
+            blankText : 'Please Select a Reason'
+        });
+        
+        var acceptanceReasonsJsonString = '<s:property value="acceptanceReasonsJsonString" escapeHtml="false"/>';
+        if (acceptanceReasonsJsonString !== '') {
+            acceptanceReasonsStore.loadData(Ext.util.JSON.decode(acceptanceReasonsJsonString));
+        }
+
+</s:if>
     $(function() {
             $("#indemnityStance").val("<s:property value="indemnityStance" />");
         });
 
 });
+
+
 var reasonOfRejectionDescReader = new Ext.data.JsonReader({
     fields:[{name:'id'},{name:'description'}]
 });
@@ -38,6 +93,17 @@ function refreshDesc(id){
     if(id === -1 || id === '')
         Ext.getCmp('rejecDescJspfId').setValue("");
 }
+<s:if test="copleyOfferEnabled">
+function toggelCopleyOfferDate(selectedValue) {
+    if (selectedValue=='True') {
+        document.getElementById("copleyOfferMadeDatePH").style.visibility = "visible";
+        document.getElementById("copleyOfferMadeDateLabel").style.visibility = "visible";
+    } else {
+        document.getElementById("copleyOfferMadeDatePH").style.visibility = "hidden";
+        document.getElementById("copleyOfferMadeDateLabel").style.visibility = "hidden";
+    }
+}
+</s:if>
 </script>
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formAcknowledgeAction" name="formAcknowledgeAction">
@@ -175,6 +241,26 @@ function refreshDesc(id){
                                     <input type="text" class="chox-ttxt" name="indemnityAmount" id="ACIndemityAmountId" value="<s:property value="indemnityAmount" />"/>
                                 </td>
                             </tr>
+<s:if test="copleyOfferEnabled">
+                            <tr>
+                                <td>
+                                    <label>Has Copley Offer Been Made?<span class="mandatory">*</span></label>
+                                </td>
+                                <td>
+                                    <select id="copleyOfferMade" name="copleyOfferMade" onchange="toggelCopleyOfferDate(this.options[this.selectedIndex].value)">
+                                        <option value="">-- Please Select--</option>
+                                        <option value="True">Yes</option>
+                                        <option value="False">No</option>
+                                    </select>
+                                </td>
+                                <td align="right">
+                                    <label id="copleyOfferMadeDateLabel" style="visibility:hidden">Please confirm the date the offer was made<span class="mandatory">*</span></label>
+                                </td>
+                                <td>
+                                    <span id="copleyOfferMadeDatePH" style="visibility:hidden"></span>
+                                </td>
+                            </tr>
+</s:if>
                             <tr>
                                 <td>
                                     <label>
@@ -185,6 +271,17 @@ function refreshDesc(id){
                                 </td>
                                 <td colspan="2"></td>
                             </tr>
+<s:if test="acceptanceReasosnsEnabled">
+                                <tr>
+                                    <td>
+                                        <label>Acceptance Reason</label>
+                                    </td>
+                                    <td colspan="2">
+                                        <div id="acceptanceReasonsDiv"></div>
+                                    </td>
+                                    <td</td>
+                                </tr>
+</s:if>
                             <tr valign="top">
                                 <td>
                                     <label>Claim Review Notes (Public)</label>
