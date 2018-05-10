@@ -68,7 +68,7 @@
     <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formUpdateInsurerClaimNumber" name="formUpdateInsurerClaimNumber">
         <fieldset class="x-fieldset">
             <legend>Insurer Claim Number</legend>
-            <s:hidden id="name" name="name" value="updateInsurerClaimNumber" />
+            <s:hidden id="nameId" name="name" value="updateInsurerClaimNumber" />
             <s:hidden id="claimId" name="id" />
             <div>
                 <div class="status-control-set">

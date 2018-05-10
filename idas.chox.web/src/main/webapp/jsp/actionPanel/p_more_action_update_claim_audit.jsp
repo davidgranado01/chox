@@ -1056,7 +1056,7 @@ function saveAuditReview() {
     <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formClaimAuditReview" name="formClaimAuditReview">
         <fieldset class="x-fieldset">
             <legend>Claim Audit</legend>
-            <s:hidden id="name" name="name" value="saveOrSubmitClaimAuditReview"/>
+            <s:hidden id="nameId" name="name" value="saveOrSubmitClaimAuditReview"/>
             <s:hidden id="nameOfActivity" name="nameOfActivity" />
             <div class="status-info">
                 <s:if test="claimAuditReview == null || !claimAuditReview.claimAuditReviewCompleted">

@@ -289,7 +289,7 @@
     });
     
     function doUpdateLiabilityFormSubmit(action){        
-        actionPanel.registerAction(action);        
+//        actionPanel.registerAction(action);        
         doFormValidationSetup(action);      
         var form = $("form#formAcknowledgeAction");
         if(form.valid()){

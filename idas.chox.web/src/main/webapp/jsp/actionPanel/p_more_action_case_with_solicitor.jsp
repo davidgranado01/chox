@@ -16,7 +16,7 @@
             <legend>Case with Clients Solicitor?</legend>
             <div>
                 <!--s:hidden id="claimId" name="id" /-->
-                <s:hidden id="name" name="name" value="updateCaseWithSolicitor" />
+                <s:hidden id="nameId" name="name" value="updateCaseWithSolicitor" />
                 <div class="status-info">
                     Please use the check box below to mark if this case is with your Clients Solicitor. Once checked and updated the case
                     will remain at status Contested Invoice Referred To CHO but move into the Inbox Queue Case With Clients Solicitor.
