@@ -18,7 +18,7 @@
             <legend>Update Liability/Indemnity</legend>
             <div>
                 <s:hidden id="claimId" name="id" />
-                <s:hidden id="name" name="name" />
+                <s:hidden id="nameId" name="name" value="updateLiability"/>
                 <s:hidden id="isClaimNumberValidFlag" name="isClaimNumberValidFlag" value="1"/>
                 <input id="claimNumber" name="claimNumber" type="hidden"/>
                 <input id="reasonOfRejectionId" name="reasonOfRejectionId" type="hidden">

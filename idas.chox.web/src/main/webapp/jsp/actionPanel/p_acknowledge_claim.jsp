@@ -264,7 +264,7 @@ function toggelCopleyOfferDate(selectedValue) {
                                 </td>
                                 <td colspan="2"></td>
                             </tr>
-                            <s:if test="acceptanceReasosnsEnabled">
+<s:if test="acceptanceReasosnsEnabled">
                                 <tr>
                                     <td>
                                         <label>Acceptance Reason</label>
@@ -274,7 +274,7 @@ function toggelCopleyOfferDate(selectedValue) {
                                     </td>
                                     <td</td>
                                 </tr>
-                            </s:if>
+</s:if>
                             <tr valign="top">
                                 <td>
                                     <label>Claim Review Notes (Public)</label>

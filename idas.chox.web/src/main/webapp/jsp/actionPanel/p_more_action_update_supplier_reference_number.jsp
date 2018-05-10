@@ -71,7 +71,7 @@
         <fieldset class="x-fieldset">
             <legend>Update Supplier Reference Number</legend>
             <s:hidden id="claimId" name="id" />
-            <s:hidden id="name" name="name" value="updateSupplierReference" />
+            <s:hidden id="nameId" name="name" value="updateSupplierReference" />
             <div>
                 <div class="status-control-set">
                     <table class="status-table">

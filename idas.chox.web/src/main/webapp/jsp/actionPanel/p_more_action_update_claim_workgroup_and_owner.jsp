@@ -76,7 +76,7 @@
             </s:else>
             <div>
                 <s:hidden id="claimId" name="id" />
-                <s:hidden id="name" name="name" value="assignOwner" />
+                <s:hidden id="nameId" name="name" value="assignOwner" />
                 <input type="hidden" id="claimWorkgroupId" name="claimWorkgroupId" value="<s:property value="workgroup.id"/>">
                 <input type="hidden" id="claimClaimOwnerId" name="claimClaimOwnerId" value="<s:property value="claimOwner.id"/>">
                 <input type="hidden" id="claimWorkgroupEnable" name="claimWorkgroupEnable" value="<s:property value="insurer.workgroupEnable"/>">
