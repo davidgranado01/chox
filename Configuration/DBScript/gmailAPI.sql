@@ -1,3 +1,6 @@
+--
+-- CHOX-510: Replace use of SMTP with Google's Gmail API for receiving emails in the CHOX Automation functionality
+--
 CREATE TABLE gmail_scheduler_job (
 id serial NOT NULL,
 login_username character varying(256) NOT NULL,
@@ -77,4 +80,18 @@ ALTER TABLE scheduler_job DROP COLUMN autherised_user;
 ALTER TABLE scheduler_job DROP COLUMN bcc_receiver;
 ALTER TABLE scheduler_job DROP COLUMN error_message_receiver;
 ALTER TABLE scheduler_job DROP COLUMN reply_to_sender;
+
+--
+-- CHOX-526: Refactor handling of linked tasks
+--
+ALTER TABLE task ADD COLUMN visibility_role2 character varying(24);
+
+UPDATE task
+  set visibility_role2 = t.visibility_role
+from task t
+where task.related_task = t.id;
+
+DELETE FROM task  where related_task is not null and related_task > id;
+
+ALTER TABLE task DROP COLUMN related_task;
 

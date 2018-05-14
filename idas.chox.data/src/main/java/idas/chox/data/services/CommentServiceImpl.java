@@ -72,9 +72,9 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
         criteria.createCriteria("claim").add(Restrictions.eq("id", claimId));
         List<Comment> comments = findByCriteria(criteria);
         if (comments.size() > 0) {
-            for(Comment c : comments){
+            comments.forEach((c) -> {
                 c.setReverted(true);
-            }
+            });
             this.saveCollections(comments);
         }
     }
@@ -101,13 +101,6 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
             comment.getTask().setComplete(Boolean.TRUE);
             comment.getTask().setCompletedDate(new Date());
             comment.getTask().setCompletedBy(getCurrentUser());
-            Task relatedTask = comment.getTask().getRelatedTask();
-            if (relatedTask != null) {
-                relatedTask.setComplete(Boolean.TRUE);
-                relatedTask.setCompletedDate(new Date());
-                relatedTask.setCompletedBy(getCurrentUser());
-                save(relatedTask);
-            }
             save(comment.getTask());
         }
         comment.setReviewRequired(false);

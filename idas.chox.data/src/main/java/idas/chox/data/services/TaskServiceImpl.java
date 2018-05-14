@@ -151,6 +151,8 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             canComplete = true;
         } else if (userInRole(webUser, task.getVisibilityRole())) {
             canComplete = true;
+        } else if (task.getVisibilityRole2() != null && userInRole(webUser, task.getVisibilityRole2())) {
+            canComplete = true;
         } else if (userInRole(webUser, WebUserRole.ROLE_CHO_MNG) || userInRole(webUser, WebUserRole.ROLE_INS_MNG)) {
             canComplete = true;
         }
@@ -162,25 +164,6 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         markTaskAsComplete(task);
         if (task.getClaim() != null) {
             eventService.generate(task.getClaim(), ChoxEvent.TASK_COMPLETED_EVENT, task);
-        }
-
-        // Check related task
-        try {
-            if (task.getRelatedTask() != null) {
-                Task relatedTask = (Task) get(Task.class, task.getRelatedTask().getId());
-                if (relatedTask != null) {
-                    LOG.debug("Marking related task as complete: {}", relatedTask.getId());
-                    markTaskAsComplete(relatedTask);
-                } else {
-                    LOG.warn("Exception marking related task {} for original task {} as complete.", new Object[]{
-                        task.getRelatedTask().getId(), task.getId()});
-                    task.setRelatedTask(null);
-                }
-            }
-        } catch (Exception ex) {
-            LOG.warn("Exception marking related task {} for original task {} as complete: {}", new Object[]{
-                task.getRelatedTask().getId(), task.getId(), ex.getMessage(), ex});
-            task.setRelatedTask(null);
         }
     }
 
@@ -219,20 +202,8 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             switch (claimStatus) {
                 case ClaimStatus.AWAITING_INVOICE_PAYMENT: {
                     task.setVisibilityRole(WebUserRole.ROLE_INS_PC);
-                    //Also create a new task visible by CH
-                    Task taskCH = new Task();
-                    taskCH.setComplete(Boolean.FALSE);
-                    taskCH.setDescription(task.getDescription());
-                    taskCH.setDueDate(task.getDueDate());
-                    taskCH.setType(task.getType());
-                    taskCH.setVisibility(task.getVisibility());
-                    taskCH.setInsurer(task.getInsurer());
-                    taskCH.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-                    taskCH.setRelatedTask(task);
-                    taskCH.setClaim(task.getClaim());
-                    taskCH.setRaisedBy(task.getRaisedBy());
-                    task.setRelatedTask(taskCH);
-                    this.save(taskCH);
+                    // Also need visibility of task by CH
+                    task.setVisibilityRole2(WebUserRole.ROLE_INS_CH);
                     break;
                 }
                 case ClaimStatus.AWAITING_LIABILITY_RESOLUTION:
@@ -275,19 +246,8 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 case ClaimStatus.INVOICE_UNASSIGNED: {
                     task.setVisibilityRole(WebUserRole.ROLE_INS_CR);
                     //Also create a new task visible by CH
-                    Task taskCH = new Task();
-                    taskCH.setComplete(Boolean.FALSE);
-                    taskCH.setDescription(task.getDescription());
-                    taskCH.setDueDate(task.getDueDate());
-                    taskCH.setType(task.getType());
-                    taskCH.setVisibility(task.getVisibility());
-                    taskCH.setInsurer(task.getInsurer());
-                    taskCH.setVisibilityRole(WebUserRole.ROLE_INS_CH);
-                    taskCH.setRelatedTask(task);
-                    taskCH.setClaim(task.getClaim());
-                    taskCH.setRaisedBy(task.getRaisedBy());
-                    task.setRelatedTask(taskCH);
-                    this.save(taskCH);
+                    // Also need visibility of task by CH
+                    task.setVisibilityRole2(WebUserRole.ROLE_INS_CH);
                     break;
                 }
                 case ClaimStatus.CLAIM_UPDATE_BY_ENG:
@@ -593,7 +553,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                             internalTasksWithNoClaimsAssigned = Restrictions.conjunction()
                                     .add(Restrictions.eq("insurer", Boolean.TRUE))
                                     .add(Restrictions.eq("visibility", 2))
-                                    .add(Restrictions.in("visibilityRole", visibilityRole))
+                                    .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole), Restrictions.in("visibilityRole2", visibilityRole))))
                                     .add(Restrictions.isNull("claim"))
                                     .add(Subqueries.propertyIn("createdBy", insurerUsers));
 
@@ -603,21 +563,21 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                                 internalTasksAssignedToThisRoleOnClaimsUserOwns = Restrictions.conjunction()
                                         .add(Restrictions.eq("insurer", Boolean.TRUE))
                                         .add(Restrictions.eq("visibility", 2))
-                                        .add(Restrictions.in("visibilityRole", visibilityRole1))
+                                        .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole1), Restrictions.in("visibilityRole2", visibilityRole1))))
                                         .add(Subqueries.propertyIn("claim", claimsUserOwns));
 
                                 // Add all Insurer internal tasks assigned to this role on claims no-one owns
                                 internalTasksAssignedToThisRoleOnClaimsNobodyOwns = Restrictions.conjunction()
                                         .add(Restrictions.eq("insurer", Boolean.TRUE))
                                         .add(Restrictions.eq("visibility", 2))
-                                        .add(Restrictions.in("visibilityRole", visibilityRole1))
+                                        .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole1), Restrictions.in("visibilityRole2", visibilityRole1))))
                                         .add(Subqueries.propertyIn("claim", claimsNotAssignedToUser));
 
                                 // Add all CHO external tasks assigned to role on claims user owns
                                 externalTasksAssignedToThisRoleOnClaimsUserOwns = Restrictions.conjunction()
                                         .add(Restrictions.eq("insurer", Boolean.FALSE))
                                         .add(Restrictions.eq("visibility", 3))
-                                        .add(Restrictions.in("visibilityRole", visibilityRole1))
+                                        .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole1), Restrictions.in("visibilityRole2", visibilityRole1))))
                                         .add(Subqueries.propertyIn("claim", claimsUserOwns));
 
                             }
@@ -628,7 +588,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                                 internalTaskesAssignedToThisRoleAndNoWorkgroup = Restrictions.conjunction()
                                         .add(Restrictions.eq("insurer", Boolean.TRUE))
                                         .add(Restrictions.eq("visibility", 2))
-                                        .add(Restrictions.in("visibilityRole", visibilityRole2))
+                                        .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole2), Restrictions.in("visibilityRole2", visibilityRole2))))
                                         .add(Subqueries.propertyIn("claim", claimsNotAssignedToWorkgroup));
 
                                 // declare subquery which will be used in Criterion.
@@ -643,14 +603,14 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                                     internalTaskesAssignedToThisRoleAndWorkgroup = Restrictions.conjunction()
                                             .add(Restrictions.eq("insurer", Boolean.TRUE))
                                             .add(Restrictions.eq("visibility", 2))
-                                            .add(Restrictions.in("visibilityRole", visibilityRole3))
+                                            .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole3), Restrictions.in("visibilityRole2", visibilityRole3))))
                                             .add(Subqueries.propertyIn("claim", claimsWithThisWG));
 
                                     // Add all CHO external tasks assigned to this role on claims assigned to a workgroup that the user is in
                                     extTskAssignedToThisRoleOnClaimsAssignedToWG = Restrictions.conjunction()
                                             .add(Restrictions.eq("insurer", Boolean.FALSE))
                                             .add(Restrictions.eq("visibility", 3))
-                                            .add(Restrictions.in("visibilityRole", visibilityRole3))
+                                            .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole3), Restrictions.in("visibilityRole2", visibilityRole3))))
                                             .add(Subqueries.propertyIn("claim", claimsWithThisWG));
                                 }
                             }
@@ -660,14 +620,14 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                                 intTskAssignedToClaimAndThisRole = Restrictions.conjunction()
                                         .add(Restrictions.eq("insurer", Boolean.TRUE))
                                         .add(Restrictions.eq("visibility", 2))
-                                        .add(Restrictions.in("visibilityRole", visibilityRole4))
+                                        .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole4), Restrictions.in("visibilityRole2", visibilityRole4))))
                                         .add(Subqueries.propertyIn("claim", claimsBelongsToUserInsurer));
 
                                 // Add all CHO external tasks assigned to role
                                 extTskAssingedToRole = Restrictions.conjunction()
                                         .add(Restrictions.eq("insurer", Boolean.FALSE))
                                         .add(Restrictions.eq("visibility", 3))
-                                        .add(Restrictions.in("visibilityRole", visibilityRole4))
+                                        .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole4), Restrictions.in("visibilityRole2", visibilityRole4))))
                                         .add(Subqueries.propertyIn("claim", claimsBelongsToUserInsurer));
                             }
 
@@ -718,23 +678,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             visibilityRole.addAll(visibilityRole3);
             visibilityRole.addAll(visibilityRole4);
 
-            // remove any related tasks
-            criteria.createAlias("relatedTask", "t2", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN);
 
-            Criterion relatedTaskRestriction;
-
-            if (visibilityRole.size() > 0) {
-                relatedTaskRestriction = Restrictions.disjunction()
-                        .add(Restrictions.gtProperty("id", "t2.id"))
-                        .add(Restrictions.isNull("t2.id"))
-                        .add(Restrictions.in("visibilityRole", visibilityRole));
-            } else {
-                relatedTaskRestriction = Restrictions.disjunction()
-                        .add(Restrictions.gtProperty("id", "t2.id"))
-                        .add(Restrictions.isNull("t2.id"));
-            }
-
-            criteria.add(relatedTaskRestriction);
             totalCount = totalCount(criteria);
 
             Date minDueDate = getTaskMinDueDate(criteria);

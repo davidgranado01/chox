@@ -18,10 +18,10 @@
         <property column="insurer" name="insurer"/>
         <property column="visibility" name="visibility"/>
         <property column="visibility_role" name="visibilityRole"/>
+        <property column="visibility_role2" name="visibilityRole2"/>
         <property column="created_date" name="createdDate"/>
         <property column="last_modified_date" name="lastModifiedDate"/>
         <many-to-one class="idas.chox.core.model.Claim" column="claim_id" name="claim" cascade="none"/>
-        <many-to-one class="idas.chox.core.model.Task" column="related_task" name="relatedTask" cascade="none"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="completed_by" name="completedBy" cascade="none"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy" cascade="none"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="raised_by" name="raisedBy" cascade="none"/>

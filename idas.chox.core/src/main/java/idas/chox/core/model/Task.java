@@ -24,9 +24,9 @@ public class Task extends Entity implements Serializable {
     private Boolean complete;
     private boolean autoCompleted;
     private Boolean insurer;
-    private Task relatedTask;
     private int visibility;
     private String visibilityRole;
+    private String visibilityRole2;
     private WebUser raisedBy;
 
     public WebUser getRaisedBy() {
@@ -101,6 +101,14 @@ public class Task extends Entity implements Serializable {
         this.visibilityRole = visibilityRole;
     }
 
+    public String getVisibilityRole2() {
+        return visibilityRole2;
+    }
+
+    public void setVisibilityRole2(String visibilityRole2) {
+        this.visibilityRole2 = visibilityRole2;
+    }
+
     public String getType() {
         if (type == null) {
             type = this.getClass().getSimpleName();
@@ -132,11 +140,4 @@ public class Task extends Entity implements Serializable {
         this.insurer = insurer;
     }
 
-    public Task getRelatedTask() {
-        return relatedTask;
-    }
-
-    public void setRelatedTask(Task relatedTask) {
-        this.relatedTask = relatedTask;
-    }    
 }
