@@ -95,7 +95,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
         LOG.debug("Using prefix '{}'", emailSubjectPrefix);
 
         List<Message> listOfmails = gmailUtils.getEmails(emailSubjectPrefix);
-        LOG.info("Total no of unread mails{}: {}", emailSubjectPrefix == null ? "" : " with prefix " + emailSubjectPrefix, listOfmails.size());
+        LOG.info("Total no of unread mails{}: {}", emailSubjectPrefix == null ? "" : " with prefix '" + emailSubjectPrefix + "'", listOfmails.size());
         for (Message message : listOfmails) {
             try {
                 String from = null, subject = null;

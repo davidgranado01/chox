@@ -22,9 +22,9 @@ public abstract class DbSchedulerJob extends SchedulerJobBase {
     protected void process(SchedulerJob schedulerJob) {
         if (doJob()) {
             String results = buildMessage();
-            LOG.info("{} job finished with results:\n", getClass().getSimpleName(), results);
+            LOG.debug("{} job finished with results:\n", getClass().getSimpleName(), results);
         } else {
-            LOG.info("{} job finished.", getClass().getSimpleName());
+            LOG.debug("{} job finished.", getClass().getSimpleName());
         }
     }
 }

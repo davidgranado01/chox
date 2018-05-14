@@ -76,8 +76,6 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
                 LOG.info("Scheduler job type '{}' has {} distinct email subjects.", getClass().getSimpleName(), schedulerJobs.size());
             }
             for (SchedulerJob schedulerJob : schedulerJobs) {
-
-            
                 LOG.info("{} job started.", getClass().getSimpleName());
                 loginUsername = schedulerJob.getLoginUserName();
                 loginPassword = schedulerJob.getLoginPassword();
