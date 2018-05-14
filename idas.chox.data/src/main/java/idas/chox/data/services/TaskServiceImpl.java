@@ -553,7 +553,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                             internalTasksWithNoClaimsAssigned = Restrictions.conjunction()
                                     .add(Restrictions.eq("insurer", Boolean.TRUE))
                                     .add(Restrictions.eq("visibility", 2))
-                                    .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole), Restrictions.in("visibilityRole2", visibilityRole))))
+                                    .add(Restrictions.in("visibilityRole", visibilityRole))
                                     .add(Restrictions.isNull("claim"))
                                     .add(Subqueries.propertyIn("createdBy", insurerUsers));
 
@@ -563,21 +563,21 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                                 internalTasksAssignedToThisRoleOnClaimsUserOwns = Restrictions.conjunction()
                                         .add(Restrictions.eq("insurer", Boolean.TRUE))
                                         .add(Restrictions.eq("visibility", 2))
-                                        .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole1), Restrictions.in("visibilityRole2", visibilityRole1))))
+                                        .add(Restrictions.in("visibilityRole", visibilityRole1))
                                         .add(Subqueries.propertyIn("claim", claimsUserOwns));
 
                                 // Add all Insurer internal tasks assigned to this role on claims no-one owns
                                 internalTasksAssignedToThisRoleOnClaimsNobodyOwns = Restrictions.conjunction()
                                         .add(Restrictions.eq("insurer", Boolean.TRUE))
                                         .add(Restrictions.eq("visibility", 2))
-                                        .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole1), Restrictions.in("visibilityRole2", visibilityRole1))))
+                                        .add(Restrictions.in("visibilityRole", visibilityRole1))
                                         .add(Subqueries.propertyIn("claim", claimsNotAssignedToUser));
 
                                 // Add all CHO external tasks assigned to role on claims user owns
                                 externalTasksAssignedToThisRoleOnClaimsUserOwns = Restrictions.conjunction()
                                         .add(Restrictions.eq("insurer", Boolean.FALSE))
                                         .add(Restrictions.eq("visibility", 3))
-                                        .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole1), Restrictions.in("visibilityRole2", visibilityRole1))))
+                                        .add(Restrictions.or(Restrictions.in("visibilityRole", visibilityRole1), Restrictions.in("visibilityRole2", visibilityRole1)))
                                         .add(Subqueries.propertyIn("claim", claimsUserOwns));
 
                             }
@@ -588,7 +588,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                                 internalTaskesAssignedToThisRoleAndNoWorkgroup = Restrictions.conjunction()
                                         .add(Restrictions.eq("insurer", Boolean.TRUE))
                                         .add(Restrictions.eq("visibility", 2))
-                                        .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole2), Restrictions.in("visibilityRole2", visibilityRole2))))
+                                        .add(Restrictions.in("visibilityRole", visibilityRole2))
                                         .add(Subqueries.propertyIn("claim", claimsNotAssignedToWorkgroup));
 
                                 // declare subquery which will be used in Criterion.
@@ -603,14 +603,14 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                                     internalTaskesAssignedToThisRoleAndWorkgroup = Restrictions.conjunction()
                                             .add(Restrictions.eq("insurer", Boolean.TRUE))
                                             .add(Restrictions.eq("visibility", 2))
-                                            .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole3), Restrictions.in("visibilityRole2", visibilityRole3))))
+                                            .add(Restrictions.in("visibilityRole", visibilityRole3))
                                             .add(Subqueries.propertyIn("claim", claimsWithThisWG));
 
                                     // Add all CHO external tasks assigned to this role on claims assigned to a workgroup that the user is in
                                     extTskAssignedToThisRoleOnClaimsAssignedToWG = Restrictions.conjunction()
                                             .add(Restrictions.eq("insurer", Boolean.FALSE))
                                             .add(Restrictions.eq("visibility", 3))
-                                            .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole3), Restrictions.in("visibilityRole2", visibilityRole3))))
+                                            .add(Restrictions.or(Restrictions.in("visibilityRole", visibilityRole3), Restrictions.in("visibilityRole2", visibilityRole3)))
                                             .add(Subqueries.propertyIn("claim", claimsWithThisWG));
                                 }
                             }
@@ -620,14 +620,14 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                                 intTskAssignedToClaimAndThisRole = Restrictions.conjunction()
                                         .add(Restrictions.eq("insurer", Boolean.TRUE))
                                         .add(Restrictions.eq("visibility", 2))
-                                        .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole4), Restrictions.in("visibilityRole2", visibilityRole4))))
+                                        .add(Restrictions.in("visibilityRole", visibilityRole4))
                                         .add(Subqueries.propertyIn("claim", claimsBelongsToUserInsurer));
 
                                 // Add all CHO external tasks assigned to role
                                 extTskAssingedToRole = Restrictions.conjunction()
                                         .add(Restrictions.eq("insurer", Boolean.FALSE))
                                         .add(Restrictions.eq("visibility", 3))
-                                        .add((Restrictions.or(Restrictions.in("visibilityRole", visibilityRole4), Restrictions.in("visibilityRole2", visibilityRole4))))
+                                        .add(Restrictions.or(Restrictions.in("visibilityRole", visibilityRole4), Restrictions.in("visibilityRole2", visibilityRole4)))
                                         .add(Subqueries.propertyIn("claim", claimsBelongsToUserInsurer));
                             }
 
