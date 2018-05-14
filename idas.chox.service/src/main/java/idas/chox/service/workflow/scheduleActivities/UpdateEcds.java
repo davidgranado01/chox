@@ -55,10 +55,15 @@ public class UpdateEcds extends BaseScheduleActivity {
 
                     if (cells.size() < 4) {
                         //ignore row
-                        LOG.info("Ignoring row {} - only has {} cells.", row, cells.size());
+                        LOG.debug("Ignoring row {} - only has {} cells.", row, cells.size());
                         continue;
                     }
 
+                    // Ignore empty rows
+                    if (cells.get(0).trim().isEmpty() && cells.get(1).trim().isEmpty() && cells.get(2).trim().isEmpty() && cells.get(3).trim().isEmpty()) {
+                        LOG.debug("Ignoring empty row no. {}.", row);
+                        continue;
+                    }
                     StringBuilder statusString = new StringBuilder();
 
                     /* Check is valid referenceNumber provided and claim is in valid status.*/

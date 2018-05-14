@@ -60,7 +60,34 @@ public class UpdateLou extends BaseScheduleActivity {
 
                     if (cells.size() < 1) {
                         //ignore row
-                        LOG.info("Ignoring row {} - only has {} cells.", row, cells.size());
+                        LOG.debug("Ignoring row {} - only has {} cells.", row, cells.size());
+                        continue;
+                    }
+
+                    // Ignore empty rows
+                    if (cells.get(0).trim().isEmpty() && ((cells.size() > 1 && cells.get(1).trim().isEmpty()) || cells.size() <= 1) 
+                            && ((cells.size() > 2 && cells.get(2).trim().isEmpty()) || cells.size() <= 2)
+                            && ((cells.size() > 3 && cells.get(3).trim().isEmpty()) || cells.size() <= 3)
+                            && ((cells.size() > 4 && cells.get(4).trim().isEmpty()) || cells.size() <= 4)
+                            && ((cells.size() > 5 && cells.get(5).trim().isEmpty()) || cells.size() <= 5)
+                            && ((cells.size() > 6 && cells.get(6).trim().isEmpty()) || cells.size() <= 6)
+                            && ((cells.size() > 7 && cells.get(7).trim().isEmpty()) || cells.size() <= 7)
+                            && ((cells.size() > 8 && cells.get(8).trim().isEmpty()) || cells.size() <= 8)
+                            && ((cells.size() > 9 && cells.get(9).trim().isEmpty()) || cells.size() <= 9)
+                            && ((cells.size() > 10 && cells.get(10).trim().isEmpty()) || cells.size() <= 10)
+                            && ((cells.size() > 11 && cells.get(11).trim().isEmpty()) || cells.size() <= 11)
+                            && ((cells.size() > 12 && cells.get(12).trim().isEmpty()) || cells.size() <= 12)
+                            && ((cells.size() > 13 && cells.get(13).trim().isEmpty()) || cells.size() <= 13)
+                            && ((cells.size() > 14 && cells.get(14).trim().isEmpty()) || cells.size() <= 14)
+                            && ((cells.size() > 15 && cells.get(15).trim().isEmpty()) || cells.size() <= 15)
+                            && ((cells.size() > 16 && cells.get(16).trim().isEmpty()) || cells.size() <= 16)
+                            && ((cells.size() > 17 && cells.get(17).trim().isEmpty()) || cells.size() <= 17)
+                            && ((cells.size() > 18 && cells.get(18).trim().isEmpty()) || cells.size() <= 18)
+                            && ((cells.size() > 19 && cells.get(19).trim().isEmpty()) || cells.size() <= 19)
+                            && ((cells.size() > 20 && cells.get(20).trim().isEmpty()) || cells.size() <= 20)
+                            && ((cells.size() > 21 && cells.get(21).trim().isEmpty()) || cells.size() <= 21)
+                            && ((cells.size() > 22 && cells.get(22).trim().isEmpty()) || cells.size() <= 22)) {
+                        LOG.debug("Ignoring empty row no. {}.", row);
                         continue;
                     }
 
