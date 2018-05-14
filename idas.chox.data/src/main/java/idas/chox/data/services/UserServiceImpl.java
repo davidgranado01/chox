@@ -421,7 +421,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
             } else if (username != null && user.isCHO()) {
                 password = user.getChorganisation().getKbbsOperativePassword();
             }
-            if (password != null) {
+            if (password != null && !password.isEmpty()) {
                 LOG.debug("Authenticating against KBBS for user '{}' with password '{}'", username, password);
                 try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
                     HttpPost httppost = new HttpPost(KBBS_AUTHENTICATION_URL);
