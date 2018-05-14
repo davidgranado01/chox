@@ -1,5 +1,6 @@
 package idas.chox.service.workflow.scheduleActivities;
 
+import idas.chox.core.model.Claim;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.EmailAttachment;
 import idas.chox.core.util.DateHelper;
 import idas.chox.data.services.SecureDataService;
+import idas.chox.events.UpdateSupplierReferenceEvent;
+import idas.chox.service.workflow.ClaimProcessWorkflowContext;
 
 /**
  *
@@ -57,11 +60,14 @@ public class UpdateChoReference extends BaseScheduleActivity {
                     String newReference = cells.get(1).trim();
 
                     if (oldReference != null && !oldReference.isEmpty() && newReference != null && !newReference.isEmpty()) {
+                        Claim claim = claimService.getClaimByCHOReferenceNumber(oldReference);
                         int status = claimService.updateReservationToTicket(oldReference, newReference, ((SecureDataService)claimService).getSecurityInfoProvider().getCurrentUser().getChorganisation().getId(), from);
                         String statusString;
                         switch (status) {
                             case 0:
                                 statusString = "Updated";
+                                // Add event to event log
+                                ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(new UpdateSupplierReferenceEvent(claim, "UpdateChoReference", oldReference));
                                 break;
                             case 1:
                                 statusString = "Failed - Ticket number already exists";

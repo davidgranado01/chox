@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.EmailAttachment;
 import idas.chox.core.util.DateHelper;
 import idas.chox.data.services.SecureDataService;
-import idas.chox.service.workflow.ActivityFactory;
 
 /**
  *
@@ -67,6 +66,9 @@ public class PenaltyUpdate extends BaseScheduleActivity {
                         } else {
                             xlsDataMap.get(row).set(1, "Updated");
                         }
+                        // Add event to event log - currently no event for penalty start date update
+//                        ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(new PenaltyStartDateUpdatedEvent(claim, "PenaltyUpdate", ?));
+                        
                     } else {
                         LOG.debug("Error updating Penalty Start Date for claim: {} ", choReference);
                         if (xlsDataMap.get(row).size() == 1) {

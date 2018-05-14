@@ -41,26 +41,26 @@
 
     <bean id="penaltyUpdate" class="idas.chox.service.workflow.scheduleActivities.PenaltyUpdate" scope="prototype">
         <property name="claimService" ref="claimService" />
-        <property name="activityEventGenerator" ref="activityEventGenerator" />
+        <property name="workflowContext" ref="workflowContext"/>
         <property name="xlsFileParser" ref="xlsFileParser" />
     </bean>
 
     <bean id="updateChoReference" class="idas.chox.service.workflow.scheduleActivities.UpdateChoReference" scope="prototype">
         <property name="claimService" ref="claimService" />
-        <property name="activityEventGenerator" ref="activityEventGenerator" />
+        <property name="workflowContext" ref="workflowContext"/>
         <property name="xlsFileParser" ref="xlsFileParser" />
     </bean>
 
     <bean id="totalLossPack" class="idas.chox.service.workflow.scheduleActivities.TotalLossPack" scope="prototype">
         <property name="claimService" ref="claimService" />
-        <property name="activityEventGenerator" ref="activityEventGenerator" />
+        <property name="workflowContext" ref="workflowContext"/>
         <property name="attachmentService" ref="attachmentService" />
         <property name="attachmentTypeService" ref="attachmentTypeService" />
     </bean>
 
     <bean id="totalLossNotification" class="idas.chox.service.workflow.scheduleActivities.TotalLossNotification" scope="prototype">
         <property name="claimService" ref="claimService" />
-        <property name="activityEventGenerator" ref="activityEventGenerator" />
+        <property name="workflowContext" ref="workflowContext"/>
         <property name="attachmentService" ref="attachmentService" />
         <property name="attachmentTypeService" ref="attachmentTypeService" />
     </bean>
@@ -74,7 +74,6 @@
 
     <bean id="totalLossStopChaseTask" class="idas.chox.service.workflow.scheduleActivities.TotalLossStopChaseTask" scope="prototype">
         <property name="claimService" ref="claimService" />
-        <property name="activityEventGenerator" ref="activityEventGenerator" />
     </bean>
 
     <!--  Keoghs Check Job -->

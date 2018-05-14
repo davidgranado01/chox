@@ -17,7 +17,6 @@ import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.ScheduleActivity;
 import idas.chox.core.workflow.WorkflowContext;
 import idas.chox.data.services.SecureDataService;
-import idas.chox.service.workflow.event.ActivityEventGenerator;
 
 /**
  *
@@ -28,25 +27,24 @@ public abstract class BaseScheduleActivity implements ScheduleActivity {
     protected static final String EMAIL_DATE_FORMAT = "dd MMMM yyyy";
     protected static final String REG_ALPHANUMERIC = "^([\\d]|[a-z]|[A-Z]).*$";
     private static final String REG_TIME = "^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])?$";
-//    private WorkflowContext processContext;
+    private WorkflowContext processContext;
     @Autowired
-    protected ActivityEventGenerator activityEventGenerator;
     protected ClaimService claimService;
 
     
-    public void setActivityEventGenerator(ActivityEventGenerator activityEventGenerator) {
-        this.activityEventGenerator = activityEventGenerator;
-    }
-
     
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
     }
 
     
-//    public void setWorkflowContext(WorkflowContext processContext) {
-//        this.processContext = processContext;
-//    }
+    public void setWorkflowContext(WorkflowContext processContext) {
+        this.processContext = processContext;
+    }
+
+    public WorkflowContext getWorkflowContext() {
+        return processContext;
+    }
 
     
     @Override

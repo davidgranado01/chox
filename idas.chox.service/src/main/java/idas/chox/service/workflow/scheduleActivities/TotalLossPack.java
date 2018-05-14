@@ -75,6 +75,8 @@ public class TotalLossPack extends BaseScheduleActivity {
                             attachment.getSize(), AttachmentCategory.ATTCAT_TOTALLOSS_PACK, "Total Loss pack has been uploaded for review.", true, false, "CHO");
                     if (result == null) {
                         statusString.insert(0, claim.getChoReference() + "\tSuccess: Attachment file has been uploaded against claim " + claim.getChoReference());
+                        // Add event to event log - currently no attachment added event
+//                        ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(new AttachmentAddedEvent(claim, "TotalLossPack", ?));
                     } else {
                         statusString.insert(0, claim.getChoReference() + "\t" + result);
                     }

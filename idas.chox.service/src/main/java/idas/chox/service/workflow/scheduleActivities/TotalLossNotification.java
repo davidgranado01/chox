@@ -78,6 +78,8 @@ public class TotalLossNotification extends BaseScheduleActivity {
                             attachment.getSize(), AttachmentCategory.ATTCAT_TOTALLOSS_NOTIFICATION, "Notification from ERAC that the claim is a Total Loss.", false, false, "system");
                     if (result == null) {
                         statusString.insert(0, claim.getChoReference() + "\tSuccess: Attachment file has been uploaded against claim " + claim.getChoReference());
+                        // Add event to event log - currently no attachment added event
+//                        ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(new AttachmentAddedEvent(claim, "TotalLossPack", ?));
                     } else {
                         statusString.insert(0, claim.getChoReference() + "\t" + result);
                     }
