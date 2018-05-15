@@ -74,21 +74,19 @@ public class WorkgroupDropDownAction extends BaseAction {
     }
 
     public void setWorkgroups(List workgroups) {
-        LOG.debug("Workgroups set: {}", workgroups.size());
         this.workgroups = workgroups;
     }
 
     public String getJsonData() {
-        LOG.debug("Returning json data from workgroups: {}", workgroups);
-
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = null;
         try {
             List<LookupItem> luItems = new ArrayList<>(workgroups.size());
-            for (Workgroup workgroup : workgroups) {
-                LOG.debug("Adding Workgroup to Lookup: {}, {}", workgroup.getId().toString(), workgroup.getName());
+            workgroups.stream().map((workgroup) -> {
+                return workgroup;
+            }).forEachOrdered((workgroup) -> {
                 luItems.add(new LookupItem(workgroup.getId().toString(), workgroup.getName()));
-            }
+            });
             try {
                 jsonString = mapper.writeValueAsString(luItems);
             } catch (JsonProcessingException ex) {
@@ -98,39 +96,34 @@ public class WorkgroupDropDownAction extends BaseAction {
             LOG.error("Exception creating jsonArray: {}", ex.getMessage());
             return null;
         }
-        LOG.debug("Returning json data: {}", jsonString);
         return "{totalCount:" + workgroups.size() + ",results:" + jsonString + "}";
     }
 
     // Get the active workgroups + the current claims in-active workgroup.
     public String getInsurerWorkgroupIncludsClaimsInactiveWG() throws Exception {
-        LOG.debug("ClaimSearchCombo action called.");
         if (getAuthenticatedUser().isCHOXAdmin() && claimId != 0) {
             workgroups = service.getWorkgroupsByClaimId(claimId, true);
             addCurrentClaimInactiveWorkgroup();
         } else if (getOrgId() != null) {
-            for (Integer insId : getOrgId()) {
-                if (insId > 0) {
-                    workgroups.addAll(service.getWorkgroupsByInsurerId(insId, true));
-                    addCurrentClaimInactiveWorkgroup();
-                }
-            }
+            getOrgId().stream().filter((insId) -> (insId > 0)).map((insId) -> {
+                workgroups.addAll(service.getWorkgroupsByInsurerId(insId, true));
+                return insId;
+            }).forEachOrdered((_item) -> {
+                addCurrentClaimInactiveWorkgroup();
+            });
         }
         return SUCCESS;
     }
     
     // Get all the workgroups(including in-active workgroup)
     public String getAllInsurerWorkgroups() throws Exception {
-        LOG.debug("ClaimSearchCombo action called.");
         if (getAuthenticatedUser().isCHOXAdmin() && claimId != 0) { 
             workgroups = service.getWorkgroupsByClaimId(claimId, false);            
         } else if (getOrgId() != null) {
             workgroups.clear();
-            for (Integer insId : getOrgId()) {
-               if (insId > 0) {
-                   workgroups.addAll(service.getWorkgroupsByInsurerId(insId, false));
-               }
-            }
+            getOrgId().stream().filter((insId) -> (insId > 0)).forEachOrdered((insId) -> {
+                workgroups.addAll(service.getWorkgroupsByInsurerId(insId, false));
+            });
         } 
         return SUCCESS;
     }
@@ -151,10 +144,8 @@ public class WorkgroupDropDownAction extends BaseAction {
        Only return assigned workgroup to the current user if the user role is workgroup related. */
     @Override
     public String execute() throws Exception {
-        LOG.debug("execute called in WorkgroupDropDownAction.");
         if (getAuthenticatedUser().isCHOXAdmin()) {
             // Select workgroups from the insurer of the claim we are viewing
-            LOG.debug("Need to get workgroups for current claim id={}.", claimId);
             workgroups = service.getWorkgroupsByClaimId(claimId, true);
             addCurrentClaimInactiveWorkgroup();
         } else {
