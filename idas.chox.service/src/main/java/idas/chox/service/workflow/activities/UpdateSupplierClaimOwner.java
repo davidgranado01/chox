@@ -1,5 +1,8 @@
 package idas.chox.service.workflow.activities;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Claim;
@@ -14,7 +17,7 @@ import idas.chox.core.services.UserService;
 public class UpdateSupplierClaimOwner extends BaseActivity {
 
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
-//    private static final Logger LOG = LoggerFactory.getLogger(UpdateSupplierClaimOwner.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UpdateSupplierClaimOwner.class);
     private int supplierClaimOwnerId = 0;
     private WebUser newClaimOwner;
     private String oldClaimOwner;
@@ -56,6 +59,7 @@ public class UpdateSupplierClaimOwner extends BaseActivity {
                     throw new AccessDeniedException("No change to Supplier Claim Owner - not updating.");
                 }
             } catch (Exception ex) {
+                LOG.error("Exception thrown getting web user with id={}: {}", supplierClaimOwnerId, ex.getMessage(), ex);
                 throw new AccessDeniedException("An internal error occurred - please try again. If this problem persists, please contact CHOX Support.");
             }
         } else {
