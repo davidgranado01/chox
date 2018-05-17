@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.apache.commons.text.StringEscapeUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import static com.opensymphony.xwork2.Action.SUCCESS;
@@ -23,8 +26,6 @@ import idas.chox.core.util.RoleHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.MenuAccessibility;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class InboxAction extends BaseAction {
 
@@ -147,7 +148,7 @@ public class InboxAction extends BaseAction {
                     && statusAllow.contains(claim.getStatus())) {
                 // in case we have manual invoice ownership batch update enabled 
                 if (batchUpdateAction.equals("claimOwnership")
-                        && !getAuthenticatedUser().getInsurer().isEnableManualInvoiceOwnership()) {
+                        && !getAuthenticatedUser().getInsurer().isEnableManualInvoiceWorkgroups()) {
                     return SUCCESS;
                 }
                 // in case we have manual invoice workgroup and ownership batch update enabled
@@ -155,12 +156,13 @@ public class InboxAction extends BaseAction {
                         && !getAuthenticatedUser().getInsurer().isEnableManualInvoiceWorkgroups()) {
                     return SUCCESS;
                 }
+                // in case we have manual invoice workgroup and ownership batch update enabled
             }
 
             if (batchUpdateAction.equalsIgnoreCase("routeClaims") && claim.getInsurer().isClaimOwnershipEnable()
                     && !claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)) {
                 getActionResponse().AssignYesNoResult(Boolean.FALSE);
-                return SUCCESS;
+               return SUCCESS;
             }
 
             if (batchUpdateAction.equalsIgnoreCase("routeClaims")
@@ -176,7 +178,7 @@ public class InboxAction extends BaseAction {
             //   - his is lazy and should really be achieved by fine tuning the accessibilities entries
             if (batchUpdateAction.equalsIgnoreCase("logInvoicePayment") && ClaimType.isInsurerUpload(claim.getClaimType())) {
                 getActionResponse().AssignYesNoResult(Boolean.FALSE);
-                return SUCCESS;
+               return SUCCESS;
             }
 
             if (!statusAllow.contains(claim.getStatus()) || canShowRouteClaimsInBatchUpdate(insurerName, claim)) {

@@ -1,9 +1,9 @@
 package idas.chox.service.workflow.activities;
 
+import org.springframework.security.access.AccessDeniedException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Comment;

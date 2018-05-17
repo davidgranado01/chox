@@ -83,22 +83,25 @@ public class AssignOwner extends BaseActivity {
                 claim.getInvoice().setPaymentTeam(true);
             }
         }
-        if (!ClaimType.isTPI(claim.getClaimType())) {
-            claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
-        } else if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getTpiClaimStatus())
-                && claim.getInvoice().isPaymentTeam()) {
-            if (!ClaimType.isInsurerVsInsurer(claim.getClaimType())
-                    && (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
-                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN
-                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_DISPUTED
-                    || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED)) {
-                claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+        if (oldOwnerName == null) { // need to update status
+            if (!ClaimType.isTPI(claim.getClaimType())) {
+                claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+            } else if (ClaimStatus.INVOICE_APPROVED_BY_BRE.equals(claim.getTpiClaimStatus())
+                    && claim.getInvoice().isPaymentTeam()) {
+                if (!ClaimType.isInsurerVsInsurer(claim.getClaimType())
+                        && (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_NULL
+                        || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_UNKNOWN
+                        || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_DISPUTED
+                        || claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED)) {
+                    claim.setStatus(ClaimStatus.AWAITING_LIABILITY_RESOLUTION);
+                } else {
+                    claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+                }
             } else {
-                claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
+                claim.setStatus(claim.getTpiClaimStatus());
             }
-        } else {
-            claim.setStatus(claim.getTpiClaimStatus());
         }
+
         Comment comment;
         if (oldOwnerName == null && claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
             comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").", true);
