@@ -436,9 +436,10 @@
                         title = title + '&nbsp&nbsp&nbsp&nbsp';
                     }
                     taskTabTitle = taskTabTitle + '<div  class = "noti_bubble" style="background-color:red;">'+taskCount +'</div>';
-                } else {
+                } else if (taskCount == -1) {
                     taskTabTitle = taskTabTitle + '<div  class = "noti_bubble" style="background-color:red;">?</div>';
-                }
+                } 
+                
                 tabs.getComponent('taskPanelTabId').setTitle(taskTabTitle);
             }
         }

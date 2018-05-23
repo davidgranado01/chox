@@ -242,26 +242,6 @@
             [3, 'External']
         ];
 
-        var linkToClaimToggle = new Ext.form.Checkbox ({
-            fieldLabel: 'Link To Claim?',
-            name: 'linkToClaimToggle',
-            id: 'linkToClaimToggleId',
-            checked: true,
-            handler: function (checkBox, check) {
-                if (check) {
-                    Ext.getCmp('supplierRefId').enable();
-                    Ext.getCmp('supplierRefId').show();
-                    Ext.getCmp('supplierRefId').getEl().up('div.x-form-item').show();
-                }
-                else {
-                    Ext.getCmp('supplierRefId').disable();
-                    Ext.getCmp('supplierRefId').setValue('');
-                    Ext.getCmp('supplierRefId').hide();
-                    Ext.getCmp('supplierRefId').getEl().up('div.x-form-item').hide();
-                }
-            }
-        });
-
         var paymentMethodData = [
             ['BACS'],
             ['CHAPS'],
@@ -403,17 +383,6 @@
                             Ext.getCmp('visibilityRoleComboId').getEl().up('div.x-form-item').hide();
                             createNewTaskForm.doLayout();
                         }
-                        // if external task, claim is mandatory otherwise optional
-                        if (this.value == 3) {
-                            // ToDo: claim option ticked and disabled, supp ref box displayed
-                            Ext.getCmp('linkToClaimToggleId').setValue(true);
-                            Ext.getCmp('linkToClaimToggleId').disable();
-                        }
-                        else {
-                            // ToDo: claim option ticked and enabled, supp ref box displayed
-                            Ext.getCmp('linkToClaimToggleId').setValue(true);
-                            Ext.getCmp('linkToClaimToggleId').enable();
-                        }
                         // Note: maybe we should also pass the visibility role?
                         // If so, need to add a listener to the visibilityRole combo
                         // to also update the task list depending on the role selected.
@@ -492,15 +461,13 @@
                                                     minLengthText: 'minimum of 5 characters',
                                                     width: 250
                                                 },
-                                                linkToClaimToggle,
                                                 {
                                                     fieldLabel: 'Supplier Reference',
                                                     msgTarget : 'qtip',
                                                     xtype: 'textfield',
                                                     name: 'supplierRef',
                                                     id: 'supplierRefId',
-                                                    allowBlank: false,
-                                                    disabled: false
+                                                    allowBlank: false
                                                 }
                                             ]
                                 }
@@ -521,7 +488,6 @@
                             var pMethod = Ext.getCmp('paymentMethodComboId').getValue();
                             var tType =  Ext.getCmp('taskTypeComboId').getValue();
                             var vis = Ext.getCmp('visibilityComboId').getValue();
-                            var linkToClaim = Ext.getCmp('linkToClaimToggleId').getValue();
                             var choRef = Ext.getCmp('supplierRefId').getValue();
 
                             var param = {
@@ -530,7 +496,6 @@
                                 taskType: tType,
                                 visibility: vis,
                                 visibilityRole: visRole,
-                                linkToClaim: linkToClaim,
                                 paymentMethod: pMethod,
                                 paymentDate: pDate,
                                 choReference: choRef
@@ -611,15 +576,13 @@
                                                         minLengthText: 'minimum of 5 characters',
                                                         width: 250
                                                     },
-                                                    linkToClaimToggle,
                                                     {
                                                         fieldLabel: 'Supplier Reference',
                                                         xtype: 'textfield',
                                                         msgTarget : 'qtip',
                                                         name: 'supplierRef',
                                                         id: 'supplierRefId',
-                                                        allowBlank: false,
-                                                        disabled: false
+                                                        allowBlank: false
                                                     } 
                                         ]
                                 }
@@ -637,7 +600,6 @@
                             var tType =  Ext.getCmp('taskTypeComboId').getValue();
                             var pMethod = Ext.getCmp('paymentMethodComboId').getValue();
                             var vis = Ext.getCmp('visibilityComboId').getValue();
-                            var linkToClaim = Ext.getCmp('linkToClaimToggleId').getValue();
                             var choRef = Ext.getCmp('supplierRefId').getValue();
 
                             var param = {
@@ -646,7 +608,6 @@
                                 taskType: tType,
                                 paymentMethod: pMethod,
                                 visibility: vis,
-                                linkToClaim: linkToClaim,
                                 choReference: choRef
                             };
 

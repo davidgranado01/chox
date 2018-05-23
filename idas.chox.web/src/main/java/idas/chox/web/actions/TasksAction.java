@@ -67,7 +67,6 @@ public class TasksAction extends BaseAction {
     private String taskDescription;
     private String taskType;
     private Date dueDate;
-    private boolean linkToClaim;
     private String choReference;
     private String visibilityRole;
     private int visibility;
@@ -142,10 +141,6 @@ public class TasksAction extends BaseAction {
 
     public void setChoReference(String choReference) {
         this.choReference = StringEscapeUtils.unescapeHtml4(Jsoup.clean(choReference, Whitelist.none()));
-    }
-
-    public void setLinkToClaim(boolean linkToClaim) {
-        this.linkToClaim = linkToClaim;
     }
 
     public void setDueDate(Date dueDate) {
@@ -288,27 +283,26 @@ public class TasksAction extends BaseAction {
 
         tasks = null;
         jObject = null;
-        
+
         if (getIsInsurer() || getIsChoxAdmin()) {
             showInsurerRole = true;
         }
 
         List<TaskViewData> viewData = new ArrayList<>();
-        LOG.debug("Calling taskService to get visible tas counts");
+        LOG.debug("Calling taskService to get visible task counts");
         if (hideCompleted) {
             if (this.getIsCHO()) {
-                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, start, limit, sort, dir, showAssignedTasksOnly);
+                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, showAssignedTasksOnly);
             } else {
-                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), start, limit, sort, dir, showAssignedTasksOnly);
+                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), showAssignedTasksOnly);
             }
         } else {
             if (this.getIsCHO()) {
-                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, start, limit, sort, dir, showAssignedTasksOnly);
+                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, showAssignedTasksOnly);
             } else {
-                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), start, limit, sort, dir, showAssignedTasksOnly);
+                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), showAssignedTasksOnly);
             }
         }
-
         return SUCCESS;
     }
 
@@ -318,7 +312,6 @@ public class TasksAction extends BaseAction {
         if (getIsInsurer() || getIsChoxAdmin()) {
             showInsurerRole = true;
         }
-
 
         List<TaskViewData> viewData = new ArrayList<>();
         if (hideCompleted) {
@@ -373,7 +366,7 @@ public class TasksAction extends BaseAction {
                     || (getAuthenticatedUser().isAnInsurer() && !c.getComplete() && !c.getInsurer())) {
                 totalCount++;
             }
-                
+
         }
 
         ObjectMapper mapper = new ObjectMapper();
@@ -387,11 +380,11 @@ public class TasksAction extends BaseAction {
         return SUCCESS;
     }
 
-    @Secured ({"ROLE_INS", "ROLE_CHO"})
+    @Secured({"ROLE_INS", "ROLE_CHO"})
     public String createNewTask() {
         if (taskType == null || dueDate == null || taskDescription == null) {
             LOG.warn("Null parameter creating new task: taskType={}, dueDate={}, taskDescription={}",
-                    new Object[]{taskType,dueDate,taskDescription});
+                    new Object[]{taskType, dueDate, taskDescription});
             setActionError("Cannot create new task as no parameters provide. If this error persists, please contact CHOX support");
             getActionResponse().AssignMessageResult("Cannot create new task as no parameters provide. If this error persists, please contact CHOX support");
             return ERROR;
@@ -402,7 +395,7 @@ public class TasksAction extends BaseAction {
                 taskDescription = new StringBuilder().append(taskDescription).append("\nPayment Method - ").append(paymentMethod).append(". Payment Date - ").append(DateHelper.getLocalDateFormat().format(paymentDate)).toString();
             } else {
                 taskDescription = new StringBuilder().append(taskDescription).append("\nRequested Payment Method - ").append(paymentMethod).toString();
-           }
+            }
         }
         task.setDescription(taskDescription);
         task.setDueDate(dueDate);
@@ -413,28 +406,25 @@ public class TasksAction extends BaseAction {
 
         LOG.debug("Creating new task with description='{}', dueDate='{}'", taskDescription, dueDate);
         LOG.debug("taskType='{}', visibility='{}'", taskType, visibility);
-        LOG.debug("linkedToClaim='{}', choReference='{}'", linkToClaim, choReference);
         try {
             if (dueDate == null || dueDate.compareTo(new Date()) <= 0) {
                 throw new Exception("The due date for a task must be later than today.");
             }
-            if (linkToClaim) {
-                Claim taskClaim;
-                if (claimId > 0) {// Must be in Claim Detail task panel
-                    LOG.debug("Getting claim with id: {}", claimId);
-                    taskClaim = claimService.getClaim(claimId);
-                } else {
-                    LOG.debug("Getting claim with CHO reference: {}", choReference.toUpperCase());
-                    taskClaim = claimService.getClaimByCHOReferenceNumber(choReference.toUpperCase());
-                }
-                if (taskClaim == null) {
-                    throw new Exception(String.format("No such claim with Supplier Reference %s.", choReference));
-                }
-                if (taskClaim.isRemovedTasks()) {
-                    throw new Exception("Task cannot be added as tasks have already been removed to comply with GDPR.");
-                }
-                task.setClaim(taskClaim);
+            Claim taskClaim;
+            if (claimId > 0) {// Must be in Claim Detail task panel
+                LOG.debug("Getting claim with id: {}", claimId);
+                taskClaim = claimService.getClaim(claimId);
+            } else {
+                LOG.debug("Getting claim with CHO reference: {}", choReference.toUpperCase());
+                taskClaim = claimService.getClaimByCHOReferenceNumber(choReference.toUpperCase());
             }
+            if (taskClaim == null) {
+                throw new Exception(String.format("No such claim with Supplier Reference %s.", choReference));
+            }
+            if (taskClaim.isRemovedTasks()) {
+                throw new Exception("Task cannot be added as tasks have already been removed to comply with GDPR.");
+            }
+            task.setClaim(taskClaim);
             taskService.createNewTask(task);
             getActionResponse().AssignYesNoResult(Boolean.TRUE);
         } catch (Exception ex) {
@@ -453,7 +443,7 @@ public class TasksAction extends BaseAction {
         }
         return false;
     }
-    
+
     public boolean isRemovedTasks() {
         if (claimId > 0) {// Must be in Claim Detail task panel
             LOG.debug("Getting claim with id: {}", claimId);
@@ -462,7 +452,7 @@ public class TasksAction extends BaseAction {
         }
         return false;
     }
-    
+
     public String markTaskAsComplete() {
         try {
             taskService.markTaskAsComplete(getAuthenticatedUser().getId(), selectedTaskId);
@@ -553,7 +543,7 @@ public class TasksAction extends BaseAction {
                     } else {
                         searchResult = taskService.getIncompleteTasks(0, MAX_EXPORT_SIZE, sort, dir);
                     }
-                    
+
                 } else {
                     if (this.getIsCHO()) {
                         searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, 0, MAX_EXPORT_SIZE, sort, dir, showAssignedTasksOnly);
@@ -567,7 +557,7 @@ public class TasksAction extends BaseAction {
                     tasks = searchResult.getResult();
                     totalCount = searchResult.getTotalCount();
                 }
-                
+
                 if (totalCount > 0) {
 
                     LOG.debug("Total No of tasks : '{}'", totalCount);
@@ -581,7 +571,7 @@ public class TasksAction extends BaseAction {
                             synchronized (getSessionLock()) {
                                 getSession().put("exceptionThrown", true);
                             }
-                            LOG.error("Exception thrown generating report: ",  ex);
+                            LOG.error("Exception thrown generating report: ", ex);
                             return rtnStr;
                         }
                     } else if (totalCount > MAX_EXPORT_SIZE) {
@@ -591,7 +581,7 @@ public class TasksAction extends BaseAction {
                     }
                 }
             }
-            
+
         } catch (Exception ex) {
             synchronized (getSessionLock()) {
                 getSession().put("exceptionThrown", true);
@@ -603,11 +593,11 @@ public class TasksAction extends BaseAction {
 
     private boolean generateExcel(List<Task> tasks) throws Exception {
         boolean cancelled = false;
-        
+
         LOG.info("Exporting to excel with {} tasks.", tasks.size());
 
         List<ExcelTask> excelTasks = new ArrayList<>();
-        
+
         for (Task task : tasks) {
 
             ExcelTask excelTask = new ExcelTask();
@@ -623,13 +613,11 @@ public class TasksAction extends BaseAction {
                 excelTask.setSupplierReference(task.getClaim().getChoReference());
                 excelTask.setTaskCurrentClaimStatus(task.getClaim().getStatus());
 
-//                if (task.getVisibilityRole() != null && task.getVisibilityRole().equals(WebUserRole.ROLE_INS_CH)) {
-                    if (task.getClaim().getClaimOwner() != null) {
-                        excelTask.setTaskOwner(task.getClaim().getClaimOwner().getDisplayName());
-                    }
-//                }
-                if (task.getClaim().getSupplierClaimOwner()!= null) {
-                        excelTask.setChoTaskOwner(task.getClaim().getSupplierClaimOwner().getDisplayName());
+                if (task.getClaim().getClaimOwner() != null) {
+                    excelTask.setTaskOwner(task.getClaim().getClaimOwner().getDisplayName());
+                }
+                if (task.getClaim().getSupplierClaimOwner() != null) {
+                    excelTask.setChoTaskOwner(task.getClaim().getSupplierClaimOwner().getDisplayName());
                 }
 
                 if (task.getClaim().getWorkgroup() != null) {
@@ -706,7 +694,7 @@ public class TasksAction extends BaseAction {
             }
         };
 
-        ExecutorService executor = (ExecutorService )ServletActionContext.getServletContext().getAttribute("CHOX_EXECUTOR");
+        ExecutorService executor = (ExecutorService) ServletActionContext.getServletContext().getAttribute("CHOX_EXECUTOR");
 
         synchronized (getSessionLock()) {
             getSession().put("writingToFile", true);
@@ -714,7 +702,7 @@ public class TasksAction extends BaseAction {
         Future<?> future = executor.submit(r);
 
         try {
-            while (!isExportTaskOperationCancelled()  && !future.isDone()) {
+            while (!isExportTaskOperationCancelled() && !future.isDone()) {
                 Thread.sleep(100);
             }
 
