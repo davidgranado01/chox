@@ -148,9 +148,9 @@ public class InsurerAction extends BaseAction implements ModelDriven<Insurer>, P
             List<Insurer> insurerData = adminInsurerService.getInsurers();
             insurer = new ArrayList<>();
 
-            for (Insurer h : insurerData) {
+            insurerData.forEach((h) -> {
                 insurer.add(new InsurerViewData(h));
-            }
+            });
 
         } catch (Exception ex) {
             handleException(ex);

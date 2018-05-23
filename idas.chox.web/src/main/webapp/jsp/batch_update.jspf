@@ -47,41 +47,41 @@
             || filterKey === 'ManualInvoiceBREApproved' || filterKey === 'ManualInvoicesToBeAssigned') {
            Ext.state.Manager.set("manualInvoiceFilter",true);
            manualInvoiceFilter = true;
-           if (filterKey === 'ManualInvoicesToBeAssigned') {
-                doClaimOwnerAction.setText('Assign Claim(s) Workgroup And Claim Owner');
-                doClaimRoutedAction.setText('Route Claim(s)');
-                doInsurerClaimOwnerAction.setText('Assign Claim(s) Owner');
-            } else {
-                doClaimOwnerAction.setText('Update Claim(s) Workgroup And Claim Owner');
-                if (<s:property value="insurerIsClaimOwnershipEnabled"/>) {
-                    doClaimRoutedAction.setText('Route Claim(s)');
-                } else {
-                    doClaimRoutedAction.setText('Re-Route Claim(s)');
-                }
-                doInsurerClaimOwnerAction.setText('Update Claim(s) Owner');
-            }
+//           if (filterKey === 'ManualInvoicesToBeAssigned') {
+//                doClaimOwnerAction.setText('Assign Claim(s) Workgroup And Claim Owner');
+//                doClaimRoutedAction.setText('Route Claim(s)');
+//                doInsurerClaimOwnerAction.setText('Assign Claim(s) Owner');
+//            } else {
+//                doClaimOwnerAction.setText('Update Claim(s) Workgroup And Claim Owner');
+//                if (<s:property value="insurerIsClaimOwnershipEnabled"/>) {
+//                    doClaimRoutedAction.setText('Route Claim(s)');
+//                } else {
+//                    doClaimRoutedAction.setText('Re-Route Claim(s)');
+//                }
+//                doInsurerClaimOwnerAction.setText('Update Claim(s) Owner');
+//            }
 
-            if (!(<s:property value="isInsurer"/> && (!<s:property value="enableManualInvoiceWorkgroups"/> || !<s:property value="insurerIsWorkgroupEnabled"/>) 
-                && <s:property value="enableManualInvoiceOwnership"/>)) {
-                doInsurerClaimOwnerAction.setHidden(true);
-            } else {
-                doInsurerClaimOwnerAction.setHidden(false);
-            }
+//            if (!(<s:property value="isInsurer"/> && (!<s:property value="enableManualInvoiceWorkgroups"/> || !<s:property value="insurerIsWorkgroupEnabled"/>) 
+//                && <s:property value="enableManualInvoiceOwnership"/>)) {
+//                doInsurerClaimOwnerAction.setHidden(true);
+//            } else {
+//                doInsurerClaimOwnerAction.setHidden(false);
+//            }
         }else {
             Ext.state.Manager.set("manualInvoiceFilter",false);
             manualInvoiceFilter = false;
-            doClaimOwnerAction.setText('Assign Claim(s) Owner');
-            doInsurerClaimOwnerAction.setText('Assign Claim(s) Owner');
-            doInsurerClaimOwnerAction.setHidden((<s:property value="isCHO"/> || !(<s:property value="isInsurer"/> 
-                && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)));
+//            doClaimOwnerAction.setText('Assign Claim(s) Owner');
+//            doInsurerClaimOwnerAction.setText('Assign Claim(s) Owner');
+//            doInsurerClaimOwnerAction.setHidden((<s:property value="isCHO"/> || !(<s:property value="isInsurer"/> 
+//                && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)));
 
            // Route Claim BATCH UPDATE LOGIC
-            if (filterKey !== 'NewClaimsToBeRouted' && !<s:property value="insurerIsClaimOwnershipEnabled"/>) {
-                doClaimRoutedAction.setText('Re-Route Claim(s)'); 
-            } else {
-                doClaimRoutedAction.setHidden(<s:property value="isCHO"/>); 
-                doClaimRoutedAction.setText('Route Claim(s)'); 
-            }
+//            if (filterKey !== 'NewClaimsToBeRouted' && !<s:property value="insurerIsClaimOwnershipEnabled"/>) {
+//                doClaimRoutedAction.setText('Re-Route Claim(s)'); 
+//            } else {
+//                doClaimRoutedAction.setHidden(<s:property value="isCHO"/>); 
+//                doClaimRoutedAction.setText('Route Claim(s)'); 
+//            }
             // Route Claim BATCH UPDATE LOGIC ENDS.
         }
     }
@@ -145,16 +145,14 @@
             var claimRoutedSelectionDlg;
             doClaimRoutedAction = new Ext.Action({
                 text: 'Route Claim(s)',
-                hidden:<s:property value="isCHO"/>,
+                hidden:!<s:property value="isInsurer"/> || !<s:property value="insurerIsWorkgroupEnabled"/>,
                 handler: function(){
 
-                    if(!claimRoutedSelectionDlg)
-                    {
+                    if(!claimRoutedSelectionDlg) {
                         var workgroupJsonReader = new Ext.data.JsonReader({
                             totalProperty: 'totalCount',
                             root: 'results',
-                            fields:
-                                [
+                            fields: [
                                 {name:'text'},
                                 {name:'value'}
                             ]
@@ -236,7 +234,7 @@
                                                 beforeSubmit: function(formData, form, options) {
                                                     formData[1].value = workgroupCombo.getValue();
                                                     if (manualInvoiceFilter) {
-                                                        formData.push({ name: 'name', value: 'assignManualInvoiceOwner' });
+                                                        formData.push({ name: 'name', value: 'assignOwner' });
                                                     } else {
                                                         formData.push({ name: 'name', value: 'assignWorkgroup' });
                                                     }
@@ -259,7 +257,6 @@
                                                     loadQueueGrid();
                                                     claimRoutedSelectionDlg.hide();
                                                 }};
-    //                                            $("form#routeClaimForm").ajaxSubmit(submitOption);
                                             choxJqueryAjaxSubmit($("form#routeClaimForm"), submitOption);
                                         }
                                     }
@@ -441,7 +438,7 @@
 
             /**** BATCH UPDATE - ASSIGN SUPPLIER CLAIM OWNER ********************************/
             var supplierClaimOwnerSelectionDlg;
-            var isHidden = <s:property value="isInsurer"/> || <s:property value="isChoxAdmin"/> || (<s:property value="isCHO"/> && !<s:property value="choIsClaimOwnershipEnabled"/>);
+            var isHidden = !<s:property value="isCHO"/> || !<s:property value="choIsClaimOwnershipEnabled"/>;
             var doSupplierClaimOwnerAction = new Ext.Action
             ({
                 text: 'Assign Claim(s) Owner',
@@ -452,8 +449,7 @@
                         var supplierClaimOwnerReader = new Ext.data.JsonReader({
                             totalProperty: 'totalCount',
                             root: 'results',
-                            fields:
-                                [
+                            fields: [
                                 {name:'id'},
                                 {name:'name'}
                             ]
@@ -542,7 +538,6 @@
                                                     supplierClaimOwnerSelectionDlg.hide();
                                                 }
                                             };
-    //                                            $("form#supplierOwnershipClaimForm").ajaxSubmit(submitOption);
                                             choxJqueryAjaxSubmit($("form#supplierOwnershipClaimForm"), submitOption);
                                         }
 
@@ -598,13 +593,10 @@
             });
 
             /**** BATCH UPDATE - ASSIGN CLAIM OWNER (both claimOwnership and workgroup should be enabled)******/
-
-
             var claimOwnerSelectionDlg;
             doClaimOwnerAction = new Ext.Action({
-                text: 'Assign Claim(s) Workgroup And Claim Owner',
-                hidden: <s:property value="isCHO"/> || <s:property value="isChoxAdmin"/> 
-                    || !(<s:property value="isInsurer"/> && <s:property value="insurerIsClaimOwnershipEnabled"/> && <s:property value="insurerIsWorkgroupEnabled"/>),
+                text: 'Assign Claim(s) Workgroup And Owner',
+                hidden:!<s:property value="isInsurer"/> || !<s:property value="insurerIsWorkgroupEnabled"/> || !<s:property value="insurerIsClaimOwnershipEnabled"/> ,
                 handler: function(){
 
                     if(!claimOwnerSelectionDlg)
@@ -620,8 +612,7 @@
                         var claimOwnerReader = new Ext.data.JsonReader({
                             totalProperty: 'totalCount',
                             root: 'results',
-                            fields:
-                                [
+                            fields: [
                                 {name:'id'},
                                 {name:'name'}
                             ]
@@ -659,14 +650,11 @@
                             }
                         });
 
-
                         if(isInsurerWorkgroupEnable){
-
                             var workgroupJsonReader = new Ext.data.JsonReader({
                                 totalProperty: 'totalCount',
                                 root: 'results',
-                                fields:
-                                    [
+                                fields: [
                                     {name:'text'},
                                     {name:'value'}
                                 ]
@@ -722,7 +710,6 @@
                             }, "You must select a 'Workgroup'");
                         }
 
-
                         claimOwnerSelectionDlg =  new Ext.Window({
                             applyTo:'claimOwnerSelectionDlgHolder',
                             layout:'fit',
@@ -741,8 +728,6 @@
                                     handler:function(){
 
                                         if($("form#ownershipClaimForm").valid()){
-
-
                                             var selectedRecords =  batchUpdateSelectionModel.getSelections();
                                             var selectedIDs = $.map(selectedRecords, function(n){
                                                 return n.json.id;
@@ -760,11 +745,7 @@
                                                     else {
                                                         formData[1].value = claimOwnerCombo.getValue();
                                                     }
-                                                    if (manualInvoiceFilter) {
-                                                        formData.push({ name: 'name', value: 'assignManualInvoiceOwner' });
-                                                    } else {
-                                                        formData.push({ name: 'name', value: 'assignOwner' });
-                                                    }
+                                                    formData.push({ name: 'name', value: 'assignOwner' });
                                                 },
                                                 success:function(){
                                                     batchUpdateSelectionModel.clearSelections();
@@ -777,10 +758,7 @@
                                                     claimOwnerSelectionDlg.hide();
                                                 }
                                             };
-
-    //                                            $("form#ownershipClaimForm").ajaxSubmit(submitOption);
                                             choxJqueryAjaxSubmit($("form#ownershipClaimForm"), submitOption);
-
                                         }
 
                                     }
@@ -863,27 +841,21 @@
                 }
             });
 
-
-
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
             /////////////////// Batch Assign claim(s) owner for insurer without workgroup enabled//////////////////////
             /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
             var insurerClaimOwnerSelectionDlg;
             doInsurerClaimOwnerAction = new Ext.Action({
                 text: 'Assign Claim(s) Owner',
-                hidden:<s:property value="isCHO"/> || <s:property value="isChoxAdmin"/> || (!manualInvoiceFilter && !(<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
+                hidden:!<s:property value="isInsurer"/> || <s:property value="insurerIsWorkgroupEnabled"/> || !<s:property value="insurerIsClaimOwnershipEnabled"/>,
                 handler: function(){
 
-                    if(!insurerClaimOwnerSelectionDlg)
-                    {
-
+                    if(!insurerClaimOwnerSelectionDlg) {
                         var claimOwnerReader = new Ext.data.JsonReader({
                             totalProperty: 'totalCount',
                             root: 'results',
-                            fields:
-                                [
+                            fields: [
                                 {name:'id'},
                                 {name:'name'}
                             ]
@@ -954,14 +926,7 @@
                                                 beforeSubmit: function(formData, form, options) {
 
                                                     formData[1].value = claimOwnerCombo.getValue();
-                                                    if (manualInvoiceFilter) {
-                                                        formData.push({ name: 'name', value: 'assignManualInvoiceOwner' });
-                                                    } else {
-                                                        formData.push({ name: 'name', value: 'assignOwner' });
-                                                    }
-
-
-
+                                                    formData.push({ name: 'name', value: 'assignOwner' });
                                                 },
                                                 success:function(data){
                                                     if(data && !data.isValid){
@@ -982,8 +947,6 @@
                                                     insurerClaimOwnerSelectionDlg.hide(); 
                                                 }
                                             };
-
-    //                                            $("form#ownershipClaimForm1").ajaxSubmit(submitOption);
                                             choxJqueryAjaxSubmit($("form#ownershipClaimForm1"), submitOption);
                                         }
                                     }
@@ -999,10 +962,6 @@
                         });
 
                         insurerClaimOwnerSelectionDlg.addListener('beforeshow', function(dialog){
-
-
-
-
                             // LOAD WORKGROUP AND CLAIM OWNER
                             var insurerId = $("#userInsurerId").val();
                             // GENERATE CLAIM OWNER
@@ -1021,57 +980,186 @@
             });
 
 
-
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //                           BATCH UPDATE CLAIM(S) OWNER WHERE WORKGROUP IS NOT ENABLED BUT CLAIMOWNERSHIP             ////////
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
             var updateInsurerClaimOwnershipSelectionDlg;
-            var doUpdateInsurerClaimOwnerAction = new Ext.Action({text: 'Update Claim(s) Owner',
-                hidden: (<s:property value="isCHO"/> 
-                    || !(<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
+            var doUpdateInsurerClaimOwnerAction = new Ext.Action({
+<s:if test='insurerIsWorkgroupEnabled'>
+                text: 'Update Claim(s) Workgroup and Owner',
+</s:if>
+<s:else>
+                text: 'Update Claim(s) Owner',
+</s:else>
+                hidden: !<s:property value="isInsurer"/> || !<s:property value="insurerIsClaimOwnershipEnabled"/>,
                 handler: function(){
+                    if(!updateInsurerClaimOwnershipSelectionDlg){
+                        var workgroupStore = -1;
+                        var workgroupCombo = -1;
+                        var isInsurerWorkgroupEnable = false;
 
-                    if(!updateInsurerClaimOwnershipSelectionDlg)
-                    {
-                        updateInsurerClaimOwnershipSelectionDlg = new Ext.Window({
+                        if($("#userInsurerWorkgroupEnable").val()!==null && $("#userInsurerWorkgroupEnable").val()!==""){
+                            isInsurerWorkgroupEnable = $("#userInsurerWorkgroupEnable").val();
+                        }
+                        var claimOwnerReader = new Ext.data.JsonReader({
+                            totalProperty: 'totalCount',
+                            root: 'results',
+                            fields: [
+                                {name:'id'},
+                                {name:'name'}
+                            ]
+                        });
+
+                        var claimOwnerStore = new choxDataStore({
+                            url : "/prv/p/ClaimHandlerRoleUserDropDownAction2.action", 
+                            params : {"workgroupId":-1,"insurerId":-1},
+                            reader : claimOwnerReader
+                        });
+
+                        var claimOwnerCombo = new Ext.form.ComboBox({
+                            store : claimOwnerStore,
+                            width: 220,
+                            renderTo: 'couClaimHandlerRoleUserDropDownDiv',
+                            valueField : 'id',
+                            id : 'updateClaimOwnerId',
+                            hiddenName : 'claimOwnerId',
+                            displayField :'name',
+                            typeAhead : true,
+                            forceSelection: true,
+                            mode : 'local',
+                            triggerAction : 'all',
+                            emptyText : '--- Please Select ---',
+                            listeners: { 
+                                blur: function () {
+                                    if(this.getRawValue() === "" ) {
+                                        this.clearValue(); this.reset();
+                                    }
+                                },
+                                specialkey:function (el, e) {
+                                            if(e.keyCode === e.ENTER) {
+                                                e.preventDefault();
+                                            }
+                                }
+                            }
+                        });
+                        if(isInsurerWorkgroupEnable == 'true'){
+                            var workgroupJsonReader = new Ext.data.JsonReader({
+                                totalProperty: 'totalCount',
+                                root: 'results',
+                                fields: [
+                                    {name:'text'},
+                                    {name:'value'}
+                                ]
+                            });
+
+                            workgroupStore = new choxDataStore({
+                                url : "/prv/p/WorkgroupDropDownActionByInsurer3.action", 
+                                params : {"insurerId":-1},
+                                reader : workgroupJsonReader
+                            });
+
+                            workgroupCombo = new Ext.form.ComboBox({
+                                store: workgroupStore,
+                                width: 220,
+                                renderTo: 'couWorkgroupDropDownDiv',
+                                valueField: 'text',
+                                id: 'updateWorkgroupId',
+                                hiddenName : 'oasWorkgroupId',
+                                displayField:'value',
+                                typeAhead: true,
+                                mode: 'local',
+                                triggerAction: 'all',
+                                emptyText: '--- Please Select ---',
+                                forceSelection: true,
+                                listeners: {select: function () {
+                                        var workgroupId = -1;
+                                        if (workgroupCombo.getValue() !== null) {
+                                            workgroupId = workgroupCombo.getValue();
+                                        }
+                                        var insurerId = $("#userInsurerId").val();
+                                        claimOwnerCombo.reset();
+                                        claimOwnerStore.removeAll();
+                                        claimOwnerStore.load({ params : {"workgroupId":workgroupId,"insurerId":insurerId}});
+                                    },
+                                    blur: function () {
+                                        if(this.getRawValue() === "" ) {
+                                            this.clearValue(); this.reset();
+                                            var insurerId = $("#userInsurerId").val();
+                                            claimOwnerCombo.reset();
+                                            claimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+                                        }
+                                    }}
+                            });
+                        }
+
+                        updateInsurerClaimOwnershipSelectionDlg =  new Ext.Window({
                             applyTo:'couSelectionDlgHolder',
                             layout:'fit',
                             width:410,
                             height:280,
                             modal: true,
                             closeAction:'hide',
-                            plain:false,
-                            title: 'Update Claim(s) Owner',
+                            plain: false,
+                            title: 'Assign Claim(s) Owner',
                             resizable : false,
-                            items: new Ext.Panel({applyTo: 'couSelectionPanel'}),
+                            items: new Ext.Panel({
+                                applyTo: 'couSelectionPanel'
+                            }),
                             buttons: [{
                                     text:'Ok',
                                     handler:function(){
-
-                                        if($('form#ClaimOwnershipUpdateForm').valid()){
+                                        // First, lets validate the drop-downs
+                                        var ownr = document.getElementById('updateClaimOwnerId').value;
+                                        if(isInsurerWorkgroupEnable == 'true') {
+                                            var wkgrp = document.getElementById('updateWorkgroupId').value;
+                                            if (wkgrp === "--- Please Select ---") {
+                                                if (ownr === "--- Please Select ---") {
+                                                    document.getElementById('claimOwnershipUpdateFormMessageBox').innerHTML = "You must select a 'Workgroup'<br>You must select a 'Claim Owner'";
+                                                } else {
+                                                    document.getElementById('claimOwnershipUpdateFormMessageBox').innerHTML = "You must select a 'Workgroup'";
+                                                }
+                                                return;
+                                            }
+                                        }
+                                        if (ownr === "--- Please Select ---") {
+                                            document.getElementById('claimOwnershipUpdateFormMessageBox').innerHTML = "You must select a 'Claim Owner''";
+                                            return;
+                                        }
 
                                             var selectedRecords =  batchUpdateSelectionModel.getSelections();
-                                            var selectedIDs = $.map(selectedRecords, function(n){ return n.json.id; });
+                                            var selectedIDs = $.map(selectedRecords, function(n){
+                                                return n.json.id;
+                                            });
                                             var idsParam = selectedIDs.join(",");
-                                            $('form#ClaimOwnershipUpdateForm input[name="selectedClaimIds"]').val(idsParam);
+                                            $('form#claimOwnershipUpdateForm input[name="selectedClaimIds"]').val(idsParam);
 
                                             var submitOption = {
-                                                clearForm: true,
+                                                    clearForm: true,
+                                                    beforeSubmit: function(formData, form, options) {
+                                                    if(isInsurerWorkgroupEnable == 'true') {
+                                                        formData[1].value = workgroupCombo.getValue();
+                                                        formData[2].value = claimOwnerCombo.getValue();
+                                                    }
+                                                    else {
+                                                        formData[1].value = claimOwnerCombo.getValue();
+                                                    }
+                                                    formData.push({ name: 'name', value: 'assignOwner' });
+                                                },
                                                 success:function(){
                                                     batchUpdateSelectionModel.clearSelections();
+                                                    if(isInsurerWorkgroupEnable == 'true'){
+                                                        workgroupCombo.reset();
+                                                    }
+                                                    claimOwnerCombo.reset();
                                                     claimStore.reload();
                                                     loadQueueGrid();
                                                     updateInsurerClaimOwnershipSelectionDlg.hide();
                                                 }
                                             };
+                                            choxJqueryAjaxSubmit($("form#claimOwnershipUpdateForm"), submitOption);
 
-    //                                            $("form#ClaimOwnershipUpdateForm").ajaxSubmit(submitOption);
-                                            choxJqueryAjaxSubmit($("form#ClaimOwnershipUpdateForm"), submitOption);
 
-                                        }
                                     }
                                 },{
                                     text: 'Close',
@@ -1082,159 +1170,60 @@
                         });
 
                         updateInsurerClaimOwnershipSelectionDlg.addListener('beforeshow', function(dialog){
-
-                            $("form#ClaimOwnershipUpdateForm").validate(
-                            {
-                                rules: {
-
-                                    claimOwnerId:{min:1}
+                            if(document.getElementById("claimOwnershipUpdateFormMessageBox")){
+                                document.getElementById("claimOwnershipUpdateFormMessageBox").innerHTML = '';
+                            }
+                            var selectedRecords =  batchUpdateSelectionModel.getSelections();
+                            var selectedIDs = $.map(selectedRecords, function(n){ return n.json.id; });
+                            var idsParam = selectedIDs.join(",");
+                            var uniqueWorkgroupId;
+                            // getUniqueWorkgroupId for the selected claims. implemented for  
+                            // bug#1546 Bulk action 'Assign Claim Owner' should default to correct workgroup
+                            choxExtAjaxRequest({
+                                url: '/prv/p/getUniqueWorkgroupId.action',
+                                params: {
+                                    selectedClaimIds  : idsParam
                                 },
-                                messages: {
+                                callback : function(options,success,response){
+                                    if(response.responseText){
+                                        var resp = Ext.util.JSON.decode(response.responseText);
+                                        if(resp){
+                                            uniqueWorkgroupId = resp.workgroupId;
+                                        } else { 
+                                            uniqueWorkgroupId = -1;
+                                         }
+                                       }
+                                        // LOAD WORKGROUP AND CLAIM OWNER
+                                        var insurerId = $("#userInsurerId").val();
 
-                                    claimOwnerId:{min:"You must select 'Claim Owner'"}
-                                }
-                            });
+                                        if (isInsurerWorkgroupEnable == 'true'){
 
-                            var insurerId = $("#userInsurerId").val();
+                                            workgroupStore.load({ params : {"insurerId":insurerId}});
+                                            workgroupCombo.reset();
+                                            if(uniqueWorkgroupId >= 1) {
+                                                workgroupCombo.setValue(uniqueWorkgroupId);
+                                            } 
+                                        }
 
-
-                            // GENERATE CLAIM OWNER
-                            var target = "#couClaimHandlerRoleUserDropDownDiv";
-                            var url = "/prv/p/ClaimHandlerRoleUserDropDownAction.action";
-                            var param = {"workgroupId":-1,"insurerId":insurerId};
-                            ajax.loadHtml2(url,param,function(data){
-                                $(target).html(data);
-
-                            });
-
-
-
-                        });
-                    }
-
+                                        // GENERATE CLAIM OWNER
+                                        if(uniqueWorkgroupId >= 1) { 
+                                          claimOwnerStore.load({ params : {"workgroupId":uniqueWorkgroupId,"insurerId":insurerId}});
+                                        } else {
+                                          claimOwnerStore.load({ params : {"workgroupId":-1,"insurerId":insurerId}});
+                                        }
+                                        claimOwnerCombo.reset();
+                                     }
+                                 });
+                              });
+                       }
+                    // claimOwnerSelectionDlg.show(this);
                     var selectedRecords =  batchUpdateSelectionModel.getSelections();
-                    var selectedIDs = $.map(selectedRecords, function(n){
-                        return n.json.id;
-                    });
+                    var selectedIDs = $.map(selectedRecords, function(n){ return n.json.id; });
                     var idsParam = selectedIDs.join(",");
                     validateSelectedClaimsDialog("updateInsurerClaimOwner", idsParam, updateInsurerClaimOwnershipSelectionDlg);
                 }
             });
-
-
-
-
-
-
-            // ***********************************************************************************************************************************
-            // ***********************************************************************************************************************************
-
-            var updateClaimOwnershipSelectionDlg;
-            var doUpdateClaimOwnerAction = new Ext.Action({text: 'Update Claim(s) Workgroup And Claim Owner',
-                hidden: (<s:property value="isCHO"/> 
-                    || !(<s:property value="isInsurer"/> && <s:property value="insurerIsClaimOwnershipEnabled"/> && <s:property value="insurerIsWorkgroupEnabled"/>)),
-                handler: function(){
-
-                    if(!updateClaimOwnershipSelectionDlg)
-                    {
-                        updateClaimOwnershipSelectionDlg = new Ext.Window({
-                            applyTo:'couSelectionDlgHolder',
-                            layout:'fit',
-                            width:410,
-                            height:280,
-                            modal: true,
-                            closeAction:'hide',
-                            plain:false,
-                            title: 'Update Claim(s) Workgroup And Claim Owner',
-                            resizable : false,
-                            items: new Ext.Panel({applyTo: 'couSelectionPanel'}),
-                            buttons: [{
-                                    text:'Ok',
-                                    handler:function(){
-
-                                        if($('form#ClaimOwnershipUpdateForm').valid()){
-
-                                            var selectedRecords =  batchUpdateSelectionModel.getSelections();
-                                            var selectedIDs = $.map(selectedRecords, function(n){ return n.json.id; });
-                                            var idsParam = selectedIDs.join(",");
-                                            $('form#ClaimOwnershipUpdateForm input[name="selectedClaimIds"]').val(idsParam);
-
-                                            var submitOption = {
-                                                clearForm: true,
-                                                success:function(){
-                                                    batchUpdateSelectionModel.clearSelections();
-                                                    claimStore.reload();
-                                                    loadQueueGrid();
-                                                    updateClaimOwnershipSelectionDlg.hide();
-                                                }
-                                            };
-
-                                            choxJqueryAjaxSubmit($("form#ClaimOwnershipUpdateForm"), submitOption);
-    //                                            $("form#ClaimOwnershipUpdateForm").ajaxSubmit(submitOption);
-
-                                        }
-                                    }
-                                },{
-                                    text: 'Close',
-                                    handler: function(){
-                                        updateClaimOwnershipSelectionDlg.hide();
-                                    }
-                                }]
-                        });
-
-                        updateClaimOwnershipSelectionDlg.addListener('beforeshow', function(dialog){
-
-                            $("form#ClaimOwnershipUpdateForm").validate(
-                            {
-                                rules: {
-                                    workgroupId:{min:1},
-                                    claimOwnerId:{min:1}
-                                },
-                                messages: {
-                                    workgroupId:{min:"You must select 'Workgroup'"},
-                                    claimOwnerId:{min:"You must select 'Claim Owner'"}
-                                }
-                            });
-
-                            var insurerId = $("#userInsurerId").val();
-                            var isInsurerWorkgroupEnable = false;
-
-                            if($("#userInsurerWorkgroupEnable").val()!==null && $("#userInsurerWorkgroupEnable").val()!==""){
-                                isInsurerWorkgroupEnable = $("#userInsurerWorkgroupEnable").val();
-                            }
-
-                            // GENERATE CLAIM OWNER
-                            var target = "#couClaimHandlerRoleUserDropDownDiv";
-                            var url = "/prv/p/ClaimHandlerRoleUserDropDownAction.action";
-                            var param = {"workgroupId":-1,"insurerId":insurerId};
-                            ajax.loadHtml2(url,param,function(data){
-                                $(target).html(data);
-                                if(isInsurerWorkgroupEnable){
-                                    generateWorkgroup();
-                                }
-                            });
-
-                            function generateWorkgroup(){
-                                var target = "#couWorkgroupDropDownDiv";
-                                var url = "/prv/p/getWorkgroupDropDownActionByInsurer.action";
-                                var param = {};
-                                ajax.loadHtml2(url, param, function(data){
-                                    $(target).html(data);
-                                });
-                            }
-
-                        });
-                    }
-
-                    var selectedRecords =  batchUpdateSelectionModel.getSelections();
-                    var selectedIDs = $.map(selectedRecords, function(n){
-                        return n.json.id;
-                    });
-                    var idsParam = selectedIDs.join(",");
-                    validateSelectedClaimsDialog("updateClaimWorkgroupAndOwner", idsParam, updateClaimOwnershipSelectionDlg);
-                }
-            });
-
+            
             actionMenu = new Ext.SplitButton({
                 text: 'Batch Update',
                 tooltip: {text:'', title:'More actions'},
@@ -1243,7 +1232,6 @@
                         doInsurerClaimOwnerAction,
                         doClaimOwnerAction,
                         doSupplierClaimOwnerAction,
-                        doUpdateClaimOwnerAction,
                         doUpdateInsurerClaimOwnerAction,
                         clearBREApprovedInvoicesForPaymentAction,
                         approvedInvoicesPaymentAction,
@@ -1262,7 +1250,6 @@
                 doInsurerClaimOwnerAction.disable();
                 doClaimOwnerAction.disable();
                 doSupplierClaimOwnerAction.disable();
-                doUpdateClaimOwnerAction.disable();
                 doUpdateInsurerClaimOwnerAction.disable();
 
                 var selectedRecords = batchUpdateSelectionModel.getSelections();
@@ -1279,7 +1266,6 @@
                     validateBatchUpdateAccessRight(doInsurerClaimOwnerAction, "insurerClaimOwnership", idsParam);
                     validateBatchUpdateAccessRight(doClaimOwnerAction, "claimOwnership", idsParam);
                     validateBatchUpdateAccessRight(doSupplierClaimOwnerAction, "supplierClaimOwnership", idsParam);
-                    validateBatchUpdateAccessRight(doUpdateClaimOwnerAction, "updateClaimWorkgroupAndOwner", idsParam);
                     validateBatchUpdateAccessRight(doUpdateInsurerClaimOwnerAction, "updateInsurerClaimOwner", idsParam);
                 }
 

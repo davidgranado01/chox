@@ -26,8 +26,6 @@
         var title;
         var actionMenu;
         var batchUpdateSelectionModel;
-//        var isQueueSelectionSearch = false;
-//        var isSearchScreenSearch = false;
         
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
         Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
@@ -77,7 +75,6 @@
                 Ext.state.Manager.set("isClaimSearchMade", false);
                 Ext.state.Manager.set("currentTabIndex", <s:property value="preSelectedActiveTab"/>);
                 Ext.state.Manager.set("uploaded_files_grid_title", 'Files Uploaded Today');
-//                Ext.state.Manager.set("syncWithSearchField", false);
                 manualInvoiceFilter = false;
             </s:if>
             <s:else > // The below line need to be investigated
@@ -152,15 +149,9 @@
                                 queueRecord.set('queueNameWithCount', queueRecord.get('queueName') + ' (' +store.getTotalCount() + ')');
                                 queueRecord.commit();
                             }
-//                        if (options.params.canLoadData) {
                           if (options.params.gridTitle !== '') {
                               claimsGrid.setTitle('<div class="claims-grid-title-text">'+options.params.gridTitle +" ("+store.getTotalCount()+")"+'</div>');
                           }
-//                        } else if(options.params.canLoadData === false) {
-//                            claimsGrid.setTitle("");
-//                        } else if(typeof options.params.canLoadData === 'undefined') {
-//                            claimsGrid.setTitle(claimsGridTitle +" ("+store.getTotalCount()+")");
-//                        }
                     }
                 }
             });
@@ -249,7 +240,6 @@
                     forceFit:true
                     ,getRowClass: function(record, rowIndex, rp, ds){ // rp = rowParams
                         if (isPartialBranding && (record.get('choBranding').indexOf("Full") > -1 || <s:property value='isCHO'/>)) {
-//                        if (isPartialBranding && record.get('choBranding').indexOf("Full") > -1) {
                             return 'branding-grid-row';
                         }
                     }
@@ -379,7 +369,6 @@
             tabs = new Ext.TabPanel({
                 renderTo: 'tabPanel',
                 autoheight: true,
-//                width : 1300,
                 activeTab: Ext.state.Manager.get("currentTabIndex"),
                 listeners: { 
                     beforerender : updateTaskTab,
@@ -393,23 +382,18 @@
 
         function handleActivate(tab){
             
-//            claimsGrid.hide();
             Ext.fly('inboxClaimsGridId').addClass('x-hide-display');
             Ext.fly('xmlClaimsStatusGridDiv').addClass('x-hide-display');
             activityMonitor.clearViewingStatus();
 
             if(tab.title.indexOf('Inbox') > -1) {
                 
-//                claimsGrid.show();
                 Ext.fly('inboxClaimsGridId').removeClass('x-hide-display');
                 
                 <s:if test="isChoxAdmin!=true && enableActivityMonitor">
                         activityMonitor.refreshViewingStatus();
                 </s:if>
                 
-                if(tab.title.indexOf('Search') > -1){
-                    doClaimRoutedAction.setText('Route Claim(s)');
-                }
             } else if(tab.title.indexOf('Claim/Invoice Upload') > -1) { 
                 Ext.fly('xmlClaimsStatusGridDiv').removeClass('x-hide-display');
             }
@@ -421,11 +405,15 @@
             }
             choxExtAjaxRequest({
                         url: '/prv/p/getVisibleTaskCount.action',
+//                        timeout : 300000,
                         success : function(response, opts) {
                             var resp = Ext.decode(response.responseText);
                             if (resp && tabs) {
                                 updateTaskTabCount(resp.totalCount, resp.colorCode);
                             }
+                        },
+                        failure : function(response, opts){
+                            updateTaskTabCount(-1, 'not used');
                         },
                         params: {
                             hideCompleted : true,
@@ -448,6 +436,8 @@
                         title = title + '&nbsp&nbsp&nbsp&nbsp';
                     }
                     taskTabTitle = taskTabTitle + '<div  class = "noti_bubble" style="background-color:red;">'+taskCount +'</div>';
+                } else {
+                    taskTabTitle = taskTabTitle + '<div  class = "noti_bubble" style="background-color:red;">?</div>';
                 }
                 tabs.getComponent('taskPanelTabId').setTitle(taskTabTitle);
             }
@@ -483,10 +473,10 @@
                 <input name="selectedClaimIds" type="hidden" />
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
-                        <th colspan="2"><label>Please select the 'Workgroup' in order to route the claim(s) to the relevant handling team.</label></th>
+                        <th colspan="2"><label>Please select the 'Workgroup' in order to route the claim(s) to the relevant handling team</label></th>
                     </tr>
                     <tr>
-                        <td><label>Workgroup</label></td>
+                        <td><label>Workgroup:</label></td>
                         <td><div id="claimRoutedSelectionHolder"></div></td>
                     </tr>
                     <tr>
@@ -503,16 +493,16 @@
                 <input name="selectedClaimIds" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
-                        <th colspan="2"><label>Please assign the claim(s) to a Claim Owner.</label></th>
+                        <th colspan="2"><label>Please assign the claim(s) to a Claim Owner</label></th>
                     </tr>
                     <s:if test="AuthenticatedUser.insurer.workgroupEnable">
                         <tr>
-                            <td class="pop-claim-ownership-label"><label>Workgroup</label></td>
+                            <td class="pop-claim-ownership-label"><label>Workgroup:</label></td>
                             <td class="pop-claim-ownership-column"><div id="claimOwnerWorkgroupDropDownDiv"></div></td>
                         </tr>
                     </s:if>
                     <tr>
-                        <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner</label></td>
+                        <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner:</label></td>
                         <td class="pop-claim-ownership-column"><div id="claimOwnerClaimHandlerRoleUserDropDownDiv"></div></td>
                     </tr>
                     <tr>
@@ -529,10 +519,10 @@
                 <input name="selectedClaimIds" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
-                        <th colspan="2"><label>Please assign the claim(s) to a Claim Owner.</label></th>
+                        <th colspan="2"><label>Please assign the claim(s) to a Claim Owner</label></th>
                     </tr>
                     <tr>
-                        <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner</label></td>
+                        <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner:</label></td>
                         <td class="pop-claim-ownership-column"><div id="claimOwnerClaimHandlerRoleUserDropDownDiv1"></div></td>
                     </tr>
                     <tr>
@@ -549,10 +539,10 @@
                 <input name="selectedClaimIds" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
-                        <th colspan="2"><label>Please assign the claim(s) to a Claim Owner.</label></th>
+                        <th colspan="2"><label>Please assign the claim(s) to a Claim Owner</label></th>
                     </tr>
                     <tr>
-                        <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner</label></td>
+                        <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner:</label></td>
                         <td class="pop-claim-ownership-column"><div id="supplierClaimOwnerDropDownDiv"></div></td>
                     </tr>
                     <tr>
@@ -565,21 +555,34 @@
 
     <div id="couSelectionDlgHolder" class="x-hidden">
         <div id="couSelectionPanel">
-            <form id="ClaimOwnershipUpdateForm" action="<%=request.getContextPath()%>/prv/p/doClaimOwnershipUpdateAction.action" class="XXentity-form" method="POST">
+            <form id="claimOwnershipUpdateForm" name="claimOwnershipUpdateForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form" method="POST">
                 <input name="selectedClaimIds" type="hidden" />
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0" width="100%">
                     <tr>
-                        <th colspan="2"><label>Please update the claim(s) with a Workgroup and Claim Owner.</label></th>
+<s:if test="insurerIsWorkgroupEnabled">
+                        <th colspan="2"><label>Please specify the claim(s) new Workgroup and Owner</label></th>
+</s:if>
+<s:else>
+                        <th colspan="2"><label>Please specify the claim(s) new Owner</label></th>
+</s:else>
                     </tr>
                     <s:if test="AuthenticatedUser.insurer.workgroupEnable">
                         <tr>
-                            <td class="pop-claim-ownership-label"><label>Workgroup</label></td>
+                            <td class="pop-claim-ownership-label"><label>Workgroup:</label></td>
                             <td class="pop-claim-ownership-column"><div id="couWorkgroupDropDownDiv"></div></td>
                         </tr>
                     </s:if>
                     <tr>
-                        <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner</label></td>
+                        <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner:</label></td>
                         <td class="pop-claim-ownership-column"><div id="couClaimHandlerRoleUserDropDownDiv"></div></td>
+                    </tr>
+<s:if test="insurerIsWorkgroupEnabled && !enableManualInvoiceWorkgroups">
+                    <tr>
+                        <td colspan="2" ><label>(Note that for Manual Invoices with no workgroup currently assigned, the selected workgroup will be ignored)</label></td>
+                    </tr>
+</s:if>
+                    <tr>
+                        <td colspan="2"><div id="claimOwnershipUpdateFormMessageBox" class="action-error-msg"></div></td>
                     </tr>
                 </table>
             </form>

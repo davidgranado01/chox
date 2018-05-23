@@ -25,6 +25,7 @@ import idas.chox.core.services.LookupService;
 import idas.chox.core.util.RoleHelper;
 import idas.chox.service.security.ApplicationAccessibility;
 import idas.chox.service.security.MenuAccessibility;
+import java.util.Arrays;
 
 
 public class InboxAction extends BaseAction {
@@ -36,7 +37,7 @@ public class InboxAction extends BaseAction {
     private LookupService lookupService;
     private ClaimService claimService;
     private String batchUpdateAction;
-    private List<Integer> selectedClaimIdList = new ArrayList<>();
+    private List<Integer> selectedClaimIdList;
     private List<Insurer> insurers;
     private List<Chorganisation> suppliers;
     private boolean showSplash;
@@ -231,7 +232,7 @@ public class InboxAction extends BaseAction {
             Claim claim = claimService.getClaim(id);
 
             if (applicationAccessibility.checkBatchUpdateAccessibilityEditable(batchUpdateAction,
-                    super.getAuthenticatedUser(), claim) < 2) {
+                    super.getAuthenticatedUser(), claim) < 1) {
                 LOG.debug("checking batchupdate editable accessibility failed for {} this action", batchUpdateAction);
                 notAuthorizedClaims = notAuthorizedClaims + claim.getChoReference() + ", ";
                 iCount++;
@@ -242,7 +243,7 @@ public class InboxAction extends BaseAction {
             if (notAuthorizedClaims.length() > 2) {
                 notAuthorizedClaims = notAuthorizedClaims.substring(0, (notAuthorizedClaims.length() - 1));
             }
-            getActionResponse().AssignMessageResult("Please de-select the tick box for following claim(s). " + notAuthorizedClaims);
+            getActionResponse().AssignMessageResult("Please de-select the tick box for following claim(s): " + notAuthorizedClaims);
         } else {
             getActionResponse().AssignYesNoResult(Boolean.TRUE);
         }
@@ -297,7 +298,7 @@ public class InboxAction extends BaseAction {
 
     public void setSelectedClaimIds(String ids) {
         String[] list = ids.split(",");
-
+        selectedClaimIdList = new ArrayList<>(list.length);
         for (String s : list) {
             Integer id = Integer.parseInt(s.trim());
             selectedClaimIdList.add(id);

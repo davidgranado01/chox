@@ -404,7 +404,7 @@
                                         <s:if test="insurerIsFnolEnabled">
                                             <input type="button" id="ACOAReferToFnolButtonId" value="Refer to FNOL" onclick="event.preventDefault(); doAssignOwnershipToFnolSubmit();" />
                                         </s:if>
-                                        <input type="button" id="ACOARejectClaimButtonId" value="Reject Claim" <s:if test="rejectButtonEnabled == false">disabled='true'</s:if> onclick="event.preventDefault(); doAssignOwnershipRejectSubmit();"/>
+                                        <input type="button" id="ACOARejectClaimButtonId" value="Reject Claim" <s:if test="rejectButtonEnabled == false">disabled</s:if> onclick="event.preventDefault(); doAssignOwnershipRejectSubmit();"/>
                                     </td>
                                 </tr>
                             </table>

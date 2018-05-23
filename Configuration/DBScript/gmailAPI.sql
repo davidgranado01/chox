@@ -95,3 +95,295 @@ DELETE FROM task  where related_task is not null and related_task > id;
 
 ALTER TABLE task DROP COLUMN related_task;
 
+create index task_ix on task(claim_id, visibility, visibility_role, visibility_role2, insurer, complete);
+
+--
+-- CHOX-540: Updates needed to batch update functionality that updates claim workgroup and owner
+--
+UPDATE accessibility set name='activity.assignManualInvoiceOwner.ClaimPending' where id=1395;
+UPDATE accessibility set name='activity.assignManualInvoiceOwner.ClaimReferredToEngineer' where id=1396;
+UPDATE accessibility set name='activity.assignManualInvoiceOwner.AwaitingCarHireInfo' where id=1397;
+UPDATE accessibility set name='activity.assignManualInvoiceOwner.ClaimUnacknowledgedRouted' where id=1398;
+UPDATE accessibility set name='activity.assignManualInvoiceOwner.ClaimRejectionContested' where id=1399;
+UPDATE accessibility set name='activity.assignManualInvoiceOwner.ClaimUpdatedByEngineer' where id=1400;
+UPDATE accessibility set name='activity.assignManualInvoiceOwner.AwaitingInvoiceData' where id=1401;
+UPDATE accessibility set name='activity.assignManualInvoiceOwner.ClaimReferredToFNOL' where id=1402;
+UPDATE accessibility set name='activity.assignManualInvoiceOwner.ClaimUnacknowledgedUnassigned' where id=1403;
+UPDATE accessibility set name='activity.assignManualInvoiceOwner.ManualInvoiceUnassigned' where id=933;
+UPDATE accessibility set name='activity.assignManualInvoiceOwner.ManualInvoiceContested' where id=1024;
+UPDATE accessibility set name='activity.assignManualInvoiceOwner.ManualInvoicePaid' where id=1025;
+UPDATE accessibility set name='activity.assignManualInvoiceOwner.ManualInvoiceBRERejected' where id=1026;
+UPDATE accessibility set name='activity.assignManualInvoiceOwner.ManualInvoiceBREApproved' where id=1027;
+delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'activity.assignManualInvoiceOwner.%' and id !=933);
+delete from accessibility where name like 'activity.assignManualInvoiceOwner.%' and id !=933;
+
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.ManualInvoiceUnassigned', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.ManualInvoiceContested', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.ManualInvoicePaid', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.ManualInvoiceBRERejected', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.ManualInvoiceBREApproved', false, false, false, false, 17);
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_COM', 1 FROM accessibility WHERE name='activity.AssignOwner.ManualInvoiceUnassigned' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_MNG', 1 FROM accessibility WHERE name='activity.AssignOwner.ManualInvoiceUnassigned' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_CH', 1 FROM accessibility WHERE name='activity.AssignOwner.ManualInvoiceUnassigned' and claim_type=17;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_COM', 1 FROM accessibility WHERE name='activity.AssignOwner.ManualInvoiceContested' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_MNG', 1 FROM accessibility WHERE name='activity.AssignOwner.ManualInvoiceContested' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_CH', 1 FROM accessibility WHERE name='activity.AssignOwner.ManualInvoiceContested' and claim_type=17;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_COM', 1 FROM accessibility WHERE name='activity.AssignOwner.ManualInvoicePaid' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_MNG', 1 FROM accessibility WHERE name='activity.AssignOwner.ManualInvoicePaid' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_CH', 1 FROM accessibility WHERE name='activity.AssignOwner.ManualInvoicePaid' and claim_type=17;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_COM', 1 FROM accessibility WHERE name='activity.AssignOwner.ManualInvoiceBRERejected' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_MNG', 1 FROM accessibility WHERE name='activity.AssignOwner.ManualInvoiceBRERejected' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_CH', 1 FROM accessibility WHERE name='activity.AssignOwner.ManualInvoiceBRERejected' and claim_type=17;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_COM', 1 FROM accessibility WHERE name='activity.AssignOwner.ManualInvoiceBREApproved' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_MNG', 1 FROM accessibility WHERE name='activity.AssignOwner.ManualInvoiceBREApproved' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_CH', 1 FROM accessibility WHERE name='activity.AssignOwner.ManualInvoiceBREApproved' and claim_type=17;
+
+delete from accessibility_item where accessibility_id in (select id from accessibility where name='batch.claimOwnership.ManualInvoiceBREApproved');
+delete from accessibility where name='batch.claimOwnership.ManualInvoiceBREApproved';
+delete from accessibility_item where accessibility_id in (select id from accessibility where name='batch.claimOwnership.ManualInvoiceBRERejected');
+delete from accessibility where name='batch.claimOwnership.ManualInvoiceBRERejected';
+delete from accessibility_item where accessibility_id in (select id from accessibility where name='batch.claimOwnership.ManualInvoiceContested');
+delete from accessibility where name='batch.claimOwnership.ManualInvoiceContested';
+delete from accessibility_item where accessibility_id in (select id from accessibility where name='batch.claimOwnership.ManualInvoicePaid');
+delete from accessibility where name='batch.claimOwnership.ManualInvoicePaid';
+
+
+
+delete from accessibility_item where accessibility_id in (select id from accessibility where name like 'batch.updateClaimWorkgroupAndOwner.%');
+delete from accessibility where name like 'batch.updateClaimWorkgroupAndOwner.%';
+
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('batch.updateInsurerClaimOwner.ManualInvoiceBREApproved', false, false, false, false, false, true, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('batch.updateInsurerClaimOwner.ManualInvoiceBRERejected', false, false, false, false, false, true, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('batch.updateInsurerClaimOwner.ManualInvoiceContested', false, false, false, false, false, true, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_workgroup_enabled, check_claimownership_enabled, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('batch.updateInsurerClaimOwner.ManualInvoicePaid', false, false, false, false, false, true, 17);
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_COM', 1 FROM accessibility WHERE name='batch.updateInsurerClaimOwner.ManualInvoiceBREApproved' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_MNG', 1 FROM accessibility WHERE name='batch.updateInsurerClaimOwner.ManualInvoiceBREApproved' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_CH', 1 FROM accessibility WHERE name='batch.updateInsurerClaimOwner.ManualInvoiceBREApproved' and claim_type=17;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_COM', 1 FROM accessibility WHERE name='batch.updateInsurerClaimOwner.ManualInvoiceBRERejected' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_MNG', 1 FROM accessibility WHERE name='batch.updateInsurerClaimOwner.ManualInvoiceBRERejected' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_CH', 1 FROM accessibility WHERE name='batch.updateInsurerClaimOwner.ManualInvoiceBRERejected' and claim_type=17;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_COM', 1 FROM accessibility WHERE name='batch.updateInsurerClaimOwner.ManualInvoiceContested' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_MNG', 1 FROM accessibility WHERE name='batch.updateInsurerClaimOwner.ManualInvoiceContested' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_CH', 1 FROM accessibility WHERE name='batch.updateInsurerClaimOwner.ManualInvoiceContested' and claim_type=17;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_COM', 1 FROM accessibility WHERE name='batch.updateInsurerClaimOwner.ManualInvoicePaid' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_MNG', 1 FROM accessibility WHERE name='batch.updateInsurerClaimOwner.ManualInvoicePaid' and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_CH', 1 FROM accessibility WHERE name='batch.updateInsurerClaimOwner.ManualInvoicePaid' and claim_type=17;
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_CH', 2 FROM accessibility WHERE name like 'extraAction.updateManualInvWorkgroupClaimOwner.%';
+
+
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.AwaitingLiabilityResolution', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.AwaitingInvoiceData', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.ClaimReferredToEngineer', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.ClaimRejected', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.ClaimRejectionContested', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.ContestedInvoiceReferredToCHO', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.ContestedInvoiceReferredToInsurer', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.InvoiceApprovedByBRE', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.InvoiceDataCalculationIncorrect', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.InvoiceEscalated', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.InvoiceEscalatedToHandler', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.InvoicePaymentLogged', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.ClaimUnacknowledgedRouted', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.AwaitingInvoicePayment', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.ClaimPending', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.ClaimUpdatedByEngineer', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.PaymentReceived', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.InvoiceReferredToClaimsHandler', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.InvoiceReferredToEngineer', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.ClaimReferredToFNOL', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.AwaitingCarHireInfo', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.AwaitingLitigationOutcome', false, false, false, false, 17);
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled,claim_type)
+      VALUES ('activity.AssignOwner.SubscriberClaimRejected', false, false, false, false, 17);
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_COM', 1 FROM accessibility WHERE name like 'activity.AssignOwner.%'
+          and (name like '%.AwaitingLiabilityResolution' or name like '%.AwaitingInvoiceData' or name like '%.ClaimReferredToEngineer' or name like '%.ClaimRejected'
+                or name like '%.ClaimRejectionContested' or name like '%.ContestedInvoiceReferredToCHO' or name like '%.ContestedInvoiceReferredToInsurer'
+                or name like '%.InvoiceApprovedByBRE' or name like '%.InvoiceDataCalculationIncorrect' or name like '%.InvoiceEscalated' or name like '%.InvoiceEscalatedToHandler'
+                or name like '%.InvoicePaymentLogged' or name like '%.ClaimUnacknowledgedRouted' or name like '%.AwaitingInvoicePayment' or name like '%.ClaimPending'
+                or name like '%.ClaimUpdatedByEngineer' or name like '%.PaymentReceived' or name like '%.InvoiceReferredToClaimsHandler' or name like '%.InvoiceReferredToEngineer'
+                or name like '%.ClaimReferredToFNOL' or name like '%.AwaitingCarHireInfo' or name like '%.AwaitingLitigationOutcome' or name like '%.SubscriberClaimRejected') and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_MNG', 1 FROM accessibility WHERE name like 'activity.AssignOwner.%'
+          and (name like '%.AwaitingLiabilityResolution' or name like '%.AwaitingInvoiceData' or name like '%.ClaimReferredToEngineer' or name like '%.ClaimRejected'
+                or name like '%.ClaimRejectionContested' or name like '%.ContestedInvoiceReferredToCHO' or name like '%.ContestedInvoiceReferredToInsurer'
+                or name like '%.InvoiceApprovedByBRE' or name like '%.InvoiceDataCalculationIncorrect' or name like '%.InvoiceEscalated' or name like '%.InvoiceEscalatedToHandler'
+                or name like '%.InvoicePaymentLogged' or name like '%.ClaimUnacknowledgedRouted' or name like '%.AwaitingInvoicePayment' or name like '%.ClaimPending'
+                or name like '%.ClaimUpdatedByEngineer' or name like '%.PaymentReceived' or name like '%.InvoiceReferredToClaimsHandler' or name like '%.InvoiceReferredToEngineer'
+                or name like '%.ClaimReferredToFNOL' or name like '%.AwaitingCarHireInfo' or name like '%.AwaitingLitigationOutcome' or name like '%.SubscriberClaimRejected') and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_CH', 1 FROM accessibility WHERE name like 'activity.AssignOwner.%'
+          and (name like '%.AwaitingLiabilityResolution' or name like '%.AwaitingInvoiceData' or name like '%.ClaimReferredToEngineer' or name like '%.ClaimRejected'
+                or name like '%.ClaimRejectionContested' or name like '%.ContestedInvoiceReferredToCHO' or name like '%.ContestedInvoiceReferredToInsurer'
+                or name like '%.InvoiceApprovedByBRE' or name like '%.InvoiceDataCalculationIncorrect' or name like '%.InvoiceEscalated' or name like '%.InvoiceEscalatedToHandler'
+                or name like '%.InvoicePaymentLogged' or name like '%.ClaimUnacknowledgedRouted' or name like '%.AwaitingInvoicePayment' or name like '%.ClaimPending'
+                or name like '%.ClaimUpdatedByEngineer' or name like '%.PaymentReceived' or name like '%.InvoiceReferredToClaimsHandler' or name like '%.InvoiceReferredToEngineer'
+                or name like '%.ClaimReferredToFNOL' or name like '%.AwaitingCarHireInfo' or name like '%.AwaitingLitigationOutcome' or name like '%.SubscriberClaimRejected') and claim_type=17;
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_CHOX_ADMIN', 1 FROM accessibility WHERE name like 'activity.AssignOwner.%'
+          and (name like '%.AwaitingLiabilityResolution' or name like '%.AwaitingInvoiceData' or name like '%.ClaimReferredToEngineer' or name like '%.ClaimRejected'
+                or name like '%.ClaimRejectionContested' or name like '%.ContestedInvoiceReferredToCHO' or name like '%.ContestedInvoiceReferredToInsurer'
+                or name like '%.InvoiceApprovedByBRE' or name like '%.InvoiceDataCalculationIncorrect' or name like '%.InvoiceEscalated' or name like '%.InvoiceEscalatedToHandler'
+                or name like '%.InvoicePaymentLogged' or name like '%.ClaimUnacknowledgedRouted' or name like '%.AwaitingInvoicePayment' or name like '%.ClaimPending'
+                or name like '%.ClaimUpdatedByEngineer' or name like '%.PaymentReceived' or name like '%.InvoiceReferredToClaimsHandler' or name like '%.InvoiceReferredToEngineer'
+                or name like '%.ClaimReferredToFNOL' or name like '%.AwaitingCarHireInfo' or name like '%.AwaitingLitigationOutcome' or name like '%.SubscriberClaimRejected') and claim_type=17;
+
+
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_claimownership_enabled,claim_type)
+      select name, false, false, true, 3 from accessibility where name like 'activity.AssignOwner.%' and claim_type is null
+         and (name like '%.AwaitingLiabilityResolution' or name like '%.AwaitingInvoiceData' or name like '%.ClaimReferredToEngineer' or name like '%.ClaimRejected'
+                or name like '%.ClaimRejectionContested' or name like '%.ContestedInvoiceReferredToCHO' or name like '%.ContestedInvoiceReferredToInsurer'
+                or name like '%.InvoiceApprovedByBRE' or name like '%.InvoiceDataCalculationIncorrect' or name like '%.InvoiceEscalated' or name like '%.InvoiceEscalatedToHandler'
+                or name like '%.InvoicePaymentLogged' or name like '%.ClaimUnacknowledgedRouted' or name like '%.AwaitingInvoicePayment' or name like '%.ClaimPending'
+                or name like '%.ClaimUpdatedByEngineer' or name like '%.PaymentReceived' or name like '%.InvoiceReferredToClaimsHandler' or name like '%.InvoiceReferredToEngineer'
+                or name like '%.ClaimReferredToFNOL' or name like '%.AwaitingCarHireInfo' or name like '%.AwaitingLitigationOutcome' or name like '%.SubscriberClaimRejected');
+
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_claimownership_enabled,claim_type)
+      select name, false, false, true, 4 from accessibility where name like 'activity.AssignOwner.%' and claim_type is null
+         and (name like '%.AwaitingLiabilityResolution' or name like '%.AwaitingInvoiceData' or name like '%.ClaimReferredToEngineer' or name like '%.ClaimRejected'
+                or name like '%.ClaimRejectionContested' or name like '%.ContestedInvoiceReferredToCHO' or name like '%.ContestedInvoiceReferredToInsurer'
+                or name like '%.InvoiceApprovedByBRE' or name like '%.InvoiceDataCalculationIncorrect' or name like '%.InvoiceEscalated' or name like '%.InvoiceEscalatedToHandler'
+                or name like '%.InvoicePaymentLogged' or name like '%.ClaimUnacknowledgedRouted' or name like '%.AwaitingInvoicePayment' or name like '%.ClaimPending'
+                or name like '%.ClaimUpdatedByEngineer' or name like '%.PaymentReceived' or name like '%.InvoiceReferredToClaimsHandler' or name like '%.InvoiceReferredToEngineer'
+                or name like '%.ClaimReferredToFNOL' or name like '%.AwaitingCarHireInfo' or name like '%.AwaitingLitigationOutcome' or name like '%.SubscriberClaimRejected');
+
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_claimownership_enabled,claim_type)
+      select name, false, false, true, 7 from accessibility where name like 'activity.AssignOwner.%' and claim_type is null
+         and (name like '%.AwaitingLiabilityResolution' or name like '%.AwaitingInvoiceData' or name like '%.ClaimReferredToEngineer' or name like '%.ClaimRejected'
+                or name like '%.ClaimRejectionContested' or name like '%.ContestedInvoiceReferredToCHO' or name like '%.ContestedInvoiceReferredToInsurer'
+                or name like '%.InvoiceApprovedByBRE' or name like '%.InvoiceDataCalculationIncorrect' or name like '%.InvoiceEscalated' or name like '%.InvoiceEscalatedToHandler'
+                or name like '%.InvoicePaymentLogged' or name like '%.ClaimUnacknowledgedRouted' or name like '%.AwaitingInvoicePayment' or name like '%.ClaimPending'
+                or name like '%.ClaimUpdatedByEngineer' or name like '%.PaymentReceived' or name like '%.InvoiceReferredToClaimsHandler' or name like '%.InvoiceReferredToEngineer'
+                or name like '%.ClaimReferredToFNOL' or name like '%.AwaitingCarHireInfo' or name like '%.AwaitingLitigationOutcome' or name like '%.SubscriberClaimRejected');
+
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_claimownership_enabled,claim_type)
+      select name, false, false, true, 11 from accessibility where name like 'activity.AssignOwner.%' and claim_type is null
+         and (name like '%.AwaitingLiabilityResolution' or name like '%.AwaitingInvoiceData' or name like '%.ClaimReferredToEngineer' or name like '%.ClaimRejected'
+                or name like '%.ClaimRejectionContested' or name like '%.ContestedInvoiceReferredToCHO' or name like '%.ContestedInvoiceReferredToInsurer'
+                or name like '%.InvoiceApprovedByBRE' or name like '%.InvoiceDataCalculationIncorrect' or name like '%.InvoiceEscalated' or name like '%.InvoiceEscalatedToHandler'
+                or name like '%.InvoicePaymentLogged' or name like '%.ClaimUnacknowledgedRouted' or name like '%.AwaitingInvoicePayment' or name like '%.ClaimPending'
+                or name like '%.ClaimUpdatedByEngineer' or name like '%.PaymentReceived' or name like '%.InvoiceReferredToClaimsHandler' or name like '%.InvoiceReferredToEngineer'
+                or name like '%.ClaimReferredToFNOL' or name like '%.AwaitingCarHireInfo' or name like '%.AwaitingLitigationOutcome' or name like '%.SubscriberClaimRejected');
+
+insert into accessibility(name,is_workgroup_check,is_ownership_check, check_claimownership_enabled,claim_type)
+      select name, false, false, true, 18 from accessibility where name like 'activity.AssignOwner.%' and claim_type is null
+         and (name like '%.AwaitingLiabilityResolution' or name like '%.AwaitingInvoiceData' or name like '%.ClaimReferredToEngineer' or name like '%.ClaimRejected'
+                or name like '%.ClaimRejectionContested' or name like '%.ContestedInvoiceReferredToCHO' or name like '%.ContestedInvoiceReferredToInsurer'
+                or name like '%.InvoiceApprovedByBRE' or name like '%.InvoiceDataCalculationIncorrect' or name like '%.InvoiceEscalated' or name like '%.InvoiceEscalatedToHandler'
+                or name like '%.InvoicePaymentLogged' or name like '%.ClaimUnacknowledgedRouted' or name like '%.AwaitingInvoicePayment' or name like '%.ClaimPending'
+                or name like '%.ClaimUpdatedByEngineer' or name like '%.PaymentReceived' or name like '%.InvoiceReferredToClaimsHandler' or name like '%.InvoiceReferredToEngineer'
+                or name like '%.ClaimReferredToFNOL' or name like '%.AwaitingCarHireInfo' or name like '%.AwaitingLitigationOutcome' or name like '%.SubscriberClaimRejected');
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_COM', 1 FROM accessibility WHERE name like 'activity.AssignOwner.%'
+          and (name like '%.AwaitingLiabilityResolution' or name like '%.AwaitingInvoiceData' or name like '%.ClaimReferredToEngineer' or name like '%.ClaimRejected'
+                or name like '%.ClaimRejectionContested' or name like '%.ContestedInvoiceReferredToCHO' or name like '%.ContestedInvoiceReferredToInsurer'
+                or name like '%.InvoiceApprovedByBRE' or name like '%.InvoiceDataCalculationIncorrect' or name like '%.InvoiceEscalated' or name like '%.InvoiceEscalatedToHandler'
+                or name like '%.InvoicePaymentLogged' or name like '%.ClaimUnacknowledgedRouted' or name like '%.AwaitingInvoicePayment' or name like '%.ClaimPending'
+                or name like '%.ClaimUpdatedByEngineer' or name like '%.PaymentReceived' or name like '%.InvoiceReferredToClaimsHandler' or name like '%.InvoiceReferredToEngineer'
+                or name like '%.ClaimReferredToFNOL' or name like '%.AwaitingCarHireInfo' or name like '%.AwaitingLitigationOutcome' or name like '%.SubscriberClaimRejected') and claim_type in (3,4,7,11,18);
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_MNG', 1 FROM accessibility WHERE name like 'activity.AssignOwner.%'
+          and (name like '%.AwaitingLiabilityResolution' or name like '%.AwaitingInvoiceData' or name like '%.ClaimReferredToEngineer' or name like '%.ClaimRejected'
+                or name like '%.ClaimRejectionContested' or name like '%.ContestedInvoiceReferredToCHO' or name like '%.ContestedInvoiceReferredToInsurer'
+                or name like '%.InvoiceApprovedByBRE' or name like '%.InvoiceDataCalculationIncorrect' or name like '%.InvoiceEscalated' or name like '%.InvoiceEscalatedToHandler'
+                or name like '%.InvoicePaymentLogged' or name like '%.ClaimUnacknowledgedRouted' or name like '%.AwaitingInvoicePayment' or name like '%.ClaimPending'
+                or name like '%.ClaimUpdatedByEngineer' or name like '%.PaymentReceived' or name like '%.InvoiceReferredToClaimsHandler' or name like '%.InvoiceReferredToEngineer'
+                or name like '%.ClaimReferredToFNOL' or name like '%.AwaitingCarHireInfo' or name like '%.AwaitingLitigationOutcome' or name like '%.SubscriberClaimRejected') and claim_type in (3,4,7,11,18);
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_INS_CH', 1 FROM accessibility WHERE name like 'activity.AssignOwner.%'
+          and (name like '%.AwaitingLiabilityResolution' or name like '%.AwaitingInvoiceData' or name like '%.ClaimReferredToEngineer' or name like '%.ClaimRejected'
+                or name like '%.ClaimRejectionContested' or name like '%.ContestedInvoiceReferredToCHO' or name like '%.ContestedInvoiceReferredToInsurer'
+                or name like '%.InvoiceApprovedByBRE' or name like '%.InvoiceDataCalculationIncorrect' or name like '%.InvoiceEscalated' or name like '%.InvoiceEscalatedToHandler'
+                or name like '%.InvoicePaymentLogged' or name like '%.ClaimUnacknowledgedRouted' or name like '%.AwaitingInvoicePayment' or name like '%.ClaimPending'
+                or name like '%.ClaimUpdatedByEngineer' or name like '%.PaymentReceived' or name like '%.InvoiceReferredToClaimsHandler' or name like '%.InvoiceReferredToEngineer'
+                or name like '%.ClaimReferredToFNOL' or name like '%.AwaitingCarHireInfo' or name like '%.AwaitingLitigationOutcome' or name like '%.SubscriberClaimRejected') and claim_type in (3,4,7,11,18);
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+      SELECT id, 'ROLE_CHOX_ADMIN', 1 FROM accessibility WHERE name like 'activity.AssignOwner.%'
+          and (name like '%.AwaitingLiabilityResolution' or name like '%.AwaitingInvoiceData' or name like '%.ClaimReferredToEngineer' or name like '%.ClaimRejected'
+                or name like '%.ClaimRejectionContested' or name like '%.ContestedInvoiceReferredToCHO' or name like '%.ContestedInvoiceReferredToInsurer'
+                or name like '%.InvoiceApprovedByBRE' or name like '%.InvoiceDataCalculationIncorrect' or name like '%.InvoiceEscalated' or name like '%.InvoiceEscalatedToHandler'
+                or name like '%.InvoicePaymentLogged' or name like '%.ClaimUnacknowledgedRouted' or name like '%.AwaitingInvoicePayment' or name like '%.ClaimPending'
+                or name like '%.ClaimUpdatedByEngineer' or name like '%.PaymentReceived' or name like '%.InvoiceReferredToClaimsHandler' or name like '%.InvoiceReferredToEngineer'
+                or name like '%.ClaimReferredToFNOL' or name like '%.AwaitingCarHireInfo' or name like '%.AwaitingLitigationOutcome' or name like '%.SubscriberClaimRejected') and claim_type in (3,4,7,11,18);
+
+update accessibility set claim_type=0
+where claim_type is null and name like 'activity.AssignOwner.%'
+  and (name like '%.AwaitingLiabilityResolution' or name like '%.AwaitingInvoiceData' or name like '%.ClaimReferredToEngineer' or name like '%.ClaimRejected'
+                or name like '%.ClaimRejectionContested' or name like '%.ContestedInvoiceReferredToCHO' or name like '%.ContestedInvoiceReferredToInsurer'
+                or name like '%.InvoiceApprovedByBRE' or name like '%.InvoiceDataCalculationIncorrect' or name like '%.InvoiceEscalated' or name like '%.InvoiceEscalatedToHandler'
+                or name like '%.InvoicePaymentLogged' or name like '%.ClaimUnacknowledgedRouted' or name like '%.AwaitingInvoicePayment' or name like '%.ClaimPending'
+                or name like '%.ClaimUpdatedByEngineer' or name like '%.PaymentReceived' or name like '%.InvoiceReferredToClaimsHandler' or name like '%.InvoiceReferredToEngineer'
+                or name like '%.ClaimReferredToFNOL' or name like '%.AwaitingCarHireInfo' or name like '%.AwaitingLitigationOutcome' or name like '%.SubscriberClaimRejected');
+
+

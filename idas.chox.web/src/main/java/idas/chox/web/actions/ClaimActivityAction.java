@@ -171,7 +171,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 updateRedirectionParamInSession();
                 return SUCCESS;
             } catch (Exception ex) {
-                LOG.warn("Error processing claim activity: {}", ex.getMessage());
+                LOG.warn("Error processing claim activity: {}", ex.getMessage(), ex);
                 handleException(ex);
                 setJsonData("{\"error\":\"False\",\"errors\":\"" + getActionError() + "\"}");
                 updateRedirectionParamInSession();

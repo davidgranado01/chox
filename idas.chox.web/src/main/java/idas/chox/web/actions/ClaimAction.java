@@ -1346,10 +1346,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             if (accessRight >= 2) {
 
                 if (actionName.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
-                        && !claim.getInsurer().isEnableManualInvoiceOwnership() && claim.getInsurer().isEnableManualInvoiceWorkgroups()) {
+                        && !claim.getInsurer().isEnableManualInvoiceOwnership() && claim.getClaimOwner()==null && claim.getInsurer().isEnableManualInvoiceWorkgroups()) {
                     extraActionDescription = ExtraAction.getExtraActionName(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP);
                 } else if (actionName.equals(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)
-                        && claim.getInsurer().isEnableManualInvoiceOwnership() && !claim.getInsurer().isEnableManualInvoiceWorkgroups()) {
+                        && claim.getInsurer().isEnableManualInvoiceOwnership() && !claim.getInsurer().isEnableManualInvoiceWorkgroups() && claim.getWorkgroup() == null) {
                     extraActionDescription = ExtraAction.getExtraActionName(ExtraAction.ASSIGN_OR_UPDATE_MANUAL_INV_CLAIM_OWNER);
                 } else {
                     extraActionDescription = ExtraAction.getExtraActionName(actionName);

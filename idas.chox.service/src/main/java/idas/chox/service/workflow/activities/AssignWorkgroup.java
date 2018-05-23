@@ -46,17 +46,14 @@ public class AssignWorkgroup extends BaseActivity {
     }
 
     @Override
-    protected void beforeProcess(Claim claim) throws Exception {
+    protected void doProcess(Claim claim) throws Exception {
+
         try {
             claim.setWorkgroup(workgroup);
         } catch (Exception e) {
             LOG.error("Exception thrown: {}", e.getMessage());
             throw e;
         }
-    }
-
-    @Override
-    protected void doProcess(Claim claim) throws Exception {
 
         if (claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)) {
             try {

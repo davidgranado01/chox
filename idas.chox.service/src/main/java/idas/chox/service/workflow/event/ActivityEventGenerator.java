@@ -195,7 +195,6 @@ public class ActivityEventGenerator {
                     events.add(new NoteAddedEvent(claim, activityName, ((AddNote) activity).getComment(), ((AddNote) activity).isReviewRequired(), ((AddNote) activity).getVisibilityType()));
                     break;
                 
-                case "AssignManualInvoiceOwner":
                 case "AssignOwner":
                     events.add(new InsurerOwnerAssignedEvent(claim, activityName));
                     break;

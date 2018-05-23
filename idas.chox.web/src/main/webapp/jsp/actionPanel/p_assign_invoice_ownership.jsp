@@ -6,8 +6,6 @@
     var insurerId = -1;
     var claimOwnerId = -1;
     var workgroupId=-1;
-    var claimOwnerIdField=-1;
-    var workgroupIdField=-1;
     var isWorkgroupEnable = false;
     var workgroupCombo;
     var claimOwnerStore;
@@ -46,7 +44,7 @@
             renderTo: 'claimOwnerComboDiv',
             valueField: 'id',
             id: 'claimOwnerComboId',
-            hiddenName: 'claimOwnerIdField',
+            hiddenName: 'claimOwnerId',
             displayField:'name',
             typeAhead: true,
             mode: 'local',
@@ -60,10 +58,8 @@
                         this.clearValue();
                         this.reset();
                         claimOwnerId = -1;
-                        claimOwnerIdField=claimOwnerId;
                     }else {
                         claimOwnerId = this.value;
-                        claimOwnerIdField=claimOwnerId;
                     }
                 },
                 specialkey:function (el, e) {
@@ -108,7 +104,7 @@
                 renderTo: 'workgroupComboDiv',
                 valueField: 'text',
                 id: 'workgroupComboId',
-                hiddenName: 'workgroupIdField',
+                hiddenName: 'workgroupId',
                 displayField:'value',
                 typeAhead: true,
                 mode: 'local',
@@ -124,11 +120,9 @@
                             this.clearValue();
                             this.reset();
                             workgroupId = -1;
-                            workgroupIdField=workgroupId;
                             doRenderClaimHandlerDropDown(workgroupId);
                         }else {
                             workgroupId=this.value;
-                            workgroupIdField=workgroupId;
                             doRenderClaimHandlerDropDown(workgroupId);
                         }
                     }                    
@@ -151,12 +145,12 @@
         {
             errorLabelContainer: "#OwnershippAssignmentMessageBox",
             rules: {
-                workgroupIdField:{comboSelection:workgroupId },
-                claimOwnerIdField:{claimOwnerSelection: claimOwnerId}
+                workgroupComboId:{comboSelection:workgroupId },
+                claimOwnerComboId:{claimOwnerSelection: claimOwnerId}
             },
             messages: {
-                workgroupIdField: {comboSelection:"You must supply a value for 'Workgroup'"},
-                claimOwnerIdField: {claimOwnerSelection:"You must supply a value for 'Claim Owner'"}
+                workgroupComboId: {comboSelection:"You must supply a value for 'Workgroup'"},
+                claimOwnerComboId: {claimOwnerSelection:"You must supply a value for 'Claim Owner'"}
             }
         });
         doRenderClaimHandlerDropDown(workgroupId);
@@ -190,8 +184,8 @@
 
     function doAssignOwnershipSubmit(){
         actionPanel.registerAction("assignOwner");
-        var co = $("[name='claimOwnerIdField']");
-        var wo = $("[name='workgroupIdField']");
+        var co = $("[name='claimOwnerId']");
+        var wo = $("[name='workgroupId']");
     	var mesBox = $("#OwnershippAssignmentMessageBox");
     	if (co.val() === "")
     		co.val(-1);

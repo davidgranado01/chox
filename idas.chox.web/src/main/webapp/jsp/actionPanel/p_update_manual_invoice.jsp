@@ -16,14 +16,13 @@ Ext.onReady(function(){
     
     insurerId = '<s:property value="insurer.id"/>';
     
-    if (<s:property value="insurer.enableManualInvoiceWorkgroups"/> && <s:property value="insurer.workgroupEnable"/>) {
+    if (<s:property value="insurer.enableManualInvoiceWorkgroups"/> || '<s:property value="model.workgroup"/>' != '') {
         isWorkgroupEnable = true;
     }
         
-    if (<s:property value="insurer.enableManualInvoiceOwnership"/> && <s:property value="insurer.claimOwnershipEnable"/>) {
+    if (<s:property value="insurer.enableManualInvoiceOwnership"/> || '<s:property value="model.ClaimOwner"/>' != '') {
         isInvoiceOwnershipEnable = true;
     }
-        
 
     // Add claim owner combo box
     if(isInvoiceOwnershipEnable) {
@@ -113,7 +112,7 @@ Ext.onReady(function(){
             listWidth: 200,
             selectOnFocus: true,
             listeners: {select: function() {
-                <s:if test="insurer.enableManualInvoiceOwnership">
+                <s:if test="insurer.enableManualInvoiceOwnership || model.workgroup!=null">
                     doRenderClaimHandlerDropDown(workgroupCombo.getValue());
                 </s:if>
                 },
@@ -174,7 +173,7 @@ function validateComboBox(){
 }
 
 function assignManualInvoiceSubmit(){
-    $('form#updateManualInvoicePaymentForm input[id="name"]').val("assignManualInvoiceOwner");
+    $('form#updateManualInvoicePaymentForm input[id="name"]').val("assignOwner");
     if(isWorkgroupEnable) {
         $('form#updateManualInvoicePaymentForm input[id="oasWorkgroupHiddenId"]').val(workgroupCombo.getValue());
     }
@@ -195,17 +194,17 @@ function assignManualInvoiceSubmit(){
                     <s:hidden id="claimId" name="id" />
                     <s:hidden id="name" name="name" />
                         
-                    <s:if test="insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership && insurer.workgroupEnable && insurer.claimOwnershipEnable">
+                    <s:if test="(insurer.enableManualInvoiceWorkgroups || claim.workgroup!=null) && (insurer.enableManualInvoiceOwnership || model.claimOwner!=null)">
                         <div class="status-info">
                             Please assign the Workgroup and claim owner for this claim and click on the 'Assign Owner' button.
                         </div>
                     </s:if>
-                    <s:elseif test="insurer.enableManualInvoiceWorkgroups && insurer.workgroupEnable && (!insurer.enableManualInvoiceOwnership || !insurer.claimOwnershipEnable)">
+                    <s:elseif test="(insurer.enableManualInvoiceWorkgroups || model.workgroup!=null) && !insurer.enableManualInvoiceOwnership && model.claimOwner==null">
                         <div class="status-info">
                             Please assign the Workgroup for this claim and click on the 'Assign Workgroup' button. 
                         </div>
                     </s:elseif>
-                    <s:elseif test="(!insurer.enableManualInvoiceWorkgroups && !insurer.workgroupEnable) && insurer.enableManualInvoiceOwnership && insurer.claimOwnershipEnable">
+                    <s:elseif test="!insurer.enableManualInvoiceWorkgroups && model.workgroup==null && (insurer.enableManualInvoiceOwnership || model.claimOwner!=null)">
                         <div class="status-info">
                             Please assign the claim owner for this claim and click on the 'Assign Owner' button.
                         </div>
@@ -213,14 +212,14 @@ function assignManualInvoiceSubmit(){
                         
                     <div class="status-control-set">
                         <table class="status-table" border="0" cellpadding="0" cellspacing="0">
-                            <s:if test="insurer.enableManualInvoiceWorkgroups && insurer.workgroupEnable">
+                            <s:if test="insurer.enableManualInvoiceWorkgroups || model.workgroup!=null">
                                 <tr>
                                     <td align="right" width="10%"><label>Workgroup : </label></td>
                                     <td width="20%"><div id="workgroupComboDiv"/></td>
                                     <td width="70%"></td>
                                 </tr>
                             </s:if>
-                            <s:if test="insurer.enableManualInvoiceOwnership && insurer.claimOwnershipEnable">
+                            <s:if test="insurer.enableManualInvoiceOwnership || model.claimOwner!=null">
                                 <tr>
                                     <td align="right" width="10%"><label>Claim Owner : </label></td>
                                     <td width="20%"><div id="claimOwnerComboDiv"></div></td>
@@ -228,21 +227,20 @@ function assignManualInvoiceSubmit(){
                                 </tr>
                             </s:if>
                                 
-                            <s:if test="(insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership && insurer.claimOwnershipEnable && insurer.workgroupEnable)
-                                  || !insurer.enableManualInvoiceWorkgroups && insurer.enableManualInvoiceOwnership && insurer.claimOwnershipEnable">
+                            <s:if test="insurer.enableManualInvoiceOwnership || model.claimOwner!=null">
                                 <tr>
                                     <td colspan="3" class="" nowrap >
                                         <input type="submit" id="miAssignButton" value="Assign Owner" />
                                     </td>
                                 </tr>
                             </s:if>
-                            <s:elseif test="insurer.enableManualInvoiceWorkgroups && !insurer.enableManualInvoiceOwnership && insurer.workgroupEnable">
+                            <s:else>
                                 <tr>
                                     <td colspan="3" class="" nowrap >
                                         <input type="submit" id="miAssignButton" value="Assign Workgroup" />
                                     </td>
                                 </tr>
-                            </s:elseif>
+                            </s:else>
                         </table>
                         <div class="chox-form-submit-result"></div>
                         <div class="action-error-msg" id="OwnershippAssignmentMessageBox"></div>
