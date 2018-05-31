@@ -19,9 +19,9 @@ public class GmailSchedulerJobServiceImpl extends BaseDataService implements Gma
 
         DetachedCriteria criteria = DetachedCriteria.forClass(GmailSchedulerJob.class)
                 .add(Restrictions.eq("active", true))
-                .add(Restrictions.ilike("emailSubject", "%" + subject.trim() + "%"));
+                .add(Restrictions.ilike("emailSubject", "%" + subject + "%"));
         List<GmailSchedulerJob> results = findByCriteria(criteria);
         
-        return results == null || results.size() == 0 ? null : results.get(0);
+        return results == null || results.isEmpty() ? null : results.get(0);
     }
 }

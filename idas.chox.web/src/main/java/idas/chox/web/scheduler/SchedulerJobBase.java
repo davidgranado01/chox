@@ -71,9 +71,9 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
         try {
             List<SchedulerJob> schedulerJobs = getSchedulerJobs();
             if (schedulerJobs.isEmpty()) {
-                LOG.info("No active scheduler jobs of type '{}'", getClass().getSimpleName());
+                LOG.debug("No active scheduler jobs of type '{}'", getClass().getSimpleName());
             } else {
-                LOG.info("Scheduler job type '{}' has {} distinct email subjects.", getClass().getSimpleName(), schedulerJobs.size());
+                LOG.debug("Processing {} Scheduler jobs of type  type '{}'.", schedulerJobs.size(), getClass().getSimpleName());
             }
             for (SchedulerJob schedulerJob : schedulerJobs) {
                 LOG.info("{} job started.", getClass().getSimpleName());

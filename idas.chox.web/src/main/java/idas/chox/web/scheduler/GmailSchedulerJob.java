@@ -17,6 +17,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.quartz.DisallowConcurrentExecution;
 import org.springframework.orm.hibernate4.SessionHolder;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
@@ -31,6 +32,7 @@ import idas.chox.service.workflow.ScheduleActivityFactory;
  *
  * @author john
  */
+@DisallowConcurrentExecution
 public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAware {
 
     private static final Logger LOG = LoggerFactory.getLogger(GmailSchedulerJob.class);
@@ -79,6 +81,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
 
     @Override
     public void execute() throws JobExecutionException {
+        int count = 0;
         if (!active) {
             LOG.info("GMAIL not active");
             return;
@@ -97,6 +100,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
         List<Message> listOfmails = gmailUtils.getEmails(emailSubjectPrefix);
         LOG.info("Total no of unread mails{}: {}", emailSubjectPrefix == null ? "" : " with prefix '" + emailSubjectPrefix + "'", listOfmails.size());
         for (Message message : listOfmails) {
+            LOG.debug("Processing message {}", ++count);
             try {
                 String from = null, subject = null;
                 // Get subject and sender from message headers
@@ -112,30 +116,46 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
                                 }
                                 break;
                             case "Subject":
-                                subject = header.getValue();
+                                subject = header.getValue().trim();
                                 break;
                             default:
                                 break;
                         }
                     }
                 }
-
+                LOG.debug("Subject='{}', from='{}'", subject, from);
                 if (subject == null || subject.isEmpty()) {
                     LOG.error("Email from sender '{}' contains no subject.", from);
                     continue;
                 }
                 // Get details of Gmail Scheduler job from database on the email subject
                 if (emailSubjectPrefix != null) {
-                    subject = subject.substring(emailSubjectPrefix.length());
+                    subject = subject.substring(emailSubjectPrefix.length()).trim();
                 }
+
                 LOG.debug("Found unread message with subject '{}' from '{}' with prefix '{}'", new Object[]{subject, from, emailSubjectPrefix});
 
-                idas.chox.core.model.GmailSchedulerJob job = gmailSchedulerJobService.getSchedulerJobs(subject);
+                // To get the matching job, we need to remove trailing characters from the subject.
+                // All characters after the following strings (when present) should be removed: Request, Pack, Notification, Task
+                String matchSubject;
+                if (subject.contains("Request")) {
+                    matchSubject = subject.substring(0, subject.indexOf("Request") + 7);
+                } else if (subject.contains("Pack")) {
+                    matchSubject = subject.substring(0, subject.indexOf("Pack") + 4);
+                } else if (subject.contains("Notification")) {
+                    matchSubject = subject.substring(0, subject.indexOf("Notification") + 12);
+                } else if (subject.contains("Task")) {
+                    matchSubject = subject.substring(0, subject.indexOf("Task") + 4);
+                } else {
+                    matchSubject = subject;
+                }
+
+                idas.chox.core.model.GmailSchedulerJob job = gmailSchedulerJobService.getSchedulerJobs(matchSubject);
 
                 if (job != null && job.isActive()) {
                     // Check sender is authorised
                     if (!mailSecurityAthenticator.isPrivilegedSender(job.getPrivilegedUsers(), from)) {
-                        LOG.error("Sender '{}' is not authorised for email subject '{}'", from, subject);
+                        LOG.error("Sender '{}' is not authorised for email subject '{}'", from, matchSubject);
                         // Mark message as read - leave in INBOX
                         GmailUtils.modifyThread("me", message.getThreadId(), null, Arrays.asList("UNREAD"));
                         continue;
@@ -177,7 +197,9 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
                     handleHibernateTransactionIntricacies();
                     LOG.info("Processing scheduler activity '{}'", activity.getClass().toGenericString());
                     boolean processed = activity.process(emailContent, attachments, from, subject);
+                    LOG.debug("Done processing scheduler activity '{}'", activity.getClass().toGenericString());
                     session.flush();
+                    LOG.debug("Session flushed.");
 
                     // Mark message as read, remove from inbox and add correct label for processed message
                     // Note all emails with a prefix (i.e. not production) are given the label 'test-emails'
@@ -195,20 +217,26 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
                         }
                     }
                 } else {
-                    if (job == null) LOG.debug("No matching active job found for subject '{}'", subject);
-                    else LOG.warn("Job for subject '{}' is currently inactive.", subject);
+                    if (job == null) {
+                        LOG.warn("No matching active job found for subject '{}'", matchSubject);
+                    } else {
+                        LOG.warn("Job for subject '{}' is currently inactive.", matchSubject);
+                    }
                 }
 
             } catch (Exception ex) {
                 LOG.error("Exception thrown processing gmail: {}", ex.getMessage(), ex);
             } finally {
+                LOG.debug("Finished processing email- releasing session.");
                 releaseHibernateSessionConditionally();
             }
         }
 
+        if (listOfmails.size() > 0) {
+            LOG.info("Finished processing emails.");
+        }
     }
 
-    
     private void handleHibernateTransactionIntricacies() {
         try {
             session = sessionFactory.getCurrentSession();

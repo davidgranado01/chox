@@ -307,7 +307,7 @@ public class GmailUtils {
         Message message = createMessageWithEmail(mimeMessage);
         message = service.users().messages().send("me", message).execute();
 
-        LOG.info("Message with id={} sent to '{}' (with cc to '{}')", new Object[]{message.getId(), to, bccReceivers});
+        LOG.debug("Message with id={} sent to '{}' (with cc to '{}')", new Object[]{message.getId(), to, bccReceivers});
 
         return message;
     }}

@@ -44,7 +44,7 @@ public class TotalLossNotification extends BaseScheduleActivity {
 
             /* Check is valid referenceNumber provided and claim is in valid status.*/
             String referenceNumber = attachment.getName().substring(4, attachment.getName().length() - 4);
-            LOG.info("Getting claim {} to add attachment", referenceNumber);
+            LOG.debug("Getting claim {} to add attachment", referenceNumber);
             Claim claim = validateClaimReferenceNumber(referenceNumber, statusString);
 
             /* Check Claim Status */
