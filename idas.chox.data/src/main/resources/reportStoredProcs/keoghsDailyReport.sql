@@ -17,7 +17,8 @@ RETURNS table (
     "Indemnity Stance" character varying,  -- Indemnity Stance
     "Liability Status" text,  -- Liability Status 
     "Supporting Liability" text,  -- Supporting Liability Notes (latest only)
-    "Rejection Reason" character varying -- Rejection Reason (will be empty if the status is not ‘ClaimRejected')
+    "Rejection Reason" character varying, -- Rejection Reason (will be empty if the status is not ‘ClaimRejected')
+    "Supplier Reference" character varying(128)
 )
 AS $$ DECLARE 
     startDate date;
@@ -32,7 +33,8 @@ RETURN QUERY
             getLiabilityStatus(c.liability_status),
             (select regexp_replace(comment, '[\n\r]+', ' ', 'g' ) from comment co where co.claim_id = c.id and co.comment like 'Supporting Liability%'
                 and not exists (select * from comment co2 where co2.claim_id=c.id and co2.comment like 'Supporting Liability%' and co2.created_date > co.created_date)),
-            case when reportStatus != 'ClaimRejected' then null else (select name from reason_of_rejection where id=c.reason_of_rejection_id) end
+            case when reportStatus != 'ClaimRejected' then null else (select name from reason_of_rejection where id=c.reason_of_rejection_id) end,
+            c.cho_reference
     from claim c, third_party tp, audit_trail at, incident i
     where c.third_party_id = tp.id and c.id = at.claim_id
       and at.reverted = false and at.new_status = reportStatus and at.created_date >= startDate and at.created_date < endDate
