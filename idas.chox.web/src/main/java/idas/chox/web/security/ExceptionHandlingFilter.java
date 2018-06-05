@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.csrf.CsrfException;
+import org.springframework.security.web.csrf.InvalidCsrfTokenException;
 import org.springframework.security.web.util.UrlUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -36,7 +37,7 @@ public class ExceptionHandlingFilter extends OncePerRequestFilter {
             try {
                 boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 
-                if (ex instanceof CsrfException) {
+                if (ex instanceof CsrfException || ex instanceof InvalidCsrfTokenException) {
                     if (isAjax) {
                         LOG.warn("Invalid CSRF token found for AJAX request '{}'. Exception message: {}",
                                 UrlUtils.buildFullRequestUrl(request), ex.getMessage());
