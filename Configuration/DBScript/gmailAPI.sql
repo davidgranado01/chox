@@ -386,4 +386,7 @@ where claim_type is null and name like 'activity.AssignOwner.%'
                 or name like '%.ClaimUpdatedByEngineer' or name like '%.PaymentReceived' or name like '%.InvoiceReferredToClaimsHandler' or name like '%.InvoiceReferredToEngineer'
                 or name like '%.ClaimReferredToFNOL' or name like '%.AwaitingCarHireInfo' or name like '%.AwaitingLitigationOutcome' or name like '%.SubscriberClaimRejected');
 
-
+--
+-- CHOX-551: Remove BRE INFO messages
+--
+delete from history where type='INFO';
