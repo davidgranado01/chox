@@ -61,7 +61,7 @@ public class HasAllowedVehicleClass implements IBusinessRule {
                 try {
                     customerVehicleClassPrice = vehicleClassPriceService.getPrice(claim.getClaimType(), customerVehicleClass, claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
                 } catch (Exception ex) {
-                    LOG.warn("Customer's Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", claim.getCustomer().getVehicleClass(), claim.getChoReference());
+                    LOG.warn("Customer's Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", claim.getCustomer().getVehicleClass().getName(), claim.getChoReference());
                 }
                 // Add in the hire-rate tolerance - No!! Not Needed
 //                customerVehicleClassPrice = customerVehicleClassPrice.add(claim.getBreBand().getHireRateChargeTolerance());
@@ -71,7 +71,7 @@ public class HasAllowedVehicleClass implements IBusinessRule {
                     try {
                         vehicleHireClassPrice = vehicleClassPriceService.getPrice(claim.getClaimType(), claim.getVehicleHire().getVehicleClass(), claim.getVehicleHire().getHireStart(), claim.getInsurer().getId(), claim.getChorganisation().getId());
                     } catch (Exception ex) {
-                        LOG.debug("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", claim.getVehicleHire().getVehicleClass(), claim.getChoReference());
+                        LOG.debug("Vehicle Class Price set to 0.0 as no price found for vehicle class {} (Supplier ref='{}')", claim.getVehicleHire().getVehicleClass().getName(), claim.getChoReference());
                     }
                     LOG.debug("Comparing vehicleHireClassPrice={} to vehicleClassPrice={}", vehicleHireClassPrice, customerVehicleClassPrice);
                     boolean success = vehicleHireClassPrice.compareTo(customerVehicleClassPrice) <= 0;
