@@ -18,7 +18,7 @@ public class CsrfTokenChangingFilter extends OncePerRequestFilter {
     private static final Logger LOG = LoggerFactory.getLogger(CsrfTokenChangingFilter.class);
 
     private final CsrfTokenRepository tokenRepository;
-    private final String INBOX_PAGE_REQUEST_STRING = "inboxPage.action";
+//    private final String INBOX_PAGE_REQUEST_STRING = "inboxPage.action";
     private final String CLAIM_DETAILS_PAGE_REQUEST_STRING = "claimDetails.action";
 
     public CsrfTokenChangingFilter(CsrfTokenRepository csrfTokenRepository) {
@@ -29,9 +29,9 @@ public class CsrfTokenChangingFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         // If this is a HTTP request and the url matches then generate new csrf token
-        if (!"XMLHttpRequest".equals(request.getHeader("X-Requested-With")) 
-                && (request.getServletPath().contains(INBOX_PAGE_REQUEST_STRING) 
-                || request.getServletPath().contains(CLAIM_DETAILS_PAGE_REQUEST_STRING))) {
+        if (!"XMLHttpRequest".equals(request.getHeader("X-Requested-With")) && (
+//                request.getServletPath().contains(INBOX_PAGE_REQUEST_STRING) ||
+                request.getServletPath().contains(CLAIM_DETAILS_PAGE_REQUEST_STRING))) {
             CsrfToken csrfToken = tokenRepository.generateToken(request);
             CsrfToken oldCSRFToken = (CsrfToken)request.getAttribute(CsrfToken.class.getName());
             csrfToken = new SaveOnAccessCsrfToken(tokenRepository, request, response, csrfToken);
