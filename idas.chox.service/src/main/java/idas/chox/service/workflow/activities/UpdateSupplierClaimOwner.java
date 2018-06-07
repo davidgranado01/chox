@@ -23,7 +23,7 @@ public class UpdateSupplierClaimOwner extends BaseActivity {
     private String oldClaimOwner;
     private UserService userService;
     // </editor-fold>
-    
+
     public int getSupplierClaimOwnerId() {
         return supplierClaimOwnerId;
     }
@@ -46,24 +46,25 @@ public class UpdateSupplierClaimOwner extends BaseActivity {
         if (supplierClaimOwnerId > 0) {
             try {
                 newClaimOwner = userService.getWebUser(supplierClaimOwnerId);
-                // Check user belongs to the CHO
-                if (newClaimOwner.getChorganisation().getId().intValue() != claim.getChorganisation().getId()) {
-                    throw new AccessDeniedException("The selected Claim Owner does not belong to the CHO of the claim.");
-                }
-                // Check user belongs to the CHO
-                if (newClaimOwner.getChorganisation().getId() != claim.getChorganisation().getId().intValue()) {
-                    throw new AccessDeniedException("The selected Claim Owner does not belong to the CHO of the claim.");
-                }
-                // Check owner is different from current owner
-                if (claim.getSupplierClaimOwner() != null && claim.getSupplierClaimOwner().getId().intValue() == newClaimOwner.getId().intValue()) {
-                    throw new AccessDeniedException("No change to Supplier Claim Owner - not updating.");
-                }
             } catch (Exception ex) {
                 LOG.error("Exception thrown getting web user with id={}: {}", supplierClaimOwnerId, ex.getMessage(), ex);
-                throw new AccessDeniedException("An internal error occurred - please try again. If this problem persists, please contact CHOX Support.");
+                throw new Exception("An internal error occurred - please try again. If this problem persists, please contact CHOX Support.");
             }
+            // Check user belongs to the CHO
+            if (newClaimOwner.getChorganisation().getId().intValue() != claim.getChorganisation().getId()) {
+                throw new AccessDeniedException("The selected Claim Owner does not belong to the CHO of the claim.");
+            }
+            // Check user belongs to the CHO
+            if (newClaimOwner.getChorganisation().getId() != claim.getChorganisation().getId().intValue()) {
+                throw new AccessDeniedException("The selected Claim Owner does not belong to the CHO of the claim.");
+            }
+            // Check owner is different from current owner
+            if (claim.getSupplierClaimOwner() != null && claim.getSupplierClaimOwner().getId().intValue() == newClaimOwner.getId().intValue()) {
+                throw new Exception("No change to Supplier Claim Owner - not updating.");
+            }
+
         } else {
-            throw new AccessDeniedException("No Supplier Claim Owner provided.");
+            throw new Exception("No Supplier Claim Owner provided.");
         }
     }
 
@@ -71,7 +72,7 @@ public class UpdateSupplierClaimOwner extends BaseActivity {
     protected void doProcess(Claim claim) {
         Comment comment;
         WebUser oldClaimOwnerUser = claim.getSupplierClaimOwner();
-        
+
         // SET COMMENT
         if (oldClaimOwnerUser != null) {
             oldClaimOwner = oldClaimOwnerUser.getFullName();
