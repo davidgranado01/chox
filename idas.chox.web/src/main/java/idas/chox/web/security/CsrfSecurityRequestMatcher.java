@@ -21,6 +21,8 @@ public class CsrfSecurityRequestMatcher implements RequestMatcher {
     private static final String CLAIM_DETAILS_URL_STRING = "claimDetails.action";
     private static final String CLAIM_DETAILS2_URL_STRING = "openClaimDetail.action";
     private static final String SEARCH_CLAIM_URL_STRING = "doSearchClaim.action";
+    private static final String SEARCH_CLAIM2_URL_STRING = "searchClaim.action";
+    private static final String SECURITY_URL_STRING = "j_spring_security_check";
     private static final String WORKGROUP_URL_STRING = "WorkgroupDropDownActionByInsurer2.action";
     private static final String SEARCH_CLAIMHANDLER_URL_STRING = "SearchClaimHandlerRoleUserDropDownAction.action";
     private static final String SEARCH_SUPPLIER_URL_STRING = "SearchSupplierClaimOwnerDropDownAction.action";
@@ -43,7 +45,8 @@ public class CsrfSecurityRequestMatcher implements RequestMatcher {
                 || request.getServletPath().contains(INBOX_URL_STRING) || request.getServletPath().contains(CLAIM_DETAILS_URL_STRING)
                 || request.getServletPath().contains(WORKGROUP_URL_STRING) || request.getServletPath().contains(SEARCH_CLAIMHANDLER_URL_STRING)
                 || request.getServletPath().contains(SEARCH_CLAIM_URL_STRING) || request.getServletPath().contains(SEARCH_SUPPLIER_URL_STRING)
-                || request.getServletPath().contains(CLAIM_DETAILS2_URL_STRING)) {
+                || request.getServletPath().contains(CLAIM_DETAILS2_URL_STRING) || request.getServletPath().contains(SEARCH_CLAIM2_URL_STRING)
+                || request.getServletPath().contains(SECURITY_URL_STRING)) {
             result = false;
         } else {
             result =  !request.getServletPath().contains(LOGBACK_LOGGING_URL_STRING);
