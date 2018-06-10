@@ -133,7 +133,7 @@ public class UpdateHire extends BaseScheduleActivity {
                         }
 
                         if (vh != null && vh.getVehicleClass() != null && vehicleClass != null && vh.getRentalStart() != null
-                                && vh.getVehicleClass().getName().equals(vehicleClass.getName())
+                                && hireStartDateTime != null && vh.getVehicleClass().getName().equals(vehicleClass.getName())
                                 && vh.getRentalStart().compareTo(hireStartDateTime) == 0) {
                             statusString.append("Failed: No change from existing Vehicle Class or Hire Start details");
                         }

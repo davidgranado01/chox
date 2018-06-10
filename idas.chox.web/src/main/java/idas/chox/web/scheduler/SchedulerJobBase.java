@@ -193,7 +193,7 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     protected Date validateDate(String dateString, StringBuilder statusString, String columnName) {
         Date date = null;
         SimpleDateFormat sdf = DateHelper.getLocalDateFormat();
-        sdf.setLenient(false);
+        sdf.setLenient(true);
         if (dateString.isEmpty()) {
             statusString.append(" No '").append(columnName).append("' provided.");
         } else if (dateString.length() != sdf.toPattern().length()) {
