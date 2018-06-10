@@ -94,7 +94,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
                     VehicleHire vh = claim.getVehicleHire();
                     Date hireStartDateTime;
                     // Merge date and time
-                    if (hireStartTime != null) {
+                    if (hireStartTime != null && hireStartDate != null) {
                         try {
                             Date time = DateHelper.getTimeFormat().parse(hireStartTime);
                             hireStartDateTime = DateHelper.mergeTimeToDate(hireStartDate, time);
