@@ -167,7 +167,7 @@ public class HireUpdateSchedulerJob extends ExcelEmailSchedulerJob {
             for (Integer row : rowNumbers) {
                 if (row != 0) {
                     List<String> cells = xlsDataMap.get(row);
-                    if (cells.size() >= 5) { // We expect at least three columns
+                    if (cells.size() >= 6) { // We expect at least three columns
                         emailMsg.append(String.format("%-22s", cells.get(0).trim()));
                         emailMsg.append("\t\t");
                         emailMsg.append(cells.get(5).trim());
