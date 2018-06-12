@@ -224,6 +224,10 @@
     <logger name="idas.chox.web.RequestDumpFilter" level="INFO" additivity="false">
         <appender-ref ref="RD"/>
     </logger>
+    <!-- We do not want 'Stream closed' exceptions to be emailied -->
+    <logger name="org.apache.struts2.dispatcher.DefaultDispatcherErrorHandler" level="ERROR" additivity="false">
+        <appender-ref ref="chox"/>
+    </logger>
     <logger name="idas.chox" level="INFO" additivity="false">
         <appender-ref ref="chox"/>
         <appender-ref ref="mail"/>
