@@ -97,7 +97,7 @@ Ext.onReady(function() {
 });
 
 function isCsrfParamActive() {
-    return false;
+    return true;
 }
 function isCsrfParamPresent() {
     if (!isCsrfParamActive()){return true;}
