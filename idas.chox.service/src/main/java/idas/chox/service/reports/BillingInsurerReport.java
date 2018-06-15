@@ -81,9 +81,13 @@ public class BillingInsurerReport implements Report {
                 .append("bid.trigger_point as trigger_point, ")
                 .append("bid.net_claim_cost as net_claim_cost, ")
                 .append("bid.vat_claim_cost as vat_claim_cost, ")
-                .append("bid.gross_claim_cost as gross_claim_cost ")
+                .append("bid.gross_claim_cost as gross_claim_cost, ")
+                .append("cr.first_name || ' ' || cr.last_name as customer_name, ")
+                .append("cr.vehicle_registration as customer_vrn, ")
+                .append("inc.date as incident_date ")
                 .append("from ")
                 .append("claim as cm, ")
+                .append("incident as inc, ")
                 .append("billing_insurer as bi, ")
                 .append("billing_insurer_detail as bid, ")
                 .append("customer as cr, ")
@@ -92,6 +96,7 @@ public class BillingInsurerReport implements Report {
                 .append("where ")
                 .append("cm.id=bid.claim_reference_id ")
                 .append("and cm.customer_id = cr.id ")
+                .append("and cm.incident_id = inc.id ")
                 .append("and cm.third_party_id = tp.id ")
                 .append("and cm.chorganisation_id = cho.id ")
                 .append("and bid.billing_insurer_id =  bi.id ")
@@ -102,16 +107,13 @@ public class BillingInsurerReport implements Report {
             Map paramMap = new HashMap();
 
             paramMap.put("p_billing_insurer_id",bi.getId());
-            List result = reportDataService.getReportData(query, paramMap);
+            List<Map> result = reportDataService.getReportData(query, paramMap);
 
             LOG.debug("Found {} matching claims to bill", result.size());
 
-            for (Object o : result) {
-
-                Map data = (Map) o;
-                BillingInsurerReportViewData reportRow = BillingInsurerReportViewData.getObject(data);
+            result.stream().map((data) -> BillingInsurerReportViewData.getObject(data)).forEachOrdered((reportRow) -> {
                 reportRows.add(reportRow);
-            }
+            });
 
             BillingInsurerReportObject reportObject = new BillingInsurerReportObject();
             reportObject.setScheduleName(bi.getScheduleName());
