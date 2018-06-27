@@ -416,7 +416,8 @@
             width: 670
         });
         onPenaltyChargeBandPageRefresh();
-<s:if test="isChoxAdmin && claimMatchingEnabled">
+<s:if test="isChoxAdmin">
+    <s:if test="claimMatchingEnabled">
         // Add claim type drop-down menu
         var claimMatchingClaimTypesJsonReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
@@ -623,6 +624,8 @@
         doClaimMatchingCheck();
 //        claimMatchingBand_loadGridViewList();
 
+    </s:if>
+        doAppliedLiabilityCheck();
 </s:if>
         toggleAuditProcessPercentageDiv();
     });
@@ -1100,6 +1103,9 @@
     }
 
 <s:if test="isChoxAdmin">
+    function addAppliedLiability() {
+    }
+    
     function addClaimMatchingBand() {
         if (validateClaimMatchingForm()) {
             // get the values from the form.
@@ -1597,6 +1603,18 @@
                 });
             }
         }
+    }
+
+    function doAppliedLiabilityCheck(){
+        var appliedLiabilityEnable = false;
+        if ($('form#formUpdateInsurerBreBandDetail input[name="appliedLiabilityEnabled"]:checked').val()){
+            appliedLiabilityEnable = true;
+            $("#appliedLiabilityDivId").slideDown();
+        } else{
+            $("#appliedLiabilityDivId").hide();
+        }
+        
+        return appliedLiabilityEnable;
     }
 
     function doClaimMatchingCheck(){
@@ -2241,6 +2259,41 @@
                                 </div>
                             </div>
                         </s:if>                            
+                            <div class="admin-bre-band-detail-section">
+                                <div class="section-name">Applied Liability for Adjusting Total to Pay</div>
+                                <div class="status-info">
+                                    Enables an Insurer to set an applied liability %age, apart from the actual Insurer specified liability %age, so that the Total to Pay reflects a protocol agreement.
+                                </div>
+                                <div class="chox-form-checkboxitem">
+                                    <div class="chox-form-checkbox">
+                                        <s:checkbox name="appliedLiabilityEnabled" value="appliedLiabilityEnabled" onclick="doAppliedLiabilityCheck();" />
+                                    </div>
+                                    <label class="chox-form-std-label"><b>Enable Applied Liability</b></label>
+                                </div>
+                                <div class="chox-form-item" id="appliedLiabilityDivId">
+                                  <div id="appliedLiabilityGrid">
+                                    <div class="grid-view-header">
+                                            <div class="chox-form-item" >
+                                                <label class="chox-form-std-label2">Claim Type<span class="mandatory">*</span></label>
+                                                <div id="appliedLiabilityClaimTypeDropDownDiv"></div>
+                                            </div>
+                                            <div class="chox-form-item" >
+                                                <label class="chox-form-std-label2">Applied Insurer Liability %<span class="mandatory">*</span></label>
+                                                <input id="appliedInsurerLiability" style="width:50px" onkeyup="extractNumber(this,2,false);"/>
+                                            </div>
+                                            <div class="chox-form-item">
+                                                <label class="chox-form-std-label2">Apply to Repudiated<span class="mandatory">*</span></label>
+                                                <s:checkbox name="appliesToRepudiated" value="true"/>
+                                            </div>
+                                            <div align="center" class="chox-form-item">
+                                                <input type="button" value="Add New Applied Liability %age for Adjusting Total To Pay" onclick="addAppliedLiability();"/>
+                                            </div>
+                                            <div id="CDAppliedLiabilityMessageBox" class="action-error-msg"></div>
+                                            <div id="appliedLiabilityViewGrid"></div>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
                     </s:if>                            
                     <div class="admin-bre-band-detail-section">
                         <div class="section-name">Automated Tasks</div>
@@ -2298,7 +2351,7 @@
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer"><b>Ttl. Loss Allowable Total Duration (Days)</b></label>
-                            <input type="text" class="chox-ttxt-readonly" readonly="true" value="0" id="ttlLossAllowableTtlDuration" name="ttlLossAllowableTtlDuration"/>
+                            <input type="text" class="chox-ttxt-readonly" value="0" id="ttlLossAllowableTtlDuration" name="ttlLossAllowableTtlDuration" readonly/>
                         </div>
                     </div>
 
@@ -2353,15 +2406,15 @@
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Take Mobile Vehicle To Garage Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysMobile" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysMobile" readonly/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Mobile Engineer Inspection Delay Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableMobile" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableMobile" readonly/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly/>
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
@@ -2379,15 +2432,15 @@
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Take Mobile Vehicle To Garage Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysMobile" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysMobile" readonly/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Mobile Engineer Inspection Delay Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableMobile" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableMobile" readonly/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Weekend Buffer (Days)</label>
@@ -2395,7 +2448,7 @@
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer"><b>Ttl Allowable Days for Mobile Vehicle Without ECD</b></label>
-                            <input type="text" class="chox-ttxt-readonly" readonly="true" id="totalAllowableDaysforMobileVehicleWhereNoECDIsProvidedWoEcd" name="totalAllowableDaysforMobileVehicleWhereNoECDIsProvidedWoEcd"/>
+                            <input type="text" class="chox-ttxt-readonly" id="totalAllowableDaysforMobileVehicleWhereNoECDIsProvidedWoEcd" name="totalAllowableDaysforMobileVehicleWhereNoECDIsProvidedWoEcd" readonly/>
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
@@ -2406,15 +2459,15 @@
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Non-Mobile Engineer Inspection Delay Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableNonMobile" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableNonMobile" readonly/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Take Non-Mobile Vehicle To Garage Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile" readonly/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly/>
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
@@ -2432,15 +2485,15 @@
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Non-Mobile Engineer Inspection Delay Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableNonMobile" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableNonMobile" readonly/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Take Non-Mobile Vehicle To Garage Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile" readonly/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Weekend Buffer (Days)</label>
@@ -2448,7 +2501,7 @@
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer"><b>Ttl Allowable Days for Non-Mobile Vehicle Without ECD</b></label>
-                            <input type="text" class="chox-ttxt-readonly" readonly="true" id="ttlAllowableDaysforNonMobileVehicleWoECD" name="ttlAllowableDaysforNonMobileVehicleWoECD"/>
+                            <input type="text" class="chox-ttxt-readonly" id="ttlAllowableDaysforNonMobileVehicleWoECD" name="ttlAllowableDaysforNonMobileVehicleWoECD" readonly/>
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">
@@ -2461,23 +2514,23 @@
 
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Take Mobile Vehicle To Garage Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysMobile" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysMobile" readonly/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Take Non-Mobile Vehicle To Garage Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-TakeVehicleToGarageDaysNonMobile" readonly/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Mobile Engineer Inspection Delay Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableMobile" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableMobile" readonly/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Non-Mobile Engineer Inspection Delay Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableNonMobile" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-EngineerInspectionDelayVariableNonMobile" readonly/>
                         </div>
                         <div class="chox-form-item">
                             <label class="chox-form-std-label-longer">Collection of Vehicle from Garage Variable (Days)</label>
-                            <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly="true"/>
+                            <input type="text" class="chox-ttxt-readonly-CollectionofVehiclefromGarageVariable" readonly/>
                         </div>
                     </div>
                     <div class="admin-bre-band-detail-section">

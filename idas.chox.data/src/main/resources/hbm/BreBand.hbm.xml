@@ -190,6 +190,7 @@
         <property column="impecunious_start_date" name="impecuniousStartDate"/>
         <property column="ved_charge_check" name="vedChargeCheck" not-null="true"/>
         <property column="ved_charge_ceiling" name="vedChargeCeiling" not-null="true"/>
+        <property column="enable_applied_liability" name="appliedLiabilityEnabled" not-null="true"/>
         <many-to-one class="idas.chox.core.model.Workgroup" column="claim_matching_workgroup" name="claimMatchingWorkgroup"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="claim_matching_owner" name="claimMatchingOwner"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

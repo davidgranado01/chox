@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="idas.chox.core.model.BreAppliedLiability" table="bre_applied_liability">
+    <cache usage="read-write"/>
+    <id column="id" name="id">
+            <generator class="sequence">
+                <param name="sequence">bre_applied_liability_id_seq</param>
+            </generator>
+    </id>
+    <version column="version" name="version" unsaved-value="null"/>
+    <many-to-one class="idas.chox.core.model.BreBand" column="bre_band_id" name="breBand"/>
+    <property column="claim_type" name="claimType"
+        type="idas.chox.data.hibernate.ClaimTypeMapping" not-null="true"/>
+    <property column="applied_liability" name="appliedLiability" not-null="true"/>
+    <property column="applies_to_repudiated" name="appliesToRepudiated" not-null="true"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
+    <property column="created_date" name="createdDate"/>
+    <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
+    <property column="last_modified_date" name="lastModifiedDate"/>
+  </class>
+</hibernate-mapping>

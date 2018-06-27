@@ -95,6 +95,7 @@
                 <value>hbm/ClaimMatchingImportEntry.hbm.xml</value>
                 <value>hbm/PaidInvoiceEntry.hbm.xml</value>
                 <value>hbm/GmailSchedulerJob.hbm.xml</value>
+                <value>hbm/BreAppliedLiability.hbm.xml</value>
                 <value>hbm/events/AwaitingLitigationOutcomeEvent.hbm.xml</value>
                 <value>hbm/events/BaseActivityEvent.hbm.xml</value>
                 <value>hbm/events/ClaimRoutedEvent.hbm.xml</value>
