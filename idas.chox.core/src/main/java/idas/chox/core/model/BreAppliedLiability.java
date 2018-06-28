@@ -12,7 +12,7 @@ public class BreAppliedLiability extends Entity implements Serializable, FullAud
     private BreBand breBand;
     private ClaimType claimType;
     private BigDecimal appliedLiability;
-    private boolean appliesToRepudiated;
+    private boolean applyToRepudiated;
 
     public BreBand getBreBand() {
         return breBand;
@@ -38,12 +38,12 @@ public class BreAppliedLiability extends Entity implements Serializable, FullAud
         this.appliedLiability = appliedLiability;
     }
 
-    public boolean isAppliesToRepudiated() {
-        return appliesToRepudiated;
+    public boolean isApplyToRepudiated() {
+        return applyToRepudiated;
     }
 
-    public void setAppliesToRepudiated(boolean appliesToRepudiated) {
-        this.appliesToRepudiated = appliesToRepudiated;
+    public void setApplyToRepudiated(boolean applyToRepudiated) {
+        this.applyToRepudiated = applyToRepudiated;
     }
 
 

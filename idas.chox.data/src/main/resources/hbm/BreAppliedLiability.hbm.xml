@@ -13,7 +13,7 @@
     <property column="claim_type" name="claimType"
         type="idas.chox.data.hibernate.ClaimTypeMapping" not-null="true"/>
     <property column="applied_liability" name="appliedLiability" not-null="true"/>
-    <property column="applies_to_repudiated" name="appliesToRepudiated" not-null="true"/>
+    <property column="applies_to_repudiated" name="applyToRepudiated" not-null="true"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

@@ -18,13 +18,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 
-
+import idas.chox.core.model.BreAppliedLiability;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.BrePenaltyBand;
 import idas.chox.core.model.ClaimMatchingBand;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.LookupItem;
 import idas.chox.core.model.ProtocolVehicleClassCeiling;
+import idas.chox.core.services.AppliedLiabilityService;
 import idas.chox.core.services.BrePenaltyBandService;
 import idas.chox.core.services.ClaimMatchingBandService;
 import idas.chox.core.services.LookupService;
@@ -32,6 +33,7 @@ import idas.chox.core.services.ProtocolVehicleClassCeilingService;
 import idas.chox.core.services.VehicleClassService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
+import idas.chox.web.viewdata.AppliedLiabilityViewData;
 import idas.chox.web.viewdata.BrePenaltyBandViewData;
 import idas.chox.web.viewdata.ClaimMatchingBandViewData;
 import idas.chox.web.viewdata.VehicleClassCeilingViewData;
@@ -46,10 +48,12 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     private String protocolVehicleClassCeilingRecords;
     private String penaltyBandRecords;
     private String claimMatchingRecords;
+    private String appliedLiabilityRecords;
     private VehicleClassService vehicleClassService;
     private ProtocolVehicleClassCeilingService protocolVehicleClassCeilingService;
     private BrePenaltyBandService brePenaltyBandService;
     private ClaimMatchingBandService claimMatchingBandService;
+    private AppliedLiabilityService appliedLiabilityService;
     private boolean asCopy;
     private LookupService lookupService;
     private int claimMatchingOwnerId = -1;
@@ -87,6 +91,14 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
 
     public void setClaimMatchingRecords(String claimMatchingRecords) {
         this.claimMatchingRecords = claimMatchingRecords;
+    }
+
+    public String getAppliedLiabilityRecords() {
+        return appliedLiabilityRecords;
+    }
+
+    public void setAppliedLiabilityRecords(String appliedLiabilityRecords) {
+        this.appliedLiabilityRecords = appliedLiabilityRecords;
     }
 
     public boolean getIsNew() {
@@ -131,7 +143,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                     addModelToSession(model);
                 }
             }
-            
+
             if (model == null) {
                 model = new BreBand();
                 // Set insurer to the new BreBand. Used to access insurer settings in the UI.
@@ -154,6 +166,9 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                 throw new AccessDeniedException("Trying to update an insurer BRE Band for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
             }
             if (asCopy) {
+                // We want to copy the current model, so get complete model stored rather then using the loaded one
+                // Needed as parts of model not visible to non-CHOX Admin will not be present in current model
+                model = adminInsurerService.getBreBand(Integer.valueOf(this.objectId));
                 objectId = "-1";
                 BreBand newModel = (BreBand) SerializationUtils.clone(model);
                 newModel.setId(null);
@@ -161,43 +176,102 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                 List<ProtocolVehicleClassCeiling> protocolVehicleClassCeilings = model.getProtocolVehicleClassCeilings();
                 protocolVehicleClassCeilings.forEach((protocolVehicleClassCeiling) -> {
                     adminInsurerService.evict(protocolVehicleClassCeiling);
+                    ProtocolVehicleClassCeiling pvc = new ProtocolVehicleClassCeiling();
+                    pvc.setHireNetCeiling(protocolVehicleClassCeiling.getHireNetCeiling());
+                    pvc.setRepairNetCeiling(protocolVehicleClassCeiling.getRepairNetCeiling());
+                    pvc.setVehicleClass(protocolVehicleClassCeiling.getVehicleClass());
+                    newModel.addProtocolVehicleClassCeiling(pvc);
                 });
                 newModel.setBrePenaltyBands(null);
                 List<BrePenaltyBand> brePenaltyBands = model.getBrePenaltyBands();
                 brePenaltyBands.forEach((brePenaltyBand) -> {
                     adminInsurerService.evict(brePenaltyBand);
+                    BrePenaltyBand pb = new BrePenaltyBand();
+                    pb.setClaimType(brePenaltyBand.getClaimType());
+                    pb.setHireDay1(brePenaltyBand.getHireDay1());
+                    pb.setHireDay2(brePenaltyBand.getHireDay2());
+                    pb.setHireDay3(brePenaltyBand.getHireDay3());
+                    pb.setHirePeriodStartDay1(brePenaltyBand.getHirePeriodStartDay1());
+                    pb.setHirePeriodStartDay2(brePenaltyBand.getHirePeriodStartDay2());
+                    pb.setHirePeriodStartDay3(brePenaltyBand.getHirePeriodStartDay3());
+                    pb.setRepairDay1(brePenaltyBand.getRepairDay1());
+                    pb.setRepairDay2(brePenaltyBand.getRepairDay2());
+                    pb.setRepairDay3(brePenaltyBand.getRepairDay3());
+                    pb.setRepairPeriodStartDay1(brePenaltyBand.getRepairPeriodStartDay1());
+                    pb.setRepairPeriodStartDay2(brePenaltyBand.getRepairPeriodStartDay2());
+                    pb.setRepairPeriodStartDay3(brePenaltyBand.getRepairPeriodStartDay3());
+                    pb.setStartDate(brePenaltyBand.getStartDate());
+                    pb.setUseCommercialDay1(brePenaltyBand.isUseCommercialDay1());
+                    pb.setUseCommercialDay2(brePenaltyBand.isUseCommercialDay2());
+                    pb.setUseCommercialDay3(brePenaltyBand.isUseCommercialDay3());
+                    newModel.addBrePenaltyBand(pb);
                 });
                 newModel.setClaimMatchingBands(null);
                 List<ClaimMatchingBand> claimMatchingBands = model.getClaimMatchingBands();
                 claimMatchingBands.forEach((claimMatchingBand) -> {
                     adminInsurerService.evict(claimMatchingBand);
+                    ClaimMatchingBand cmb = new ClaimMatchingBand();
+                    cmb.setAutoAcknowledge(claimMatchingBand.isAutoAcknowledge());
+                    cmb.setClaimType(claimMatchingBand.getClaimType());
+                    cmb.setCmClass(claimMatchingBand.isCmClass());
+                    cmb.setCpClass(claimMatchingBand.isCpClass());
+                    cmb.setCsClass(claimMatchingBand.isCsClass());
+                    cmb.setCvClass(claimMatchingBand.isCvClass());
+                    cmb.setLiabilityPercentage(claimMatchingBand.getLiabilityPercentage());
+                    cmb.setNtClass(claimMatchingBand.isNtClass());
+                    cmb.setPtClass(claimMatchingBand.isPtClass());
+                    cmb.setPvClass(claimMatchingBand.isPvClass());
+                    cmb.setRvClass(claimMatchingBand.isRvClass());
+                    cmb.setSpClass(claimMatchingBand.isSpClass());
+                    cmb.setbClass(claimMatchingBand.isbClass());
+                    cmb.setfClass(claimMatchingBand.isfClass());
+                    cmb.setmClass(claimMatchingBand.ismClass());
+                    cmb.setpClass(claimMatchingBand.ispClass());
+                    cmb.setsClass(claimMatchingBand.issClass());
+                    cmb.settClass(claimMatchingBand.istClass());
+                    cmb.setuClass(claimMatchingBand.isuClass());
+                    newModel.addClaimMatchingBand(cmb);
+                });
+                newModel.setAppliedLiabilities(null);
+                List<BreAppliedLiability> appliedLiabilities = model.getAppliedLiabilities();
+                appliedLiabilities.forEach((appliedLiability) -> {
+                    adminInsurerService.evict(appliedLiability);
+                    BreAppliedLiability al = new BreAppliedLiability();
+                    al.setAppliedLiability(appliedLiability.getAppliedLiability());
+                    al.setApplyToRepudiated(appliedLiability.isApplyToRepudiated());
+                    al.setClaimType(appliedLiability.getClaimType());
+                    newModel.addAppliedLiability(al);
                 });
 
                 adminInsurerService.evict(model);
                 model = newModel;
             } else {
                 checkVersion(model);
+
+                if (protocolVehicleClassCeilingRecords != null && !protocolVehicleClassCeilingRecords.isEmpty()) {
+                    updateProtocolVehicleClassCeiling();
+                }
+                if (penaltyBandRecords != null && !penaltyBandRecords.isEmpty()) {
+                    updatePenaltyBands();
+                }
+                if (claimMatchingRecords != null && !claimMatchingRecords.isEmpty()) {
+                    updateClaimMatching();
+                }
+                if (claimMatchingOwnerId > 0 && this.adminInsurerService.getWebuserById(claimMatchingOwnerId) != null) {
+                    model.setClaimMatchingOwner(this.adminInsurerService.getWebuserById(claimMatchingOwnerId));
+                } else if (getIsChoxAdmin()) {
+                    model.setClaimMatchingOwner(null);
+                }
+                if (claimMatchingWorkgroupId > 0 && this.adminInsurerService.getWorkgroup(claimMatchingWorkgroupId) != null) {
+                    model.setClaimMatchingWorkgroup(this.adminInsurerService.getWorkgroup(claimMatchingWorkgroupId));
+                } else if (getIsChoxAdmin()) {
+                    model.setClaimMatchingWorkgroup(null);
+                }
+                if (appliedLiabilityRecords != null && !appliedLiabilityRecords.isEmpty()) {
+                    updateAppliedLiability();
+                }
             }
             ActionResponse response;
-            if (asCopy || !protocolVehicleClassCeilingRecords.isEmpty()) {
-                updateProtocolVehicleClassCeiling(asCopy);
-            }
-            if (asCopy || !penaltyBandRecords.isEmpty()) {
-                updatePenaltyBands(asCopy);
-            }
-            if (asCopy || (claimMatchingRecords != null && !claimMatchingRecords.isEmpty())) {
-                updateClaimMatching(asCopy);
-            }
-            if (claimMatchingOwnerId > 0 && this.adminInsurerService.getWebuserById(claimMatchingOwnerId) != null) {
-                model.setClaimMatchingOwner(this.adminInsurerService.getWebuserById(claimMatchingOwnerId));
-            } else if (getIsChoxAdmin()) {
-                model.setClaimMatchingOwner(null);
-            }
-            if (claimMatchingWorkgroupId > 0 && this.adminInsurerService.getWorkgroup(claimMatchingWorkgroupId) != null) {
-                model.setClaimMatchingWorkgroup(this.adminInsurerService.getWorkgroup(claimMatchingWorkgroupId));
-            } else if (getIsChoxAdmin()) {
-                model.setClaimMatchingWorkgroup(null);
-            }
             response = adminInsurerService.updateInsurerBreBand(model, this.insurerId, getIsNew());
             updateModelInSession(model);
             setActionResponse(response);
@@ -210,15 +284,16 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         return SUCCESS;
     }
 
-    private void updateProtocolVehicleClassCeiling(boolean asCopy) {
-        List<VehicleClassCeilingViewData> vehicleClassCeilingViewDatas =
-                ((List<VehicleClassCeilingViewData>) new Gson().fromJson(protocolVehicleClassCeilingRecords, new TypeToken<List<VehicleClassCeilingViewData>>() {}.getType()));
+    private void updateProtocolVehicleClassCeiling() {
+        List<VehicleClassCeilingViewData> vehicleClassCeilingViewDatas
+                = ((List<VehicleClassCeilingViewData>) new Gson().fromJson(protocolVehicleClassCeilingRecords, new TypeToken<List<VehicleClassCeilingViewData>>() {
+                }.getType()));
         if (vehicleClassCeilingViewDatas != null) {
             vehicleClassCeilingViewDatas.forEach((vehicleClassCeilingViewData) -> {
                 ProtocolVehicleClassCeiling pvcc;
-                if (!asCopy && vehicleClassCeilingViewData.getId() > 0) {
+                if (vehicleClassCeilingViewData.getId() > 0) {
                     pvcc = protocolVehicleClassCeilingService.getProtocolVehicleClassCeiling(vehicleClassCeilingViewData.getId());
-                } else if (asCopy || model.getId() == null || (pvcc = protocolVehicleClassCeilingService.getProtocolVehicleClassCeilingByVehicleClass(vehicleClassCeilingViewData.getVehicleClassId(), model.getId())) == null) {
+                } else if (model.getId() == null || (pvcc = protocolVehicleClassCeilingService.getProtocolVehicleClassCeilingByVehicleClass(vehicleClassCeilingViewData.getVehicleClassId(), model.getId())) == null) {
                     pvcc = new ProtocolVehicleClassCeiling();
                     pvcc.setVehicleClass(vehicleClassService.getVehicleClass(vehicleClassCeilingViewData.getVehicleClassId()));
                     pvcc.setBreBand(model);
@@ -238,7 +313,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         }
     }
 
-    private void updateClaimMatching(boolean asCopy) throws Exception {
+    private void updateClaimMatching() throws Exception {
         try {
             List<ClaimMatchingBandViewData> claimMatchingViewDatas
                     = ((List<ClaimMatchingBandViewData>) new Gson().fromJson(claimMatchingRecords, new TypeToken<List<ClaimMatchingBandViewData>>() {
@@ -246,9 +321,9 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             if (claimMatchingViewDatas != null) {
                 claimMatchingViewDatas.forEach((claimMatchingViewData) -> {
                     ClaimMatchingBand cm;
-                    if (!asCopy && claimMatchingViewData.getId() > 0) {
+                    if (claimMatchingViewData.getId() > 0) {
                         cm = claimMatchingBandService.getClaimMatchingBand(claimMatchingViewData.getId());
-                    } else if (asCopy || model.getId() == null || (cm = claimMatchingBandService.getClaimMatchingBand(claimMatchingViewData.getId())) == null) {
+                    } else if (model.getId() == null || (cm = claimMatchingBandService.getClaimMatchingBand(claimMatchingViewData.getId())) == null) {
                         cm = new ClaimMatchingBand();
                     }
                     if (cm != null) {
@@ -260,29 +335,59 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                             cm.setClaimType(ClaimType.values()[claimMatchingViewData.getClaimTypeId()]);
                             cm.setLiabilityPercentage(claimMatchingViewData.getMinimumLiability());
                             cm.setAutoAcknowledge(claimMatchingViewData.getAutoAcknowledge().equals("Yes"));
-                            if (claimMatchingViewData.getVehicleClasses().contains("CM")) {cm.setCmClass(true);}
-                            if (claimMatchingViewData.getVehicleClasses().contains("CP")) {cm.setCpClass(true);}
-                            if (claimMatchingViewData.getVehicleClasses().contains("CS")) {cm.setCsClass(true);}
-                            if (claimMatchingViewData.getVehicleClasses().contains("CV")) {cm.setCvClass(true);}
-                            if (claimMatchingViewData.getVehicleClasses().contains("NT")) {cm.setNtClass(true);}
-                            if (claimMatchingViewData.getVehicleClasses().contains("PT")) {cm.setPtClass(true);}
-                            if (claimMatchingViewData.getVehicleClasses().contains("PV")) {cm.setPvClass(true);}
-                            if (claimMatchingViewData.getVehicleClasses().contains("RV")) {cm.setRvClass(true);}
-                            if (claimMatchingViewData.getVehicleClasses().contains("SP")) {cm.setSpClass(true);}
-                            if (claimMatchingViewData.getVehicleClasses().contains("B")) {cm.setbClass(true);}
-                            if (claimMatchingViewData.getVehicleClasses().contains("F")) {cm.setfClass(true);}
+                            if (claimMatchingViewData.getVehicleClasses().contains("CM")) {
+                                cm.setCmClass(true);
+                            }
+                            if (claimMatchingViewData.getVehicleClasses().contains("CP")) {
+                                cm.setCpClass(true);
+                            }
+                            if (claimMatchingViewData.getVehicleClasses().contains("CS")) {
+                                cm.setCsClass(true);
+                            }
+                            if (claimMatchingViewData.getVehicleClasses().contains("CV")) {
+                                cm.setCvClass(true);
+                            }
+                            if (claimMatchingViewData.getVehicleClasses().contains("NT")) {
+                                cm.setNtClass(true);
+                            }
+                            if (claimMatchingViewData.getVehicleClasses().contains("PT")) {
+                                cm.setPtClass(true);
+                            }
+                            if (claimMatchingViewData.getVehicleClasses().contains("PV")) {
+                                cm.setPvClass(true);
+                            }
+                            if (claimMatchingViewData.getVehicleClasses().contains("RV")) {
+                                cm.setRvClass(true);
+                            }
+                            if (claimMatchingViewData.getVehicleClasses().contains("SP")) {
+                                cm.setSpClass(true);
+                            }
+                            if (claimMatchingViewData.getVehicleClasses().contains("B")) {
+                                cm.setbClass(true);
+                            }
+                            if (claimMatchingViewData.getVehicleClasses().contains("F")) {
+                                cm.setfClass(true);
+                            }
 
                             if (claimMatchingViewData.getVehicleClasses().contains(",M")
-                                    || claimMatchingViewData.getVehicleClasses().startsWith("M")) {cm.setmClass(true);}
+                                    || claimMatchingViewData.getVehicleClasses().startsWith("M")) {
+                                cm.setmClass(true);
+                            }
                             if (claimMatchingViewData.getVehicleClasses().contains(",T")
-                                    || claimMatchingViewData.getVehicleClasses().startsWith("T")) {cm.settClass(true);}
+                                    || claimMatchingViewData.getVehicleClasses().startsWith("T")) {
+                                cm.settClass(true);
+                            }
                             if (claimMatchingViewData.getVehicleClasses().contains(",P,")
                                     || claimMatchingViewData.getVehicleClasses().endsWith(",P") || claimMatchingViewData.getVehicleClasses().equals("P")) {
                                 cm.setpClass(true);
                             }
                             if (claimMatchingViewData.getVehicleClasses().contains(",S,")
-                                    || claimMatchingViewData.getVehicleClasses().endsWith(",S") || claimMatchingViewData.getVehicleClasses().equals("S")) {cm.setsClass(true);}
-                            if (claimMatchingViewData.getVehicleClasses().contains("UNATTACHED")) {cm.setuClass(true);}
+                                    || claimMatchingViewData.getVehicleClasses().endsWith(",S") || claimMatchingViewData.getVehicleClasses().equals("S")) {
+                                cm.setsClass(true);
+                            }
+                            if (claimMatchingViewData.getVehicleClasses().contains("UNATTACHED")) {
+                                cm.setuClass(true);
+                            }
                             cm.setBreBand(model);
                             model.addClaimMatchingBand(cm);
                         }
@@ -295,7 +400,57 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         }
     }
 
-    private void updatePenaltyBands(boolean asCopy) throws Exception {
+    private void updateAppliedLiability() throws Exception {
+        try {
+            List<AppliedLiabilityViewData> appliedLiabilityViewDatas
+                    = ((List<AppliedLiabilityViewData>) new Gson().fromJson(appliedLiabilityRecords, new TypeToken<List<AppliedLiabilityViewData>>() {
+                    }.getType()));
+            if (appliedLiabilityViewDatas != null) {
+                // First remove records
+                appliedLiabilityViewDatas.forEach((appliedLiabilityViewData) -> {
+                    BreAppliedLiability al;
+                    if (appliedLiabilityViewData.getId() > 0) {
+                        al = appliedLiabilityService.getAppliedLiability(appliedLiabilityViewData.getId());
+                    } else if (model.getId() == null || (al = appliedLiabilityService.getAppliedLiability(appliedLiabilityViewData.getId())) == null) {
+                        al = new BreAppliedLiability();
+                    }
+                    if (al != null) {
+                        if (appliedLiabilityViewData.isRemoved()) {
+                            if (model.getAppliedLiabilities() != null) {
+                                model.getAppliedLiabilities().remove(al);
+                            }
+                        }
+                    }
+                });
+                // Need to flush now as we may be adding a claim type just removed
+                this.getBaseDataService().getCurrentSession().flush();
+                
+                // Now add new records
+                appliedLiabilityViewDatas.forEach((appliedLiabilityViewData) -> {
+                    BreAppliedLiability al;
+                    if (appliedLiabilityViewData.getId() > 0) {
+                        al = appliedLiabilityService.getAppliedLiability(appliedLiabilityViewData.getId());
+                    } else if (model.getId() == null || (al = appliedLiabilityService.getAppliedLiability(appliedLiabilityViewData.getId())) == null) {
+                        al = new BreAppliedLiability();
+                    }
+                    if (al != null) {
+                        if (!appliedLiabilityViewData.isRemoved()) {
+                            al.setClaimType(ClaimType.values()[appliedLiabilityViewData.getClaimTypeId()]);
+                            al.setAppliedLiability(appliedLiabilityViewData.getAppliedLiability());
+                            al.setApplyToRepudiated(appliedLiabilityViewData.getApplyToRepudiated().equals("Yes"));
+                            al.setBreBand(model);
+                            model.addAppliedLiability(al);
+                        }
+                    }
+                });
+            }
+        } catch (Exception ex) {
+            LOG.error("Exceeption thrown updating BRE Claim Matching bands: {}", ex.getMessage(), ex);
+            throw ex;
+        }
+    }
+
+    private void updatePenaltyBands() throws Exception {
         try {
             List<BrePenaltyBandViewData> penaltyBandViewDatas
                     = ((List<BrePenaltyBandViewData>) new Gson().fromJson(penaltyBandRecords, new TypeToken<List<BrePenaltyBandViewData>>() {
@@ -303,9 +458,9 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             if (penaltyBandViewDatas != null) {
                 for (BrePenaltyBandViewData penaltyBandViewData : penaltyBandViewDatas) {
                     BrePenaltyBand bpb;
-                    if (!asCopy && penaltyBandViewData.getId() > 0) {
+                    if (penaltyBandViewData.getId() > 0) {
                         bpb = brePenaltyBandService.getBrePenaltyBand(penaltyBandViewData.getId());
-                    } else if (asCopy || model.getId() == null || (bpb = brePenaltyBandService.getBrePenaltyBand(penaltyBandViewData.getId())) == null) {
+                    } else if (model.getId() == null || (bpb = brePenaltyBandService.getBrePenaltyBand(penaltyBandViewData.getId())) == null) {
                         bpb = new BrePenaltyBand();
                     }
                     if (bpb != null) {
@@ -373,6 +528,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     public void setAdminInsurerService(AdminInsurerService adminInsurerService) {
         this.adminInsurerService = adminInsurerService;
     }
+
     public void setProtocolVehicleClassCeilingService(ProtocolVehicleClassCeilingService protocolVehicleClassCeilingService) {
         this.protocolVehicleClassCeilingService = protocolVehicleClassCeilingService;
     }
@@ -383,6 +539,10 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
 
     public void setClaimMatchingBandService(ClaimMatchingBandService claimMatchingBandService) {
         this.claimMatchingBandService = claimMatchingBandService;
+    }
+
+    public void setAppliedLiabilityService(AppliedLiabilityService appliedLiabilityService) {
+        this.appliedLiabilityService = appliedLiabilityService;
     }
     // </editor-fold>
 
@@ -399,7 +559,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     }
 
     public int getClaimMatchingWorkgroupId() {
-        return this.model.getClaimMatchingWorkgroup()!= null ? this.model.getClaimMatchingWorkgroup().getId() : 0;
+        return this.model.getClaimMatchingWorkgroup() != null ? this.model.getClaimMatchingWorkgroup().getId() : 0;
     }
 
     public String getClaimMatchingWorkgroupName() {
@@ -409,42 +569,43 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     public void setClaimMatchingWorkgroupId(int claimMatchingWorkgroupId) {
         this.claimMatchingWorkgroupId = claimMatchingWorkgroupId;
     }
+
     public boolean isWorkgroupsEnabled() {
         return adminInsurerService.getInsurer(insurerId).isWorkgroupEnable();
     }
-    
+
     public boolean isOwnershipEnabled() {
         return adminInsurerService.getInsurer(insurerId).isClaimOwnershipEnable();
     }
-    
+
     public boolean isClaimMatchingEnabled() {
         return adminInsurerService.getInsurer(insurerId).isEnableClaimMatching();
     }
-    
+
     public boolean isSubscriberClaimsEnabled() {
         return adminInsurerService.getInsurer(insurerId).isAllowSubscriberClaims();
     }
-    
+
     public boolean isCollaborationProtocolClaimsEnabled() {
         return adminInsurerService.getInsurer(insurerId).isAllowCollaborationProtocolClaims();
     }
-    
+
     public boolean isImpecuniosRuleEnabled() {
         return adminInsurerService.getInsurer(insurerId).isEnableLouDates() || adminInsurerService.getInsurer(insurerId).isEnableManualLouDates();
     }
-    
+
     public boolean isCopleyOfferEnabled() {
         return adminInsurerService.getInsurer(insurerId).isCopleyQuestion();
     }
-    
+
     public boolean isFixedFeeClaimsEnabled() {
         return adminInsurerService.getInsurer(insurerId).isAllowFixedFeeClaims();
     }
-    
+
     public boolean isTpiClaimsEnabled() {
         return adminInsurerService.getInsurer(insurerId).isThirdPartyInterventionActivated();
     }
-    
+
     @Override
     public boolean isInsurerUploadEnabled() {
         return adminInsurerService.getInsurer(insurerId).isClaimUploadEnabled()
@@ -455,7 +616,6 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         this.vehicleClassService = vehicleClassService;
     }
 
-
     public boolean getAsCopy() {
         return asCopy;
     }
@@ -463,7 +623,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     public void setAsCopy(boolean asCopy) {
         this.asCopy = asCopy;
     }
-    
+
     public String getClaimTypesJsonString() {
         List<LookupItem> claimTypesList = lookupService.getClaimTypes(getAuthenticatedUser());
         ObjectMapper mapper = new ObjectMapper();
@@ -475,7 +635,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
         }
         return "{totalCount:" + claimTypesList.size() + ", results:" + jsonString + "}";
     }
-    
+
     public String getClaimTypesForInsurerJsonString() {
         List<LookupItem> claimTypesList = lookupService.getClaimTypes(adminInsurerService.getInsurer(insurerId));
         ObjectMapper mapper = new ObjectMapper();

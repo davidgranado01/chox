@@ -167,6 +167,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private List<ProtocolVehicleClassCeiling> protocolVehicleClassCeilings;
     private List<BrePenaltyBand> brePenaltyBands;
     private List<ClaimMatchingBand> claimMatchingBands;
+    private List<BreAppliedLiability> appliedLiabilities;
     private boolean compoundAutomaticChargeCheckHpiLookup;
     private boolean compoundEstateChargeCheckHpiLookup;
     private boolean compoundAutomaticEstateChargeCheckHpiLookup;
@@ -1675,6 +1676,27 @@ public class BreBand extends Entity implements Serializable, FullAudit {
 
     public void setClaimMatchingBands(List<ClaimMatchingBand> claimMatchingBands) {
         this.claimMatchingBands = claimMatchingBands;
+    }
+
+    public List<BreAppliedLiability> getAppliedLiabilities() {
+        return appliedLiabilities;
+    }
+
+    public void setAppliedLiabilities(List<BreAppliedLiability> appliedLiabilities) {
+        this.appliedLiabilities = appliedLiabilities;
+    }
+
+    public void addAppliedLiability(BreAppliedLiability appliedLiability) {
+        if (appliedLiability == null) {
+            return;
+        }
+        
+        if (appliedLiabilities == null) {
+            appliedLiabilities = new ArrayList<>();
+        } 
+        appliedLiability.setBreBand(this);
+
+        appliedLiabilities.add(appliedLiability);
     }
 
     public void addClaimMatchingBand(ClaimMatchingBand claimMatchingBand) {

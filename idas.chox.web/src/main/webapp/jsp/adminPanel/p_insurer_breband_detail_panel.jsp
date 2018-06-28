@@ -6,13 +6,16 @@
     var protocolVehicleClassCeiling_gridviewStore;
     var penaltyBand_gridviewStore;
     var claimMatchingBand_gridviewStore;
+    var appliedLiability_gridviewStore;
     var protocolVehicleClassCeiling_gridviewGrid;
     var penaltyBand_gridviewGrid;
     var claimMatchingBand_gridviewGrid;
+    var appliedLiability_gridviewGrid;
     var protocolVehicleCeilingEditSelectionDlg;
     var penaltyStartDateDatePicker;
     var penaltyClaimTypesCombo;
     var claimMatchingClaimTypesCombo;
+    var appliedLiabilityClaimTypesCombo;
     var cm_wgrpJsonReader;
     var cm_workgroupStore;
     var cm_workgroupCombo;
@@ -21,7 +24,8 @@
     var cm_claimOwnerCombo;
     var cm_workgroupId = - 1;
     var cm_claimOwnerId = - 1;
-
+    var appliedLiabilityClaimTypesStore;
+    
     Ext.onReady(function(){
 
         new Ext.ToolTip({ target: 'help-averageLabourHoursPerHireDay', html: 'How many hours the garage should work on the car per day'});
@@ -417,6 +421,130 @@
         });
         onPenaltyChargeBandPageRefresh();
 <s:if test="isChoxAdmin">
+    // Applied Liability set-up
+        var appliedLiabilityClaimTypesJsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields: [
+                {name:'text'},
+                {name:'value'}]
+        });
+        var appliedLiabilityClaimTypes = Ext.util.JSON.decode('<s:property value="claimTypesForInsurerJsonString" escapeHtml="false"/>');
+        appliedLiabilityClaimTypesStore = new Ext.data.Store({
+                data : appliedLiabilityClaimTypes,
+                reader : appliedLiabilityClaimTypesJsonReader
+        });
+        appliedLiabilityClaimTypesCombo = new Ext.form.ComboBox({
+            store: appliedLiabilityClaimTypesStore,
+            renderTo: appliedLiabilityClaimTypeDropDownDiv,
+            valueField : 'value',
+            id : 'appliedLiabilityClaimTypesComboId',
+            displayField :'text',
+            typeAhead : true,
+            mode : 'local',
+            triggerAction : 'all',
+            emptyText: '-- Please Select --',
+            selectOnFocus : true,
+            forceSelection : true,
+            width : 200,
+            listWidth : 200,
+            listeners: {
+                blur: function () {
+                    if (this.getRawValue() === "") {
+                        this.clearValue(); this.reset();
+                    }
+                },
+                specialkey:function (el, e) {
+                    if (e.keyCode === e.ENTER) {
+                        e.preventDefault();
+                    }
+                }
+            }
+        });
+
+        var appliedLiability_JsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields: [
+                {name:'id'},
+                {name:'claimTypeId'},
+                {name:'claimTypeName'},
+                {name:'appliedLiability', type:'float'},
+                {name:'applyToRepudiated'},
+                {name:'createdDate', type: 'date', dateFormat:'d/m/Y'},
+                {name:'removed'}
+            ]
+        });
+        
+        appliedLiability_gridviewStore = new choxDataStore({
+            removedList: [],
+            listeners: {
+                add: function(store, records, index) {
+                    // Remove claim type from drop down
+                    Ext.each(records, function(item){
+                        var index = appliedLiabilityClaimTypesStore.find('text', item.get("claimTypeName"));
+                        appliedLiabilityClaimTypesStore.removeAt(index);
+                    });
+                },
+                remove: function(store, record, index) {
+                    // Add claim type from drop down
+                    MyRecordType = Ext.data.Record.create(['text', 'value']);
+                    myrec = new MyRecordType({"text":record.get("claimTypeName"), "value": record.get("claimTypeId")});
+                    appliedLiabilityClaimTypesStore.add(myrec);
+                    if (record.get("id")) {
+                        // add removed record to an array if this is existing record.
+                        store.removedList.push(record);
+                    }
+                },
+                load : function(store, records, index){
+                    // Remove claim type from drop down
+                    Ext.each(records, function(item){
+                        var index = appliedLiabilityClaimTypesStore.find('text', item.get("claimTypeName"));
+                        var record = appliedLiabilityClaimTypesStore.getAt(index);
+                        appliedLiabilityClaimTypesStore.removeAt(index);
+                    });
+                    // if it is new bre band then mark all the recods as dirty (shows red flag).
+<s:if test="id == null">
+                    // Dirty flag can not be set to all fields to an existing record, so need to 
+                    // create and add new array of records and remove all the old records. 
+                    var addList = [];
+                    Ext.each(records, function(item){
+                        item.set('id', null);
+                        item.markDirty();
+                        addList.push(item);
+                    });
+                    store.removeAll(true);
+                    store.add(addList);
+</s:if>
+                },
+            },
+            pruneModifiedRecords : true, // to avoid sending newly added and removed record.
+            url: '/prv/p/getAppliedLiability.action',
+            reader:appliedLiability_JsonReader
+        });
+        
+        appliedLiability_gridviewGrid = new Ext.grid.GridPanel({
+            store: appliedLiability_gridviewStore,
+            listeners:  {cellclick:appliedLiability_recordOnclickRemove},
+            renderTo:'appliedLiabilityViewGrid',
+            enableHdMenu:false,
+            enableColumnMove: false,
+            layout:'fit',
+            loadMask : true,
+            viewConfig:{forceFit:true},
+            columns: [
+                {header: "Claim Type", width: 130, dataIndex: 'claimTypeName', sortable: true, resizable: true,
+                    renderer:function(value, p, r){return "<b>" + value + "</b>"; }},
+                {header: "Applied Insurer Liability %", width: 135, dataIndex: 'appliedLiability', sortable: true, resizable: true, renderer:function(value, p, r){return value.toFixed(2)}},
+                {header: "Apply To Repudiated", width: 105, dataIndex: 'applyToRepudiated', sortable: false, resizable: true},
+                {header: "", width: 70, dataIndex: '', sortable: false, resizable: true, renderer:function(value, p, r){
+                    return "<a href='#' class='high-light-item'>Remove</a>"; }}
+            ],
+            height:120,
+            width: 690
+        });
+        doAppliedLiabilityCheck();
+
     <s:if test="claimMatchingEnabled">
         // Add claim type drop-down menu
         var claimMatchingClaimTypesJsonReader = new Ext.data.JsonReader({
@@ -427,7 +555,7 @@
                 {name:'value'}]
         });
         var claimMatchingClaimTypes = Ext.util.JSON.decode('<s:property value="claimTypesForInsurerJsonString" escapeHtml="false"/>');
-        var claimMatchingClaimTypesStore = new Ext.data.Store({
+        claimMatchingClaimTypesStore = new Ext.data.Store({
                 data : claimMatchingClaimTypes,
                 reader : claimMatchingClaimTypesJsonReader
         });
@@ -622,10 +750,7 @@
             width: 690
         });
         doClaimMatchingCheck();
-//        claimMatchingBand_loadGridViewList();
-
     </s:if>
-        doAppliedLiabilityCheck();
 </s:if>
         toggleAuditProcessPercentageDiv();
     });
@@ -893,6 +1018,7 @@
         var protocolVehicleClassCeilingRecords = [];
         var penaltyBandRecords = [];
         var claimMatchingRecords = [];
+        var appliedLiabilityRecords = [];
         var i = 0;
         $("#CDInsurerBreBandmessageBox").empty();
         $("#asCopy").val(asCopy);
@@ -902,17 +1028,26 @@
                 protocolVehicleClassCeilingRecords[i] = item.data;
                 i++;
             });
+            i=0;
             // Add each penalty band record to the penaltyBandRecords
             this.penaltyBand_gridviewStore.each(function(item){
                 penaltyBandRecords[i] = item.data;
                 i++;
             });
-<s:if test="isChoxAdmin && claimMatchingEnabled">
+<s:if test="isChoxAdmin">
+            i=0;
+            this.appliedLiability_gridviewStore.each(function(item){
+                appliedLiabilityRecords[i] = item.data;
+                i++;
+            });
+    <s:if test="claimMatchingEnabled">
+            i=0;
             // Add each claimMatching record to the claimMatchingRecords
             this.claimMatchingBand_gridviewStore.each(function(item){
                 claimMatchingRecords[i] = item.data;
                 i++;
             });
+    </s:if>
 </s:if>
         } else {
             // now add the removed records to the protocolVehicleClassCeilingRecords
@@ -920,30 +1055,41 @@
                 protocolVehicleClassCeilingRecords[i] = item.data;
                 i++;
             });
-            Ext.each(this.penaltyBand_gridviewStore.removedList, function(item){
-                penaltyBandRecords[i] = item.data;
-                i++;
-            });
-<s:if test="isChoxAdmin && claimMatchingEnabled">
-            Ext.each(this.claimMatchingBand_gridviewStore.removedList, function(item){
-                claimMatchingRecords[i] = item.data;
-                i++;
-            });
-</s:if>
             // add the updated/new records to the protocolVehicleClassCeilingRecords
             Ext.each(this.protocolVehicleClassCeiling_gridviewStore.getModifiedRecords(), function(item){
                 protocolVehicleClassCeilingRecords[i] = item.data;
+                i++;
+            });
+            i=0;
+            Ext.each(this.penaltyBand_gridviewStore.removedList, function(item){
+                penaltyBandRecords[i] = item.data;
                 i++;
             });
             Ext.each(this.penaltyBand_gridviewStore.getModifiedRecords(), function(item){
                 penaltyBandRecords[i] = item.data;
                 i++;
             });
-<s:if test="isChoxAdmin && claimMatchingEnabled">
+<s:if test="isChoxAdmin">
+            i=0;
+            Ext.each(this.appliedLiability_gridviewStore.removedList, function(item){
+                appliedLiabilityRecords[i] = item.data;
+                i++;
+            });
+            Ext.each(this.appliedLiability_gridviewStore.getModifiedRecords(), function(item){
+                appliedLiabilityRecords[i] = item.data;
+                i++;
+            });
+    <s:if test="claimMatchingEnabled">
+            i=0;
+            Ext.each(this.claimMatchingBand_gridviewStore.removedList, function(item){
+                claimMatchingRecords[i] = item.data;
+                i++;
+            });
             Ext.each(this.claimMatchingBand_gridviewStore.getModifiedRecords(), function(item){
                 claimMatchingRecords[i] = item.data;
                 i++;
             });
+    </s:if>
 </s:if>
         }
 
@@ -965,7 +1111,16 @@
             $("form#formUpdateInsurerBreBandDetail").append($(input));
         }
         var formValid = true;
-<s:if test="isChoxAdmin && claimMatchingEnabled">
+<s:if test="isChoxAdmin">
+        this.appliedLiability_gridviewStore.removedList = [];
+        // add the applied liability records to the form dynamically. 
+        if ($('input[name=appliedLiabilityRecords]').length > 0) { // If the input tag already exists then just add the value. 
+            $('input[name=appliedLiabilityRecords]').val(Ext.util.JSON.encode(appliedLiabilityRecords));
+        } else { // If the input tag does not exists then create, set the value and append the element to the form.
+            var input = $("<input>").attr("name", "appliedLiabilityRecords").attr('type', "hidden").val(Ext.util.JSON.encode(appliedLiabilityRecords));
+            $("form#formUpdateInsurerBreBandDetail").append($(input));
+        }
+<s:if test="claimMatchingEnabled">
         this.claimMatchingBand_gridviewStore.removedList = [];
         // add the claim matching records to the form dynamically. 
         if ($('input[name=claimMatchingRecords]').length > 0) { // If the input tag already exists then just add the value. 
@@ -990,6 +1145,7 @@
             }
 </s:if>
         }
+</s:if>
 </s:if>
         if ($("form#formUpdateInsurerBreBandDetail").valid() && formValid) {
             choxJqueryHttpSubmit($("form#formUpdateInsurerBreBandDetail"));
@@ -1027,6 +1183,12 @@
     function claimMatchingBand_loadGridViewList() {
 <s:if test="id != null">  // if it is existing bre band then use breband id to get the grid records.
         if (claimMatchingBand_gridviewStore) {claimMatchingBand_gridviewStore.load({params: {"breBandId":'<s:property value="id" />'}});}
+</s:if>
+    }
+
+    function appliedLiability_loadGridViewList() {
+<s:if test="id != null">  // if it is existing bre band then use breband id to get the grid records.
+        if (appliedLiability_gridviewStore) {appliedLiability_gridviewStore.load({params: {"breBandId":'<s:property value="id" />'}});}
 </s:if>
     }
 
@@ -1104,8 +1266,54 @@
 
 <s:if test="isChoxAdmin">
     function addAppliedLiability() {
+        if (validateAppliedLiabilityForm()) {
+            // get the values from the form.
+            var claimTypeName = appliedLiabilityClaimTypesCombo.getRawValue();
+            var claimTypeId = appliedLiabilityClaimTypesCombo.getValue();
+            var liability = $('#appliedLiability').val().length == 0 ? 0.00 : parseFloat($("#appliedLiability").val());
+            var applyToRepudiated = $("#applyToRepudiated").is(":checked");
+            var applyToRepudiatedDesc = applyToRepudiated ? 'Yes' : 'No';
+            // create new record type, mark dirty and add it to the grid store.
+            var recordType = appliedLiability_gridviewGrid.getStore().recordType;
+            var newRecord = new recordType({'claimTypeId':claimTypeId, 'claimTypeName':claimTypeName, 'appliedLiability':liability,
+                                            'applyToRepudiated':applyToRepudiatedDesc
+            });
+            newRecord.markDirty();
+            newRecord.set('removed', 'false');
+            appliedLiability_gridviewGrid.getStore().insert(0, newRecord);
+            // reset the form details
+            appliedLiabilityClaimTypesCombo.reset();
+            $('#appliedLiability').val('');
+            $("#applyToRepudiated").attr('checked', true);
+        }
     }
-    
+
+    function validateAppliedLiabilityForm(){
+        var mesBox = $("#CDAppliedLiabilityMessageBox");
+        mesBox.empty();
+        var validForm = true;
+        if ($("#appliedLiabilityClaimTypesComboId").val() === "-- Please Select --") {
+            mesBox.append("You must select a 'Claim Type'\n<br/>").show();
+            validForm = false;
+        }
+        
+        if ($.isNumeric($("#appliedLiability").val())) {
+            if (isNaN(parseFloat($("#appliedLiability").val())) || parseFloat($("#appliedLiability").val()) < 0 || parseFloat($("#appliedLiability").val()) > 100) {
+                mesBox.append("'Insurer Applied Liability %' must be > = 0 and <= 100\n<br/>").show();
+                validForm = false;
+            }            
+        }else {
+            mesBox.append("You must supply a numeric value for 'Applied Insurer Liability %'\n<br/>").show();
+            validForm = false;
+        }
+
+        if (validForm){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     function addClaimMatchingBand() {
         if (validateClaimMatchingForm()) {
             // get the values from the form.
@@ -1165,6 +1373,7 @@
             $("#vehicleClassU").attr('checked', false);
         }
     }
+    
     function validateClaimMatchingForm(){
         var mesBox = $("#CDClaimMatchingMessageBox");
         mesBox.empty();
@@ -1610,6 +1819,7 @@
         if ($('form#formUpdateInsurerBreBandDetail input[name="appliedLiabilityEnabled"]:checked').val()){
             appliedLiabilityEnable = true;
             $("#appliedLiabilityDivId").slideDown();
+            appliedLiability_loadGridViewList();
         } else{
             $("#appliedLiabilityDivId").hide();
         }
@@ -1727,8 +1937,9 @@
     function onPenaltyChargeBandPageRefresh(){
         // load the grid.
         penaltyBand_loadGridViewList();
-        claimMatchingBand_loadGridViewList();
 <s:if test="isChoxAdmin">
+        appliedLiability_loadGridViewList();
+        claimMatchingBand_loadGridViewList();
         doGTAPenaltyChargeCheck();
         doSubscriberPenaltyChargeCheck();
         doFixedFeePenaltyChargeCheck();
@@ -1770,6 +1981,18 @@
                 gridRecord.markDirty();
             }
             claimMatchingBand_gridviewGrid.getStore().remove(gridRecord);
+        }
+    }
+    
+    function appliedLiability_recordOnclickRemove(grid, rowIndex, columnIndex, e) {
+        var gridRecord = appliedLiability_gridviewGrid.getStore().getAt(rowIndex);
+        if (columnIndex === 3) {
+            var appliedLiabilityId = gridRecord.get("id");
+            if (appliedLiabilityId) {
+                gridRecord.set('removed', 'true');
+                gridRecord.markDirty();
+            }
+            appliedLiability_gridviewGrid.getStore().remove(gridRecord);
         }
     }
 </s:if>
@@ -2279,11 +2502,11 @@
                                             </div>
                                             <div class="chox-form-item" >
                                                 <label class="chox-form-std-label2">Applied Insurer Liability %<span class="mandatory">*</span></label>
-                                                <input id="appliedInsurerLiability" style="width:50px" onkeyup="extractNumber(this,2,false);"/>
+                                                <input id="appliedLiability" style="width:50px" onkeyup="extractNumber(this,2,false);"/>
                                             </div>
                                             <div class="chox-form-item">
                                                 <label class="chox-form-std-label2">Apply to Repudiated<span class="mandatory">*</span></label>
-                                                <s:checkbox name="appliesToRepudiated" value="true"/>
+                                                <s:checkbox name="applyToRepudiated" value="true"/>
                                             </div>
                                             <div align="center" class="chox-form-item">
                                                 <input type="button" value="Add New Applied Liability %age for Adjusting Total To Pay" onclick="addAppliedLiability();"/>
