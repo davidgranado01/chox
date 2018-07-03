@@ -229,7 +229,7 @@ public class ClaimsGridExportReport {
         StringBuilder sb = new StringBuilder();
         sb.append("select")
             .append(" c.status, c.claim_type, c.cho_reference, cho.name as chorg_name, w.name as workgroup_name, c.last_review_date, c.status_modified_date, c.indeminty_amount,")
-            .append(" c.indemnity_stance, c.liability_status, c.percentage_liability_accepted, c.percentage_liability_cho, c.managing_repair, c.policy_holder_contact_date,")
+            .append(" c.indemnity_stance, c.liability_status, c.percentage_liability_accepted, c.applied_liability, c.percentage_liability_cho, c.managing_repair, c.policy_holder_contact_date,")
             .append(" c.credit_agreement_date, c.gta_notice_date, c.claim_number, wu.last_name || ' ' || wu.first_name as claim_owner, cust.title as customer_title,")
             .append(" c.final_review_cho, c.final_review_ins, wuc.last_name || ' ' || wuc.first_name as claim_supplier_owner, c.remaining_sla_days_str,")
             .append(" c.fraud_check_status, c.copley_offer_made, c.copley_offer_made_date, ins.copley_question, kr.total_score as fraud_score, kr.rag_result as fraud_status,")

@@ -24,6 +24,7 @@ public class ExcelClaim {
     private final String claimIndemnityStance;
     private final String claimLiabilityStatus;
     private final BigDecimal claimPercentageLiabilityAccepted;
+    private final BigDecimal claimPercentageLiabilityApplied;
     private final BigDecimal claimPercentageLiabilityCho;
     private final String claimManagingRepair;
     private final Date claimPolicyHolderContactDate;
@@ -217,6 +218,7 @@ public class ExcelClaim {
         claimLiabilityStatus = (LiabilityStatus.values()[ (Short)data.get("liability_status")]).toString();
         claimIndemnityStance = (String) data.get("indemnity_stance");
         claimPercentageLiabilityAccepted = (BigDecimal) data.get("percentage_liability_accepted");
+        claimPercentageLiabilityApplied = (BigDecimal) data.get("applied_liability");
         claimPercentageLiabilityCho = (BigDecimal) data.get("percentage_liability_cho");
         claimManagingRepair = ((Boolean) data.get("managing_repair")) ? "Yes" : "No";
         claimPolicyHolderContactDate = (Date) data.get("policy_holder_contact_date");
@@ -894,6 +896,10 @@ public class ExcelClaim {
 
     public BigDecimal getClaimPercentageLiabilityAccepted() {
         return claimPercentageLiabilityAccepted;
+    }
+
+    public BigDecimal getClaimPercentageLiabilityApplied() {
+        return claimPercentageLiabilityApplied;
     }
 
     public BigDecimal getClaimPercentageLiabilityCho() {

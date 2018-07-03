@@ -45,6 +45,7 @@ public class ClaimFileReportData {
     private String workgroup;
     private BigDecimal indemnityValue;
     private BigDecimal insurerLiabilityAgreed;
+    private BigDecimal insurerLiabilityApplied;
     private BigDecimal choLiabilityAgreed;
     private String dateLiabilityAgreed;
     private String customerTitle;
@@ -466,6 +467,9 @@ public class ClaimFileReportData {
             indemnityValue = claim.getIndemnityAmount();
             if (claim.getPercentageLiabilityAccepted() != null) {
                 insurerLiabilityAgreed = claim.getPercentageLiabilityAccepted().divide(new BigDecimal("100.00"));
+            }
+            if (claim.getAppliedLiability() != null) {
+                insurerLiabilityApplied = claim.getAppliedLiability().divide(new BigDecimal("100.00"));
             }
             if (claim.getPercentageLiabilityCho() != null) {
                 choLiabilityAgreed = claim.getPercentageLiabilityCho().divide(new BigDecimal("100.00"));
@@ -1339,6 +1343,10 @@ public class ClaimFileReportData {
 
     public BigDecimal getInsurerLiabilityAgreed() {
         return insurerLiabilityAgreed;
+    }
+
+    public BigDecimal getInsurerLiabilityApplied() {
+        return insurerLiabilityApplied;
     }
 
     public BigDecimal getInvoiceClaimsHandlingAmount() {
