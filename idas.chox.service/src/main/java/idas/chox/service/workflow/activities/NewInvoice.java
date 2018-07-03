@@ -344,8 +344,8 @@ public class NewInvoice extends BaseActivity {
                         LOG.debug("Changing Total To Pay from {} to {}", invoice.getTotalToPay(), invoice.getFullTotalToPay());
                         invoice.setTotalToPay(invoice.getFullTotalToPay());
                     } else {
-                        LOG.debug("Changing Total To Pay from {} to {}", invoice.getTotalToPay(), invoice.getFullTotalToPay().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                        invoice.setTotalToPay(invoice.getFullTotalToPay().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                        LOG.debug("Changing Total To Pay from {} to {}", invoice.getTotalToPay(), invoice.getFullTotalToPay().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                        invoice.setTotalToPay(invoice.getFullTotalToPay().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
                     }
                         LOG.debug("Hire Rate Charged per Day changed  from {} to {}", invoice.getHireRateChargedPerDay(), allowedDailyRate);
                     invoice.setHireRateChargedPerDay(allowedDailyRate);

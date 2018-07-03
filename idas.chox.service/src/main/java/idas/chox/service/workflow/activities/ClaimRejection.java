@@ -210,7 +210,7 @@ public class ClaimRejection extends BaseActivity {
             claim.setIndemnityAmount(indemnityAmount);
         }
         if (percentageLiabilityAccepted != null || percentageLiabilityCho != null) {
-            claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
+            claimService.updateLiabilityPercentages(claim, percentageLiabilityAccepted, percentageLiabilityCho);
         }
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
         claim.setIsQuantumDispute(isQuantumDispute);

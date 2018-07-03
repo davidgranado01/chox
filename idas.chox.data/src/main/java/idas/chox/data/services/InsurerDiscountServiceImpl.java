@@ -273,7 +273,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
             if (days > 30) {
                 if (claim.getInvoice().getGtaDiscount() != null && claim.getInvoice().getGtaDiscount().compareTo(BigDecimal.ZERO) != 0) {
                     claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(claim.getInvoice().getGtaDiscount()).setScale(2, RoundingMode.HALF_UP));
-                    claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
+                    claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
                     claim.getInvoice().setGtaDiscount(BigDecimal.ZERO);
                 }
                 LOG.debug("GTA discount not added as invoice > 30 days old.");
@@ -289,7 +289,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         if (!claim.getBreBand().isEnableGtaDiscount()) {
             if (claim.getInvoice().getGtaDiscount() != null && claim.getInvoice().getGtaDiscount().compareTo(BigDecimal.ZERO) != 0) {
                 claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(claim.getInvoice().getGtaDiscount()).setScale(2, RoundingMode.HALF_UP));
-                claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
+                claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
                 claim.getInvoice().setGtaDiscount(BigDecimal.ZERO);
             }
             LOG.debug("GTA discount not added as disabled in BRE band.");
@@ -309,7 +309,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
                     LOG.debug("GTA Discount not added as rental start {} is before {}", claim.getVehicleHire().getRentalStart(), d);
                     if (claim.getInvoice().getGtaDiscount() != null && claim.getInvoice().getGtaDiscount().compareTo(BigDecimal.ZERO) != 0) {
                         claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(claim.getInvoice().getGtaDiscount()).setScale(2, RoundingMode.HALF_UP));
-                        claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
+                        claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
                         claim.getInvoice().setGtaDiscount(BigDecimal.ZERO);
                     }
                     return;
@@ -321,7 +321,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         BigDecimal hireGross = claim.getInvoice().getHireGross();
         claim.getInvoice().setGtaDiscount(hireGross.multiply(new BigDecimal(-0.02)).setScale(2, RoundingMode.HALF_UP));
         claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(claim.getInvoice().getGtaDiscount()).setScale(2, RoundingMode.HALF_UP));
-        claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
+        claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
 
         LOG.debug("GTA discount on hire gross of {}: {}", hireGross, claim.getInvoice().getGtaDiscount());
     }

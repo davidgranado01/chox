@@ -61,7 +61,7 @@ public class UpdateLiability extends BaseActivity {
         if (StringHelper.isNotEmpty(claimReviewNotes)) {
             claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + claimReviewNotes, true));
         }
-        claim.setLiabilityPercentages(percentageLiabilityAccepted, percentageLiabilityCho);
+        claimService.updateLiabilityPercentages(claim, percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
         claimService.updateLiabilityPayment(claim);
 

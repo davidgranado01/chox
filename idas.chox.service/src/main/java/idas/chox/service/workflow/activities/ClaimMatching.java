@@ -99,7 +99,7 @@ public class ClaimMatching extends BaseActivity {
                 LOG.error("Invalid Liability Stance provided for claim matching: " + liabilityStance, ex);
                 return;
             }
-            claim.setLiabilityPercentages(liabilityInsurer, (new BigDecimal("100.00")).subtract(liabilityInsurer));
+            claimService.updateLiabilityPercentages(claim, liabilityInsurer, (new BigDecimal("100.00")).subtract(liabilityInsurer));
             claim.setMatchStatus(2);
             if (claimMatchingBand.isAutoAcknowledge()) {
                 progressClaim(claim);

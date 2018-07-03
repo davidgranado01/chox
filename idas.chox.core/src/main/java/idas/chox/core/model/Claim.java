@@ -50,6 +50,7 @@ public class Claim extends Entity implements Serializable {
     private String userMarkedWithSolicitor;
     private String indemnityStance;
     private BigDecimal indemnityAmount;
+    private BigDecimal appliedLiability;
     private BigDecimal percentageLiabilityAccepted;
     private BigDecimal percentageLiabilityCho;
     private WebUser claimOwner;
@@ -534,6 +535,14 @@ public class Claim extends Entity implements Serializable {
         this.isQuantumDispute = isQuantumDispute;
     }
 
+    public BigDecimal getAppliedLiability() {
+        return appliedLiability;
+    }
+
+    public void setAppliedLiability(BigDecimal appliedLiability) {
+        this.appliedLiability = appliedLiability;
+    }
+
     public BigDecimal getPercentageLiabilityAccepted() {
         return percentageLiabilityAccepted;
     }
@@ -854,18 +863,6 @@ public class Claim extends Entity implements Serializable {
     public BigDecimal getPercentageLiabilityCho() {
         return percentageLiabilityCho;
     }
-
-    public void setLiabilityPercentages(BigDecimal insurerLiability, BigDecimal choLiability) {
-        if (((choLiability != null && (this.percentageLiabilityCho == null || this.percentageLiabilityCho.compareTo(choLiability) != 0))
-                || (choLiability == null && this.percentageLiabilityCho != null))
-                || ((insurerLiability != null && (this.percentageLiabilityAccepted == null || this.percentageLiabilityAccepted.compareTo(insurerLiability) != 0))
-                || (insurerLiability == null && this.percentageLiabilityAccepted != null))) {
-            this.percentageLiabilityCho = choLiability;
-            this.percentageLiabilityAccepted = insurerLiability;
-            this.liabilityModifiedDate = new Date();
-        }
-    }
-    
 
     public void setPercentageLiabilityCho(BigDecimal percentageLiabilityCho) {
         this.percentageLiabilityCho = percentageLiabilityCho;

@@ -110,7 +110,7 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
       repair_penalty_charge_applied_date = (CASE WHEN(repairpenalPerVal > 0.0) THEN now() ELSE null END),
       full_total_to_pay = (full_total_to_pay - gta_discount - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2),
       total_to_pay = (CASE WHEN ((claimRecord.liability_status = 5 OR claimRecord.liability_status = 6) AND claimRecord.claim_type NOT IN (7,8,9,11,12,13,18,19,20))
-                           THEN ((claimRecord.percentage_liability_accepted/100) * (full_total_to_pay - gta_discount - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal)))::NUMERIC(8,2)
+                           THEN ((claimRecord.applied_liability/100) * (full_total_to_pay - gta_discount - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal)))::NUMERIC(8,2)
                       WHEN ((claimRecord.liability_status = 4) AND claimRecord.claim_type NOT IN (7,8,9,11,12,13,18,19,20))
                            THEN (0.00)
                       ELSE (full_total_to_pay - gta_discount - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2)
@@ -143,7 +143,7 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
                     (CASE WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.total_gross + invoice.total_penalty_charge)*(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = FALSE) THEN (invoice.total_gross *(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END )
                     ))::NUMERIC(8,2),
       total_to_pay = (CASE WHEN ((claimRecord.liability_status = 5 OR claimRecord.liability_status = 6) AND claimRecord.claim_type NOT IN (7,8,9,11,12,13,18,19,20))
-                           THEN ((c.percentage_liability_accepted/100) * ((invoice.full_total_to_pay - invoice.insurer_discount + (
+                           THEN ((c.applied_liability/100) * ((invoice.full_total_to_pay - invoice.insurer_discount + (
                                 (CASE WHEN (hireInsDis IS NOT NULL AND hireInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.hire_gross + invoice.hire_penalty_charge)*(hireInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (hireInsDis IS NOT NULL AND hireInsDis.is_applied_to_penalties = FALSE) THEN (invoice.hire_gross*(hireInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ) + 
                                 (CASE WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.repair_gross + invoice.repair_penalty_charge)*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = FALSE) THEN (invoice.repair_gross*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ) + 
                                 (CASE WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.total_gross + invoice.total_penalty_charge)*(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = FALSE) THEN (invoice.total_gross *(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END )
@@ -281,7 +281,7 @@ END LOOP;
 --
 update invoice
   set full_total_to_pay = full_total_to_pay - gta_discount,
-      total_to_pay = case when c.liability_status=5 then total_to_pay - gta_discount*percentage_liability_accepted/100.0 else total_to_pay - gta_discount end,
+      total_to_pay = case when c.liability_status=5 then total_to_pay - gta_discount*applied_liability/100.0 else total_to_pay - gta_discount end,
       gta_discount = 0.00,
       last_modified_by = $1,
       last_modified_date = now(),

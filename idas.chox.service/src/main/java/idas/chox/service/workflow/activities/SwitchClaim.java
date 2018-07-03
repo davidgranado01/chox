@@ -92,8 +92,7 @@ public class SwitchClaim extends BaseActivity {
         claim.setLiabilityAgreedDate(null);
         claim.setLiabilityModifiedDate(null);
         claim.setLiabilityStatusModifiedDate(null);
-        claim.setPercentageLiabilityCho(BigDecimal.ZERO);
-        claim.setPercentageLiabilityAccepted(BigDecimal.ZERO);
+        claimService.updateLiabilityPercentages(claim, BigDecimal.ZERO.setScale(2), BigDecimal.ZERO.setScale(2));
         claim.setCreatedDate(new Date());
 
         if (ClaimType.isSubscriber(claim.getClaimType()) || ClaimType.isFixedFee(claim.getClaimType())) {

@@ -34,6 +34,7 @@ import idas.chox.core.common.OrganisationType;
 import idas.chox.core.enums.FinalReviewMapping;
 import idas.chox.core.model.Attachment;
 import idas.chox.core.model.AuditTrail;
+import idas.chox.core.model.BreAppliedLiability;
 import idas.chox.core.model.BreBand;
 import idas.chox.core.model.BreBandOrganisation;
 import idas.chox.core.model.BrePenaltyBand;
@@ -53,6 +54,7 @@ import idas.chox.core.model.Task;
 import idas.chox.core.model.WebUserRole;
 import idas.chox.core.search.ClaimSearchCriteria;
 import idas.chox.core.search.SearchResult;
+import idas.chox.core.services.AppliedLiabilityService;
 import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.BrePenaltyBandService;
@@ -81,6 +83,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     private CommentService commentService;
     private TaskService taskService;
     private UserService userService;
+    private AppliedLiabilityService appliedLiabilityService;
     private NotificationService notificationService;
     private boolean enableActivityMonitor;
     private int activityMonitorRequestInterval;
@@ -96,6 +99,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     public void setActivityMonitorRequestInterval(int activityMonitorRequestInterval) {
         this.activityMonitorRequestInterval = activityMonitorRequestInterval;
+    }
+
+    public void setAppliedLiabilityService(AppliedLiabilityService appliedLiabilityService) {
+        this.appliedLiabilityService = appliedLiabilityService;
     }
 
     public void setEventService(EventService eventService) {
@@ -305,7 +312,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     int subscriberSlaDays = claim.getBreBand().getSubscriberSlaDays();
                     if (subscriberSlaDays != 0) {
                         int claimAge = auditTrailService.getSubscriberClaimDays(id, claim.getBreBand().isPauseSubscriberSlaClock());
-                        int remainingSLADays = claim.getBreBand().getSubscriberSlaDays()+ claim.getSlaExtDays() - claimAge;
+                        int remainingSLADays = claim.getBreBand().getSubscriberSlaDays() + claim.getSlaExtDays() - claimAge;
                         claim.setRemainingSlaDaysInt(remainingSLADays);
                         if (remainingSLADays == 0) {
                             claim.setRemainingSlaDays(claim.getBreBand().getSubscriberTimeCutOff());
@@ -314,7 +321,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                         }
                     }
                 }
-                
+
                 save(claim);
                 flush();
                 // Now we need to set the correct status modified date (bug#1029) - to do this, we need to get the
@@ -775,7 +782,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             isExist = true;
         }
 
-        
         return isExist;
 
     }
@@ -901,27 +907,27 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         // NB. For CHOX Admin, we also need to check the insurer config flag...
         if (searchCriteria.getPaymentReturnsValue() > 0) {
             if (searchCriteria.getPaymentReturnsValue() == 1) {
-               if (RoleHelper.isChoxAdmin(getCurrentUser())) {
+                if (RoleHelper.isChoxAdmin(getCurrentUser())) {
                     Criterion paymentReturnsRestriction = Restrictions.conjunction().add(Restrictions.eq("paymentsTeamReturn", Boolean.TRUE))
-                                .add(Restrictions.disjunction()
-                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.gtaPaymentsTeamEnable", Boolean.TRUE))
-                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE, ClaimType.GTA_SUPPLEMENTARY_INVOICE))))
-                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.subscriberPaymentsTeamEnable", Boolean.TRUE))
-                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.SUBSCRIBER, ClaimType.SUBSCRIBER_ORIGINAL_INVOICE, ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE))))
-                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.fixedFeePaymentsTeamEnable", Boolean.TRUE))
-                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.FIXED_FEE, ClaimType.FIXED_FEE_ORIGINAL_INVOICE, ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE))))
-                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.insurerVsInsurerPaymentsTeamEnable", Boolean.TRUE))
-                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_VS_INSURER, ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE))))
-                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.collaborationPaymentsTeamEnable", Boolean.TRUE))
-                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.COLLABORATION_PROTOCOL, ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE, ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE))))
-                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.insurerManualPaymentsTeamEnable", Boolean.TRUE))
-                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_CLAIM, ClaimType.INSURER_INVOICE, ClaimType.INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_SUPPLEMENTARY_INVOICE, ClaimType.INSURER_UPLOAD))))
-                                        .add(Restrictions.conjunction().add(Restrictions.eq("ins.tpiPaymentsTeamEnable", Boolean.TRUE))
-                                                .add(Restrictions.eq("this.claimType", ClaimType.TPI))));
+                            .add(Restrictions.disjunction()
+                                    .add(Restrictions.conjunction().add(Restrictions.eq("ins.gtaPaymentsTeamEnable", Boolean.TRUE))
+                                            .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE, ClaimType.GTA_SUPPLEMENTARY_INVOICE))))
+                                    .add(Restrictions.conjunction().add(Restrictions.eq("ins.subscriberPaymentsTeamEnable", Boolean.TRUE))
+                                            .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.SUBSCRIBER, ClaimType.SUBSCRIBER_ORIGINAL_INVOICE, ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE))))
+                                    .add(Restrictions.conjunction().add(Restrictions.eq("ins.fixedFeePaymentsTeamEnable", Boolean.TRUE))
+                                            .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.FIXED_FEE, ClaimType.FIXED_FEE_ORIGINAL_INVOICE, ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE))))
+                                    .add(Restrictions.conjunction().add(Restrictions.eq("ins.insurerVsInsurerPaymentsTeamEnable", Boolean.TRUE))
+                                            .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_VS_INSURER, ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE))))
+                                    .add(Restrictions.conjunction().add(Restrictions.eq("ins.collaborationPaymentsTeamEnable", Boolean.TRUE))
+                                            .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.COLLABORATION_PROTOCOL, ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE, ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE))))
+                                    .add(Restrictions.conjunction().add(Restrictions.eq("ins.insurerManualPaymentsTeamEnable", Boolean.TRUE))
+                                            .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_CLAIM, ClaimType.INSURER_INVOICE, ClaimType.INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_SUPPLEMENTARY_INVOICE, ClaimType.INSURER_UPLOAD))))
+                                    .add(Restrictions.conjunction().add(Restrictions.eq("ins.tpiPaymentsTeamEnable", Boolean.TRUE))
+                                            .add(Restrictions.eq("this.claimType", ClaimType.TPI))));
                     criteria.add(paymentReturnsRestriction);
-               } else {
+                } else {
                     criteria.add(Restrictions.eq("paymentsTeamReturn", Boolean.TRUE));
-               }
+                }
             } else {
                 criteria.add(Restrictions.eq("paymentsTeamReturn", Boolean.FALSE));
             }
@@ -1126,83 +1132,89 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                             .add(Restrictions.eq("autoPenaltyChargeEnabled", Boolean.TRUE))
                             .add(Restrictions.eq("cho.autoPenaltyChargeEnabled", Boolean.FALSE))));
 
-            if (OrganisationType.INS.equals(getCurrentUser().getOrganisationType())) {
-                // Restrict to Manual claims
-                criteria.add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_CLAIM, ClaimType.INSURER_INVOICE, ClaimType.INSURER_UPLOAD, ClaimType.INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_SUPPLEMENTARY_INVOICE)));
-                // Don't show claims for CHOs that do not allow penalty charges (from BRE band)
-                DetachedCriteria bCriteria = DetachedCriteria.forClass(BreBandOrganisation.class, "bbo")
-                        .createAlias("bbo.breBand", "bb", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
-                        .createAlias("bb.insurer", "ins2", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
-                        .add(Restrictions.eq("ins2.id", getCurrentUser().getInsurer().getId()))
-                        .add(Restrictions.eq("bb.allowManualInvoicePenaltyCharges", Boolean.FALSE));
-
-                bCriteria.setProjection(Projections.property("bbo.chorganisation"));
-                criteria.add(Property.forName("this.chorganisation").notIn(bCriteria));
-
-            } else if (OrganisationType.CHO.equals(getCurrentUser().getOrganisationType())) {
-                criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
-                criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
-                // Get the id's of the BRE Bands mapped to this CHO
-                DetachedCriteria bCriteria = DetachedCriteria.forClass(BreBandOrganisation.class, "brebandorganisation")
-                        .createAlias("brebandorganisation.chorganisation", "cho", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
-                        .add(Restrictions.eq("cho.id", getCurrentUser().getChorganisation().getId()));
-                bCriteria.setProjection(Projections.property("brebandorganisation.breBand.id"));
-
-                // Get the insurers from the BRE Band which don't allow penalty charges to be added
-                DetachedCriteria pCriteria = DetachedCriteria.forClass(BreBand.class, "breband")
-                        .add(Restrictions.disjunction()
-                                .add(Restrictions.conjunction()
-                                        .add(Restrictions.disjunction()
-                                                .add(Restrictions.eq("breband.allowGTAPenaltyCharges", Boolean.FALSE))
-                                                .add(Restrictions.conjunction()
-                                                        .add(Restrictions.eq("breband.allowGTAAutoPenaltyCharges", Boolean.TRUE))
-                                                        .add(Restrictions.eq("this.autoPenaltyChargeEnabled", Boolean.TRUE))))
-                                        .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE, ClaimType.GTA_SUPPLEMENTARY_INVOICE))))
-                                .add(Restrictions.conjunction()
-                                        .add(Restrictions.disjunction()
-                                                .add(Restrictions.eq("breband.allowSubscriberPenaltyCharges", Boolean.FALSE))
-                                                .add(Restrictions.conjunction()
-                                                        .add(Restrictions.eq("breband.allowSubscriberAutoPenaltyCharges", Boolean.TRUE))
-                                                        .add(Restrictions.eq("this.autoPenaltyChargeEnabled", Boolean.TRUE))))
-                                        .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.SUBSCRIBER, ClaimType.SUBSCRIBER_ORIGINAL_INVOICE, ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE))))
-                                .add(Restrictions.conjunction()
-                                        .add(Restrictions.disjunction()
-                                                .add(Restrictions.eq("breband.allowFixedFeePenaltyCharges", Boolean.FALSE))
-                                                .add(Restrictions.conjunction()
-                                                        .add(Restrictions.eq("breband.allowFixedFeeAutoPenaltyCharges", Boolean.TRUE))
-                                                        .add(Restrictions.eq("this.autoPenaltyChargeEnabled", Boolean.TRUE))))
-                                        .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.FIXED_FEE, ClaimType.FIXED_FEE_ORIGINAL_INVOICE, ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE))))
-                                .add(Restrictions.conjunction()
-                                        .add(Restrictions.disjunction()
-                                                .add(Restrictions.eq("breband.allowCollaborationProtocolPenaltyCharges", Boolean.FALSE))
-                                                .add(Restrictions.conjunction()
-                                                        .add(Restrictions.eq("breband.allowCollaborationProtocolAutoPenaltyCharges", Boolean.TRUE))
-                                                        .add(Restrictions.eq("this.autoPenaltyChargeEnabled", Boolean.TRUE))))
-                                        .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.COLLABORATION_PROTOCOL, ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE, ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE))))
-                                .add(Restrictions.conjunction()
-                                        .add(Restrictions.disjunction()
-                                                .add(Restrictions.eq("breband.allowTPIPenaltyCharges", Boolean.FALSE))
-                                                .add(Restrictions.conjunction()
-                                                        .add(Restrictions.eq("breband.allowTPIAutoPenaltyCharges", Boolean.TRUE))
-                                                        .add(Restrictions.eq("this.autoPenaltyChargeEnabled", Boolean.TRUE))))
-                                        .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.TPI))))
-                                .add(Restrictions.conjunction()
-                                        .add(Restrictions.disjunction()
-                                                .add(Restrictions.eq("breband.allowInsurervsInsurerPenaltyCharges", Boolean.FALSE))
-                                                .add(Restrictions.conjunction()
-                                                        .add(Restrictions.eq("breband.allowInsurervsInsurerAutoPenaltyCharges", Boolean.TRUE))
-                                                        .add(Restrictions.eq("this.autoPenaltyChargeEnabled", Boolean.TRUE))))
-                                        .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_VS_INSURER, ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE))))
-                                .add(Restrictions.conjunction()
-                                        .add(Restrictions.eq("breband.allowManualInvoicePenaltyCharges", Boolean.FALSE))
-                                        .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_INVOICE)))))
-                        .add(Restrictions.in("breband.id", bCriteria.getExecutableCriteria(getSessionFactory().getCurrentSession()).list()))
-                        .setProjection(Projections.property("breband.insurer"));
-
-                // Make sure we retrieve no claims for insurers who don't allow penalty charges to be added
-                criteria.add(Property.forName("this.insurer").notIn(pCriteria));
-            } else {
+            if (null == getCurrentUser().getOrganisationType()) {
                 LOG.warn("Error in search criteria: only CHO and Insurer with manual invoices can filter for penalty charges");
+            } else switch (getCurrentUser().getOrganisationType()) {
+                case OrganisationType.INS:
+                    {
+                        // Restrict to Manual claims
+                        criteria.add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_CLAIM, ClaimType.INSURER_INVOICE, ClaimType.INSURER_UPLOAD, ClaimType.INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_SUPPLEMENTARY_INVOICE)));
+                        // Don't show claims for CHOs that do not allow penalty charges (from BRE band)
+                        DetachedCriteria bCriteria = DetachedCriteria.forClass(BreBandOrganisation.class, "bbo")
+                                .createAlias("bbo.breBand", "bb", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                                .createAlias("bb.insurer", "ins2", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                                .add(Restrictions.eq("ins2.id", getCurrentUser().getInsurer().getId()))
+                                .add(Restrictions.eq("bb.allowManualInvoicePenaltyCharges", Boolean.FALSE));
+                        bCriteria.setProjection(Projections.property("bbo.chorganisation"));
+                        criteria.add(Property.forName("this.chorganisation").notIn(bCriteria));
+                        break;
+                    }
+                case OrganisationType.CHO:
+                    {
+                        criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
+                        criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
+                        // Get the id's of the BRE Bands mapped to this CHO
+                        DetachedCriteria bCriteria = DetachedCriteria.forClass(BreBandOrganisation.class, "brebandorganisation")
+                                .createAlias("brebandorganisation.chorganisation", "cho", org.hibernate.sql.JoinType.LEFT_OUTER_JOIN)
+                                .add(Restrictions.eq("cho.id", getCurrentUser().getChorganisation().getId()));
+                        bCriteria.setProjection(Projections.property("brebandorganisation.breBand.id"));
+                        // Get the insurers from the BRE Band which don't allow penalty charges to be added
+                        DetachedCriteria pCriteria = DetachedCriteria.forClass(BreBand.class, "breband")
+                                .add(Restrictions.disjunction()
+                                        .add(Restrictions.conjunction()
+                                                .add(Restrictions.disjunction()
+                                                        .add(Restrictions.eq("breband.allowGTAPenaltyCharges", Boolean.FALSE))
+                                                        .add(Restrictions.conjunction()
+                                                                .add(Restrictions.eq("breband.allowGTAAutoPenaltyCharges", Boolean.TRUE))
+                                                                .add(Restrictions.eq("this.autoPenaltyChargeEnabled", Boolean.TRUE))))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.GTA, ClaimType.GTA_ORIGINAL_INVOICE, ClaimType.GTA_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction()
+                                                .add(Restrictions.disjunction()
+                                                        .add(Restrictions.eq("breband.allowSubscriberPenaltyCharges", Boolean.FALSE))
+                                                        .add(Restrictions.conjunction()
+                                                                .add(Restrictions.eq("breband.allowSubscriberAutoPenaltyCharges", Boolean.TRUE))
+                                                                .add(Restrictions.eq("this.autoPenaltyChargeEnabled", Boolean.TRUE))))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.SUBSCRIBER, ClaimType.SUBSCRIBER_ORIGINAL_INVOICE, ClaimType.SUBSCRIBER_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction()
+                                                .add(Restrictions.disjunction()
+                                                        .add(Restrictions.eq("breband.allowFixedFeePenaltyCharges", Boolean.FALSE))
+                                                        .add(Restrictions.conjunction()
+                                                                .add(Restrictions.eq("breband.allowFixedFeeAutoPenaltyCharges", Boolean.TRUE))
+                                                                .add(Restrictions.eq("this.autoPenaltyChargeEnabled", Boolean.TRUE))))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.FIXED_FEE, ClaimType.FIXED_FEE_ORIGINAL_INVOICE, ClaimType.FIXED_FEE_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction()
+                                                .add(Restrictions.disjunction()
+                                                        .add(Restrictions.eq("breband.allowCollaborationProtocolPenaltyCharges", Boolean.FALSE))
+                                                        .add(Restrictions.conjunction()
+                                                                .add(Restrictions.eq("breband.allowCollaborationProtocolAutoPenaltyCharges", Boolean.TRUE))
+                                                                .add(Restrictions.eq("this.autoPenaltyChargeEnabled", Boolean.TRUE))))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.COLLABORATION_PROTOCOL, ClaimType.COLLABORATION_PROTOCOL_ORIGINAL_INVOICE, ClaimType.COLLABORATION_PROTOCOL_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction()
+                                                .add(Restrictions.disjunction()
+                                                        .add(Restrictions.eq("breband.allowTPIPenaltyCharges", Boolean.FALSE))
+                                                        .add(Restrictions.conjunction()
+                                                                .add(Restrictions.eq("breband.allowTPIAutoPenaltyCharges", Boolean.TRUE))
+                                                                .add(Restrictions.eq("this.autoPenaltyChargeEnabled", Boolean.TRUE))))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.TPI))))
+                                        .add(Restrictions.conjunction()
+                                                .add(Restrictions.disjunction()
+                                                        .add(Restrictions.eq("breband.allowInsurervsInsurerPenaltyCharges", Boolean.FALSE))
+                                                        .add(Restrictions.conjunction()
+                                                                .add(Restrictions.eq("breband.allowInsurervsInsurerAutoPenaltyCharges", Boolean.TRUE))
+                                                                .add(Restrictions.eq("this.autoPenaltyChargeEnabled", Boolean.TRUE))))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_VS_INSURER, ClaimType.INSURER_VS_INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_VS_INSURER_SUPPLEMENTARY_INVOICE))))
+                                        .add(Restrictions.conjunction()
+                                                .add(Restrictions.eq("breband.allowManualInvoicePenaltyCharges", Boolean.FALSE))
+                                                .add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_INVOICE)))))
+                                .add(Restrictions.in("breband.id", bCriteria.getExecutableCriteria(getSessionFactory().getCurrentSession()).list()))
+                                .setProjection(Projections.property("breband.insurer"));
+                        // Make sure we retrieve no claims for insurers who don't allow penalty charges to be added
+                        criteria.add(Property.forName("this.insurer").notIn(pCriteria));
+                        break;
+                    }
+                default:
+                    LOG.warn("Error in search criteria: only CHO and Insurer with manual invoices can filter for penalty charges");
+                    break;
             }
         }
 
@@ -1841,33 +1853,65 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
+    public void updateLiabilityPercentages(Claim claim, BigDecimal insurerLiability, BigDecimal choLiability) {
+        BigDecimal appliedLiability;
+
+        if (claim.getBreBand() == null) {
+            claim.setBreBand(breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()));
+        }
+        
+    /*    
+     * In the case when the Applied Liability functionaity is enabled but no entry for the given claim type is present, then the actual liability shall be used.
+     * In the case when the Applied Liability functionality is not enabled, the existing functionality should be maintained, that is:
+     * for Subscriber, Fixed-Fee and Insurer vs Insurer prototcol claims, the applied liability is always 100%
+     * for Collaboration protocol claims, the applied liability is always 100%, unless the liability is repudiated in which case it is 0%.
+     * For all other claim types, the Applied Liability %age will equal the Actual Insurer-specified liability %age
+     */
+        if (claim.getBreBand().isAppliedLiabilityEnabled()) {
+            BreAppliedLiability appliedLiabilityBand = appliedLiabilityService.getAppliedLiability(claim.getBreBand().getId(), claim.getClaimType());
+
+            // Determine Applied Liability
+            if (appliedLiabilityBand == null || (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED && !appliedLiabilityBand.isApplyToRepudiated())) {
+                appliedLiability = insurerLiability;
+            } else {
+                appliedLiability = appliedLiabilityBand.getAppliedLiability();
+            }
+        } else {
+            ClaimType claimType = claim.getClaimType();
+            if (ClaimType.isSubscriber(claimType) || ClaimType.isFixedFee(claimType) || ClaimType.isInsurerVsInsurer(claimType)
+                    || (ClaimType.isCollaborationProtocol(claimType) && claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_REPUDIATED) ) {
+                appliedLiability = new BigDecimal("100.00");
+            } else if (ClaimType.isCollaborationProtocol(claimType) && claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED) {
+                appliedLiability = BigDecimal.ZERO.setScale(2);
+            } else {
+                appliedLiability = insurerLiability;
+            }
+        }
+
+        if (claim.getPercentageLiabilityCho().compareTo(choLiability) != 0
+                || claim.getPercentageLiabilityAccepted().compareTo(insurerLiability) != 0
+                || claim.getAppliedLiability().compareTo(appliedLiability) != 0) {
+            claim.setPercentageLiabilityCho(choLiability);
+            claim.setPercentageLiabilityAccepted(insurerLiability);
+            claim.setAppliedLiability(appliedLiability);
+            claim.setLiabilityModifiedDate(new Date());
+        }
+    }
+
+    @Override
     public void updateLiabilityPayment(Claim claim) {
 
         Invoice invoice = claim.getInvoice();
         if (invoice != null) {
-            LiabilityStatus liabilityStatus = claim.getLiabilityStatus();
-            ClaimType claimType = claim.getClaimType();
-            // When excluding some 'Claim Type' Please exclude it from applyAutoPenaltyCharge Stored Procedure as well.
-            if (!ClaimType.isInsurerVsInsurer(claimType)
-                    && !ClaimType.isCollaborationProtocol(claimType)
-                    && !ClaimType.isSubscriber(claimType)
-                    && !ClaimType.isFixedFee(claimType)
-                    && liabilityStatus != null
-                    && (liabilityStatus.equals(LiabilityStatus.LIABILITY_SPLIT)
-                    || (liabilityStatus.equals(LiabilityStatus.PROCEED_WITHOUT_PREJUDICE)))) {
-                BigDecimal ttp = invoice.getFullTotalToPay();
-                BigDecimal insper = claim.getPercentageLiabilityAccepted();
-                invoice.setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                LOG.debug("liability updated: {}", invoice.getTotalToPay());
-            } else if (!ClaimType.isInsurerVsInsurer(claimType)
-                    && !ClaimType.isSubscriber(claimType)
-                    && !ClaimType.isFixedFee(claimType)
-                    && liabilityStatus != null
-                    && liabilityStatus.equals(LiabilityStatus.LIABILITY_REPUDIATED)) {
-                invoice.setTotalToPay(BigDecimal.ZERO);
-            } else {
-                invoice.setTotalToPay(invoice.getFullTotalToPay());
-                LOG.debug("liablity not updated");
+            BigDecimal ttp = invoice.getFullTotalToPay();
+            BigDecimal insper = claim.getAppliedLiability();
+            invoice.setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+            LOG.debug("Total to pay updated using applied liability % of {}: {}", insper, invoice.getTotalToPay());
+            if (claim.getPercentageLiabilityAccepted().compareTo(insper) != 0) {
+                String note = new StringBuilder().append("Total to pay updated using and applied liability of ").append(insper.toString()).append("%").toString();
+                Comment comment = Comment.newComment(1, note);
+                comment.setClaim(claim);
+                claim.addComment(comment);
             }
         }
     }

@@ -853,6 +853,7 @@ public class BaseActivityEvent extends Entity implements Serializable {
         try {
             addAttribute("liabilityAcceptedInsurer", claim.getPercentageLiabilityAccepted().toPlainString());
             addAttribute("liabilityAcceptedCHO", claim.getPercentageLiabilityCho().toPlainString());
+            addAttribute("liabilityAppliedInsurer", claim.getAppliedLiability().toPlainString());
             if (claim.getLiabilityAgreedDate() != null) {
                 addAttribute("liabilityAgreedDate", DateHelper.getLocalDateFormat().format(claim.getLiabilityAgreedDate()));
             } else {

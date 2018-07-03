@@ -8,6 +8,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="auditTrailService" ref="auditTrailService"/>
+        <property name="appliedLiabilityService" ref="appliedLiabilityService"/>
         <property name="commentService" ref="commentService"/>
         <property name="breBandService" ref="breBandService"/>
         <property name="brePenaltyBandService" ref="brePenaltyBandService"/>
@@ -31,6 +32,9 @@
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
     <bean id="accessibilityService" class="idas.chox.data.services.AccessibilityServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="appliedLiabilityService" class="idas.chox.data.services.AppliedLiabilityServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="attachmentService" class="idas.chox.data.services.AttachmentServiceImpl" scope="prototype">

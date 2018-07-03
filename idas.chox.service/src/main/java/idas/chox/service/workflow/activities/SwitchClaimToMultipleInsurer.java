@@ -133,8 +133,7 @@ public class SwitchClaimToMultipleInsurer extends BaseActivity {
         claim.setWorkgroup(null);
         claim.setPreviousStatus(null);
         claim.setLiability(LiabilityStatus.LIABILITY_NULL);
-        claim.setPercentageLiabilityCho(BigDecimal.ZERO);
-        claim.setPercentageLiabilityAccepted(BigDecimal.ZERO);
+        claimService.updateLiabilityPercentages(claim, BigDecimal.ZERO.setScale(2), BigDecimal.ZERO.setScale(2));
         claim.setLiabilityAgreedDate(null);
         claim.setLiabilityModifiedDate(null);
         claim.setLiabilityStatusModifiedDate(null);

@@ -160,17 +160,17 @@ public class InvoicePaymentLogged extends BaseActivity {
                 invoice.setDeductionClaimHandlerFeePaid(invoice.getDeductionForClaimsHandlingFee());
                 invoice.setInsurerDiscountFeePaid(invoice.getInsurerDiscount());
             } else {
-                invoice.setHireGrossPaid(invoice.getHireGross().add(invoice.getGtaDiscount()).multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setRepairGrossPaid(invoice.getRepairGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setEngineerFeeGrossPaid(invoice.getEngineerFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setTotalLossFeeGrossPaid(invoice.getTotalLossFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setStorageRecoveryGrossPaid(invoice.getStorageRecoveryGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setHirePenaltyChargePaid(invoice.getHirePenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setRepairPenaltyChargePaid(invoice.getRepairPenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setChoDiscountFeePaid(invoice.getDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setClaimHandlerChargePaid(invoice.getClaimsHandlingInvoiceAmount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setDeductionClaimHandlerFeePaid(invoice.getDeductionForClaimsHandlingFee().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setInsurerDiscountFeePaid(invoice.getInsurerDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setHireGrossPaid(invoice.getHireGross().add(invoice.getGtaDiscount()).multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setRepairGrossPaid(invoice.getRepairGross().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setEngineerFeeGrossPaid(invoice.getEngineerFeeGross().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setTotalLossFeeGrossPaid(invoice.getTotalLossFeeGross().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setStorageRecoveryGrossPaid(invoice.getStorageRecoveryGross().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setHirePenaltyChargePaid(invoice.getHirePenaltyCharge().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setRepairPenaltyChargePaid(invoice.getRepairPenaltyCharge().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setChoDiscountFeePaid(invoice.getDiscount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setClaimHandlerChargePaid(invoice.getClaimsHandlingInvoiceAmount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setDeductionClaimHandlerFeePaid(invoice.getDeductionForClaimsHandlingFee().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                invoice.setInsurerDiscountFeePaid(invoice.getInsurerDiscount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
             }
             if (invoice.getInterimPaymentMade() != null) {
                 invoice.setFinalPayment(invoice.getTotalToPay().subtract(invoice.getInterimPaymentMade()));

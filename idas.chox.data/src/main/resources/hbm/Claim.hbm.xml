@@ -21,6 +21,7 @@
     <property column="credit_agreement_date" name="creditAgreementDate"/>
     <property column="indeminty_amount" name="indemnityAmount"/>
     <property column="percentage_liability_accepted" name="percentageLiabilityAccepted"/>
+    <property column="applied_liability" name="appliedLiability"/>
     <property column="is_quantum_dispute" name="isQuantumDispute"/>
     <property column="is_fnol_reviewed" name="isFnolReviewed"/>
     <property column="is_total_loss_chase" name="totalLossChase"/>

@@ -916,7 +916,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     throw new Exception("Total liability is not 100%");
                 }
 
-                claim.setLiabilityPercentages(fPercentageLiabilityAccepted, fPercentageLiabilityCho);
+                claimService.updateLiabilityPercentages(claim, fPercentageLiabilityAccepted, fPercentageLiabilityCho);
                 claim.setLiabilityAgreedDate(fLiabilityAgreedDate);
                 claimService.setLiability(claim, fLiabilityStatus);
                 claimService.updateLiabilityPayment(claim);
@@ -2005,8 +2005,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     // </editor-fold>
 
     public String getFormattedLiability() {
-        return String.format("(Insurer) %s%% (CHO) %s%%", claim.getPercentageLiabilityAccepted() == null ? BigDecimal.ZERO.setScale(2).toPlainString() : claim.getPercentageLiabilityAccepted().toPlainString(),
+        if (claim.getPercentageLiabilityAccepted().compareTo(claim.getAppliedLiability()) != 0) {
+            return String.format("Insurer %s%% (Applied %s%%)", claim.getPercentageLiabilityAccepted() == null ? BigDecimal.ZERO.setScale(2).toPlainString() : claim.getPercentageLiabilityAccepted().toPlainString(),
+                claim.getAppliedLiability() == null ? BigDecimal.ZERO.setScale(2).toPlainString() : claim.getAppliedLiability().toPlainString());
+        } else {
+            return String.format("(Insurer) %s%% (CHO) %s%%", claim.getPercentageLiabilityAccepted() == null ? BigDecimal.ZERO.setScale(2).toPlainString() : claim.getPercentageLiabilityAccepted().toPlainString(),
                 claim.getPercentageLiabilityCho() == null ? BigDecimal.ZERO.setScale(2).toPlainString() : claim.getPercentageLiabilityCho().toPlainString());
+        }
     }
 
     public int getId() {
@@ -2302,7 +2307,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getDiscount();
             } else {
-                return claim.getInvoice().getDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+                return claim.getInvoice().getDiscount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
             }
         } else {
             return BigDecimal.ZERO;
@@ -2315,7 +2320,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getClaimsHandlingInvoiceAmount();
             } else {
-                return claim.getInvoice().getClaimsHandlingInvoiceAmount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+                return claim.getInvoice().getClaimsHandlingInvoiceAmount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
             }
         } else {
             return BigDecimal.ZERO;
@@ -2328,7 +2333,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getDeductionForClaimsHandlingFee();
             } else {
-                return claim.getInvoice().getDeductionForClaimsHandlingFee().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+                return claim.getInvoice().getDeductionForClaimsHandlingFee().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
             }
         } else {
             return BigDecimal.ZERO;
@@ -2341,7 +2346,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getInsurerDiscount();
             } else {
-                return claim.getInvoice().getInsurerDiscount().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+                return claim.getInvoice().getInsurerDiscount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
             }
         } else {
             return BigDecimal.ZERO;
@@ -2362,7 +2367,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getEngineerFeeGross();
             } else {
-                return claim.getInvoice().getEngineerFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+                return claim.getInvoice().getEngineerFeeGross().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
             }
         } else {
             return BigDecimal.ZERO;
@@ -2375,7 +2380,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getHireGross().add(claim.getInvoice().getGtaDiscount());
             } else {
-                return claim.getInvoice().getHireGross().add(claim.getInvoice().getGtaDiscount()).multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+                return claim.getInvoice().getHireGross().add(claim.getInvoice().getGtaDiscount()).multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
             }
         } else {
             return BigDecimal.ZERO;
@@ -2388,7 +2393,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getHirePenaltyCharge();
             } else {
-                return claim.getInvoice().getHirePenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+                return claim.getInvoice().getHirePenaltyCharge().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
             }
         } else {
             return BigDecimal.ZERO;
@@ -2405,7 +2410,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getTotalPenaltyCharge();
             } else {
-                return claim.getInvoice().getTotalPenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+                return claim.getInvoice().getTotalPenaltyCharge().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
             }
         } else {
             return BigDecimal.ZERO;
@@ -2418,7 +2423,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getRepairGross();
             } else {
-                return claim.getInvoice().getRepairGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+                return claim.getInvoice().getRepairGross().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
             }
         } else {
             return BigDecimal.ZERO;
@@ -2431,7 +2436,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getRepairPenaltyCharge();
             } else {
-                return claim.getInvoice().getRepairPenaltyCharge().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+                return claim.getInvoice().getRepairPenaltyCharge().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
             }
         } else {
             return BigDecimal.ZERO;
@@ -2444,7 +2449,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getStorageRecoveryGross();
             } else {
-                return claim.getInvoice().getStorageRecoveryGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+                return claim.getInvoice().getStorageRecoveryGross().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
             }
         } else {
             return BigDecimal.ZERO;
@@ -2457,7 +2462,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType())) {
                 return claim.getInvoice().getTotalLossFeeGross();
             } else {
-                return claim.getInvoice().getTotalLossFeeGross().multiply(claim.getPercentageLiabilityAccepted()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+                return claim.getInvoice().getTotalLossFeeGross().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
             }
         } else {
             return BigDecimal.ZERO;

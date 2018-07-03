@@ -72,8 +72,8 @@ public class NewTpiClaim extends BaseActivity {
     protected void doProcess(Claim claim) throws Exception {
         //First Set Liability status
         claimService.setLiability(claim, LiabilityStatus.LIABILITY_ACCEPTED);
+        claimService.updateLiabilityPercentages(claim, new BigDecimal("100.00"), BigDecimal.ZERO);
         claim.setLiabilityAgreedDate(new Date());
-        claim.setLiabilityPercentages(new BigDecimal("100.00"), BigDecimal.ZERO);
         getWorkflowContext().getClaimService().updateLiabilityPayment(claim);
 
         LOG.debug("New TPI Claim activity with claim '{}': status='{}', TPI status='{}'",
