@@ -9,7 +9,7 @@
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
         destroy-method="close"
         p:driverClassName="org.postgresql.Driver"
-        p:url="jdbc:postgresql://localhost:5432/chox_p9s12"
+        p:url="jdbc:postgresql://localhost:5432/chox_liability"
         p:username="chox_user"
         p:password="ch0xpa33"/>
     
@@ -105,6 +105,8 @@
                 <value>hbm/ClaimMatchingEntry.hbm.xml</value>
                 <value>hbm/ClaimMatchingImportEntry.hbm.xml</value>
                 <value>hbm/PaidInvoiceEntry.hbm.xml</value>
+                <value>hbm/GmailSchedulerJob.hbm.xml</value>
+                <value>hbm/BreAppliedLiability.hbm.xml</value>
                 <value>hbm/events/AwaitingLitigationOutcomeEvent.hbm.xml</value>
                 <value>hbm/events/BaseActivityEvent.hbm.xml</value>
                 <value>hbm/events/ChoOwnerAssignedEvent.hbm.xml</value>
