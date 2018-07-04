@@ -57,6 +57,7 @@ import idas.chox.service.workflow.activities.NewSupplementaryInvoice;
 import idas.chox.service.workflow.event.EventBusWrapper;
 import idas.chox.service.xml.readers.BordereauReader;
 import idas.chox.service.xml.validations.BordereauSchemaValidation;
+import java.math.BigDecimal;
 
 public class UploadClaimXMLServiceImpl extends SecureDataService implements UploadClaimXMLService {
 
@@ -158,6 +159,8 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
 
         if (claimResult.isValid() && claimResult.isDataValid()) {
             Claim claim = claimResult.getClaim();
+            // Update Applied Liability
+            claimService.updateLiabilityPercentages(claim, claim.getPercentageLiabilityAccepted(), claim.getPercentageLiabilityCho());
             LOG.debug("Processing claim '{}'.", claim.getChoReference());
             //CALL WORKFLOW LOGIC
             try {

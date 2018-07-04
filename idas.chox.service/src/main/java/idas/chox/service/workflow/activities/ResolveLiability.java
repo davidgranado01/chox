@@ -67,7 +67,7 @@ public class ResolveLiability extends BaseActivity {
         claimService.setLiability(claim, liabilityStatus);
         claimService.updateLiabilityPercentages(claim, percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setLiabilityAgreedDate(liabilityAgreedDate);        
-        getWorkflowContext().getClaimService().updateLiabilityPayment(claim);
+        claimService.updateLiabilityPayment(claim);
         LOG.debug("claim status " + claim.getLiabilityStatus());
         if (StringHelper.isNotEmpty(engineerClaimReviewNotes)) {
             claim.addComment(Comment.newComment(0, "Supporting Liability Notes: " + engineerClaimReviewNotes, true));

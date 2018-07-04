@@ -13,6 +13,7 @@ import idas.chox.core.model.Insurer;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.workflow.Activity;
 import idas.chox.test.BaseTest;
+import java.math.BigDecimal;
 
 public class PaymentNotReceivedTest extends BaseTest {
 
@@ -39,6 +40,9 @@ public class PaymentNotReceivedTest extends BaseTest {
         claim.setManagingRepair(false);
         claim.setInvoice(invoiceService.getInvoice(999));
         claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
+        claim.setPercentageLiabilityAccepted(new BigDecimal("100.00"));
+        claim.setAppliedLiability(new BigDecimal("100.00"));
+        claim.setPercentageLiabilityCho(BigDecimal.ZERO);
         claimService.saveClaimWithoutUpdatingLiabilityPayment(claim);
         auditTrailService.logAuditLog(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claim);
         auditTrailService.logAuditLog(ClaimStatus.INVOICE_PAYMENT_LOGGED, ClaimStatus.AWAITING_INVOICE_PAYMENT, claim);

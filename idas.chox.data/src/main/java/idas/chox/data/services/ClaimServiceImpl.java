@@ -264,13 +264,13 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                  *  This fix is for BUG#1306 Reverting from 'PaymentReceived' should take into account the interim payment status
                  */
                 if (claim.getStatus().equals(ClaimStatus.INVOICE_PAYMENT_LOGGED)) {
-                    claim.getInvoice().setTotalToPay(claim.getInvoice().getFullTotalToPay());
+//                    claim.getInvoice().setTotalToPay(claim.getInvoice().getFullTotalToPay());
 
                     if (claim.getInvoice().isInterimPaymentReceivedFullAndFinal()) {
                         claim.getInvoice().setInterimPaymentReceivedFullAndFinal(false);
                     }
                 }
-                if (claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
+                else if (claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
                     claim.getInvoice().setHireGrossPaid(BigDecimal.ZERO);
                     claim.getInvoice().setRepairGrossPaid(BigDecimal.ZERO);
                     claim.getInvoice().setEngineerFeeGrossPaid(BigDecimal.ZERO);
@@ -1888,9 +1888,15 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         }
 
-        if (claim.getPercentageLiabilityCho().compareTo(choLiability) != 0
-                || claim.getPercentageLiabilityAccepted().compareTo(insurerLiability) != 0
-                || claim.getAppliedLiability().compareTo(appliedLiability) != 0) {
+        if ((claim.getPercentageLiabilityCho() != null && choLiability != null && claim.getPercentageLiabilityCho().compareTo(choLiability) != 0)
+                || (claim.getPercentageLiabilityAccepted() != null && insurerLiability != null && claim.getPercentageLiabilityAccepted().compareTo(insurerLiability) != 0)
+                || (claim.getAppliedLiability() != null && appliedLiability != null && claim.getAppliedLiability().compareTo(appliedLiability) != 0)
+                || (claim.getPercentageLiabilityAccepted() == null && choLiability != null)
+                || (claim.getPercentageLiabilityAccepted() != null && choLiability == null)
+                || (claim.getPercentageLiabilityCho() == null && insurerLiability != null)
+                || (claim.getPercentageLiabilityCho() != null && insurerLiability == null)
+                || (claim.getAppliedLiability() == null && appliedLiability != null)
+                || (claim.getAppliedLiability() != null && appliedLiability == null)) {
             claim.setPercentageLiabilityCho(choLiability);
             claim.setPercentageLiabilityAccepted(insurerLiability);
             claim.setAppliedLiability(appliedLiability);

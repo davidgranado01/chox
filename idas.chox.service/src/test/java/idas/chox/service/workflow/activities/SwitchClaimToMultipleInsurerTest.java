@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
+import idas.chox.core.model.Insurer;
 import idas.chox.core.workflow.Activity;
 import idas.chox.test.BaseTest;
 
@@ -29,12 +30,14 @@ public class SwitchClaimToMultipleInsurerTest extends BaseTest {
 
         Claim claim = claimService.getClaim(999);
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        Insurer insurer = insurerService.getInsurer(6);
+        claim.setInsurer(insurer);
 
-        Assert.assertEquals("RSA", claim.getInsurer().getName());
-        SwitchClaimToMultipleInsurer activity = (SwitchClaimToMultipleInsurer) activityFactory.getActivity("switchClaimToMulIns");
-        activity.setInsId(6);
-        activity.process(claim);
         Assert.assertEquals("RBS", claim.getInsurer().getName());
+        SwitchClaimToMultipleInsurer activity = (SwitchClaimToMultipleInsurer) activityFactory.getActivity("switchClaimToMulIns");
+        activity.setInsId(3);
+        activity.process(claim);
+        Assert.assertEquals("RSA", claim.getInsurer().getName());
 
     }
 }

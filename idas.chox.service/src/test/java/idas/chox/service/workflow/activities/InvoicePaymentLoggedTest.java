@@ -5,10 +5,11 @@ import java.math.BigDecimal;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.Insurer;
 import idas.chox.core.model.Invoice;
 import idas.chox.core.workflow.Activity;
 import idas.chox.test.BaseTest;
@@ -25,13 +26,12 @@ public class InvoicePaymentLoggedTest extends BaseTest{
         activity.process(claim);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Test
     public void testInvoicePaymentLogged() throws Throwable {
     	Invoice invoice = invoiceService.getInvoice(999);
-        Claim claim = new Claim();
-        Insurer insurer = insurerService.getInsurer(3);
+        Claim claim = claimService.getClaim(999);
         claim.setInvoice(invoice);
-        claim.setInsurer(insurer);
         claim.setPercentageLiabilityAccepted(new BigDecimal(2.00));
         claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
         InvoicePaymentLogged activity = (InvoicePaymentLogged) activityFactory.getActivity("invoicePaymentLogged");

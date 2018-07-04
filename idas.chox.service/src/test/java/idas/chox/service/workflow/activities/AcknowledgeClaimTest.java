@@ -1,11 +1,12 @@
 package idas.chox.service.workflow.activities;
 
 
-import idas.chox.core.model.Chorganisation;
+import java.math.BigDecimal;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.security.access.AccessDeniedException;
 
+import idas.chox.core.model.Chorganisation;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
@@ -36,6 +37,9 @@ public class AcknowledgeClaimTest  extends BaseTest {
 
         Chorganisation chorg = chorganisationService.getChorganisation(1007);
         claim.setChorganisation(chorg);
+        claim.setPercentageLiabilityAccepted(new BigDecimal("100.00"));
+        claim.setAppliedLiability(new BigDecimal("100.00"));
+        claim.setPercentageLiabilityCho(BigDecimal.ZERO);
         
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
         Activity activity = activityFactory.getActivity("acknowledgeClaim");
@@ -59,7 +63,10 @@ public class AcknowledgeClaimTest  extends BaseTest {
         claim.setChorganisation(chorg);
         
         claim.setComments(null);
-
+        claim.setPercentageLiabilityAccepted(new BigDecimal("100.00"));
+        claim.setAppliedLiability(new BigDecimal("100.00"));
+        claim.setPercentageLiabilityCho(BigDecimal.ZERO);
+        
         Activity activity = activityFactory.getActivity("acknowledgeClaim");
         activity.process(claim);
         Assert.assertEquals(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, claim.getStatus());
@@ -81,6 +88,9 @@ public class AcknowledgeClaimTest  extends BaseTest {
         claim.setChorganisation(chorg);
         
         claim.setComments(null);
+        claim.setPercentageLiabilityAccepted(new BigDecimal("100.00"));
+        claim.setAppliedLiability(new BigDecimal("100.00"));
+        claim.setPercentageLiabilityCho(BigDecimal.ZERO);
 
         Activity activity = activityFactory.getActivity("acknowledgeClaim");
         activity.process(claim);

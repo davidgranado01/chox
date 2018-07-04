@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.HireMonitoringEcd;
+import idas.chox.core.model.WebUser;
 import idas.chox.core.services.UploadClaimXMLService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.test.BaseTest;
@@ -54,6 +55,8 @@ public class ClaimTest extends BaseTest {
     
     @Before
     public void setUpClass() throws Exception {
+        WebUser webUser = userService.getWebUser(2);
+        fakeSecurityInfoProvider.setCurrentUser(webUser);
         fakeSecurityInfoProvider.setIsCHO(true);
     }
 

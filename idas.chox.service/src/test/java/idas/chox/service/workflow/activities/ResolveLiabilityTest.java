@@ -1,17 +1,18 @@
 package idas.chox.service.workflow.activities;
 
+import java.math.BigDecimal;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.Insurer;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.workflow.Activity;
 import idas.chox.test.BaseTest;
-import java.math.BigDecimal;
 
 public class ResolveLiabilityTest extends BaseTest{
 
@@ -24,12 +25,11 @@ public class ResolveLiabilityTest extends BaseTest{
         activity.process(claim);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
     @Test
     public void testResolveLiability() throws Throwable {
 
-        Claim claim = new Claim();
-        Insurer insurer = insurerService.getInsurer(3);
-        claim.setInsurer(insurer);
+        Claim claim = claimService.getClaim(999);
         claim.setStatus(ClaimStatus.INVOICE_APPROVED_BY_BRE);
      
         ResolveLiability activity = (ResolveLiability) activityFactory.getActivity("resolveLiability");
