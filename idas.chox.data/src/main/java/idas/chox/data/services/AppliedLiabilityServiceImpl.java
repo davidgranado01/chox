@@ -51,7 +51,6 @@ public class AppliedLiabilityServiceImpl extends SecureDataService implements Ap
         DetachedCriteria appliedLiabilityCriteria = DetachedCriteria.forClass(BreAppliedLiability.class);
         appliedLiabilityCriteria.add(Restrictions.eq("breBand.id", breBandId));
         appliedLiabilityCriteria.add(Restrictions.eq("claimType", claimType));
-        appliedLiabilityCriteria.addOrder(Order.desc("liabilityPercentage"));
         List<BreAppliedLiability> results = findByCriteria(appliedLiabilityCriteria);
         return results.isEmpty()? null : (BreAppliedLiability)results.get(0);
     }    

@@ -17,6 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import idas.chox.core.model.BreAppliedLiability;
 import idas.chox.core.model.BreBand;
@@ -159,6 +161,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     }
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_ADMIN"})
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public String updateInsurerBreBand() {
 
         try {

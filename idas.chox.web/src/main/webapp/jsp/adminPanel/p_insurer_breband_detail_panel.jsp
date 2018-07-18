@@ -1283,6 +1283,7 @@
             appliedLiability_gridviewGrid.getStore().insert(0, newRecord);
             // reset the form details
             appliedLiabilityClaimTypesCombo.reset();
+            appliedLiabilityClaimTypesCombo.clearValue();
             $('#appliedLiability').val('');
             $("#applyToRepudiated").attr('checked', true);
         }
