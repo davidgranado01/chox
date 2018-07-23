@@ -2057,6 +2057,10 @@ public class ClaimFileReportData {
         return isCopleyOffer;
     }
 
+    public boolean isHasAppliedliability() {
+        return getInsurerLiabilityApplied()!= null && getInsurerLiabilityAgreed().compareTo(getInsurerLiabilityApplied()) != 0;
+    }
+
     public String getCopleyOfferMade() {
         return copleyOfferMade;
     }

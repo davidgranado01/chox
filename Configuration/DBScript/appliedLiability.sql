@@ -34,6 +34,13 @@ GRANT SELECT, UPDATE ON TABLE bre_applied_liability_id_seq TO chox_user;
 -- CHOX-487: Applied Liability Workflow for updating Total To Pay
 --
 ALTER TABLE claim ADD COLUMN applied_liability numeric(5,2) DEFAULT 0.00;
+-- set current applied liability: same a insurer liability except for
+--     1. For Subscriber, Fixed-Fee, & InsurerVsInsurer, applid liability is always 100%
+--     2. For Collaboration protocol, applid liability is 100% except for when repudiated, in which case its zero
+UPDATE claim set applied_liability=percentage_liability_accepted;
+UPDATE claim set applied_liability=100.00 where claim_type in (4,5,6,7,8,9,11,12,13,18,19,20);
+UPDATE claim set applied_liability=0.00 where claim_type in (18,19,20) and liability_status=4;
+
 
 CREATE OR REPLACE FUNCTION applyAutoPenaltyCharge(useridnumber integer, claimid integer)
   RETURNS BOOLEAN AS
