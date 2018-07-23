@@ -17,7 +17,6 @@
     <url>https://www.idaschox.com</url>
 
     <properties>
-        <cxf.version>2.7.17</cxf.version>
         <asm.version>5.2</asm.version> <!-- was 5.0.2 -->
         <cglib.version>3.2.5</cglib.version> <!-- was 3.1 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
