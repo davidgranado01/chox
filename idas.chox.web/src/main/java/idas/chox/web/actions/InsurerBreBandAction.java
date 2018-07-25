@@ -60,6 +60,16 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
     private LookupService lookupService;
     private int claimMatchingOwnerId = -1;
     private int claimMatchingWorkgroupId = -1;
+    private String name;
+    
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return model.getName();
+    }
 
     public void setLookupService(LookupService lookupService) {
         this.lookupService = lookupService;
@@ -171,10 +181,13 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
             if (asCopy) {
                 // We want to copy the current model, so get complete model stored rather then using the loaded one
                 // Needed as parts of model not visible to non-CHOX Admin will not be present in current model
+                // Evict first as we are in a write transaction and we do not want any model details saved
+                adminInsurerService.evict(model);
                 model = adminInsurerService.getBreBand(Integer.valueOf(this.objectId));
                 objectId = "-1";
                 BreBand newModel = (BreBand) SerializationUtils.clone(model);
                 newModel.setId(null);
+                newModel.setName(name);
                 newModel.setProtocolVehicleClassCeilings(null);
                 List<ProtocolVehicleClassCeiling> protocolVehicleClassCeilings = model.getProtocolVehicleClassCeilings();
                 protocolVehicleClassCeilings.forEach((protocolVehicleClassCeiling) -> {
@@ -250,7 +263,8 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                 model = newModel;
             } else {
                 checkVersion(model);
-
+                model.setName(name);
+                
                 if (protocolVehicleClassCeilingRecords != null && !protocolVehicleClassCeilingRecords.isEmpty()) {
                     updateProtocolVehicleClassCeiling();
                 }
@@ -275,6 +289,7 @@ public class InsurerBreBandAction extends BaseAction implements ModelDriven<BreB
                 }
             }
             ActionResponse response;
+            LOG.info("Saving Breband with isNew()={}", getIsNew());
             response = adminInsurerService.updateInsurerBreBand(model, this.insurerId, getIsNew());
             updateModelInSession(model);
             setActionResponse(response);

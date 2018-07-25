@@ -320,7 +320,7 @@ public class AdminInsurerService extends SecureDataService {
 
             if (isNew) {
                 this.actionResponse.AssignNewIdResult(breBand.getId());
-                if (emailOnBreBandCreation && !getSecurityInfoProvider().getIsCHOXAdmin() && "LOCAL".equals(hostName)) {
+                if (emailOnBreBandCreation && !getSecurityInfoProvider().getIsCHOXAdmin() && !"LOCAL".equals(hostName)) {
                     // Email Audatex Staff of new BRE Band Creation
                     LOG.debug("Sending email to '{}' from {}", emailReceivers, hostName);
                     try {
