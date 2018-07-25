@@ -32,7 +32,7 @@ public class TimeoutFilter extends OncePerRequestFilter {
     private final String INBOX_PAGE_REQUEST_URL = "/prv/inbox.action";
     private final String LOGIN_STRING = "login";
     private final String LOGIN_FORM_AUTH_CHECK_STRING = "j_spring_security_check";
-    private final String LOGOUT_STRING = "j_spring_security_logout";
+    private final String LOGOUT_STRING = "logout";
     private final String CHECK_VIEWING_STATUS_STRING = "checkViewingStatus";
     private final String WEB_SERVICE_URL_STRING = "/services";
     private final String LOGBACK_LOGGING_URL_STRING = "/logBack";

@@ -35,12 +35,12 @@
                             <p class="password_entry">
                                 <label for="name">
                                     Username:</label>
-                                <input type="text" id="loginUserNameId" name="j_username" style="width:150px" />
+                                <input type="text" id="loginUserNameId" name="username" style="width:150px" />
                             </p>
                             <p class="password_entry">
                                 <label for="password">
                                     Password:</label>
-                                <input type="password"  id="loginPasswordId" name="j_password" style="width:150px"/>
+                                <input type="password"  id="loginPasswordId" name="password" style="width:150px"/>
                             </p>
                             <div class="checkbox_and_submit">
                                 

@@ -1,21 +1,24 @@
 package idas.chox.web.security;
 
-import idas.chox.service.security.PermissionedUser;
-import idas.chox.core.model.WebUser;
-import idas.chox.core.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.dao.DataAccessException;
-import org.springframework.security.authentication.dao.SaltSource;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import idas.chox.service.security.PermissionedUser;
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.UserService;
+
 
 public class WebUserService implements UserDetailsService {
+    private static final Logger LOG = LoggerFactory.getLogger(WebUserService.class);
 
     private UserService userService;
     private PasswordEncoder passwordEncoder;
-    private SaltSource saltSource;
 
     public WebUser findByUserName(String userName) {
         return userService.findByUserName(userName);
@@ -51,16 +54,13 @@ public class WebUserService implements UserDetailsService {
             }
         }
         UserDetails userDetail = new PermissionedUser(u);
+        LOG.debug("User loaded: {}-{}", userDetail.getUsername(), userDetail.getPassword());
         return userDetail;
     }
 
     public String encodePassword(final UserDetails userDetails) {
-        Object salt = null;
-
-        if (this.saltSource != null) {
-            salt = this.saltSource.getSalt(userDetails);
-        }
-        return passwordEncoder.encodePassword(userDetails.getPassword(), salt);
+        LOG.debug("Returning encoded password: {}", passwordEncoder.encode(userDetails.getPassword()));
+        return passwordEncoder.encode(userDetails.getPassword());
     }
 
     public UserService getUserService() {
@@ -73,10 +73,6 @@ public class WebUserService implements UserDetailsService {
 
     public final void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
-    }
-
-    public final void setSaltSource(SaltSource saltSource) {
-        this.saltSource = saltSource;
     }
 
 }

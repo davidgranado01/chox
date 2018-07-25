@@ -17,6 +17,9 @@
         </encoder>
     </appender>
 
+    <logger name="idas.chox.uploadclient.activity" level="ERROR" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
     <logger name="idas.chox.uploadclient" level="INFO" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>

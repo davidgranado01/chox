@@ -116,7 +116,7 @@ function isCsrfParamPresent() {
 }
 
 function logout() {
-    var logoutURL = contextPath + '/j_spring_security_logout';
+    var logoutURL = contextPath + '/logout';
     
     var form = $('<form action="' + logoutURL + '" method="post">'+
                         '</form>');

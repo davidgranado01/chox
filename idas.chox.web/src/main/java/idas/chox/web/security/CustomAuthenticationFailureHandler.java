@@ -48,7 +48,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
         String username = null;
         try {
-            username = request.getParameterValues("j_username")[0];
+            username = request.getParameterValues("username")[0];
         } catch (Exception ex) {
             Enumeration<String> paramNames = request.getParameterNames();
             StringBuilder pNames = new StringBuilder();

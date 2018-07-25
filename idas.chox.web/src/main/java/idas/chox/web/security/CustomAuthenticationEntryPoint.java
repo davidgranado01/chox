@@ -16,6 +16,10 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 public class CustomAuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoint {
     private static final Logger LOG = LoggerFactory.getLogger(CustomAuthenticationEntryPoint.class);
 
+    public CustomAuthenticationEntryPoint(String url) {
+        super(url);
+    }
+    
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         LOG.debug("In CustomAuthenticationProcessingFilterEntryPoint...");
