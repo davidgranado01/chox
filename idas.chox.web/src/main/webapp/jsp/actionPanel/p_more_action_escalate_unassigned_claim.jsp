@@ -53,8 +53,9 @@
             
             choxJqueryHttpSubmit($("form#formEscalateClaimAction"), function() {
                 if ($("#escalateWorkgroupComboId").val() !== "--- Please Select ---") {
-                  $("#EscalateClaimMessageBox").text("").show();
-                  return true;
+                    $("#EscalateClaimMessageBox").text("").show();
+                    Ext.get('formEscalateClaimAction').mask("Reloading Claim...");
+                    return true;
                 }
                 $("#EscalateClaimMessageBox").text("You must supply a value for 'Workgroup'").show();
                 return false;

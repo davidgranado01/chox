@@ -26,8 +26,9 @@
 
     function updatePenaltyChargeConfig() {
         if (Ext.getCmp("autoPenaltyStartDateId").isValid()) {
+            Ext.get('doAdjustAutoPenalty').mask("Reloading Claim...");
             choxJqueryHttpSubmit($("form#doAdjustAutoPenalty"));
-            return true;
+            return false;
         }
         return false;
     }

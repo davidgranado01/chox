@@ -3,64 +3,156 @@
 
 <script type="text/javascript">
 
+    var claimId = -1;
     var claimOwnerId = -1;
+    var insurerId = -1;
     var isWorkgroupEnable = false;
     var selectedWorkgroupId = -1;
+    var workgroupCombo;
+    var claimOwnerStore;
+    var claimOwnerCombo;
 
     Ext.onReady(function() {
-
         // GET CLAIM INFORMATION
         if($("#claimClaimOwnerId").val()!==null && $("#claimClaimOwnerId").val()!==""){
             claimOwnerId = $("#claimClaimOwnerId").val();
         }
 
-        if($("#claimWorkgroupEnable").val()!==null && $("#claimWorkgroupEnable").val()!==""){
-            isWorkgroupEnable = $("#claimWorkgroupEnable").val();
-        }
+        insurerId = '<s:property value="insurer.id"/>';
+        claimId = '<s:property value="id"/>';
+        isWorkgroupEnable = ('<s:property value="insurer.workgroupEnable"/>' === 'true');
 
-        if(isWorkgroupEnable){
-            if($("#claimWorkgroupId").val()!==null && $("#claimWorkgroupId").val()!==""){
-                selectedWorkgroupId = $("#claimWorkgroupId").val();
+        // Add claim owner combo box
+        var claimOwnerReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                {name:'id'},
+                {name:'name'}
+            ]
+        });
 
-            }
-        }
+        claimOwnerStore = new choxDataStore({
+            url : "/prv/p/ClaimHandlerRoleUserDropDownAction2.action", 
+            params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId},
+            reader : claimOwnerReader
+        });
 
-        $("#oasWorkgroupId").val(selectedWorkgroupId);
-
-
-        // SETUP FORM VALIDATION
-        var form = $("form#formOwnershipAction");
-        form.validate(
-        {
-            errorLabelContainer: "#OwnershipMessageBox",
-            rules: {
-                oasWorkgroupId:{min:1},
-                claimOwnerId:{min:1}
-            },
-            messages: {
-                oasWorkgroupId: {min:"You must supply a value for 'Workgroup'"},
-                claimOwnerId: {min:"You must supply a value for 'Claim Owner'"}
+        claimOwnerCombo = new Ext.form.ComboBox({
+            store: claimOwnerStore,
+            width: 200,
+            renderTo: 'claimOwnerReassignComboDiv',
+            valueField: 'id',
+            id: 'claimOwnerReassignComboId',
+            hiddenName: 'claimOwnerId',
+            displayField:'name',
+            typeAhead: true,
+            mode: 'local',
+            listWidth: 200,
+            forceSelection: true,
+            triggerAction: 'all',
+            emptyText: '--- Please Select ---',
+            listeners: {
+                blur: function () {
+                    if(this.getRawValue() === "") {
+                        this.clearValue(); this.reset();
+                        claimOwnerId = -1;
+                    }
+                },
+                specialkey:function (el, e) {
+                            if(e.keyCode === e.ENTER) {
+                                e.preventDefault();
+                            }
+                }
             }
         });
-        choxJqueryHttpSubmit(form, function(){});
-        doUpdateOwnershipShowClaimHandler(selectedWorkgroupId);
-    });
 
-    function doUpdateOwnershipWorkgroupChange(){
-        if($("#oasWorkgroupId").val()!==null){
-            selectedWorkgroupId = $("#oasWorkgroupId").val();
+        if(isWorkgroupEnable) {
+            selectedWorkgroupId = '<s:property value="workgroup.id"/>';
+            var wgrpJsonReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields:
+                    [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+            });
+
+            var workgroupStore = new choxDataStore({
+                url : "/prv/p/WorkgroupDropDownActionByInsurer3.action",
+                params : {"claimId":claimId},
+                reader: wgrpJsonReader
+            });
+
+            workgroupCombo = new Ext.form.ComboBox({
+                store: workgroupStore,
+                width: 200,
+                renderTo: 'workgroupReassignComboDiv',
+                valueField: 'text',
+                id: 'workgroupReassignComboId',
+                hiddenName: 'oasWorkgroupId',
+                displayField:'value',
+                typeAhead: true,
+                mode: 'local',
+                triggerAction: 'all',
+                forceSelection: true,
+                listWidth: 200,
+                selectOnFocus: true,
+                autoLoad:true,
+                listeners: {
+                    select: function() {
+                        doUpdateOwnershipShowClaimHandler(workgroupCombo.getValue());
+                    },
+                    blur: function () {
+                        if(this.getRawValue() === "") {
+                            selectedWorkgroupId = '<s:property value="workgroup.id"/>';
+                            this.clearValue(); 
+                            workgroupCombo.setValue(selectedWorkgroupId);
+                            doUpdateOwnershipShowClaimHandler(selectedWorkgroupId);
+                        }
+                    }
+                }
+            });
+            workgroupStore.load({ params : {"claimId":claimId}, callback: function () {
+                            workgroupCombo.setValue(selectedWorkgroupId);}}
+            );
         }
-        claimOwnerId = -1;
+
+
         doUpdateOwnershipShowClaimHandler(selectedWorkgroupId);
-    }
+});
 
     function doUpdateOwnershipShowClaimHandler(selectedWorkgroupId){
-        var target = "#claimHandlerRoleUserDropDownDiv";
-        var url = "/prv/p/ClaimHandlerRoleUserDropDownAction.action";
-        var param = {"workgroupId":selectedWorkgroupId,"insurerId":<s:property value="insurer.id"/>};
-        ajax.loadHtml2(url,param,function(data){
-            $(target).html(data);
-        });
+        if((isWorkgroupEnable && selectedWorkgroupId>0) || !isWorkgroupEnable){
+            claimOwnerStore.removeAll();
+            claimOwnerStore.load({ params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId}});
+            claimOwnerCombo.reset();
+        }
+    }
+
+    function validateReassignComboBox(){
+        var mesBox = $("#OwnershipReassignMessageBox");
+        mesBox.empty();
+        if ($("#claimOwnerReassignComboId").val() === "--- Please Select ---") {
+            mesBox.append("You must supply a value for 'Claim Owner'\n<br/>").show();
+            return false;
+        } else {
+            mesBox.text("").show();
+            return true;
+        }
+            
+    }
+
+    function doReassignOwnershipSubmit(){
+        actionPanel.registerAction("assignOwner");
+        if (validateReassignComboBox()) {
+            Ext.get('formOwnershipAction').mask("Reloading Claim...");
+            choxJqueryHttpSubmit($("form#formOwnershipAction"));
+            return false;
+        }
+        return false;
     }
 
 </script>
@@ -93,34 +185,23 @@
                         <table class="status-table" width="100%">
                             <s:if test="insurer.workgroupEnable">
                                 <tr>
-                                    <td align="right" width="10%"><label>Workgroup:</label></td>
-                                    <td width="20%">
-                                        <s:select
-                                            name="oasWorkgroupId"
-                                            id="oasWorkgroupId"
-                                            list="insurerWorkgroups"
-                                            headerKey="-1"
-                                            listKey="id"
-                                            listValue="name"
-                                            headerValue="-- Please Select --"
-                                            onchange="doUpdateOwnershipWorkgroupChange()">
-                                        </s:select>
-                                    </td>
+                                    <td align="right" width="10%"><label>Workgroup : </label></td>
+                                    <td width="20%"><div id="workgroupReassignComboDiv"/></td>
                                     <td width="70%"></td>
                                 </tr>
                             </s:if>
                             <tr>
-                                <td align="right" width="10%"><label>Claim Owner:</label></td>
-                                <td width="20%"><div id="claimHandlerRoleUserDropDownDiv"></div></td>
+                                <td align="right" width="10%"><label>Claim Owner : </label></td>
+                                <td width="20%"><div id="claimOwnerReassignComboDiv"></div></td>
                                 <td width="70%"></td>
                             </tr>
                             <tr>
                                 <td>
-                                    <input id="assign" type="submit" value="Update"/>
+                                    <input id="assign" type="button" value="Update" onclick="event.preventDefault(); doReassignOwnershipSubmit();"/>
                                 </td>
                             </tr>
                         </table>
-                        <div class="action-error-msg" id="OwnershipMessageBox"></div>
+                        <div class="action-error-msg" id="OwnershipReassignMessageBox"></div>
                     </div>
                 </div>
             </div>

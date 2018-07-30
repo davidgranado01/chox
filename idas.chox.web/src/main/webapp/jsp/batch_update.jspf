@@ -221,6 +221,7 @@
                                     text:'Ok',
                                     handler:function(){
                                         if($("form#routeClaimForm").valid()){
+                                            Ext.get('routeClaimForm').mask("Updating...");
                                             var selectedRecords =  batchUpdateSelectionModel.getSelections();
                                             var selectedIDs = $.map(selectedRecords, function(n){
                                                 return n.json.id;
@@ -240,6 +241,7 @@
                                                     }
                                                 },
                                                 success:function(data){
+                                                    Ext.get('routeClaimForm').unmask();
                                                     if(data && !data.isValid){
                                                         $.each(data.errors, function() {
                                                             Ext.Msg.show({
@@ -505,6 +507,7 @@
                                     handler:function(){
 
                                         if($("form#supplierOwnershipClaimForm").valid()){
+                                            Ext.get('supplierOwnershipClaimForm').mask("Updating...");
                                             var selectedRecords =  batchUpdateSelectionModel.getSelections();
                                             var selectedIDs = $.map(selectedRecords, function(n){
                                                 return n.json.id;
@@ -520,6 +523,7 @@
                                                     formData[1].value = supplierClaimOwnerCombo.getValue();
                                                 },
                                                 success:function(data){
+                                                    Ext.get('supplierOwnershipClaimForm').unmask();
                                                     if(data && !data.isValid){
                                                         $.each(data.errors, function() {
                                                             Ext.Msg.show({
@@ -728,6 +732,7 @@
                                     handler:function(){
 
                                         if($("form#ownershipClaimForm").valid()){
+                                            Ext.get('ownershipClaimForm').mask("Updating...");
                                             var selectedRecords =  batchUpdateSelectionModel.getSelections();
                                             var selectedIDs = $.map(selectedRecords, function(n){
                                                 return n.json.id;
@@ -748,6 +753,7 @@
                                                     formData.push({ name: 'name', value: 'assignOwner' });
                                                 },
                                                 success:function(){
+                                                    Ext.get('ownershipClaimForm').unmask();
                                                     batchUpdateSelectionModel.clearSelections();
                                                     if(isInsurerWorkgroupEnable){
                                                         workgroupCombo.reset();
@@ -924,11 +930,13 @@
                                                 clearForm: true,
                                                 dataType: 'json',
                                                 beforeSubmit: function(formData, form, options) {
+                                                    Ext.get('ownershipClaimForm1').mask("Updating...");
 
                                                     formData[1].value = claimOwnerCombo.getValue();
                                                     formData.push({ name: 'name', value: 'assignOwner' });
                                                 },
                                                 success:function(data){
+                                                    Ext.get('ownershipClaimForm1').unmask();
                                                     if(data && !data.isValid){
                                                         $.each(data.errors, function() {
                                                             Ext.Msg.show({
@@ -1137,6 +1145,7 @@
                                             var submitOption = {
                                                     clearForm: true,
                                                     beforeSubmit: function(formData, form, options) {
+                                                    Ext.get('claimOwnershipUpdateForm').mask("Updating...");
                                                     if(isInsurerWorkgroupEnable == 'true') {
                                                         formData[1].value = workgroupCombo.getValue();
                                                         formData[2].value = claimOwnerCombo.getValue();
@@ -1147,6 +1156,7 @@
                                                     formData.push({ name: 'name', value: 'assignOwner' });
                                                 },
                                                 success:function(){
+                                                    Ext.get('claimOwnershipUpdateForm').unmask();
                                                     batchUpdateSelectionModel.clearSelections();
                                                     if(isInsurerWorkgroupEnable == 'true'){
                                                         workgroupCombo.reset();

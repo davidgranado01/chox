@@ -4,7 +4,7 @@
 <script type="text/javascript">
     Ext.onReady(function() {
         var form = $("form#formUpdateInvoiceReviewRequired");
-        choxJqueryHttpSubmit(form, function(){});
+        choxJqueryHttpSubmit(form, function(){Ext.get('formUpdateInvoiceReviewRequired').mask("Reloading Claim...");});
     });
 </script>
 
