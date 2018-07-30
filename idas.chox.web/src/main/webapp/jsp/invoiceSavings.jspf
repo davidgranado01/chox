@@ -28,8 +28,10 @@
             Ext.MessageBox.alert('Error', 'The invoice has been adjusted. Please save or reset your changes before agreeing quantum.', function () {
                 return false;
             });
-        } else
+        } else {
+            Ext.get('claimDetailScreenDiv').mask();
             invoiceSavingsWindow.show(document.body);
+        }
         return false;
     }
 
@@ -131,6 +133,7 @@
                                 return;
                             }
                             rules = rules.substring(1);
+                            Ext.get('claimDetailScreenDiv').unmask();
                             invoiceSavingsWindow.hide();
                             invoiceSavingsForm.getForm().submit({
                                 method: 'POST',
@@ -158,6 +161,7 @@
                     text: 'Cancel',
                     handler: function () {
                         invoiceSavingsForm.getForm().reset();
+                        Ext.get('claimDetailScreenDiv').unmask();
                         invoiceSavingsWindow.hide();
                     }
                 }, {

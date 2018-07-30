@@ -29,7 +29,7 @@
                 }
             });
         }
-        choxJqueryHttpSubmit(form, function(){});
+        choxJqueryHttpSubmit(form, function(){if ($("form#formUpdateFinalReview").valid()) Ext.get('formUpdateFinalReview').mask("Reloading Claim...");});
     });
 </script>
 

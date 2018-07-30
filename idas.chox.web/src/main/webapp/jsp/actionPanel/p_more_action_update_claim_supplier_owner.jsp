@@ -120,8 +120,9 @@
              
         choxJqueryHttpSubmit($("form#formSupplierOwnershipAction"), function() {
             if ($("#supplierClaimOwnerComboId").val() !== "--- Please Select ---") {
-              $("#supplierOwnershipAssignmentMessageBox").text("").show();
-              return true;
+                $("#supplierOwnershipAssignmentMessageBox").text("").show();
+                Ext.get('formSupplierOwnershipAction').mask("Reloading Claim...");
+                return true;
             }
             $("#supplierOwnershipAssignmentMessageBox").text("You must supply a value for 'Claim Owner'").show();
             return false;
@@ -155,7 +156,7 @@
                             <tr>
                                 <td></td>
                                 <td colspan="2" class="choice" nowrap>
-                                    <input type="submit" id="MAUCSOAssignOwnerButtonId"value="Assign Owner"/>
+                                    <input type="submit" id="MAUCSOAssignOwnerButtonId" value="Assign Owner"/>
                                 </td>
                             </tr>
                         </table>

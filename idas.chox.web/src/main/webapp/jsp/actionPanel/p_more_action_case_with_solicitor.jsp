@@ -5,7 +5,7 @@
 
     Ext.onReady(function() {
         var form = $("form#formUpdateCaseWithSolicitor");        
-        choxJqueryHttpSubmit(form, function(){});
+        choxJqueryHttpSubmit(form, function(){Ext.get('formUpdateCaseWithSolicitor').mask("Reloading Claim...");});
     });
     
 </script>

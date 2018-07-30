@@ -70,7 +70,7 @@
     function addNewHireMonitoringEcd(){
 
         if($("#formAddNewHireMonitoringEcd").valid()){
-
+            Ext.get('formAddNewHireMonitoringEcd').mask("Adding ECD...");
             choxExtAjaxRequest({
                 url:'/prv/p/addNewHireMonitoringEcd.action',
                 params: {
@@ -81,6 +81,7 @@
                             updateInsurer : $('form #hireMonitoringEcdisUpdateInsurerId').is(':checked') 
                         },
                 callback : function(options,success,response  ){
+                    Ext.get('formAddNewHireMonitoringEcd').unmask();
                     var response = Ext.util.JSON.decode(response.responseText);
                     if (!response.success) {
                         Ext.MessageBox.show({

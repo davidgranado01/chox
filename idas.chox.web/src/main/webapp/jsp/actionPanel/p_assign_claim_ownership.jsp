@@ -222,7 +222,7 @@
              Ext.get('claimDetailScreenDiv').mask("Reloading Claim ...");
              choxJqueryHttpSubmit($("form#formOwnershipAssignmentAction"));
          } else {
-             mesBox.text("You must supply a value for 'Work Group'").show();
+             mesBox.text("You must supply a value for 'Workgroup'").show();
          }
         
     }
