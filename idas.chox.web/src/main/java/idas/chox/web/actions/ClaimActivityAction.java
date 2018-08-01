@@ -75,11 +75,11 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             LOG.debug("Claim retrieved using session ID: id={}, version={}", claim.getId(), claim.getVersion());
             addModelToSession(claim);
         } else if (selectedClaimIdList == null || selectedClaimIdList.isEmpty()) {
-            LOG.error("No claimId in session");
+            LOG.warn("No claimId in session");
         } else if (LOG.isDebugEnabled() && claim != null) {
             LOG.debug("Using already loaded claim with id={}, version={}", claim.getId(), claim.getVersion());
         } else if (LOG.isDebugEnabled()) {
-            LOG.debug("No claim!!!!!!!!!!");
+            LOG.debug("No claim or claim list available.");
         }
 
         // Make sure we have a BRE Band (for non-batch requests)
@@ -103,7 +103,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
     }
 
     public String processMultipleClaims() {
-        LOG.debug("processMultipleClaims");
+        LOG.trace("processMultipleClaims");
         if (activity != null && selectedClaimIdList.size() > 0) {
             boolean updatedByAnotherTransaction = false;
             StringBuilder actionError = new StringBuilder();
@@ -144,7 +144,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                         new Object[]{name, claim.getId(), claim.getChoReference(), claim.getStatus(), ex.getMessage()});
                 throw (ex);
             } catch (Exception ex) {
-                LOG.error("Error processing batch update. Error on cho-ref: {} : ", claim.getChoReference(), ex);
+                LOG.warn("Error processing batch update. Error on claim with CHO reference '{}': ", claim.getChoReference(), ex);
                 handleException(ex);
                 return ERROR;
             }
@@ -177,7 +177,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 updateRedirectionParamInSession();
                 return SUCCESS;
             }
-            LOG.trace("claim activity returning success");
             if (getMessage() != null) {
                 this.getActionResponse().AssignMessageResult(getMessage());
                 setJsonData("{\"success\":\"True\",\"message\":\"" + getMessage() + "\"}");
@@ -187,7 +186,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             removeRedirectionParamInSession();
             return SUCCESS;
         } else {
-            LOG.error("Cannot process null activity for claim '{}'", claim);
+            LOG.warn("Cannot process null activity for claim '{}'", claim);
             setJsonData("{\"success\":\"True\",\"message\":\"An Internal Error Occurred - please try again. If this problem persists, please contact CHOX Support.\"}");
             this.getActionResponse().AddError("An Internal Error Occurred - please try again. If this problem persists, please contact CHOX Support.");
         }
@@ -225,7 +224,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             Integer selectedId = Integer.parseInt(s.trim());
             selectedClaimIdList.add(selectedId);
         }
-        LOG.trace("selectedClaimIdList set: '{}'", ids);
     }
 
     @Override
@@ -236,9 +234,6 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 LOG.error("ClaimActivityAction validation failed, Attempt to access a claim that you do not own.");
                 throw new AccessDeniedException("Attempt to access a claim that you do not own.");
             }
-            LOG.trace("ClaimActivityAction validate success");
-        } else {
-            LOG.debug(" ClaimActivityAction validation is not done as claim is null");
         }
     }
 
