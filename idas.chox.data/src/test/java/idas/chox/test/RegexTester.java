@@ -4,18 +4,18 @@ import org.junit.Test;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Ignore;
-import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.RunWith;
+import org.junit.runners.BlockJUnit4ClassRunner;
 
 /**
  *
  * @author abrar
  */
 @Ignore
-@RunWith(JUnit4ClassRunner.class)
+@RunWith(BlockJUnit4ClassRunner.class)
 public class RegexTester {
 
-    private static final Log log = LogFactory.getLog(RegexTester.class);
+    private static final Log LOG = LogFactory.getLog(RegexTester.class);
 
     @Test
     public void testSbAppend(){

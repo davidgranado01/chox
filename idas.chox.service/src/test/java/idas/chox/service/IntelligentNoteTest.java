@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 import idas.chox.core.model.*;
@@ -21,7 +21,7 @@ public class IntelligentNoteTest extends BaseTest {
     public void testClassInjection() {
 
         //make sure the intelligentNotes get injected from spring
-        List<IntelligentNote> intelligentNotes = displayEngine.getAvailableIntelligentNotes();
+        List<IntelligentNote> intelligentNotes = intelligentNoteDisplayEngine.getAvailableIntelligentNotes();
         Assert.assertNotNull(intelligentNotes);
         Assert.assertFalse(intelligentNotes.isEmpty());
         Assert.assertEquals(15, intelligentNotes.size());
@@ -31,8 +31,9 @@ public class IntelligentNoteTest extends BaseTest {
     @Test
     public void testCanShowVehicleClassCheckNote() throws Exception {
         List<IntelligentNote> intelligentNotes = new ArrayList<>();
+        List<IntelligentNote> intelligentNotesOriginal = intelligentNoteDisplayEngine.getAvailableIntelligentNotes();
         intelligentNotes.add(new VehicleClassCheckNote());
-        displayEngine.setAvailableIntelligentNotes(intelligentNotes);
+        intelligentNoteDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
         Claim claim = new Claim();
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
@@ -46,11 +47,11 @@ public class IntelligentNoteTest extends BaseTest {
         claim.setInsurer(insurerService.getInsurer(3));
 
         //test note  showing 
-        Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(1, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
 
         //test if initial ecd > 5 days from policy holder contact date, VehicleClassCheckNote should not be displayed
         claim.getCustomer().setInitialECD(DateHelper.addDay(DateHelper.getCurrentDate(), 6));
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
 
         //test if new ecd added and the latest ecd date < 5 days from policy holder contact date, VehicleClassCheckNote should not be displayed
         HireMonitoringEcd ecd = new HireMonitoringEcd();
@@ -58,23 +59,25 @@ public class IntelligentNoteTest extends BaseTest {
 
         claim.addHireMonitoringEcd(ecd);
 
-        Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(1, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
 
         // Test if vehicle class is PV then note not displayed
         vc.setName("PV1");
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
 
         // Test if vehicle class is a sports vehicle then note is displayed
         vc.setName("SP1");
-        Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(1, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
+        intelligentNoteDisplayEngine.setAvailableIntelligentNotes(intelligentNotesOriginal);
     }
 
     
     @Test
     public void testCanShowUnroadworthyVehicleCheckNote() throws Exception {
         List<IntelligentNote> intelligentNotes = new ArrayList<>();
+        List<IntelligentNote> intelligentNotesOriginal = intelligentNoteDisplayEngine.getAvailableIntelligentNotes();
         intelligentNotes.add(new UnroadworthyVehicleCheckNote());
-        displayEngine.setAvailableIntelligentNotes(intelligentNotes);
+        intelligentNoteDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
         Claim claim = new Claim();
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
@@ -84,19 +87,21 @@ public class IntelligentNoteTest extends BaseTest {
         cust.setIsUsable(false);
         claim.setCustomer(cust);
         claim.setInsurer(insurerService.getInsurer(3));
-        Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(1, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
 
         //test note are not showing customers car is usable
         claim.getCustomer().setIsUsable(true);
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
+        intelligentNoteDisplayEngine.setAvailableIntelligentNotes(intelligentNotesOriginal);
     }
 
     
     @Test
     public void testCanShowTotalLossVehicleCheckNote() throws Exception {
         List<IntelligentNote> intelligentNotes = new ArrayList<>();
+        List<IntelligentNote> intelligentNotesOriginal = intelligentNoteDisplayEngine.getAvailableIntelligentNotes();
         intelligentNotes.add(new TotalLossVehicleCheckNote());
-        displayEngine.setAvailableIntelligentNotes(intelligentNotes);
+        intelligentNoteDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
 
         Claim claim = new Claim();
@@ -111,22 +116,23 @@ public class IntelligentNoteTest extends BaseTest {
         claim.getHireMonitoringDetail().setIsNFInsurerManagingRepair(false);
         claim.setInsurer(insurerService.getInsurer(3));
         //test note is showing
-        Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(1, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
 
         // Test Note not showing when not total loss
         claim.getCustomer().setIsTotalLoss(Boolean.FALSE);
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
         claim.getCustomer().setIsTotalLoss(Boolean.TRUE);
 
         // Test Note not showing when managing repair
         claim.setManagingRepair(true);
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
         claim.setManagingRepair(false);
 
         // Test Note not showing when 'Non-Fault Insurer Managing Repair?' field is true
         claim.getHireMonitoringDetail().setIsNFInsurerManagingRepair(true);
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
         claim.getHireMonitoringDetail().setIsNFInsurerManagingRepair(false);
+        intelligentNoteDisplayEngine.setAvailableIntelligentNotes(intelligentNotesOriginal);
 
     }
 
@@ -134,8 +140,9 @@ public class IntelligentNoteTest extends BaseTest {
     @Test
     public void testCanShowCHOManagingRepairCheckNote() throws Exception {
         List<IntelligentNote> intelligentNotes = new ArrayList<>();
+        List<IntelligentNote> intelligentNotesOriginal = intelligentNoteDisplayEngine.getAvailableIntelligentNotes();
         intelligentNotes.add(new CHOManagingRepairCheckNote());
-        displayEngine.setAvailableIntelligentNotes(intelligentNotes);
+        intelligentNoteDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
 
         Claim claim = new Claim();
@@ -143,10 +150,11 @@ public class IntelligentNoteTest extends BaseTest {
         //test note not showing if CHO not managing repair
         claim.setManagingRepair(false);
         claim.setInsurer(insurerService.getInsurer(3));
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
         //test note  showing managing repair
         claim.setManagingRepair(true);
-        Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(1, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
+        intelligentNoteDisplayEngine.setAvailableIntelligentNotes(intelligentNotesOriginal);
 
     }
 
@@ -154,8 +162,9 @@ public class IntelligentNoteTest extends BaseTest {
     @Test
     public void testCanShowVehicleClassAboveSCheckNote() throws Exception {
         List<IntelligentNote> intelligentNotes = new ArrayList<>();
+        List<IntelligentNote> intelligentNotesOriginal = intelligentNoteDisplayEngine.getAvailableIntelligentNotes();
         intelligentNotes.add(new VehicleClassAboveSCheckNote());
-        displayEngine.setAvailableIntelligentNotes(intelligentNotes);
+        intelligentNoteDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
         Claim claim = new Claim();
         claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
@@ -166,29 +175,31 @@ public class IntelligentNoteTest extends BaseTest {
         claim.setInsurer(insurerService.getInsurer(3));
         //test note not showing if vehicle class is S
         vc.setName("S1");
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
         vc.setName("S2");
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
         vc.setName("S3");
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
         vc.setName("S4");
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
         vc.setName("S5");
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
 
         //test note only showing if VehicleClass above S
         vc.setName("SP1");
-        Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(1, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
         vc.setName("P1");
-        Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(1, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
+        intelligentNoteDisplayEngine.setAvailableIntelligentNotes(intelligentNotesOriginal);
     }
 
     
     @Test
     public void testCanShowFrontalDamageCheckNote() throws Exception {
         List<IntelligentNote> intelligentNotes = new ArrayList<>();
+        List<IntelligentNote> intelligentNotesOriginal = intelligentNoteDisplayEngine.getAvailableIntelligentNotes();
         intelligentNotes.add(new FrontalDamageCheckNote());
-        displayEngine.setAvailableIntelligentNotes(intelligentNotes);
+        intelligentNoteDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
 
         Claim claim = new Claim();
@@ -198,13 +209,14 @@ public class IntelligentNoteTest extends BaseTest {
         claim.setCustomer(cust);
         claim.setInsurer(insurerService.getInsurer(3));
         //test note not showing if customers car damage contains the string 'front'
-        Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(1, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
 
         cust.setDamage("rear damage");
         claim.setCustomer(cust);
         claim.setInsurer(insurerService.getInsurer(3));
         //test note not showing if customers car damage contains the string 'front'
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
+        intelligentNoteDisplayEngine.setAvailableIntelligentNotes(intelligentNotesOriginal);
 
     }
 
@@ -212,8 +224,9 @@ public class IntelligentNoteTest extends BaseTest {
     @Test
     public void testCanShowNeedForSPandPClassCheckWithoutECDNote() throws Exception {
         List<IntelligentNote> intelligentNotes = new ArrayList<>();
+        List<IntelligentNote> intelligentNotesOriginal = intelligentNoteDisplayEngine.getAvailableIntelligentNotes();
         intelligentNotes.add(new NeedForSPandPClassCheckWithoutECDNote());
-        displayEngine.setAvailableIntelligentNotes(intelligentNotes);
+        intelligentNoteDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
 
         Claim claim = new Claim();
@@ -242,29 +255,29 @@ public class IntelligentNoteTest extends BaseTest {
         claim.getCustomer().setInitialECD(null);
         claim.setHireMonitoringEcds(null);
 
-        Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(1, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
 
         vc.setName("SP1");
-        Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(1, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
 
         vc.setName("PV1");
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
 
         vc.setName("SP1");
         claim.getCustomer().setIsUsable(false);
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
         claim.getCustomer().setIsUsable(true);
 
         claim.setManagingRepair(true);
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
         claim.setManagingRepair(false);
 
         claim.getHireMonitoringDetail().setIsNFInsurerManagingRepair(true);
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
         claim.getHireMonitoringDetail().setIsNFInsurerManagingRepair(false);
 
         claim.getCustomer().setInitialECD(new Date());
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
         claim.getCustomer().setInitialECD(null);
 
         ArrayList<HireMonitoringEcd> hm = new ArrayList<>();
@@ -273,16 +286,18 @@ public class IntelligentNoteTest extends BaseTest {
         hmEcd.setEcdDate(new Date());
         hm.add(hmEcd);
         claim.setHireMonitoringEcds(hm);
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
         claim.setHireMonitoringEcds(new ArrayList<HireMonitoringEcd>());
+        intelligentNoteDisplayEngine.setAvailableIntelligentNotes(intelligentNotesOriginal);
     }
 
     
     @Test
     public void testCanShowHireCommenced48hSinceNotificationCheckNote() throws Exception {
         List<IntelligentNote> intelligentNotes = new ArrayList<>();
+        List<IntelligentNote> intelligentNotesOriginal = intelligentNoteDisplayEngine.getAvailableIntelligentNotes();
         intelligentNotes.add(new HireCommenced48hSinceNotificationCheck());
-        displayEngine.setAvailableIntelligentNotes(intelligentNotes);
+        intelligentNoteDisplayEngine.setAvailableIntelligentNotes(intelligentNotes);
 
 
         Claim claim = new Claim();
@@ -293,11 +308,12 @@ public class IntelligentNoteTest extends BaseTest {
         claim.setVehicleHire(vh);
         claim.setCreatedDate(DateHelper.addDay(DateHelper.getCurrentDate(), 3));
         //test note  showing if claim created date is more than 48h after hire start
-        Assert.assertEquals(1, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(1, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
 
         //test note not showing if claim created date is more than 48h after hire start
         claim.setCreatedDate(DateHelper.addDay(DateHelper.getCurrentDate(), 1));
-        Assert.assertEquals(0, displayEngine.getIntelligentNotes(claim).size());
+        Assert.assertEquals(0, intelligentNoteDisplayEngine.getIntelligentNotes(claim).size());
+        intelligentNoteDisplayEngine.setAvailableIntelligentNotes(intelligentNotesOriginal);
 
     }
 

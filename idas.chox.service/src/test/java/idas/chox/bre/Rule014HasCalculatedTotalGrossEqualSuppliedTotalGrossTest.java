@@ -5,7 +5,6 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import idas.chox.core.model.ClaimType;
 import idas.chox.service.bre.rules.HasCalculatedTotalGrossEqualSuppliedTotalGross;
 import idas.chox.core.util.CalcHelper;
 import java.io.IOException;

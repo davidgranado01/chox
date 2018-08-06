@@ -3,9 +3,9 @@ package idas.chox.service.xml;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
-import junit.framework.Assert;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -25,11 +25,6 @@ import idas.chox.test.BaseTest;
  */
 public class UploadNewClaimTest extends BaseTest {
 
-    @Before
-    public void setUpClass() throws Exception {
-        fakeSecurityInfoProvider.setIsCHO(true);
-    }
-
     @After
     public void tearDownClass() throws Exception {
          fakeSecurityInfoProvider.setIsCHO(false);
@@ -38,12 +33,12 @@ public class UploadNewClaimTest extends BaseTest {
     @Before
     @Transactional(readOnly = false)
     public void initialize() throws Exception {
+        fakeSecurityInfoProvider.setIsCHO(true);
         //upload 7 new claims
         String fileName = "UnitTest-NewClaim_Base.xml";
         File testFile = new ClassPathResource(fileName).getFile();
         boolean uploadStatus = uploadClaimXMLService.saveUploadedFile(testFile, fileName);
         Assert.assertTrue(uploadStatus);
-        
         Integer id = (bordereauService.getBordereauByFileName(fileName)).getId();
         Assert.assertNotNull(id);
         
@@ -76,5 +71,5 @@ public class UploadNewClaimTest extends BaseTest {
              Claim claim = claimResult.getClaim();
             Assert.assertEquals(ClaimParseStatus.CLAIM_NOT_EDITABLE,claimResult.getClaimParseStatus());
         }
-    }
+   }
 }

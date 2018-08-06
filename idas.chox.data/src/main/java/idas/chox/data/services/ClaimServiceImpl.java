@@ -1856,8 +1856,17 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public void updateLiabilityPercentages(Claim claim, BigDecimal insurerLiability, BigDecimal choLiability) {
         BigDecimal appliedLiability;
 
-        if (claim.getBreBand() == null) {
+        if (claim.getBreBand() == null && claim.getChorganisation() != null && claim.getInsurer() != null) {
             claim.setBreBand(breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()));
+        }
+        if (claim.getBreBand() == null) {
+            LOG.warn("Cannot update liability %ages for claim '{}' ({}) as there is no BRE band associated with claim",
+                    new Object[] {claim.getChoReference(), claim.getId()});
+            return;
+        }
+        if (insurerLiability == null) {
+            LOG.warn("Cannot update liability with null insurer liability");
+            return;
         }
         
     /*    
