@@ -43,7 +43,7 @@ public class UpdateLou extends BaseScheduleActivity {
     public boolean process(String body, List<EmailAttachment> attachments, String from, String subject) throws Exception {
 
         for (EmailAttachment attachment : attachments) {
-            if (!attachment.getName().endsWith("xls")) {
+            if (!attachment.getName().toLowerCase().endsWith("xls")) {
                 LOG.debug("Incorrect attachment type found: '{}'", attachment.getName());
                 continue;
             }
