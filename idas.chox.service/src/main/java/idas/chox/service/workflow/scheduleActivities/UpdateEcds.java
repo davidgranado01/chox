@@ -138,7 +138,7 @@ public class UpdateEcds extends BaseScheduleActivity {
             emailMsg.append("-----------------------------------------------------------------------------------------------\n");
             Set<Integer> rowNumbers = xlsDataMap.keySet();
 
-            rowNumbers.stream().filter((row) -> (row != 0)).map((row) -> xlsDataMap.get(row)).filter((cells) -> (cells.size() >= 4)).map((cells) -> {
+            rowNumbers.stream().filter((row) -> (row != 0)).map((row) -> xlsDataMap.get(row)).filter((cells) -> (cells.size() >= 5)).map((cells) -> {
                 // We expect at least three columns
                 emailMsg.append(String.format("%-22s", cells.get(0).trim()));
                 return cells;
