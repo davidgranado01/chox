@@ -48,7 +48,7 @@ public class TotalLossTask extends BaseScheduleActivity {
     @Override
     public boolean process(String body, List<EmailAttachment> attachments, String from, String subject) throws Exception {
         StringBuilder statusString = new StringBuilder();
-
+        
         for (EmailAttachment attachment : attachments) {
             if (!attachment.getName().endsWith("csv")) {
                 LOG.debug("Incorrect attachment type found: '{}'", attachment.getName());
@@ -64,7 +64,8 @@ public class TotalLossTask extends BaseScheduleActivity {
                         // Copy CHO Reference from 1st input cell to output
                         line[0] = row[0].trim();
                         boolean update = false;
-
+                        statusString.setLength(0);
+                        
                         Activity activity = (TlTaskCreation) activityFactory.getActivity("tlTaskCreation");
 
                         /* Check is valid referenceNumber provided */
