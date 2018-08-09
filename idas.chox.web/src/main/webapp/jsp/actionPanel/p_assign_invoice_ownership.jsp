@@ -7,6 +7,7 @@
     var claimOwnerId = -1;
     var workgroupId=-1;
     var isWorkgroupEnable = false;
+    var isClaimOwnershipEnable = false;
     var workgroupCombo;
     var claimOwnerStore;
     var claimOwnerCombo;
@@ -20,64 +21,65 @@
         insurerId = '<s:property value="insurer.id"/>';
         claimId = '<s:property value="id"/>';
         isWorkgroupEnable = ('<s:property value="insurer.workgroupEnable"/>' === 'true');
+        isClaimOwnershipEnable = ('<s:property value="insurer.claimOwnershipEnable"/>' === 'true');
 
-        // Add claim owner combo box
-        claimOwnerReader = new Ext.data.JsonReader({
-            totalProperty: 'totalCount',
-            root: 'results',
-            fields:
-                [
-                {name:'id'},
-                {name:'name'}
-            ]
-        });
+        if(isClaimOwnershipEnable) {
+            // Add claim owner combo box
+            claimOwnerReader = new Ext.data.JsonReader({
+                totalProperty: 'totalCount',
+                root: 'results',
+                fields: [
+                    {name:'id'},
+                    {name:'name'}
+                ]
+            });
 
-        claimOwnerStore = new choxDataStore({
-            url : "/prv/p/ClaimHandlerRoleUserDropDownAction2.action", 
-            params : {"workgroupId":workgroupId, "insurerId":insurerId},
-            reader : claimOwnerReader
-        });
+            claimOwnerStore = new choxDataStore({
+                url : "/prv/p/ClaimHandlerRoleUserDropDownAction2.action", 
+                params : {"workgroupId":workgroupId, "insurerId":insurerId},
+                reader : claimOwnerReader
+            });
 
-        claimOwnerCombo = new Ext.form.ComboBox({
-            store: claimOwnerStore,
-            width: 200,
-            renderTo: 'claimOwnerComboDiv',
-            valueField: 'id',
-            id: 'claimOwnerComboId',
-            hiddenName: 'claimOwnerId',
-            displayField:'name',
-            typeAhead: true,
-            mode: 'local',
-            listWidth: 200,
-            forceSelection: true,
-            triggerAction: 'all',
-            emptyText: '--- Please Select ---',
-            listeners: {
-                select: function () {
-                    if(this.getRawValue() === "") {
-                        this.clearValue();
-                        this.reset();
-                        claimOwnerId = -1;
-                    }else {
-                        claimOwnerId = this.value;
-                    }
-                },
-                specialkey:function (el, e) {
+            claimOwnerCombo = new Ext.form.ComboBox({
+                store: claimOwnerStore,
+                width: 200,
+                renderTo: 'claimOwnerComboDiv',
+                valueField: 'id',
+                id: 'claimOwnerComboId',
+                hiddenName: 'claimOwnerId',
+                displayField:'name',
+                typeAhead: true,
+                mode: 'local',
+                listWidth: 200,
+                forceSelection: true,
+                triggerAction: 'all',
+                emptyText: '--- Please Select ---',
+                listeners: {
+                    select: function () {
+                        if(this.getRawValue() === "") {
+                            this.clearValue();
+                            this.reset();
+                            claimOwnerId = -1;
+                        }else {
+                            claimOwnerId = this.value;
+                        }
+                    },
+                    specialkey:function (el, e) {
                             if(e.keyCode === e.ENTER) {
                                 e.preventDefault();
                             }
+                    }
                 }
-            }
-        });
-        $.validator.addMethod("claimOwnerSelection",
-        function(value) {
-            if(value === "") {
-                return false;
-            }
-            return true;
+            });
+            $.validator.addMethod("claimOwnerSelection",
+                function(value) {
+                    if(value === "") {
+                        return false;
+                    }
+                    return true;
+                }
+            );
         }
-    );
-
        
 
         if(isWorkgroupEnable) {
@@ -120,10 +122,14 @@
                             this.clearValue();
                             this.reset();
                             workgroupId = -1;
+<s:if test="insurer.claimOwnershipEnable">
                             doRenderClaimHandlerDropDown(workgroupId);
+</s:if>
                         }else {
                             workgroupId=this.value;
+<s:if test="insurer.claimOwnershipEnable">
                             doRenderClaimHandlerDropDown(workgroupId);
+</s:if>
                         }
                     }                    
                 }
@@ -145,20 +151,36 @@
         {
             errorLabelContainer: "#OwnershippAssignmentMessageBox",
             rules: {
-                workgroupComboId:{comboSelection:workgroupId },
+<s:if test="insurer.workgroupEnable">
+                workgroupComboId:{comboSelection:workgroupId }
+<s:if test="insurer.claimOwnershipEnable">
+                ,
+</s:if>
+</s:if>
+<s:if test="insurer.claimOwnershipEnable">
                 claimOwnerComboId:{claimOwnerSelection: claimOwnerId}
+</s:if>
             },
             messages: {
-                workgroupComboId: {comboSelection:"You must supply a value for 'Workgroup'"},
+<s:if test="insurer.workgroupEnable">
+                workgroupComboId: {comboSelection:"You must supply a value for 'Workgroup'"}
+<s:if test="insurer.claimOwnershipEnable">
+                ,
+</s:if>
+</s:if>
+<s:if test="insurer.claimOwnershipEnable">
                 claimOwnerComboId: {claimOwnerSelection:"You must supply a value for 'Claim Owner'"}
+</s:if>
             }
         });
+<s:if test="insurer.claimOwnershipEnable">
         doRenderClaimHandlerDropDown(workgroupId);
+</s:if>
     });
 
 
     function doRenderClaimHandlerDropDown(workgroupId){
-        if((isWorkgroupEnable && workgroupId>0) || !isWorkgroupEnable){
+        if((isWorkgroupEnable && workgroupId>0 && isClaimOwnershipEnable) || !isWorkgroupEnable){
             claimOwnerStore.removeAll();
             claimOwnerStore.load({ params : {"workgroupId":workgroupId, "insurerId":insurerId}});
             claimOwnerCombo.reset();
@@ -211,11 +233,14 @@
                     <s:hidden id="name" name="name" />
                     <div>
                         <div class="status-info">
-                        <s:if test="insurer.workgroupEnable">
+                        <s:if test="insurer.workgroupEnable && insurer.claimOwnershipEnable">
                         Assign the Workgroup and Claim Owner by using the drop down menus provided below, selecting a Workgroup will determine which Claims Handlers are displayed in the Claim Owner drop down menu.
                         </s:if>
+                        <s:elseif test="insurer.workgroupEnable">
+                        Assign the Workgroup by using the drop down menu provided below.
+                        </s:elseif>
                         <s:else>
-                        Assign the Claim Owner by using the drop down menus provided below.
+                        Assign the Claim Owner by using the drop down menu provided below.
                         </s:else>
                         </div>
 
@@ -228,11 +253,13 @@
                                         <td width="70%"></td>
                                     </tr>
                                 </s:if>
+                                <s:if test="insurer.claimOwnershipEnable">
                                 <tr>
                                     <td align="right" width="10%"><label>Claim Owner : </label></td>
                                     <td width="20%"><div id="claimOwnerComboDiv"></div></td>
                                     <td width="70%"></td>
                                 </tr>
+                                </s:if>
 
                                 <tr>
                                     <td colspan="3">
@@ -243,7 +270,15 @@
                                 </tr>
                                 <tr>
                                     <td colspan="3" class="choice" nowrap >
+<s:if test="insurer.workgroupEnable && insurer.claimOwnershipEnable">
+                                        <input type="button" id="AIOAssignOwnerButtonId" value="Assign Workgroup & Owner" onclick="event.preventDefault(); doAssignOwnershipSubmit();"/>
+</s:if>
+<s:elseif test="insurer.workgroupEnable">
+                                        <input type="button" id="AIOAssignOwnerButtonId" value="Assign Workgroup" onclick="event.preventDefault(); doAssignOwnershipSubmit();"/>
+</s:elseif>
+<s:else>
                                         <input type="button" id="AIOAssignOwnerButtonId" value="Assign Owner" onclick="event.preventDefault(); doAssignOwnershipSubmit();"/>
+</s:else>
                                     </td>
                                 </tr>
                             </table>
