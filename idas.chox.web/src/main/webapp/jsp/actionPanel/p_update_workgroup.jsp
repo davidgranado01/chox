@@ -93,7 +93,7 @@ function assignClaimOwnershipSubmit(){
                 <div class="status-info">Please select a Workgroup for this claim and click on the ’Update Workgroup’ button.
                 </div>
                 <div class="status-control-set">
-                    <s:hidden id="name" name="name" />
+                    <s:hidden id="nameId" name="name" value="assignWorkgroup"/>
                     <table class="status-table" border="0" cellpadding="0" cellspacing="0">
                         <tr>
                             <td align="right" width="10%"><label>Workgroup : </label></td>
