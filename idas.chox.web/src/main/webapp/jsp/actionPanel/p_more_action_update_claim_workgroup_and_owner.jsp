@@ -11,6 +11,8 @@
     var workgroupCombo;
     var claimOwnerStore;
     var claimOwnerCombo;
+    var claimType;
+    var enableManualInvoiceWorkgroups;
 
     Ext.onReady(function() {
         // GET CLAIM INFORMATION
@@ -22,6 +24,12 @@
         claimId = '<s:property value="id"/>';
         isWorkgroupEnable = ('<s:property value="insurer.workgroupEnable"/>' === 'true');
 
+        claimType = '<s:property value="claimType"/>';
+        enableManualInvoiceWorkgroups = <s:property value="insurer.enableManualInvoiceWorkgroups"/>;
+        if (claimType === 'Insurer Invoice' && isWorkgroupEnable && enableManualInvoiceWorkgroups == false) {
+            isWorkgroupEnable = false;
+        }
+
         // Add claim owner combo box
         var claimOwnerReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
@@ -32,7 +40,6 @@
                 {name:'name'}
             ]
         });
-
         claimOwnerStore = new choxDataStore({
             url : "/prv/p/ClaimHandlerRoleUserDropDownAction2.action", 
             params : {"workgroupId":selectedWorkgroupId, "insurerId":insurerId},
@@ -160,7 +167,7 @@
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
     <form action="<%=request.getContextPath()%>/prv/processClaim.action" method="post" id="formOwnershipAction" name="formOwnershipAction">
         <fieldset class="x-fieldset">
-            <s:if test="insurer.workgroupEnable">
+            <s:if test="(insurer.workgroupEnable && claimType.claimTypeValue!=10) || (claimType.claimTypeValue==10 && insurer.enableManualInvoiceWorkgroups)">
             <legend>Update Workgroup/Claim Owner - Action Required</legend>
             </s:if>
             <s:else>
@@ -174,7 +181,7 @@
                 <input type="hidden" id="claimWorkgroupEnable" name="claimWorkgroupEnable" value="<s:property value="insurer.workgroupEnable"/>">
                 <div>
                     <div class="status-info">
-                        <s:if test="insurer.workgroupEnable">
+                    <s:if test="(insurer.workgroupEnable && claimType.claimTypeValue!=10) || (claimType.claimTypeValue==10 && insurer.enableManualInvoiceWorkgroups)">
                         Update the Workgroup or Claim Owner by using the drop down menus provided below, selecting a Workgroup will determine which Claims Handlers are displayed in the Claim Owner drop down menu.
                         </s:if>
                         <s:else>
@@ -183,7 +190,7 @@
                         </div>
                     <div class="status-control-set">
                         <table class="status-table" width="100%">
-                            <s:if test="insurer.workgroupEnable">
+                            <s:if test="(insurer.workgroupEnable && claimType.claimTypeValue!=10) || (claimType.claimTypeValue==10 && insurer.enableManualInvoiceWorkgroups)">
                                 <tr>
                                     <td align="right" width="10%"><label>Workgroup : </label></td>
                                     <td width="20%"><div id="workgroupReassignComboDiv"/></td>
