@@ -96,11 +96,11 @@ public class ExtraAction {
         } else if (extraAction.equalsIgnoreCase(INVOICE_REVIEW_REQUIRED)) {
             returnStr = "Flag Claim For Review At Invoice Stage";
         } else if (extraAction.equalsIgnoreCase(ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP_CLAIM_OWNER)) {
-            returnStr = "Update Manual Invoice Workgroup/Claim Owner";
+            returnStr = "Update Workgroup/Claim Owner";
         } else if (extraAction.equalsIgnoreCase(ASSIGN_OR_UPDATE_MANUAL_INV_WORKGROUP)) {
-            returnStr = "Update Manual Invoice Workgroup";
+            returnStr = "Update Workgroup";
         } else if (extraAction.equalsIgnoreCase(ASSIGN_OR_UPDATE_MANUAL_INV_CLAIM_OWNER)) {
-            returnStr = "Update Manual Invoice Claim Owner";
+            returnStr = "Update Claim Owner";
         } else if (extraAction.equalsIgnoreCase(UPDATE_CLAIM_WORKGROUP)) {
             returnStr = "Update Workgroup";
         } else if (extraAction.equalsIgnoreCase(FINAL_REVIEW)) {

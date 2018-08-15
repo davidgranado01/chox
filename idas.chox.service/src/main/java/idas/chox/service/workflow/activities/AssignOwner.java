@@ -36,7 +36,7 @@ public class AssignOwner extends BaseActivity {
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
-        if (ClaimType.isInsurerUpload(claim.getClaimType())) {
+        if (claim.getClaimType() == ClaimType.INSURER_INVOICE) {
             workgroupsEnabled = claim.getInsurer().isEnableManualInvoiceWorkgroups();
             ownershipEnabled = claim.getInsurer().isEnableManualInvoiceOwnership();
             if (!workgroupsEnabled && claim.getWorkgroup() != null && oasWorkgroupId > 0) {
