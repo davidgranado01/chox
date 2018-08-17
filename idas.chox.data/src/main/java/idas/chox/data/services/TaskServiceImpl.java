@@ -424,13 +424,15 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                             internalTasksOnClaimsNobodyOwns = Restrictions.conjunction()
                                     .add(Restrictions.eq("insurer", Boolean.FALSE))
                                     .add(Restrictions.eq("visibility", 2))
-                                    .add(Restrictions.isNull("c.supplierClaimOwner"));
+                                    .add(Restrictions.isNull("c.supplierClaimOwner"))
+                                    .add(Restrictions.eq("c.chorganisation", user.getChorganisation()));
 
                             // Add Insurer external tasks on claims nobody owns
                             externalTasksOnClaimsNobodyOwns = Restrictions.conjunction()
                                     .add(Restrictions.eq("this.insurer", Boolean.TRUE))
                                     .add(Restrictions.eq("this.visibility", 3))
-                                    .add(Restrictions.isNull("c.supplierClaimOwner"));
+                                    .add(Restrictions.isNull("c.supplierClaimOwner"))
+                                    .add(Restrictions.eq("c.chorganisation", user.getChorganisation()));
                             break;
                         }
                     }
