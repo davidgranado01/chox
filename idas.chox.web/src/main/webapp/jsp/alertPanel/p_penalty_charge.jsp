@@ -42,7 +42,7 @@
                         success : function(response, opts) {
                             var obj = Ext.decode(response.responseText);
                             if ( obj.success ){
-                                $('#tHirePenaltyChargeAmount').val((obj.hirePenaltyAmount).toFixed(2));
+                                $('#tHirePenaltyChargeAmount').val(parseFloat(obj.hirePenaltyAmount).toFixed(2));
                                 updateTotalToPay();
                             }
                         },
@@ -94,7 +94,7 @@
                         success : function(response, opts) {
                             var obj = Ext.decode(response.responseText);
                             if ( obj.success ){
-                                $('#tRepairPenaltyChargeAmount').val((obj.repairPenaltyAmount).toFixed(2));
+                                $('#tRepairPenaltyChargeAmount').val(parseFloat(obj.repairPenaltyAmount).toFixed(2));
 //                                $('#hvRepairPenaltyPercentage').val(opts.params.repairPenaltyPercentage);
                                 updateTotalToPay();
                             }
