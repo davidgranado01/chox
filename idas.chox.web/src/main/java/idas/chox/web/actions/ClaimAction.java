@@ -1273,6 +1273,9 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                             * not have to be over say 30 days in order to be able
                             * to apply the penalty charges
                             */
+                            LOG.debug("pcExistsBeforeSwithedOffInBreBand={}, days={}, penaltyBandDays={}, org.AutoPenaltyChargeEnabled={}, claim.isAutoPenaltyChargeEnabled={}",
+                                    new Object[]{pcExistsBeforeSwithedOffInBreBand, days, invoice.getPenaltyBand(), claim.getChorganisation().isAutoPenaltyChargeEnabled(),
+                                                    claim.isAutoPenaltyChargeEnabled()});
                             if (brePenaltyBand == null) {
                                 LOG.debug("Disabling access to UPDATE_PENALTY_CHARGES as no penalty band found");
                                 accessRight = 0;
@@ -1284,13 +1287,13 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                             // Check the 'Adjust Penalty Charges' Panel is not already displayed
                             else if (accessRight > 0 && !pcExistsBeforeSwithedOffInBreBand && invoice.getPenaltyBand() > -1) { // Check if not removed from penalty queue
                                 if ((!claim.getChorganisation().isAutoPenaltyChargeEnabled()
-                                        || (claim.getChorganisation().isAutoPenaltyChargeEnabled() && !claim.isAutoPenaltyChargeEnabled()))
+                                        || (claim.getChorganisation().isAutoPenaltyChargeEnabled() && (!claim.isAutoPenaltyChargeEnabled()
+                                        || (ClaimType.isInsurerUpload(claim.getClaimType()) && !claim.getBreBand().isAllowManualInvoiceAutoPenaltyCharges()))))
                                      && days > invoice.getPenaltyBand()) {
                                     LOG.debug("Disabling access to UPDATE_PENALTY_CHARGES as it should be displayed");
                                     accessRight = 0;
                                 }
                             }
-
                         } else {
                             // No invoice!
                             LOG.debug("Disabling access to UPDATE_PENALTY_CHARGES as no invoice");
