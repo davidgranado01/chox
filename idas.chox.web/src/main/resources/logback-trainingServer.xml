@@ -32,23 +32,7 @@
             <totalSizeCap>20GB</totalSizeCap>
         </rollingPolicy>
     </appender>
-    <appender name="C" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-        <File>${catalina.base}/logs/idaschox-ehCacheManager.log</File>
-        <encoder>
-            <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>
-        </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <!-- daily rollover For various technical reasons, rollovers are not clock-driven but depend on the arrival of logging events-->
-            <fileNamePattern>${catalina.base}/logs/old/%d{yyyy/MM/dd}/idaschox-ehCacheManager.log.%i</fileNamePattern>
-            <!-- keep 30 days' worth of history -->
-            <maxHistory>30</maxHistory>
-            <!-- or whenever the file size reaches 10MB -->
-            <maxFileSize>10MB</maxFileSize>
-            <totalSizeCap>20GB</totalSizeCap>
-        </rollingPolicy>
-    </appender>
-    
+     
     <appender name="H" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
         <File>${catalina.base}/logs/idaschox-hibernate.log</File>
@@ -155,10 +139,6 @@
     </logger>
     <logger name="idas.chox.web.ws" level="INFO" additivity="false">
         <appender-ref ref="W"/>
-        <appender-ref ref="CYCLIC" />
-    </logger>
-    <logger name="net.sf.ehcache" level="WARN" additivity="false">
-        <appender-ref ref="C"/>
         <appender-ref ref="CYCLIC" />
     </logger>
     <logger name="org.acegisecurity" level="WARN" additivity="false">
