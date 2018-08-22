@@ -144,7 +144,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                         new Object[]{name, claim.getId(), claim.getChoReference(), claim.getStatus(), ex.getMessage()});
                 throw (ex);
             } catch (Exception ex) {
-                LOG.warn("Error processing batch update. Error on claim with CHO reference '{}': ", claim.getChoReference(), ex);
+                LOG.warn("Error processing batch update. Error on claim with CHO reference '{}': {}", claim.getChoReference(), ex.getMessage());
                 handleException(ex);
                 return ERROR;
             }
@@ -171,7 +171,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
                 updateRedirectionParamInSession();
                 return SUCCESS;
             } catch (Exception ex) {
-                LOG.warn("Error processing claim activity: {}", ex.getMessage(), ex);
+                LOG.warn("Error processing claim activity: {}", ex.getMessage());
                 handleException(ex);
                 setJsonData("{\"error\":\"False\",\"errors\":\"" + getActionError() + "\"}");
                 updateRedirectionParamInSession();
