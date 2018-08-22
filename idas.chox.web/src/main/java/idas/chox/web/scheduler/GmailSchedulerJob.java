@@ -160,7 +160,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
                         GmailUtils.modifyThread("me", message.getThreadId(), null, Arrays.asList("UNREAD"));
                         continue;
                     }
-                    LOG.info("Found unread message with subject '{}' from approved sender '{}'{}", new Object[]{subject, from, " (with prefix '" + emailSubjectPrefix + "')"});
+                    LOG.info("Found unread message with subject '{}' from approved sender '{}'{}", new Object[]{subject, from, emailSubjectPrefix == null ? "" : " (with prefix '" + emailSubjectPrefix + "')"});
 
                     //Ok, sender is authorised, so lets authenticate the user
                     try {
