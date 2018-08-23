@@ -61,7 +61,7 @@
         <spring-security-config.version>3.2.10.RELEASE</spring-security-config.version>
         <spring-security-web.version>3.2.10.RELEASE</spring-security-web.version>
 
-        <struts.version>2.5.16</struts.version>
+        <struts.version>2.5.17</struts.version>
        
         <quartz-scheduler.version>2.3.0</quartz-scheduler.version>
         
