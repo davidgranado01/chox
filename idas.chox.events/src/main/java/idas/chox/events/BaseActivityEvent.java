@@ -191,7 +191,7 @@ public class BaseActivityEvent extends Entity implements Serializable {
             } else {
                 addAttribute("finalReviewInsurer", null);
             }
-            if (claim.getFinalReviewDateIns() != null) {
+            if (claim.getFinalReviewDateCho() != null) {
                 addAttribute("finalReviewDateCho", DateHelper.getLocalDateFormat().format(claim.getFinalReviewDateCho()));
             } else {
                 addAttribute("finalReviewDateCho", null);
