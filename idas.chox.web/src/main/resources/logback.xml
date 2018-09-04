@@ -22,6 +22,26 @@
             <include resource="logback-testServer.xml"/>
         </then>  
     </if>
+    <if condition='property("HOSTNAME").equalsIgnoreCase("DEV")'>
+        <then>
+            <include resource="logback-testServer.xml"/>
+        </then>  
+    </if>
+    <if condition='property("HOSTNAME").equalsIgnoreCase("UAT")'>
+        <then>
+            <include resource="logback-testServer.xml"/>
+        </then>  
+    </if>
+    <if condition='property("HOSTNAME").equalsIgnoreCase("PAT")'>
+        <then>
+            <include resource="logback-trainingServer.xml"/>
+        </then>  
+    </if>
+    <if condition='property("HOSTNAME").equalsIgnoreCase("PRE")'>
+        <then>
+            <include resource="logback-testServer.xml"/>
+        </then>  
+    </if>
     <if condition='property("HOSTNAME").equalsIgnoreCase("PRODUCTION")'>
         <then>
             <include resource="logback-productionServer.xml"/>
