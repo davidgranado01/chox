@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -28,7 +29,8 @@ public final class Hpi {
     private static final String PRODUCT_CODE_PARAM = "HPI11";
     private static final String FUNCTION_PARAM = "SEARCH";
     private static final String DEVICE_TYPE_PARAM = "XM";
-    private static final Hpi INSTANCE = new Hpi();
+//    private static final Hpi INSTANCE = new Hpi();
+    private static Hpi INSTANCE;
     private Map<String, String> params;
     private String session;
     private CloseableHttpClient httpClient;
@@ -38,8 +40,8 @@ public final class Hpi {
     private String initialsParam;
     private boolean active = false;
     private static final Object LOCK =  new Object();
-    
-    private Hpi() {
+
+    private Hpi(String proxyHost, String proxyPort) {
         if (INSTANCE != null) {
             throw new IllegalStateException("HPI Already instantiated");
         }
@@ -49,22 +51,37 @@ public final class Hpi {
         cm.setMaxTotal(20);
         // Increase default max connection per route to 20
         cm.setDefaultMaxPerRoute(20);
-
-        
+                
         // Create an HttpClient with the ThreadSafeClientConnManager.
         // This connection manager must be used if more than one thread will
         // be using the HttpClient.
-        httpClient = HttpClients.custom()
+        if (proxyHost != null && !proxyHost.isEmpty()) {
+            LOG.info("Using proxy host '{}' and proxy port '{} for HPI connection.", proxyHost, proxyPort);
+            HttpHost proxy = new HttpHost(proxyHost, Integer.valueOf(proxyPort), "http");
+            httpClient = HttpClients.custom()
+              .setConnectionManager(cm)
+              .setProxy(proxy)
+              .build();
+        } else {
+            LOG.info("No proxy specified for HPI connection.");
+            httpClient = HttpClients.custom()
               .setConnectionManager(cm)
               .build();
-        
-//        httpclient = new HttpClient(new MultiThreadedHttpConnectionManager());
+        }
         LOG.info("HPI I/F (singleton) utility class has been created.");
     }
 
     public static Hpi getInstance() {
         return INSTANCE;
     }
+
+    private synchronized static Hpi getInstance(String proxyHost, String proxyPort) {
+        if (INSTANCE == null) {
+            INSTANCE = new Hpi(proxyHost, proxyPort);
+        }
+        return INSTANCE;
+    }
+
 
     public static HpiResponse getHpiInfo(String vrn) throws HpiException {
         return getInstance().getHpi(vrn);
