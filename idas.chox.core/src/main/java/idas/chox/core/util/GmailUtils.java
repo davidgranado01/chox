@@ -63,7 +63,7 @@ public class GmailUtils {
     private static final String CLIENT_SECRET_DIR = "client_secret.json";
     private static Gmail service = null;
     private static final Map<String, String> LABEL_MAP = new HashMap<>();
-  
+
     static { // create gmail service
         try {
             // Build a new authorized API client service.
@@ -74,14 +74,13 @@ public class GmailUtils {
                     .setApplicationName(APPLICATION_NAME)
                     .build();
             LOG.debug("Gmail service created");
-            
+
             // Load labels and store name/id for later use
             ListLabelsResponse response = service.users().labels().list("me").execute();
             List<Label> labels = response.getLabels();
             labels.stream().filter((label) -> (label.getType().equals("user"))).forEachOrdered((label) -> {
                 LABEL_MAP.put(label.getName(), label.getId());
             });
-
 
         } catch (FileNotFoundException ex) {
             LOG.error("Gmail API: Gmail Credentials not found: {}", ex.getMessage(), ex);
@@ -97,7 +96,7 @@ public class GmailUtils {
     public static String getLabelId(String description) {
         return LABEL_MAP.get(description);
     }
-    
+
     /**
      * Creates an authorized Credential object.
      *
@@ -175,19 +174,37 @@ public class GmailUtils {
     synchronized public List<idas.chox.core.model.EmailAttachment> fetchAttachments(Message message) {
         List<idas.chox.core.model.EmailAttachment> listOfAttachements = new ArrayList<>();
         try {
+/***********
+            if (message.getPayload().getBody().size() > 0) {
+                MessagePartBody body = message.getPayload().getBody();
+                Base64 base64Url = new Base64(true);
+                byte[] fileByteArray = Base64.decodeBase64(body.getData());
+                if (fileByteArray != null && fileByteArray.length > 0) {
+                    idas.chox.core.model.EmailAttachment attachment = new idas.chox.core.model.EmailAttachment("N/A", fileByteArray);
+                    LOG.debug("Attachment added for Payload Body: ", fileByteArray.toString());
+                    listOfAttachements.add(attachment);
+                } else {
+                    LOG.debug("Payload body data found but is empty.");
+                }
+            }
+*************/
             List<MessagePart> messageParts = message.getPayload().getParts();
 
-            for (MessagePart part : messageParts) {
-                if (part.getFilename() != null && part.getFilename().length() > 0) {
-                    String filename = part.getFilename();
-                    String attId = part.getBody().getAttachmentId();
-                    MessagePartBody attachPart = service.users().messages().attachments().
-                            get("me", message.getId(), attId).execute();
+            if (messageParts != null) {
+                for (MessagePart part : messageParts) {
+                    if (part.getFilename() != null && part.getFilename().length() > 0) {
+                        String filename = part.getFilename();
+                        LOG.debug("Found attachment with name '{}'", filename);
+                        String attId = part.getBody().getAttachmentId();
+                        MessagePartBody attachPart = service.users().messages().attachments().
+                                get("me", message.getId(), attId).execute();
 
-                    Base64 base64Url = new Base64(true);
-                    byte[] fileByteArray = Base64.decodeBase64(attachPart.getData());
-                    idas.chox.core.model.EmailAttachment attachment = new idas.chox.core.model.EmailAttachment(filename, fileByteArray);
-                    listOfAttachements.add(attachment);
+                        Base64 base64Url = new Base64(true);
+                        byte[] fileByteArray = Base64.decodeBase64(attachPart.getData());
+                        idas.chox.core.model.EmailAttachment attachment = new idas.chox.core.model.EmailAttachment(filename, fileByteArray);
+                        listOfAttachements.add(attachment);
+                        LOG.debug("Added attachment with name '{}'", filename);
+                    }
                 }
             }
         } catch (IOException e) {
@@ -254,7 +271,7 @@ public class GmailUtils {
 
         LOG.debug("Thread id={}: {}", thread.getId(), thread.toPrettyString());
     }
-    
+
     private static MimeMessage createEmail(String to, String bccReceiver, String subject, String bodyText)
             throws MessagingException {
         String[] bccReceivers = bccReceiver != null ? bccReceiver.split(",") : null;
@@ -300,7 +317,6 @@ public class GmailUtils {
         return message;
     }
 
-
     synchronized public static Message sendMessage(String to, String bccReceivers, String subject, String bodyText)
             throws MessagingException, IOException {
         MimeMessage mimeMessage = createEmail(to, bccReceivers, subject, bodyText);
@@ -310,4 +326,5 @@ public class GmailUtils {
         LOG.debug("Message with id={} sent to '{}' (with cc to '{}')", new Object[]{message.getId(), to, bccReceivers});
 
         return message;
-    }}
+    }
+}
