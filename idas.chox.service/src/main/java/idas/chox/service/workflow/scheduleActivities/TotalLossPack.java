@@ -66,7 +66,7 @@ public class TotalLossPack extends BaseScheduleActivity {
 
                 if (!claim.getHireMonitoringDetail().isIsTotalLostCheck()) {
                     claimService.setTotalLoss(claim, true);
-                    statusString.append("; Claim has been marked as a total loss");
+                    statusString.append("Claim has been marked as a total loss");
                 }
 
                 try {
@@ -74,7 +74,7 @@ public class TotalLossPack extends BaseScheduleActivity {
                     String result = attachmentService.addAttachment(claim, attachment.getContent(), attachment.getName(),
                             attachment.getSize(), AttachmentCategory.ATTCAT_TOTALLOSS_PACK, "Total Loss pack has been uploaded for review.", true, false, "CHO");
                     if (result == null) {
-                        statusString.insert(0, claim.getChoReference() + "\tSuccess: Attachment file has been uploaded against claim " + claim.getChoReference());
+                        statusString.insert(0, claim.getChoReference() + "\tSuccess: Attachment file has been uploaded against claim. ");
                         // Add event to event log - currently no attachment added event
 //                        ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(new AttachmentAddedEvent(claim, "TotalLossPack", ?));
                     } else {
