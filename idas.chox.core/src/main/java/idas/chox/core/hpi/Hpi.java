@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -41,7 +40,7 @@ public final class Hpi {
     private boolean active = false;
     private static final Object LOCK =  new Object();
 
-    private Hpi(String proxyHost, String proxyPort) {
+    private Hpi() {
         if (INSTANCE != null) {
             throw new IllegalStateException("HPI Already instantiated");
         }
@@ -55,29 +54,18 @@ public final class Hpi {
         // Create an HttpClient with the ThreadSafeClientConnManager.
         // This connection manager must be used if more than one thread will
         // be using the HttpClient.
-        if (proxyHost != null && !proxyHost.isEmpty()) {
-            LOG.info("Using proxy host '{}' and proxy port '{} for HPI connection.", proxyHost, proxyPort);
-            HttpHost proxy = new HttpHost(proxyHost, Integer.valueOf(proxyPort), "http");
-            httpClient = HttpClients.custom()
-              .setConnectionManager(cm)
-              .setProxy(proxy)
-              .build();
-        } else {
-            LOG.info("No proxy specified for HPI connection.");
-            httpClient = HttpClients.custom()
-              .setConnectionManager(cm)
-              .build();
-        }
+        httpClient = HttpClients.custom()
+            .setConnectionManager(cm)
+            .useSystemProperties()
+            .build();
+
         LOG.info("HPI I/F (singleton) utility class has been created.");
     }
 
-    public static Hpi getInstance() {
-        return INSTANCE;
-    }
 
-    private synchronized static Hpi getInstance(String proxyHost, String proxyPort) {
+    private synchronized static Hpi getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new Hpi(proxyHost, proxyPort);
+            INSTANCE = new Hpi();
         }
         return INSTANCE;
     }

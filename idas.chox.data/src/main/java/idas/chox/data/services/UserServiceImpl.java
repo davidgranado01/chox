@@ -51,18 +51,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
     private static final String KBBS_AUTHENTICATION_URL = "https://dashboards.idaschox.com/authentication/GenerateAccessToken";
-    private static final String KBBS_INVALIDATE_URL = "https://dashboards.idaschox.com/authentication/InvalidateAccessToken";
-    private String proxyHost;
-    private String proxyPort;
-
-    public void setProxyHost(String proxyHost) {
-        this.proxyHost = proxyHost;
-    }
-
-    public void setProxyPort(String proxyPort) {
-        this.proxyPort = proxyPort;
-    }
-    
+    private static final String KBBS_INVALIDATE_URL = "https://dashboards.idaschox.com/authentication/InvalidateAccessToken";    
     
     @Override
     public WebUser findByEmail(String email) {
@@ -435,7 +424,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
             }
             if (password != null && !password.isEmpty()) {
                 LOG.debug("Authenticating against KBBS for user '{}' with password '{}'", username, password);
-                try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
+                try (CloseableHttpClient httpclient = HttpClients.createSystem()) {
                     HttpPost httppost = new HttpPost(KBBS_AUTHENTICATION_URL);
                     Map paramMap = new HashMap();
                     Map extraDataMap = new HashMap();
@@ -451,23 +440,12 @@ public class UserServiceImpl extends BaseDataService implements UserService {
                     httppost.setEntity(requestEntity);
                     httppost.addHeader("Origin", "https://www.idaschox.com");
                     
-                    RequestConfig requestConfig;
-                    if (proxyHost != null && !proxyHost.isEmpty()) {
-                        HttpHost proxy = new HttpHost(proxyHost, Integer.valueOf(proxyPort), "http");
-
-                        requestConfig = RequestConfig.custom()
-                            .setProxy(proxy)
+                    RequestConfig requestConfig = RequestConfig.custom()
                             .setSocketTimeout(30000)
                             .setConnectTimeout(30000)
                             .setConnectionRequestTimeout(30000)
                             .build();
-                    } else {
-                        requestConfig = RequestConfig.custom()
-                            .setSocketTimeout(30000)
-                            .setConnectTimeout(30000)
-                            .setConnectionRequestTimeout(30000)
-                            .build();
-                    }
+                    
                     httppost.setConfig(requestConfig);
                     CookieStore cookieStore = new BasicCookieStore();
                     HttpClientContext context = HttpClientContext.create();

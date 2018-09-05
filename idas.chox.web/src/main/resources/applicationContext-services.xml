@@ -124,8 +124,6 @@
     </bean>
     <bean id="userService" class="idas.chox.data.services.UserServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="proxyHost" value="${http.proxyHost}"/>
-        <property name="proxyPort" value="${http.proxyPort}"/>
     </bean>
     <bean id="dataService" class="idas.chox.data.services.SecureDataService" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
