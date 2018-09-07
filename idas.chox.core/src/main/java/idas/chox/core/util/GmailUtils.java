@@ -173,49 +173,45 @@ public class GmailUtils {
 
     synchronized public List<idas.chox.core.model.EmailAttachment> fetchAttachments(Message message) {
         List<idas.chox.core.model.EmailAttachment> listOfAttachements = new ArrayList<>();
-        try {
-/***********
-            if (message.getPayload().getBody().size() > 0) {
-                MessagePartBody body = message.getPayload().getBody();
-                Base64 base64Url = new Base64(true);
-                byte[] fileByteArray = Base64.decodeBase64(body.getData());
-                if (fileByteArray != null && fileByteArray.length > 0) {
-                    idas.chox.core.model.EmailAttachment attachment = new idas.chox.core.model.EmailAttachment("N/A", fileByteArray);
-                    LOG.debug("Attachment added for Payload Body: ", fileByteArray.toString());
-                    listOfAttachements.add(attachment);
-                } else {
-                    LOG.debug("Payload body data found but is empty.");
-                }
-            }
-*************/
-            List<MessagePart> messageParts = message.getPayload().getParts();
+        
+        List<MessagePart> messageParts = message.getPayload().getParts();
+        if (messageParts != null) {
+            listOfAttachements.addAll(getAttachmentsFromParts(message.getId(), messageParts));
+        }
+        
+        LOG.debug("Found {} attachments", listOfAttachements.size());
 
-            if (messageParts != null) {
+        return listOfAttachements;
+    }
+
+    private List<idas.chox.core.model.EmailAttachment> getAttachmentsFromParts(String messageId, List<MessagePart> messageParts) {
+        List<idas.chox.core.model.EmailAttachment> listOfAttachements = new ArrayList<>();
+        try {
                 for (MessagePart part : messageParts) {
                     if (part.getFilename() != null && part.getFilename().length() > 0) {
                         String filename = part.getFilename();
                         LOG.debug("Found attachment with name '{}'", filename);
                         String attId = part.getBody().getAttachmentId();
                         MessagePartBody attachPart = service.users().messages().attachments().
-                                get("me", message.getId(), attId).execute();
+                                get("me", messageId, attId).execute();
 
                         Base64 base64Url = new Base64(true);
                         byte[] fileByteArray = Base64.decodeBase64(attachPart.getData());
                         idas.chox.core.model.EmailAttachment attachment = new idas.chox.core.model.EmailAttachment(filename, fileByteArray);
                         listOfAttachements.add(attachment);
                         LOG.debug("Added attachment with name '{}'", filename);
+                    } else if (part.getParts() != null) {
+                        List<MessagePart> messageParts2 = part.getParts();
+                        listOfAttachements.addAll(getAttachmentsFromParts(messageId, messageParts2));
                     }
                 }
-            }
         } catch (IOException e) {
             LOG.warn("Exception fetching attachment: {}", e.getMessage(), e);
         }
-
-        LOG.debug("Found {} attachments", listOfAttachements.size());
-
+        
         return listOfAttachements;
     }
-
+    
     private static List<Message> ListMessages(String userId, String query) {
         List<Message> messages = new ArrayList<>();
         ListMessagesResponse response = null;
