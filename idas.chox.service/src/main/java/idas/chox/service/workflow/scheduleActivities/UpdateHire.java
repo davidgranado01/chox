@@ -135,7 +135,7 @@ public class UpdateHire extends BaseScheduleActivity {
                         if (vh != null && vh.getVehicleClass() != null && vehicleClass != null && vh.getRentalStart() != null
                                 && hireStartDateTime != null && vh.getVehicleClass().getName().equals(vehicleClass.getName())
                                 && vh.getRentalStart().compareTo(hireStartDateTime) == 0) {
-                            statusString.append("Failed: No change from existing Vehicle Class or Hire Start details");
+                            statusString.append("No change from existing Vehicle Class or Hire Start details");
                         }
                     }
                     /* If validation passed add the new hire monitoring ECD.*/
@@ -154,12 +154,12 @@ public class UpdateHire extends BaseScheduleActivity {
                                     .append(claim == null ? "null" : claim.getStatus()).append("')");
                             LOG.warn("AccessDenied Exception thrown when updating Hire Start via email scheduler job for claim '{}' [row:{}]", claim == null ? "null" : claim.getChoReference(), row);
                         } catch (Exception ex) {
-                            statusString.append("Failed: An Internal Error Occurred.");
+                            statusString.append("Failed: An Internal Error Occurred");
                             LOG.warn("Exception occurred when updating hire start via email scheduler job job for claim '{}' [row:{}]", claim == null ? "null" : claim.getChoReference(), row, ex);
                         }
                     } else {
                         LOG.debug("Failed Update of claim '{}' - {} [row:{}]", new Object[]{referenceNumber, statusString, row});
-                        statusString.insert(0, "Failed:");
+                        statusString.insert(0, "Failed: ");
                     }
 
                     /* update the result message into column 5 for each row.*/
