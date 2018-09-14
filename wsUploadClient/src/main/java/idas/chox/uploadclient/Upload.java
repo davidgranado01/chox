@@ -33,6 +33,7 @@ import idas.chox.uploadclient.activity.PaymentReceived;
 import idas.chox.uploadclient.activity.ReopenClaim;
 import idas.chox.uploadclient.activity.UploadBordereau;
 import idas.chox.uploadclient.activity.AddNote;
+import org.apache.cxf.transport.http.HTTPConduit;
 
 /**
  *
@@ -67,11 +68,10 @@ public class Upload {
             printUsageAndExit();
         }
 
-
         String username = optionsBean.getUserName();
         String password = optionsBean.getPassword();
         List<String> fileNames = optionsBean.getArguments();
-        
+
         if (optionsBean.isVerbose()) {
 
             LOG.info("Verbose messaging has been activated.");
@@ -124,6 +124,25 @@ public class Upload {
             client.getOutInterceptors().add(new LoggingOutInterceptor());
         }
 
+        // Check if we need to set a proxy
+        //   - will need to do this if http.proxyHost and http.proxyPort are defined
+        String proxyHost = System.getProperty("http.proxyHost");
+        String proxyPortString = System.getProperty("http.proxyPort");
+        int proxyPort = -1;
+        if (proxyPortString != null && !proxyPortString.isEmpty()) {
+            try {
+                proxyPort = Integer.valueOf(proxyPortString);
+            } catch (NumberFormatException ex) {
+                LOG.error("Invalid http.proxyPort setting: {}", proxyPortString);
+            }
+        }
+        if (proxyHost != null && !proxyHost.isEmpty() && proxyPort > 0) {
+            LOG.info("Setting proxy host to {} and port to {}", proxyHost, proxyPort);
+            Client client = ClientProxy.getClient(uploadService);
+            HTTPConduit http = (HTTPConduit) client.getConduit();
+            http.getClient().setProxyServer(proxyHost);
+            http.getClient().setProxyServerPort(proxyPort);
+        }
 
         for (String fileName : fileNames) {
             LOG.debug("Processing file {}", fileName);
@@ -132,18 +151,16 @@ public class Upload {
                 if (optionsBean.isClose()) {
                     LOG.debug("Calling CloseClaim...");
                     CloseClaim.process(uploadService, fileName);
-                }
-                else if (optionsBean.isReopen()) {
+                } else if (optionsBean.isReopen()) {
                     LOG.debug("Calling ReopenClaim...");
                     ReopenClaim.process(uploadService, fileName);
-                }
-                else if(optionsBean.isPaymentReceived()) {
+                } else if (optionsBean.isPaymentReceived()) {
                     LOG.debug("Calling PaymentReceived...");
                     PaymentReceived.process(uploadService, fileName);
                 } else {
                     printUsageAndExit();
                 }
-                
+
             } else {
                 if (optionsBean.isUpdateECD() && fileName.endsWith("xls")) {
                     LOG.debug("Calling ECDUpdate...");
@@ -160,7 +177,7 @@ public class Upload {
                 } else if (optionsBean.isClose()) {
                     LOG.debug("Calling CloseClaim...");
                     CloseClaim.process(uploadService, fileName);
-                } else if(optionsBean.isPaymentReceived()) {
+                } else if (optionsBean.isPaymentReceived()) {
                     LOG.debug("Calling PaymentReceived...");
                     PaymentReceived.process(uploadService, fileName);
                 } else if (isXmlBordereau(fileName)) {
@@ -171,7 +188,6 @@ public class Upload {
         }
     }
 
-    
     private static boolean isXmlBordereau(String filename) {
         // Read first line to see if XML file
         try {
@@ -186,7 +202,7 @@ public class Upload {
         } catch (FileNotFoundException ex) {
         } catch (IOException ex) {
         }
-        
+
         return false;
     }
 }
