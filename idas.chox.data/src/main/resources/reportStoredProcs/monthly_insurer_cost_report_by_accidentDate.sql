@@ -66,7 +66,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
        and inc.date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
-                                        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
+       and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
 (select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, incident inc, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
@@ -76,7 +76,7 @@ select 1 as id, 'Average Hire Days Invoiced' as title ,
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
        and inc.date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
-                                        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
+       and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
 (select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, incident inc, invoice i, vehicle_hire vh, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id 
@@ -1097,7 +1097,7 @@ select 8 as id, 'Average Repair Hire Days Invoiced' as title ,
        and (claimType is null or c.claim_type = ANY(claimType)) 
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
-       and inc.date between to_date(to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
+       and inc.date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
 (select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, incident inc, invoice i, vehicle_hire vh, chorganisation cho
@@ -1365,7 +1365,7 @@ select 10 as id, 'Average Total Loss Hire Days Invoiced' as title ,
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
        and inc.date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
-                                        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
+       and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
 (select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, incident inc, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
@@ -1375,7 +1375,7 @@ select 10 as id, 'Average Total Loss Hire Days Invoiced' as title ,
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
        and inc.date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
-                                        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
+       and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
 (select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, incident inc, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = true
@@ -1384,7 +1384,7 @@ select 10 as id, 'Average Total Loss Hire Days Invoiced' as title ,
        and (claimType is null or c.claim_type = ANY(claimType)) 
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
-       and inc.date between to_date(to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
+       and inc.date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '4 months'
        and to_date(to_char(params.startDate - interval '3 months' , 'MM') || '-01-' || to_char(params.startDate - interval '3 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_4_month,
 
 (select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, incident inc, invoice i, vehicle_hire vh, customer cu, chorganisation cho
@@ -1652,7 +1652,7 @@ select 12 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
        and inc.date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '2 months'
-                                        and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
+       and to_date(to_char(params.startDate - interval '1 month' , 'MM') || '-01-' || to_char(params.startDate - interval '1 month', 'yyyy'), 'mm-dd-yyyy'))  as previous_2_month,
 
 (select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, incident inc, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
@@ -1662,7 +1662,7 @@ select 12 as id, 'Average Non Total Loss Hire Days Invoiced' as title ,
        and (c.insurer_id = params.insurerId or params.insurerId = -1)
        and c.chorganisation_id = cho.id and cho.insurer_upload_only = false and (params.chorgId = -1 or c.chorganisation_id = params.chorgId)
        and inc.date between to_date(to_char(params.startDate, 'MM') || '-01-' || to_char(params.startDate, 'yyyy'), 'mm-dd-yyyy') - interval '3 months'
-                                        and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
+       and to_date(to_char(params.startDate - interval '2 months' , 'MM') || '-01-' || to_char(params.startDate - interval '2 months', 'yyyy'), 'mm-dd-yyyy'))  as previous_3_month,
 
 (select coalesce(avg(case when vh.days_original is not null then vh.days_original else vh.days end), 0)::numeric(8,1) from claim c, incident inc, invoice i, vehicle_hire vh, customer cu, chorganisation cho
   where c.invoice_id=i.id and c.vehicle_hire_id = vh.id and c.customer_id = cu.id and cu.is_total_loss = false
