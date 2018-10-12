@@ -141,7 +141,7 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
                     baseDataService.callUpdateDashboard(999);
                     break;
                 case "updateWorkflowTables":
-                    baseDataService.callUpdateWorkflowTables(999);
+                    baseDataService.callUpdateWorkflowTables();
                     break;
                 case "updateRemainingSlaDays":
                     baseDataService.callUpdateRemainingSlaDays(999);

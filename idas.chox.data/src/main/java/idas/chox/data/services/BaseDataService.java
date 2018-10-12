@@ -199,15 +199,14 @@ public class BaseDataService extends HibernateDaoSupport implements DataService 
         });
     }
 
-    public void callUpdateWorkflowTables(int userId) throws SQLException {
-        LOG.debug("Calling stored procedure update_user_service({})....", userId);
+    public void callUpdateWorkflowTables() throws SQLException {
         getCurrentSession().flush();
 
         getCurrentSession().doWork((Connection connection) -> {
             Statement s = connection.createStatement();
             try {
-                s.execute("select update_user_service(" + userId + ") from insurer where status=true");
-                s.execute("select update_workgroup_service(" + userId + ") from insurer where status=true");
+                s.execute("select update_user_service(id) from insurer where status=true");
+                s.execute("select update_workgroup_service(id) from insurer where status=true");
             } catch (SQLException ex) {
                 if (!ex.getMessage().startsWith("A result was returned when none was expected.")) {
                     throw ex;
