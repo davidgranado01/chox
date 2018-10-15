@@ -32,6 +32,7 @@ public class ClaimPending extends BaseActivity {
     private LiabilityStatus liabilityStatus;
     private boolean liabilityUpdated = false;
     private boolean claimNumberUpdated = false;
+    private String invoiceReviewReason;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
@@ -73,6 +74,14 @@ public class ClaimPending extends BaseActivity {
     }
 
     // </editor-fold>
+    public String getInvoiceReviewReason() {
+        return invoiceReviewReason;
+    }
+
+    public void setInvoiceReviewReason(String invoiceReviewReason) {
+        this.invoiceReviewReason = invoiceReviewReason;
+    }
+
     public boolean isClaimNumberUpdated() {
         return claimNumberUpdated;
     }
@@ -140,6 +149,9 @@ public class ClaimPending extends BaseActivity {
             LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Total liability is > 100% or <= 0%");
         }
+        if (isInvoiceReviewRequired && (invoiceReviewReason == null || invoiceReviewReason.isEmpty())) {
+            throw new AccessDeniedException("You must provide a reason for the Invoice Review");
+        }
     }
 
     @Override
@@ -153,6 +165,11 @@ public class ClaimPending extends BaseActivity {
         claim.setIndemnityAmount(indemnityAmount);
         claimService.updateLiabilityPercentages(claim, percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
+        if (isInvoiceReviewRequired) {
+            claim.setInvoiceReviewReason(invoiceReviewReason);
+        } else {
+            claim.setInvoiceReviewReason(null);
+        }
         claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setLiabilityAgreedDate(liabilityAgreedDate);

@@ -42,6 +42,15 @@ public class ClaimReferToFnol extends BaseActivity {
     private boolean ownerAssigned = false;
     private boolean claimNumberUpdated = false;
     private String indemnityStance;
+    private String invoiceReviewReason;
+
+    public String getInvoiceReviewReason() {
+        return invoiceReviewReason;
+    }
+
+    public void setInvoiceReviewReason(String invoiceReviewReason) {
+        this.invoiceReviewReason = invoiceReviewReason;
+    }
 
     public boolean isLiabilityUpdated() {
         return liabilityUpdated;
@@ -200,7 +209,6 @@ public class ClaimReferToFnol extends BaseActivity {
                 if (claimOwner.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
                     throw new AccessDeniedException("The selected Claim Owner does not belong to the Insurer of the claim.");
                 }
-
             }
         }
         if (liabilityStatus != null && liabilityStatus.equals(LiabilityStatus.LIABILITY_ACCEPTED)
@@ -214,6 +222,9 @@ public class ClaimReferToFnol extends BaseActivity {
             LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Total liability is > 100% or <= 0%");
         }
+        if (isInvoiceReviewRequired && (invoiceReviewReason == null || invoiceReviewReason.isEmpty())) {
+            throw new AccessDeniedException("You must provide a reason for the Invoice Review");
+        }
     }
 
     @Override
@@ -221,11 +232,11 @@ public class ClaimReferToFnol extends BaseActivity {
 
         if (claim.getStatus().equalsIgnoreCase(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
 
-            if (workgroup != null && (claim.getWorkgroup() == null || claim.getWorkgroup().getId().compareTo(workgroup.getId())!=0)) {
+            if (workgroup != null && (claim.getWorkgroup() == null || claim.getWorkgroup().getId().compareTo(workgroup.getId()) != 0)) {
                 claim.setWorkgroup(workgroup);
                 claimRouted = true;
             }
-            if (claimOwner != null && (claim.getClaimOwner()== null || claim.getClaimOwner().getId().compareTo(claimOwner.getId())!=0)) {
+            if (claimOwner != null && (claim.getClaimOwner() == null || claim.getClaimOwner().getId().compareTo(claimOwner.getId()) != 0)) {
                 claim.setClaimOwner(claimOwner);
                 claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
                 getDataService().save(claim);
@@ -245,10 +256,14 @@ public class ClaimReferToFnol extends BaseActivity {
             claim.setIndemnityAmount(indemnityAmount);
             claimService.updateLiabilityPercentages(claim, percentageLiabilityAccepted, percentageLiabilityCho);
             claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
+            if (isInvoiceReviewRequired) {
+                claim.setInvoiceReviewReason(invoiceReviewReason);
+            } else {
+                claim.setInvoiceReviewReason(null);
+            }
             claim.setIsQuantumDispute(isQuantumDispute);
             claim.setReasonOfRejection(getReasonOfRejection());
             claim.setLiabilityAgreedDate(liabilityAgreedDate);
-
 
         }
 

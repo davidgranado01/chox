@@ -362,3 +362,8 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
     SELECT id, 'ROLE_INS_MNG', 2 FROM accessibility WHERE name='extraAction.updatePenaltyCharges.AwaitingInvoicePayment' and claim_type=17;
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
     SELECT id, 'ROLE_CHOX_ADMIN', 2 FROM accessibility WHERE name='extraAction.updatePenaltyCharges.AwaitingInvoicePayment' and claim_type=17;
+
+--
+-- CHOX-582: Invoice Review Reason
+--
+ALTER TABLE claim ADD COLUMN invoice_review_reason varchar;

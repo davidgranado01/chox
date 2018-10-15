@@ -376,6 +376,7 @@
 
         // First, lets remove all validation from the Liability Status drop-down and Supporting Notes text entry box
         $("form#formAcknowledgeAction #liabilityStatus").rules("remove");
+        $("form#formAcknowledgeAction #reviewReasonsComboId").rules("remove");
         $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
         // and remove validation from the Rejection Reason drop-down and Supporting Notes text-entry box
         if (action!='resolveLiability' && action!='updateLiability') {
@@ -388,6 +389,14 @@
         var liabilityStatusModified=false;
         if(selectedLiabilityStatusValue != currentLiabilityStatusValue){
                 liabilityStatusModified=true;
+        }
+        
+        var invoiceReviewRequiredValue = $("#ACisInvoiceReviewRequiredId").val();
+        if (invoiceReviewRequiredValue) {
+            $("form#formAcknowledgeAction #reviewReasonsComboId").rules("add", {
+               required: true,
+               messages: {required: "You must select a 'Reason for Review' when when an invoice Review is requirted"}
+            });
         }
 
         if(action=='rejectClaim'){

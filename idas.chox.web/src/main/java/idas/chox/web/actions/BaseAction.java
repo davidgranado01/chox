@@ -738,6 +738,22 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
     }
 
+    public String getReviewReasonsJsonString() {
+        List<LookupItem> luItems = new ArrayList<>();
+        luItems.add(new LookupItem("1st Reason", "0"));
+        luItems.add(new LookupItem("2nd Reason", "1"));
+        luItems.add(new LookupItem("3rd Reason", "2"));
+        luItems.add(new LookupItem("4th Reason", "3"));
+        ObjectMapper mapper = new ObjectMapper();
+        String luItemsString = null;
+        try {
+            luItemsString = mapper.writeValueAsString(luItems);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting branding lut to json string.");
+        }
+        return StringEscapeUtils.escapeEcmaScript("{totalCount:" + luItems.size() + ", results:" + luItemsString + "}");
+    }
+    
     public String getBrandingJsonString() {
         List<LookupItem> luItems = new ArrayList<>();
         for (Branding branding : Branding.values()) {

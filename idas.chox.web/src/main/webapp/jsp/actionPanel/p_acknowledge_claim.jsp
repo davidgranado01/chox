@@ -29,8 +29,6 @@ Ext.onReady(function() {
             renderTo: 'copleyOfferMadeDatePH'
         });
 </s:if>
- 
-
 <s:if test="acceptanceReasosnsEnabled">
 
     var acceptanceReasonsJsonReader = new Ext.data.JsonReader({
@@ -71,7 +69,11 @@ Ext.onReady(function() {
 </s:if>
     $(function() {
             $("#indemnityStance").val("<s:property value="indemnityStance" />");
-        });
+    });
+    $(function() {
+            $("#reviewReasonsComboId").val("<s:property value="invoiceReviewReason" />");
+    });
+    toggleInvoiceReviewReasonDiv();
 });
 
 var reasonOfRejectionDescReader = new Ext.data.JsonReader({
@@ -103,6 +105,14 @@ function toggelCopleyOfferDate(selectedValue) {
     }
 }
 </s:if>
+
+    function toggleInvoiceReviewReasonDiv() {
+        if ($('form#formAcknowledgeAction input[name="isInvoiceReviewRequired"]:checked').val()) {
+            $("#reviewReasonsDiv").slideDown();
+        } else {
+            $("#reviewReasonsDiv").hide();
+        }
+    }
 
 </script>
 
@@ -259,10 +269,25 @@ function toggelCopleyOfferDate(selectedValue) {
                                 <td>
                                     <label>Invoice Review Required?</label>
                                 </td>
-                                <td>
-                                    <s:checkbox id="ACisInvoiceReviewRequiredId" name="isInvoiceReviewRequired" />
+                                <td colspan="2">
+                                    <table>
+                                        <tr>
+                                            <td style="width: 10px;"><s:checkbox id="ACisInvoiceReviewRequiredId" name="isInvoiceReviewRequired" onclick="toggleInvoiceReviewReasonDiv()" /></td>
+                                            <td align="left"><div id="reviewReasonsDiv">
+                                                <select id="reviewReasonsComboId" name="invoiceReviewReason">
+                                                    <option value="">-- Please Select a Reason for Review--</option>
+                                                    <option value="Reason 1">Reason 1</option>
+                                                    <option value="Reason 2">Reason 2</option>
+                                                    <option value="Reason 3">Reason 3</option>
+                                                    <option value="Reason 4">Reason 4</option>
+                                                </select>
+                                                </div></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
                                 </td>
-                                <td colspan="2"></td>
                             </tr>
 <s:if test="acceptanceReasosnsEnabled">
                                 <tr>

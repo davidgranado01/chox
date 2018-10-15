@@ -5,7 +5,19 @@
     Ext.onReady(function() {
         var form = $("form#formUpdateInvoiceReviewRequired");
         choxJqueryHttpSubmit(form, function(){Ext.get('formUpdateInvoiceReviewRequired').mask("Reloading Claim...");});
+        $(function() {
+            $("#reviewReasonsComboId").val("<s:property value="invoiceReviewReason" />");
+        });
+        toggleInvoiceReviewReasonDiv();
     });
+    
+    function toggleInvoiceReviewReasonDiv() {
+        if ($('form#formUpdateInvoiceReviewRequired input[name="isInvoiceReviewRequired"]:checked').val()) {
+            $("#reviewReasonsDiv").slideDown();
+        } else {
+            $("#reviewReasonsDiv").hide();
+        }
+    }
 </script>
 
 <div class="chox-claim-header x-panel-bwrap chox-form-container">
@@ -23,13 +35,26 @@
                             <td align="right">
                                 <label>Invoice Review Required?</label>
                             </td>
-                            <td nowrap>
-                                <s:checkbox id="MAUIRRisInvoiceReviewRequiredId" name="isInvoiceReviewRequired" />
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                            </td>
+                                <td colspan="2">
+                                    <table>
+                                        <tr>
+                                            <td style="width: 10px;"><s:checkbox id="MAUIRRisInvoiceReviewRequiredId" name="isInvoiceReviewRequired" onclick="toggleInvoiceReviewReasonDiv()" /></td>
+                                                    <td align="left"><div id="reviewReasonsDiv">
+                                                                                    <select id="reviewReasonsComboId" name="invoiceReviewReason">
+                                        <option value="">-- Please Select a Reason for Review--</option>
+                                        <option value="Reason 1">Reason 1</option>
+                                        <option value="Reason 2">Reason 2</option>
+                                        <option value="Reason 3">Reason 3</option>
+                                        <option value="Reason 4">Reason 4</option>
+                                    </select>
+
+                                                </div></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+                                </td>
                         </tr>
                         <tr>
                           <td align="right">

@@ -31,6 +31,15 @@ public class ClaimReferToEng extends BaseActivity {
     private LiabilityStatus liabilityStatus;
     private boolean liabilityUpdated = false;
     private boolean claimNumberUpdated = false;
+    private String invoiceReviewReason;
+
+    public String getInvoiceReviewReason() {
+        return invoiceReviewReason;
+    }
+
+    public void setInvoiceReviewReason(String invoiceReviewReason) {
+        this.invoiceReviewReason = invoiceReviewReason;
+    }
 
     public boolean isLiabilityUpdated() {
         return liabilityUpdated;
@@ -106,6 +115,9 @@ public class ClaimReferToEng extends BaseActivity {
             LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Total liability is > 100% or <= 0%");
         }
+        if (isInvoiceReviewRequired && (invoiceReviewReason == null || invoiceReviewReason.isEmpty())) {
+            throw new AccessDeniedException("You must provide a reason for the Invoice Review");
+        }
     }
 
     @Override
@@ -119,6 +131,11 @@ public class ClaimReferToEng extends BaseActivity {
         claim.setIndemnityAmount(indemnityAmount);
         claimService.updateLiabilityPercentages(claim, percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setIsInvoiceReviewRequired(isIsInvoiceReviewRequired());
+        if (isInvoiceReviewRequired) {
+            claim.setInvoiceReviewReason(invoiceReviewReason);
+        } else {
+            claim.setInvoiceReviewReason(null);
+        }
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
     }

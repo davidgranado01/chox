@@ -49,6 +49,7 @@ public class Claim extends Entity implements Serializable {
     private String remainingSlaDays;
     private String userMarkedWithSolicitor;
     private String indemnityStance;
+    private String invoiceReviewReason;
     private BigDecimal indemnityAmount;
     private BigDecimal appliedLiability;
     private BigDecimal percentageLiabilityAccepted;
@@ -107,6 +108,15 @@ public class Claim extends Entity implements Serializable {
         this.autoPenaltyChargeEnabled = true;
         this.noAttachments = 0;
         this.matchStatus = 0;
+    }
+
+    public String getInvoiceReviewReason() {
+        return invoiceReviewReason;
+    }
+
+    public void setInvoiceReviewReason(String invoiceReviewReason) {
+        this.invoiceReviewReason = invoiceReviewReason;
+        LOG.info("Invoice review reason set: {}", invoiceReviewReason);
     }
 
     public boolean isHashed() {

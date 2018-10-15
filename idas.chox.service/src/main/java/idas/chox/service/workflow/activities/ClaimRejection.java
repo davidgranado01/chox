@@ -38,6 +38,7 @@ public class ClaimRejection extends BaseActivity {
     private ReasonOfRejection reasonOfRejection;
     private boolean liabilityUpdated = false;
     private boolean claimNumberUpdated = false;
+    private String invoiceReviewReason;
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
@@ -92,11 +93,20 @@ public class ClaimRejection extends BaseActivity {
     public void setLiabilityStatus(LiabilityStatus liabilityStatus) {
         this.liabilityStatus = liabilityStatus;
     }
+
     public boolean isLiabilityUpdated() {
         return liabilityUpdated;
     }
 
     // </editor-fold>
+    public String getInvoiceReviewReason() {
+        return invoiceReviewReason;
+    }
+
+    public void setInvoiceReviewReason(String invoiceReviewReason) {
+        this.invoiceReviewReason = invoiceReviewReason;
+    }
+
     public boolean isClaimNumberUpdated() {
         return claimNumberUpdated;
     }
@@ -195,6 +205,9 @@ public class ClaimRejection extends BaseActivity {
                     }
                 }
             }
+            if (isInvoiceReviewRequired && (invoiceReviewReason == null || invoiceReviewReason.isEmpty())) {
+                throw new AccessDeniedException("You must provide a reason for the Invoice Review");
+            }
             // Validate Liability Status
             // TODO
         }
@@ -213,6 +226,11 @@ public class ClaimRejection extends BaseActivity {
             claimService.updateLiabilityPercentages(claim, percentageLiabilityAccepted, percentageLiabilityCho);
         }
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
+        if (isInvoiceReviewRequired) {
+            claim.setInvoiceReviewReason(invoiceReviewReason);
+        } else {
+            claim.setInvoiceReviewReason(null);
+        }
         claim.setIsQuantumDispute(isQuantumDispute);
         claim.setReasonOfRejection(reasonOfRejection);
         if (liabilityAgreedDate != null) {
@@ -269,7 +287,7 @@ public class ClaimRejection extends BaseActivity {
         logTransaction(claim, getCurrentStatus(), claim.getReasonOfRejection(), null);
 //        activityEventGenerator.generate(claim, this);
         activityEventGenerator.getEvents(claim, this).forEach((event) -> {
-            ((ClaimProcessWorkflowContext)this.getWorkflowContext()).getEventBus().post(event);
+            ((ClaimProcessWorkflowContext) this.getWorkflowContext()).getEventBus().post(event);
         });
 
         if (getChainActivity() != null) {

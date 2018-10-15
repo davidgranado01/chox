@@ -36,6 +36,7 @@ public class AcknowledgeClaim extends BaseActivity {
     private String indemnityStance;
     private Boolean copleyOfferMade;
     private Date copleyOfferMadeDate;
+    private String invoiceReviewReason;
 
     // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="Parameter Getters and Setters">
@@ -116,6 +117,14 @@ public class AcknowledgeClaim extends BaseActivity {
     }
     // </editor-fold>
 
+    public String getInvoiceReviewReason() {
+        return invoiceReviewReason;
+    }
+
+    public void setInvoiceReviewReason(String invoiceReviewReason) {
+        this.invoiceReviewReason = invoiceReviewReason;
+    }
+
     public boolean isLiabilityUpdated() {
         return liabilityUpdated;
     }
@@ -143,6 +152,9 @@ public class AcknowledgeClaim extends BaseActivity {
             LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Total liability is > 100% or <= 0%");
         }
+        if (isInvoiceReviewRequired && (invoiceReviewReason == null || invoiceReviewReason.isEmpty())) {
+            throw new AccessDeniedException("You must provide a reason for the Invoice Review");
+        }
     }
 
     @Override
@@ -158,6 +170,11 @@ public class AcknowledgeClaim extends BaseActivity {
         claim.setIndemnityAmount(indemnityAmount);
         claimService.updateLiabilityPercentages(claim, percentageLiabilityAccepted, percentageLiabilityCho);
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
+        if (isInvoiceReviewRequired) {
+            claim.setInvoiceReviewReason(invoiceReviewReason);
+        } else {
+            claim.setInvoiceReviewReason(null);
+        }
         claim.setReasonOfRejection(getReasonOfRejection());
         claim.setLiabilityAgreedDate(liabilityAgreedDate);
         claim.setCopleyOfferMade(copleyOfferMade);

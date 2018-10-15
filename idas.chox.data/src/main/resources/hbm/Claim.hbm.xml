@@ -27,6 +27,7 @@
     <property column="is_total_loss_chase" name="totalLossChase"/>
     <property column="tpi_claim_status" name="tpiClaimStatus"/>
     <property column="is_invoice_review_required" name="isInvoiceReviewRequired"/>
+    <property column="invoice_review_reason" name="invoiceReviewReason"/>
     <property column="status_modified_date" name="statusModifiedDate"/>
     <property column="previous_status" name="previousStatus"/>
     <property column="percentage_liability_cho" name="percentageLiabilityCho"/>
