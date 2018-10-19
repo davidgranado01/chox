@@ -167,6 +167,7 @@ public class ClaimActivityAction extends BaseAction implements ModelDriven<Activ
             } catch (AccessDeniedException ex) {
                 LOG.warn("AccessDenied exception thrown with activity '{}' on claim with id={}, cho_reference='{}' in status {}: {}",
                         new Object[]{name, claim.getId(), claim.getChoReference(), claim.getStatus(), ex.getMessage()});
+                handleException(ex);
                 setJsonData("{\"error\":\"False\",\"errors\":\"" + ex.getMessage() + "\"}");
                 updateRedirectionParamInSession();
                 return SUCCESS;

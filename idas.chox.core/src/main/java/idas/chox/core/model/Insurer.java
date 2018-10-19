@@ -29,6 +29,7 @@ public class Insurer extends Entity implements Serializable {
     private boolean workgroupEnable;
     private boolean fnolEnable;
     private boolean supervisorEnable;
+    private boolean invoiceReviewEnable;
     private boolean engineersEnable;
     private AutomaticRoutingStrategy automaticRoutingStrategy = AutomaticRoutingStrategy.NONE;
     private boolean claimOwnershipEnable;
@@ -546,6 +547,14 @@ public class Insurer extends Entity implements Serializable {
 
     public void setSupervisorEnable(boolean supervisorEnable) {
         this.supervisorEnable = supervisorEnable;
+    }
+
+    public boolean isInvoiceReviewEnable() {
+        return invoiceReviewEnable;
+    }
+
+    public void setInvoiceReviewEnable(boolean invoiceReviewEnable) {
+        this.invoiceReviewEnable = invoiceReviewEnable;
     }
 
     public int getBlockTime() {

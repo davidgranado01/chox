@@ -28,6 +28,7 @@ import static com.opensymphony.xwork2.Action.SUCCESS;
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
 import idas.chox.core.enums.AuditReviewClaimType;
+import idas.chox.core.enums.InvoiceReviewReason;
 
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.BreBand;
@@ -2263,6 +2264,16 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
         return reasonOfInvoiceRejections;
     }
 
+    public List<String> getInvoiceReviewReasons() {
+        List<String> results = new ArrayList<>();
+        for (InvoiceReviewReason invoiceReviewReason : InvoiceReviewReason.values()) {
+            results.add(invoiceReviewReason.getDescription());
+        }
+       
+        return results;
+    }
+    
+
     public String getJsonReasonOfInvoiceRejectionDesc() {
         if (reasonOfInvoiceRejections == null) {
             reasonOfInvoiceRejections = lookupService.getInvoiceRejectionReason(getInsurerIdForReasonOfRejection(), claim.getClaimType());
@@ -3146,5 +3157,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public boolean isCopleyOfferEnabled() {
         return claim.getInsurer().isCopleyQuestion();
+    }
+    public boolean isReviewReasonsEnabled() {
+        return claim.getInsurer().isInvoiceReviewEnable();
     }
 }

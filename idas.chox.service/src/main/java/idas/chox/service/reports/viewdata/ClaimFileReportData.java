@@ -324,6 +324,8 @@ public class ClaimFileReportData {
     private boolean isCopleyOffer;
     private String copleyOfferMade;
     private String copleyOfferMadeDate;
+    private String invoiceReviewReason;
+    private boolean invoiceReviewReasonsEnabled;
 
     public ClaimFileReportData(Claim claim, WebUser currentUser) {
         try {
@@ -576,6 +578,8 @@ public class ClaimFileReportData {
                 creditAgreementSignedDate = DateHelper.getLocalDateTimeFormat().format(claim.getCreditAgreementDate());
             }
             invoiceReviewRequired = claim.getIsInvoiceReviewRequiredDesc();
+            invoiceReviewReason = claim.getInvoiceReviewReason();
+            invoiceReviewReasonsEnabled = claim.getInsurer().isInvoiceReviewEnable();
             Incident incident = claim.getIncident();
             if (incident != null) {
                 LOG.debug("Adding incident info.");
@@ -1453,6 +1457,10 @@ public class ClaimFileReportData {
         return invoiceReviewRequired;
     }
 
+    public String getInvoiceReviewReason() {
+        return invoiceReviewReason;
+    }
+
     public BigDecimal getInvoiceStorageRecoveryGross() {
         return invoiceStorageRecoveryGross;
     }
@@ -2057,6 +2065,10 @@ public class ClaimFileReportData {
         return isCopleyOffer;
     }
 
+    public boolean isHasReviewReason() {
+        return invoiceReviewReasonsEnabled;
+    }
+    
     public boolean isHasAppliedliability() {
         return getInsurerLiabilityApplied()!= null && getInsurerLiabilityAgreed().compareTo(getInsurerLiabilityApplied()) != 0;
     }

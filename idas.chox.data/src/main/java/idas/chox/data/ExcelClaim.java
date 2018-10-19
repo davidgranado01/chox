@@ -7,7 +7,6 @@ import java.util.Map;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.LiabilityStatus;
 
-
 /**
  *
  * @author John
@@ -180,6 +179,8 @@ public class ExcelClaim {
     private final String claimHireMonitoringDetailNonProvisionReason;
     private final Date claimHireMonitoringDetailNextReviewDate;
     private final String claimFinalReview;
+    private final String claimInvoiceReview;
+    private final String claimInvoiceReviewReason;
     private final String claimRemainingSlaDays;
     private final String claimFraudScore;
     private final String claimFraudStatus;
@@ -263,8 +264,12 @@ public class ExcelClaim {
             claimFinalReview = (((Boolean) data.get("final_review_cho")) ? "Yes" : "No") + " (CHO), "
                     + (((Boolean) data.get("final_review_ins")) ? "Yes" : "No") + " (Ins)";
             claimCopleyOfferMade = null; claimCopleyOfferMadeDate = null; isCopleyOffer=false;
+            claimInvoiceReview = (((Boolean) data.get("is_invoice_review_required")) ? "Yes" : "No");
+            claimInvoiceReviewReason = (String) data.get("invoice_review_reason");
         } else if (isIns) {
             claimFinalReview = ((Boolean) data.get("final_review_ins")) ? "Yes" : "No";
+            claimInvoiceReview = (((Boolean) data.get("is_invoice_review_required")) ? "Yes" : "No");
+            claimInvoiceReviewReason = (String) data.get("invoice_review_reason");
             isCopleyOffer = ((boolean) data.get("copley_question"));
             if (isCopleyOffer) {
                 claimCopleyOfferMade = (Boolean) data.get("copley_offer_made");
@@ -275,6 +280,8 @@ public class ExcelClaim {
         }  else { // CHO
             claimCopleyOfferMade = null; claimCopleyOfferMadeDate = null; isCopleyOffer=false;
             claimFinalReview = ((Boolean) data.get("final_review_cho")) ? "Yes" : "No";
+            claimInvoiceReview = null;
+            claimInvoiceReviewReason = null;
         }
         Boolean canAccessOtherVehicle = (Boolean) data.get("customer_access_other_vehicle");
         if (canAccessOtherVehicle == null) {
@@ -1256,6 +1263,14 @@ public class ExcelClaim {
     
     public boolean isIsCopleyOffer() {
         return isCopleyOffer;
+    }
+
+    public String getClaimInvoiceReview() {
+        return claimInvoiceReview;
+    }
+
+    public String getClaimInvoiceReviewReason() {
+        return claimInvoiceReviewReason;
     }
 
 }

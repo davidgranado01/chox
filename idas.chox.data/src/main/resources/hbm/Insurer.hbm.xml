@@ -27,6 +27,7 @@
     <property column="is_workgroup_enable" name="workgroupEnable"/>
     <property column="is_fnol_enable" name="fnolEnable"/>
     <property column="is_supervisor_enable" name="supervisorEnable"/>
+    <property column="is_invoice_review_enable" name="invoiceReviewEnable"/>
     <property column="is_engineers_enable" name="engineersEnable"/>
     <property column="is_claim_ownership_enable" name="claimOwnershipEnable"/>
     <property column="is_claim_locked" name="claimLocked"/>

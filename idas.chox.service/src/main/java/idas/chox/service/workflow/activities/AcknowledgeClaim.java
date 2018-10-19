@@ -152,7 +152,7 @@ public class AcknowledgeClaim extends BaseActivity {
             LOG.error("Liability total must be > 0 and <= 100%: ins={}, cho={}", percentageLiabilityAccepted, percentageLiabilityCho);
             throw new AccessDeniedException("Total liability is > 100% or <= 0%");
         }
-        if (isInvoiceReviewRequired && (invoiceReviewReason == null || invoiceReviewReason.isEmpty())) {
+        if (isInvoiceReviewRequired && claim.getInsurer().isInvoiceReviewEnable() && (invoiceReviewReason == null || invoiceReviewReason.isEmpty())) {
             throw new AccessDeniedException("You must provide a reason for the Invoice Review");
         }
     }

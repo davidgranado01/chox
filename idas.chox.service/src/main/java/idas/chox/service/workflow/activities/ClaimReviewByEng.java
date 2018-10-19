@@ -9,6 +9,7 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.LiabilityStatus;
+import org.springframework.security.access.AccessDeniedException;
 
 public class ClaimReviewByEng extends BaseActivity {
 
@@ -22,32 +23,52 @@ public class ClaimReviewByEng extends BaseActivity {
     private BigDecimal percentageLiabilityCho;
     private Date liabilityAgreedDate;
     private LiabilityStatus liabilityStatus;
+    private String invoiceReviewReason;
+
+    public String getInvoiceReviewReason() {
+        return invoiceReviewReason;
+    }
+
+    public void setInvoiceReviewReason(String invoiceReviewReason) {
+        this.invoiceReviewReason = invoiceReviewReason;
+    }
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parameters">
-
     // </editor-fold>
+    @Override
+    protected void validate(Claim claim) throws Exception {
+        super.validate(claim);
+        if (isInvoiceReviewRequired && (invoiceReviewReason == null || invoiceReviewReason.isEmpty())) {
+            throw new AccessDeniedException("You must provide a reason for the Invoice Review");
+        }
+    }
 
     @Override
     protected void beforeProcess(Claim claim) {
         claim.setIndemnityAmount(getIndemnityAmount());
         claim.setIsInvoiceReviewRequired(isIsInvoiceReviewRequired());
+        if (isInvoiceReviewRequired) {
+            claim.setInvoiceReviewReason(invoiceReviewReason);
+        } else {
+            claim.setInvoiceReviewReason(null);
+        }
         claim.setIsQuantumDispute(isIsQuantumDispute());
     }
 
     @Override
     protected void doProcess(Claim claim) {
 
-        boolean disablePrivateNotes = getCurrentUser().getInsurer() != null ? 
-                        getCurrentUser().getInsurer().isDisablePrivateNotes() : 
-                            getCurrentUser().getChorganisation() != null ?
-                        getCurrentUser().getChorganisation().isDisablePrivateNotes() :
-                            claim.getInsurer().isDisablePrivateNotes();
+        boolean disablePrivateNotes = getCurrentUser().getInsurer() != null
+                ? getCurrentUser().getInsurer().isDisablePrivateNotes()
+                : getCurrentUser().getChorganisation() != null
+                ? getCurrentUser().getChorganisation().isDisablePrivateNotes()
+                : claim.getInsurer().isDisablePrivateNotes();
 
         if (StringHelper.isNotEmpty(getEngineerClaimReviewNotes())) {
-            if(!disablePrivateNotes){
+            if (!disablePrivateNotes) {
                 claim.addComment(Comment.newComment(1, getEngineerClaimReviewNotes(), true));
-            }else{
+            } else {
                 claim.addComment(Comment.newComment(0, getEngineerClaimReviewNotes(), true));
             }
         }

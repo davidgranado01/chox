@@ -367,3 +367,4 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 -- CHOX-582: Invoice Review Reason
 --
 ALTER TABLE claim ADD COLUMN invoice_review_reason varchar;
+ALTER TABLE  insurer ADD COLUMN is_invoice_review_enable boolean not null default false;

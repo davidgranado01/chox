@@ -33,10 +33,12 @@
                 }
             }
         });
+<s:if test="reviewReasonsEnabled">
         $(function() {
             $("#reviewReasonsComboId").val("<s:property value="invoiceReviewReason" />");
         });
         toggleInvoiceReviewReasonDiv();
+</s:if>
     });
 
     function doClaimReviewByEngFormSubmit(action){
@@ -64,11 +66,13 @@
     }
     
     function toggleInvoiceReviewReasonDiv() {
+<s:if test="reviewReasonsEnabled">
         if ($('form#formClaimReviewByEngAction input[name="isInvoiceReviewRequired"]:checked').val()) {
             $("#reviewReasonsDiv").slideDown();
         } else {
             $("#reviewReasonsDiv").hide();
         }
+</s:if>
     }
 
 </script>
@@ -163,15 +167,17 @@
                                     <table>
                                         <tr>
                                             <td style="width: 10px;"><s:checkbox id="RBELisInvoiceReviewRequiredId" name="isInvoiceReviewRequired" onclick="toggleInvoiceReviewReasonDiv()" /></td>
-                                            <td align="left"><div id="reviewReasonsDiv">
-                                                <select id="reviewReasonsComboId" name="invoiceReviewReason">
-                                                    <option value="">-- Please Select a Reason for Review--</option>
-                                                    <option value="Reason 1">Reason 1</option>
-                                                    <option value="Reason 2">Reason 2</option>
-                                                    <option value="Reason 3">Reason 3</option>
-                                                    <option value="Reason 4">Reason 4</option>
-                                                </select>
-                                            </div></td>
+                                            <td align="left">
+<s:if test="reviewReasonsEnabled">
+                                              <div id="reviewReasonsDiv">
+                                                <s:select
+                                                    id="reviewReasonsComboId"
+                                                    name="invoiceReviewReason"
+                                                    list="invoiceReviewReasons"
+                                                    emptyOption="false"/>
+                                              </div>
+</s:if>
+                                            </td>
                                             <td></td>
                                             <td></td>
                                             <td></td>

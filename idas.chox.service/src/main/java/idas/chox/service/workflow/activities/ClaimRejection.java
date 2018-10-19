@@ -205,7 +205,7 @@ public class ClaimRejection extends BaseActivity {
                     }
                 }
             }
-            if (isInvoiceReviewRequired && (invoiceReviewReason == null || invoiceReviewReason.isEmpty())) {
+            if (isInvoiceReviewRequired && claim.getInsurer().isInvoiceReviewEnable() && (invoiceReviewReason == null || invoiceReviewReason.isEmpty())) {
                 throw new AccessDeniedException("You must provide a reason for the Invoice Review");
             }
             // Validate Liability Status
@@ -226,7 +226,7 @@ public class ClaimRejection extends BaseActivity {
             claimService.updateLiabilityPercentages(claim, percentageLiabilityAccepted, percentageLiabilityCho);
         }
         claim.setIsInvoiceReviewRequired(isInvoiceReviewRequired);
-        if (isInvoiceReviewRequired) {
+        if (isInvoiceReviewRequired && claim.getInsurer().isInvoiceReviewEnable()) {
             claim.setInvoiceReviewReason(invoiceReviewReason);
         } else {
             claim.setInvoiceReviewReason(null);

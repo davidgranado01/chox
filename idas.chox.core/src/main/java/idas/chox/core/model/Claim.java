@@ -116,7 +116,6 @@ public class Claim extends Entity implements Serializable {
 
     public void setInvoiceReviewReason(String invoiceReviewReason) {
         this.invoiceReviewReason = invoiceReviewReason;
-        LOG.info("Invoice review reason set: {}", invoiceReviewReason);
     }
 
     public boolean isHashed() {

@@ -800,10 +800,23 @@
                        <fieldset class="x-fieldset">
                             <legend>Workflow Parameters</legend>
                             
-                            <div class="chox-form-item">
+                      <table>
+                        <tr>
+                            <td>
+                           <div class="chox-form-item">
                                 <label class="chox-form-std-label">Enable Supervisor Escalation</label>
                                 <s:checkbox name="supervisorEnable" value="supervisorEnable" onclick="doPageLoadCheck(this);"/>
                             </div>
+                                </td>
+                                <td>
+                                  <div class="chox-form-item">
+                                    <label class="chox-form-std-label">Enable Invoice Review Reason</label>
+                                    <s:checkbox name="invoiceReviewEnable" value="invoiceReviewEnable" onclick="doPageLoadCheck(this);"/>
+                                  </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
                             <div id="supervisorEscalationFields">
                                 <div class="chox-form-item" id="nrOfDaysInvoiceUploadedDiv">
                                     <label class="chox-form-std-label">
@@ -825,7 +838,8 @@
                                     </div>
                                 </div>
                             </div>
-                      <table>
+                                </td>
+                            </tr>
                              <tr>
                                 <td>
                                     <div class="chox-form-item">
