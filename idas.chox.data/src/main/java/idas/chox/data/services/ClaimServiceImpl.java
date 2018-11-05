@@ -1923,7 +1923,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             invoice.setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
             LOG.debug("Total to pay updated using applied liability % of {}: {}", insper, invoice.getTotalToPay());
             if (claim.getPercentageLiabilityAccepted().compareTo(insper) != 0) {
-                String note = new StringBuilder().append("Total to pay updated using and applied liability of ").append(insper.toString()).append("%").toString();
+                String note = new StringBuilder().append("Total to pay updated using an applied liability of ").append(insper.toString()).append("%").toString();
                 Comment comment = Comment.newComment(1, note);
                 comment.setClaim(claim);
                 claim.addComment(comment);
