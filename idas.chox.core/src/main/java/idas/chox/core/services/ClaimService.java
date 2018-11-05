@@ -102,6 +102,7 @@ public interface ClaimService extends DataService {
     Claim updateClaimWithInvalidSessionVersion(Claim claim);
     
     void updateLiabilityPayment(Claim claim);
+    void updateLiabilityPayment(Claim claim, boolean addNote);
     void updateLiabilityPercentages(Claim claim, BigDecimal insurerLiability, BigDecimal choLiability);
 
     int getDaysSinceInvoiceUploadToEscalate(Integer claimId);

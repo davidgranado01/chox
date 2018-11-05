@@ -1915,6 +1915,11 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Override
     public void updateLiabilityPayment(Claim claim) {
+        updateLiabilityPayment(claim, true);
+    }
+    
+    @Override
+    public void updateLiabilityPayment(Claim claim, boolean addNote) {
 
         Invoice invoice = claim.getInvoice();
         if (invoice != null) {
@@ -1922,7 +1927,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             BigDecimal insper = claim.getAppliedLiability();
             invoice.setTotalToPay(ttp.multiply(insper).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
             LOG.debug("Total to pay updated using applied liability % of {}: {}", insper, invoice.getTotalToPay());
-            if (claim.getPercentageLiabilityAccepted().compareTo(insper) != 0) {
+            if (addNote && claim.getPercentageLiabilityAccepted().compareTo(insper) != 0) {
                 String note = new StringBuilder().append("Total to pay updated using an applied liability of ").append(insper.toString()).append("%")
                         .append(" (actual liability is ").append(claim.getPercentageLiabilityAccepted().toString()).append("%)").toString();
                 Comment comment = Comment.newComment(1, note);
