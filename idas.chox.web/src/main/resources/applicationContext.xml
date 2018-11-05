@@ -174,8 +174,8 @@
                 <prop key="hibernate.hikari.dataSourceClassName">org.postgresql.ds.PGSimpleDataSource</prop>
                 <!--prop key="hibernate.hikari.dataSource.database">${db.database}</prop-->
                 <prop key="hibernate.hikari.dataSource.url">${db.url}</prop>
-                <prop key="hibernate.hikari.dataSource.user">chox_user</prop>
-                <prop key="hibernate.hikari.dataSource.password">ch0xpa33</prop>
+                <prop key="hibernate.hikari.dataSource.user">${db.user}</prop>
+                <prop key="hibernate.hikari.dataSource.password">${db.user_password}</prop>
                 <prop key="hibernate.hikari.maximumPoolSize">${db.maxPoolSize}</prop>
                 <prop key="hibernate.hikari.autoCommit">true</prop>
                 <prop key="hibernate.hikari.idleTimeout">600000</prop> <!-- default  600000 (10mins) -->
@@ -207,8 +207,8 @@
                 <prop key="hibernate.hikari.dataSourceClassName">org.postgresql.ds.PGSimpleDataSource</prop>
                 <!--prop key="hibernate.hikari.dataSource.database">${db.database}</prop-->
                 <prop key="hibernate.hikari.dataSource.url">${db.url}</prop>
-                <prop key="hibernate.hikari.dataSource.user">chox_mi</prop>
-                <prop key="hibernate.hikari.dataSource.password">ch0xpa33</prop>
+                <prop key="hibernate.hikari.dataSource.user">${db.mi_user}</prop>
+                <prop key="hibernate.hikari.dataSource.password">${db.mi_user_password}</prop>
                 <prop key="hibernate.hikari.maximumPoolSize">${db.maxReportPoolSize}</prop>
                 <prop key="hibernate.hikari.autoCommit">true</prop>
                 <prop key="hibernate.hikari.idleTimeout">600000</prop> <!-- default  600000 (10mins) -->

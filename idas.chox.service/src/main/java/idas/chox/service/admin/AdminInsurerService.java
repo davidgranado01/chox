@@ -330,7 +330,7 @@ public class AdminInsurerService extends SecureDataService {
                         String smtpEmailUser = props.getProperty("smtpEmailUser");
                         String[] recipients = emailReceivers.split(",");
                         String emailSubject;
-                        if ("PRODUCTION".equals(hostName)) {
+                        if ("prod".equals(hostName)) {
                             emailSubject = "New BRE Band Created";
                         } else {
                             emailSubject = "New BRE Band Created (" + hostName + ")";

@@ -89,7 +89,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
 
         // Determine email subject prefix, depending upon system and contect
         String emailSubjectPrefix = null;
-        if (!hostName.equalsIgnoreCase("PRODUCTION")) {
+        if (!hostName.equalsIgnoreCase("prod")) {
             emailSubjectPrefix = hostName + "-";
             if (!serverConfig.getServletContext().getContextPath().isEmpty()) {
                 emailSubjectPrefix = emailSubjectPrefix + serverConfig.getServletContext().getContextPath().replace("/", "") + ":";

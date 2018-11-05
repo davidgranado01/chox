@@ -48,8 +48,8 @@
             <props>
                 <!--prop key="database">${db.database}</prop-->
                 <prop key="url">${db.url}</prop>
-                <prop key="user">chox_amq</prop>
-                <prop key="password">ch0xpa33</prop>
+                <prop key="user">${db.amq_user}</prop>
+                <prop key="password">${db.amq_user_password}</prop>
             </props>
         </property>
         <property name="poolName" value="hikariAMQCP" />
@@ -67,8 +67,8 @@
 <!--    <bean id="amq_dataSource" class="com.jolbox.bonecp.BoneCPDataSource" destroy-method="close">
         <property name="driverClass" value="org.postgresql.Driver"/>
         <property name="jdbcUrl" value="${db.activeMQUrl}"/>
-        <property name="username" value="chox_amq"/>
-        <property name="password" value="ch0xpa33"/>
+        <property name="username" value="${db.amq_user}"/>
+        <property name="password" value="${db.amq_user_password}"/>
         <property name="partitionCount" value="${db.activeMQPartitionCount}"/>
         <property name="minConnectionsPerPartition" value="${db.activeMQMinConnectionsPerPartition}"/>
         <property name="maxConnectionsPerPartition" value="${db.activeMQMaxConnectionsPerPartition}"/>

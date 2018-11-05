@@ -17,39 +17,34 @@
             <include resource="logback-localServer.xml"/>
         </then>  
     </if>
-    <if condition='property("HOSTNAME").equalsIgnoreCase("TEST")'>
+    <if condition='property("HOSTNAME").equalsIgnoreCase("tst")'>
         <then>
             <include resource="logback-testServer.xml"/>
         </then>  
     </if>
-    <if condition='property("HOSTNAME").equalsIgnoreCase("DEV")'>
+    <if condition='property("HOSTNAME").equalsIgnoreCase("dev")'>
         <then>
             <include resource="logback-testServer.xml"/>
         </then>  
     </if>
-    <if condition='property("HOSTNAME").equalsIgnoreCase("UAT")'>
+    <if condition='property("HOSTNAME").equalsIgnoreCase("uat")'>
         <then>
             <include resource="logback-testServer.xml"/>
         </then>  
     </if>
-    <if condition='property("HOSTNAME").equalsIgnoreCase("PAT")'>
+    <if condition='property("HOSTNAME").equalsIgnoreCase("pat")'>
         <then>
             <include resource="logback-trainingServer.xml"/>
         </then>  
     </if>
-    <if condition='property("HOSTNAME").equalsIgnoreCase("PRE")'>
+    <if condition='property("HOSTNAME").equalsIgnoreCase("pre")'>
         <then>
             <include resource="logback-testServer.xml"/>
         </then>  
     </if>
-    <if condition='property("HOSTNAME").equalsIgnoreCase("PRODUCTION")'>
+    <if condition='property("HOSTNAME").equalsIgnoreCase("prod")'>
         <then>
             <include resource="logback-productionServer.xml"/>
-        </then>  
-    </if>
-    <if condition='property("HOSTNAME").equalsIgnoreCase("TRAINING")'>
-        <then>
-            <include resource="logback-trainingServer.xml"/>
         </then>  
     </if>
     

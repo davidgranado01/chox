@@ -178,24 +178,4 @@
     <session-config>
         <session-timeout>60</session-timeout>
     </session-config>
-
-    <!-- Restrict direct access to JSPs -->
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>JSP templates</web-resource-name>
-            <url-pattern>*.jsp</url-pattern>
-        </web-resource-collection>
-        <auth-constraint/>
-    </security-constraint>
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Automatic SLL Forwarding</web-resource-name>
-            <url-pattern>/*</url-pattern>
-        </web-resource-collection>
-        <user-data-constraint>
-            <transport-guarantee>
-                CONFIDENTIAL
-            </transport-guarantee>
-        </user-data-constraint>
-    </security-constraint>
 </web-app>
