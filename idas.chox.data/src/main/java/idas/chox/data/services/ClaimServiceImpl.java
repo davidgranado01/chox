@@ -2182,7 +2182,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 // Discounts should not change when penalty start date changes....
 //        insurerDiscountService.applyGtaDiscount(claim);
         insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
-        updateLiabilityPayment(claim, false);
+        updateLiabilityPayment(claim);
         updateClaim(claim);
     }
 
@@ -2346,7 +2346,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 //                claim.setAutoPenaltyChargeEnabled(false);
 //            }
             insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
-            updateLiabilityPayment(claim, false);
+            updateLiabilityPayment(claim);
 
             if ((isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed)
                     || (claim.getChorganisation().isAutoPenaltyChargeEnabled() && claim.isAutoPenaltyChargeEnabled())) {
