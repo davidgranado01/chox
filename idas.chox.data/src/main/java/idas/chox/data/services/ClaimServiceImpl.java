@@ -194,7 +194,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     protected void save(Claim object) {
-        updateLiabilityPayment(object);
+//        updateLiabilityPayment(object,false);
         super.save(object);
     }
 
@@ -2182,7 +2182,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 // Discounts should not change when penalty start date changes....
 //        insurerDiscountService.applyGtaDiscount(claim);
         insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
-        updateLiabilityPayment(claim);
+        updateLiabilityPayment(claim, false);
         updateClaim(claim);
     }
 
@@ -2288,7 +2288,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             updatePenaltyStartDate(claim, claim.getInvoice().getDateInvoiced());
             updateAutomaticPenaltyCharge(claim);
             insurerDiscountService.applyInsurerDiscounts(claim, null, false);
-            updateLiabilityPayment(claim);
+            updateLiabilityPayment(claim, false);
             return true;
         }
 
@@ -2346,7 +2346,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 //                claim.setAutoPenaltyChargeEnabled(false);
 //            }
             insurerDiscountService.applyInsurerDiscounts(claim, userService.findByUserName("system"), true);
-            updateLiabilityPayment(claim);
+            updateLiabilityPayment(claim, false);
 
             if ((isPenaltyAlertNotUsed != null && isPenaltyAlertNotUsed)
                     || (claim.getChorganisation().isAutoPenaltyChargeEnabled() && claim.isAutoPenaltyChargeEnabled())) {
