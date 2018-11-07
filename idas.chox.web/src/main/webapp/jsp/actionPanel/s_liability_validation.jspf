@@ -376,14 +376,23 @@
 
         // First, lets remove all validation from the Liability Status drop-down and Supporting Notes text entry box
         $("form#formAcknowledgeAction #liabilityStatus").rules("remove");
-<s:if test="reviewReasonsEnabled">
-        $("form#formAcknowledgeAction #reviewReasonsComboId").rules("remove");
-</s:if>
         $("form#formAcknowledgeAction #supportingLiabilityNotesId").rules("remove");
         // and remove validation from the Rejection Reason drop-down and Supporting Notes text-entry box
         if (action!='resolveLiability' && action!='updateLiability') {
             $("form#formAcknowledgeAction #reasonOfRejectionId").rules("remove");
             $("form#formAcknowledgeAction #rejecDescJspfId").rules("remove");
+<s:if test="reviewReasonsEnabled">
+            $("form#formAcknowledgeAction #reviewReasonsComboId").rules("remove");
+</s:if>
+<s:if test="reviewReasonsEnabled">
+          var invoiceReviewRequiredValue = $("#ACisInvoiceReviewRequiredId").val();
+          if (invoiceReviewRequiredValue) {
+            $("form#formAcknowledgeAction #reviewReasonsComboId").rules("add", {
+               required: true,
+               messages: {required: "You must select a 'Reason for Review' when when an invoice Review is requirted"}
+            });
+          }
+</s:if>
         }
 
         var selectedLiabilityStatusValue = $("#liabilityStatus").val();
@@ -393,16 +402,6 @@
                 liabilityStatusModified=true;
         }
         
-<s:if test="reviewReasonsEnabled">
-        var invoiceReviewRequiredValue = $("#ACisInvoiceReviewRequiredId").val();
-        if (invoiceReviewRequiredValue) {
-            $("form#formAcknowledgeAction #reviewReasonsComboId").rules("add", {
-               required: true,
-               messages: {required: "You must select a 'Reason for Review' when when an invoice Review is requirted"}
-            });
-        }
-</s:if>
-
         if(action=='rejectClaim'){
             $("form#formAcknowledgeAction #rejecDescJspfId").rules("add", {
                 required: true,
