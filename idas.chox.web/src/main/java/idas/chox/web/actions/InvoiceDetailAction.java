@@ -2851,7 +2851,7 @@ public class InvoiceDetailAction extends BaseAction implements Preparable {
         setFullTotalToPay(fullTotalRequested.setScale(2, RoundingMode.HALF_UP));
         LOG.debug(" fullTotalRequested value{} ", fullTotalRequested);
 
-        claimService.updateLiabilityPayment(claim);
+        claimService.updateLiabilityPayment(claim, false);
 
     }
 

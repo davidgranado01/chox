@@ -149,7 +149,7 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
       hire_penalty_charge_applied_date = (CASE WHEN(hirepenalPerVal > 0.0) THEN now() ELSE null END),
       repair_penalty_charge_applied_date = (CASE WHEN(repairpenalPerVal > 0.0) THEN now() ELSE null END),
       full_total_to_pay = (full_total_to_pay - gta_discount - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2),
-      total_to_pay = (CASE WHEN ((claimRecord.liability_status = 5 OR claimRecord.liability_status = 6) AND claimRecord.claim_type NOT IN (7,8,9,11,12,13,18,19,20))
+      total_to_pay = (CASE WHEN claimRecord.applied_liability != 100
                            THEN ((claimRecord.applied_liability/100) * (full_total_to_pay - gta_discount - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal)))::NUMERIC(8,2)
                       WHEN ((claimRecord.liability_status = 4) AND claimRecord.claim_type NOT IN (7,8,9,11,12,13,18,19,20))
                            THEN (0.00)
@@ -182,7 +182,7 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
                     (CASE WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.repair_gross + invoice.repair_penalty_charge)*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = FALSE) THEN (invoice.repair_gross*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ) +
                     (CASE WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.total_gross + invoice.total_penalty_charge)*(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (totalInsDis IS NOT NULL AND totalInsDis.is_applied_to_penalties = FALSE) THEN (invoice.total_gross *(totalInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END )
                     ))::NUMERIC(8,2),
-      total_to_pay = (CASE WHEN ((claimRecord.liability_status = 5 OR claimRecord.liability_status = 6) AND claimRecord.claim_type NOT IN (7,8,9,11,12,13,18,19,20))
+      total_to_pay = (CASE WHEN claimRecord.applied_liability != 100
                            THEN ((c.applied_liability/100) * ((invoice.full_total_to_pay - invoice.insurer_discount + (
                                 (CASE WHEN (hireInsDis IS NOT NULL AND hireInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.hire_gross + invoice.hire_penalty_charge)*(hireInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (hireInsDis IS NOT NULL AND hireInsDis.is_applied_to_penalties = FALSE) THEN (invoice.hire_gross*(hireInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ) +
                                 (CASE WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = TRUE) THEN ((invoice.repair_gross + invoice.repair_penalty_charge)*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) WHEN (repairInsDis IS NOT NULL AND repairInsDis.is_applied_to_penalties = FALSE) THEN (invoice.repair_gross*(repairInsDis.discount_percentage/100)*-1)::NUMERIC(8,2) ELSE 0.00 END ) +
@@ -367,4 +367,4 @@ INSERT INTO accessibility_item(accessibility_id, role, access_right)
 -- CHOX-582: Invoice Review Reason
 --
 ALTER TABLE claim ADD COLUMN invoice_review_reason varchar;
-ALTER TABLE  insurer ADD COLUMN is_invoice_review_enable boolean not null default false;
+ALTER TABLE insurer ADD COLUMN is_invoice_review_enable boolean not null default false;

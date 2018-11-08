@@ -35,7 +35,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
 
         if ((claimResult.getClaim().getInvoice()) != null) {
             
-            claimService.updateLiabilityPayment(claimResult.getClaim());
+            claimService.updateLiabilityPayment(claimResult.getClaim(), false);
             
             
             getHibernateTemplate().saveOrUpdate((claimResult.getClaim().getInvoice()));
@@ -120,7 +120,7 @@ public class InvoiceServiceImpl extends SecureDataService implements InvoiceServ
             if (inv.getTotalToPay().compareTo(BigDecimal.ZERO) == 0 || inv.getFullTotalToPay().compareTo(BigDecimal.ZERO) == 0) {
                 invOriginal.setTotalToPayOriginal(inv.getFullTotalToPay().subtract(inv.getGtaDiscount()));
             } else {
-                invOriginal.setTotalToPayOriginal(inv.getTotalToPay().multiply(inv.getFullTotalToPay().divide(inv.getTotalToPay(), 2, RoundingMode.HALF_UP)).subtract(inv.getGtaDiscount()).multiply(inv.getTotalToPay().divide(inv.getFullTotalToPay(), 2, RoundingMode.HALF_UP)).setScale(2, BigDecimal.ROUND_HALF_UP));
+                invOriginal.setTotalToPayOriginal(inv.getTotalToPay().multiply(inv.getFullTotalToPay().divide(inv.getTotalToPay(), 8, RoundingMode.HALF_UP)).subtract(inv.getGtaDiscount()).multiply(inv.getTotalToPay().divide(inv.getFullTotalToPay(), 8, RoundingMode.HALF_UP)).setScale(2, BigDecimal.ROUND_HALF_UP));
             }
             invOriginal.setFullTotalToPayOriginal(inv.getFullTotalToPay().subtract(inv.getGtaDiscount()));
             invOriginal.setAdditionalDriverFeeOriginal(inv.getAdditionalDriverFee());

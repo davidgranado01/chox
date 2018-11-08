@@ -45,12 +45,9 @@ public class AppliedLiabilityServiceImpl extends SecureDataService implements Ap
 
     @Override
     public BreAppliedLiability getAppliedLiability(int breBandId, ClaimType claimType) {
-        if (claimType == ClaimType.INSURER_CLAIM) {
-            claimType = ClaimType.INSURER_UPLOAD;
-        }
         DetachedCriteria appliedLiabilityCriteria = DetachedCriteria.forClass(BreAppliedLiability.class);
         appliedLiabilityCriteria.add(Restrictions.eq("breBand.id", breBandId));
-        appliedLiabilityCriteria.add(Restrictions.eq("claimType", claimType));
+        appliedLiabilityCriteria.add(Restrictions.eq("claimType", ClaimType.getResolvedClaimType(claimType)));
         List<BreAppliedLiability> results = findByCriteria(appliedLiabilityCriteria);
         return results.isEmpty()? null : (BreAppliedLiability)results.get(0);
     }    

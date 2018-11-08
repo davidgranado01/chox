@@ -19,8 +19,8 @@
             $("#reviewReasonsDiv").slideDown();
         } else {
             $("#reviewReasonsDiv").hide();
-</s:if>
         }
+</s:if>
     }
 </script>
 

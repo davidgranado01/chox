@@ -637,7 +637,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     public String updateInvoiceReviewRequired() {
         try {
             checkVersion(claim);
-            if (claim.getIsInvoiceReviewRequired() && (claim.getInvoiceReviewReason() == null || claim.getInvoiceReviewReason().isEmpty())) {
+            if (claim.getIsInvoiceReviewRequired() && claim.getInsurer().isInvoiceReviewEnable() && (claim.getInvoiceReviewReason() == null || claim.getInvoiceReviewReason().isEmpty())) {
                 throw new Exception("You must provide a reason for 'Invoice Review Required'");
             } else if (!claim.getIsInvoiceReviewRequired()) {
                 claim.setInvoiceReviewReason(null);
