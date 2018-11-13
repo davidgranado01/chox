@@ -4,7 +4,21 @@
 <script type="text/javascript">
     Ext.onReady(function() {
         var form = $("form#formUpdateInvoiceReviewRequired");
-        choxJqueryHttpSubmit(form, function(){Ext.get('formUpdateInvoiceReviewRequired').mask("Reloading Claim...");});
+        choxJqueryHttpSubmit(form, function(){
+<s:if test="reviewReasonsEnabled">
+            $('#MAUIRRInvoiceReviewRequiredmessageBox').text("");
+            var isInvoiceReviewRequired = $("#MAUIRRisInvoiceReviewRequiredId").val();
+            var isInvoiceReviewReason = $("#reviewReasonsComboId").val();
+console.log('isInvoiceReviewRequired=' + isInvoiceReviewRequired + ', reason=' + isInvoiceReviewReason);
+            if (isInvoiceReviewRequired && isInvoiceReviewReason==='') {
+console.log('Yes');
+                $('#MAUIRRInvoiceReviewRequiredmessageBox').text("You must supply a reason for 'Invoice Review Required'");
+                return false;
+            } else
+console.log('No');
+</s:if>
+                Ext.get('formUpdateInvoiceReviewRequired').mask("Reloading Claim...");
+        });
 <s:if test="reviewReasonsEnabled">
         $(function() {
             $("#reviewReasonsComboId").val("<s:property value="invoiceReviewReason" />");
@@ -46,7 +60,7 @@
                                                 <td align="left">
 <s:if test="reviewReasonsEnabled">
                                                   <div id="reviewReasonsDiv">
-                                                    <s:select
+                                                    <s:select headerKey="" headerValue="-- Please Select--"
                                                         id="reviewReasonsComboId"
                                                         name="invoiceReviewReason"
                                                         list="invoiceReviewReasons"
@@ -63,7 +77,7 @@
                         </tr>
                         <tr>
                           <td align="right">
-                              <input type="submit" id="MAUIRRisInvoiceReviewRequiredButtonId"value="Update"/>
+                              <input type="submit" id="MAUIRRisInvoiceReviewRequiredButtonId" value="Update"/>
                           </td>  
                         </tr>
                     </table>

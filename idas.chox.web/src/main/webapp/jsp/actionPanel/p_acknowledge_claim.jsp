@@ -281,7 +281,7 @@ function toggelCopleyOfferDate(selectedValue) {
                                             <td align="left">
 <s:if test="reviewReasonsEnabled">
                                               <div id="reviewReasonsDiv">
-                                                <s:select
+                                                <s:select headerKey="" headerValue="-- Please Select--"
                                                     id="reviewReasonsComboId"
                                                     name="invoiceReviewReason"
                                                     list="invoiceReviewReasons"
