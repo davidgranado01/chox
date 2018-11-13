@@ -389,7 +389,7 @@
           if (invoiceReviewRequiredValue) {
             $("form#formAcknowledgeAction #reviewReasonsComboId").rules("add", {
                required: true,
-               messages: {required: "You must select a 'Reason for Review' when when an invoice Review is requirted"}
+               messages: {required: "You Must Supply A Reason For 'Invoice Review Required'"}
             });
           }
 </s:if>
