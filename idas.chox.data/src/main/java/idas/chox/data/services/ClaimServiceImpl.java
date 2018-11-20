@@ -1876,17 +1876,24 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
      * for Collaboration protocol claims, the applied liability is always 100%, unless the liability is repudiated in which case it is 0%.
      * For all other claim types, the Applied Liability %age will equal the Actual Insurer-specified liability %age
      */
+        ClaimType claimType = claim.getClaimType();
         if (claim.getBreBand().isAppliedLiabilityEnabled()) {
             BreAppliedLiability appliedLiabilityBand = appliedLiabilityService.getAppliedLiability(claim.getBreBand().getId(), claim.getClaimType());
 
             // Determine Applied Liability
             if (appliedLiabilityBand == null || (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED && !appliedLiabilityBand.isApplyToRepudiated())) {
-                appliedLiability = insurerLiability;
+                if (ClaimType.isSubscriber(claimType) || ClaimType.isFixedFee(claimType) || ClaimType.isInsurerVsInsurer(claimType)
+                        || (ClaimType.isCollaborationProtocol(claimType) && claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_REPUDIATED) ) {
+                    appliedLiability = new BigDecimal("100.00");
+                } else if (ClaimType.isCollaborationProtocol(claimType) && claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED) {
+                    appliedLiability = BigDecimal.ZERO;
+                } else {
+                    appliedLiability = insurerLiability;
+                }
             } else {
                 appliedLiability = appliedLiabilityBand.getAppliedLiability();
             }
         } else {
-            ClaimType claimType = claim.getClaimType();
             if (ClaimType.isSubscriber(claimType) || ClaimType.isFixedFee(claimType) || ClaimType.isInsurerVsInsurer(claimType)
                     || (ClaimType.isCollaborationProtocol(claimType) && claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_REPUDIATED) ) {
                 appliedLiability = new BigDecimal("100.00");
@@ -1898,12 +1905,12 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
 
         if ((claim.getPercentageLiabilityCho() != null && choLiability != null && claim.getPercentageLiabilityCho().compareTo(choLiability) != 0)
-                || (claim.getPercentageLiabilityAccepted() != null && insurerLiability != null && claim.getPercentageLiabilityAccepted().compareTo(insurerLiability) != 0)
+                || (claim.getPercentageLiabilityAccepted() != null && claim.getPercentageLiabilityAccepted().compareTo(insurerLiability) != 0)
                 || (claim.getAppliedLiability() != null && appliedLiability != null && claim.getAppliedLiability().compareTo(appliedLiability) != 0)
                 || (claim.getPercentageLiabilityAccepted() == null && choLiability != null)
                 || (claim.getPercentageLiabilityAccepted() != null && choLiability == null)
-                || (claim.getPercentageLiabilityCho() == null && insurerLiability != null)
-                || (claim.getPercentageLiabilityCho() != null && insurerLiability == null)
+                || (claim.getPercentageLiabilityCho() == null)
+                || (claim.getPercentageLiabilityCho() != null)
                 || (claim.getAppliedLiability() == null && appliedLiability != null)
                 || (claim.getAppliedLiability() != null && appliedLiability == null)) {
             claim.setPercentageLiabilityCho(choLiability);
