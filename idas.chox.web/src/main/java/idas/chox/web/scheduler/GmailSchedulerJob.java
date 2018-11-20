@@ -102,7 +102,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
         for (Message message : listOfmails) {
             LOG.debug("Processing message {}", ++count);
             try {
-                String from = null, subject = null;
+                String from = null, subject = null, fullsubject = null;
                 // Get subject and sender from message headers
                 List<MessagePartHeader> headers = message.getPayload().getHeaders();
                 if (!headers.isEmpty()) {
@@ -116,21 +116,23 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
                                 }
                                 break;
                             case "Subject":
-                                subject = header.getValue().trim();
+                                fullsubject = header.getValue().trim();
                                 break;
                             default:
                                 break;
                         }
                     }
                 }
-                LOG.debug("Subject='{}', from='{}'", subject, from);
-                if (subject == null || subject.isEmpty()) {
+                LOG.debug("Subject='{}', from='{}'", fullsubject, from);
+                if (fullsubject == null || fullsubject.isEmpty()) {
                     LOG.error("Email from sender '{}' contains no subject.", from);
                     continue;
                 }
                 // Get details of Gmail Scheduler job from database on the email subject
                 if (emailSubjectPrefix != null) {
-                    subject = subject.substring(emailSubjectPrefix.length()).trim();
+                    subject = fullsubject.substring(emailSubjectPrefix.length()).trim();
+                } else {
+                    subject = fullsubject;
                 }
 
                 LOG.debug("Found unread message with subject '{}' from '{}' with prefix '{}'", new Object[]{subject, from, emailSubjectPrefix});
@@ -196,7 +198,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
                     ScheduleActivity activity = scheduleActivityFactory.getActivity(job.getJobName());
                     handleHibernateTransactionIntricacies();
                     LOG.info("Processing scheduler activity '{}'", activity.getClass().toGenericString());
-                    boolean processed = activity.process(emailContent, attachments, from, subject);
+                    boolean processed = activity.process(emailContent, attachments, from, fullsubject);
                     LOG.debug("Done processing scheduler activity '{}'", activity.getClass().toGenericString());
                     session.flush();
                     LOG.debug("Session flushed.");
@@ -213,7 +215,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
                         GmailUtils.modifyThread("me", message.getThreadId(), labelsToAdd, Arrays.asList("INBOX", "UNREAD"));
 
                         if (job.isReplyToSender()) {
-                            GmailUtils.sendMessage(from, job.getBccReceivers(), "RE: " + job.getEmailSubject(), activity.getResponse(job.getEmailSubject(), from));
+                            GmailUtils.sendMessage(from, job.getBccReceivers(), "RE: " + fullsubject, activity.getResponse(fullsubject, from));
                         }
                     }
                 } else {

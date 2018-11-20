@@ -36,7 +36,7 @@
     <appender name="mail" class="ch.qos.logback.classic.net.SMTPAppender">
     <!--See http://logback.qos.ch/manual/appenders.html#SMTPAppender-->
     <!--for documentation-->
-        <Subject>CHOX Application Error \(Test\)</Subject>
+        <Subject>CHOX Application Error \(Test - #{ENV_PREFIX}\)</Subject>
         <SMTPHost>localhost</SMTPHost>
         <To>John.Dowson@valexa.com</To>
         <From>chox@chox-uk01.idasnetwork.com</From>
