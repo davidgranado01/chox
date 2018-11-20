@@ -1886,7 +1886,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                         || (ClaimType.isCollaborationProtocol(claimType) && claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_REPUDIATED) ) {
                     appliedLiability = new BigDecimal("100.00");
                 } else if (ClaimType.isCollaborationProtocol(claimType) && claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED) {
-                    appliedLiability = BigDecimal.ZERO;
+                    appliedLiability = BigDecimal.ZERO.setScale(2);
                 } else {
                     appliedLiability = insurerLiability;
                 }
