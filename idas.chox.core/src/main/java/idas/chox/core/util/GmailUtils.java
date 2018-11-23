@@ -84,12 +84,16 @@ public class GmailUtils {
 
         } catch (FileNotFoundException ex) {
             LOG.error("Gmail API: Gmail Credentials not found: {}", ex.getMessage(), ex);
+            service = null;
         } catch (IOException ex) {
             LOG.error("Gmail API: Exception accessing Gmail: {}", ex.getMessage(), ex);
+            service = null;
         } catch (GeneralSecurityException ex) {
             LOG.error("Gmail API: GeneralSecurityException accessing Gmail: {}", ex.getMessage(), ex);
+            service = null;
         } catch (URISyntaxException ex) {
             LOG.error("Gmail API: URISyntaxException accessing Gmail: {}", ex.getMessage(), ex);
+            service = null;
         }
     }
 
@@ -138,7 +142,7 @@ public class GmailUtils {
         List<Message> listOfMails = new ArrayList<>();
 
         if (service != null) {
-            List<Message> unreadMessageIDs = ListMessages("me", "in:inbox is:unread");
+            List<Message> unreadMessageIDs = listMessages("me", "in:inbox is:unread");
             LOG.debug("Gmail API: Found {} unread messages in inbox", unreadMessageIDs.size());
 
             unreadMessageIDs.stream().map((message) -> GetMessage("me", message.getId())).filter((fullMessage) -> (fullMessage != null)).forEachOrdered((fullMessage) -> {
@@ -166,6 +170,8 @@ public class GmailUtils {
                     LOG.debug("Got message: {}", fullMessage.getSnippet());
                 }
             });
+        } else {
+            LOG.warn("Cannot get emails as no Gmail service available.");
         }
 
         return listOfMails;
@@ -173,12 +179,12 @@ public class GmailUtils {
 
     synchronized public List<idas.chox.core.model.EmailAttachment> fetchAttachments(Message message) {
         List<idas.chox.core.model.EmailAttachment> listOfAttachements = new ArrayList<>();
-        
+
         List<MessagePart> messageParts = message.getPayload().getParts();
         if (messageParts != null) {
             listOfAttachements.addAll(getAttachmentsFromParts(message.getId(), messageParts));
         }
-        
+
         LOG.debug("Found {} attachments", listOfAttachements.size());
 
         return listOfAttachements;
@@ -187,54 +193,58 @@ public class GmailUtils {
     private List<idas.chox.core.model.EmailAttachment> getAttachmentsFromParts(String messageId, List<MessagePart> messageParts) {
         List<idas.chox.core.model.EmailAttachment> listOfAttachements = new ArrayList<>();
         try {
-                for (MessagePart part : messageParts) {
-                    if (part.getFilename() != null && part.getFilename().length() > 0) {
-                        String filename = part.getFilename();
-                        LOG.debug("Found attachment with name '{}'", filename);
-                        String attId = part.getBody().getAttachmentId();
-                        MessagePartBody attachPart = service.users().messages().attachments().
-                                get("me", messageId, attId).execute();
+            for (MessagePart part : messageParts) {
+                if (part.getFilename() != null && part.getFilename().length() > 0) {
+                    String filename = part.getFilename();
+                    LOG.debug("Found attachment with name '{}'", filename);
+                    String attId = part.getBody().getAttachmentId();
+                    MessagePartBody attachPart = service.users().messages().attachments().
+                            get("me", messageId, attId).execute();
 
-                        Base64 base64Url = new Base64(true);
-                        byte[] fileByteArray = Base64.decodeBase64(attachPart.getData());
-                        idas.chox.core.model.EmailAttachment attachment = new idas.chox.core.model.EmailAttachment(filename, fileByteArray);
-                        listOfAttachements.add(attachment);
-                        LOG.debug("Added attachment with name '{}'", filename);
-                    } else if (part.getParts() != null) {
-                        List<MessagePart> messageParts2 = part.getParts();
-                        listOfAttachements.addAll(getAttachmentsFromParts(messageId, messageParts2));
-                    }
+                    Base64 base64Url = new Base64(true);
+                    byte[] fileByteArray = Base64.decodeBase64(attachPart.getData());
+                    idas.chox.core.model.EmailAttachment attachment = new idas.chox.core.model.EmailAttachment(filename, fileByteArray);
+                    listOfAttachements.add(attachment);
+                    LOG.debug("Added attachment with name '{}'", filename);
+                } else if (part.getParts() != null) {
+                    List<MessagePart> messageParts2 = part.getParts();
+                    listOfAttachements.addAll(getAttachmentsFromParts(messageId, messageParts2));
                 }
+            }
         } catch (IOException e) {
             LOG.warn("Exception fetching attachment: {}", e.getMessage(), e);
         }
-        
+
         return listOfAttachements;
     }
-    
-    private static List<Message> ListMessages(String userId, String query) {
+
+    private static List<Message> listMessages(String userId, String query) {
         List<Message> messages = new ArrayList<>();
         ListMessagesResponse response = null;
 
-        try {
-            response = service.users().messages().list(userId).setQ(query).execute();
-        } catch (IOException ex) {
-            LOG.error("Gmail API: IOException accessing Gmail: {}", ex.getMessage(), ex);
-        }
-
-        while (response != null && response.getMessages() != null) {
-            messages.addAll(response.getMessages());
-            if (response.getNextPageToken() != null) {
-                String pageToken = response.getNextPageToken();
-                try {
-                    response = service.users().messages().list(userId).setQ(query)
-                            .setPageToken(pageToken).execute();
-                } catch (IOException ex) {
-                    LOG.error("Gmail API: IOException accessing Gmail: {}", ex.getMessage(), ex);
-                }
-            } else {
-                break;
+        if (service != null) {
+            try {
+                response = service.users().messages().list(userId).setQ(query).execute();
+            } catch (IOException ex) {
+                LOG.error("Gmail API: IOException accessing Gmail: {}", ex.getMessage(), ex);
             }
+
+            while (response != null && response.getMessages() != null) {
+                messages.addAll(response.getMessages());
+                if (response.getNextPageToken() != null) {
+                    String pageToken = response.getNextPageToken();
+                    try {
+                        response = service.users().messages().list(userId).setQ(query)
+                                .setPageToken(pageToken).execute();
+                    } catch (IOException ex) {
+                        LOG.error("Gmail API: IOException accessing Gmail: {}", ex.getMessage(), ex);
+                    }
+                } else {
+                    break;
+                }
+            }
+        } else {
+            LOG.warn("Cannot list emails as no Gmail service available.");
         }
 
         return messages;
