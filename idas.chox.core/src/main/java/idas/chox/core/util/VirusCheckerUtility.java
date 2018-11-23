@@ -48,9 +48,11 @@ public class VirusCheckerUtility {
                     fileDirty = true;
                     break;
                 case 2:
+                    LOG.error("Error on exit from clamscan: {}", err.toString());
                     throw new Exception("Error from clamscan: " + err.toString());
                 }
             } catch (IOException | InterruptedException e) {
+                LOG.error("Exception callingt clamscan: {}", e.getMessage());
                 throw new Exception(e.getMessage());
             } finally {
                 if (clamscanProcess != null) {
