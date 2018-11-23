@@ -22,7 +22,7 @@ public class VirusCheckerUtility {
         Process clamscanProcess = null;
         
         // Succeed if clamscan not present
-        if (clamscanLocation == null || !Files.exists(Paths.get(clamscanLocation))) {
+        if (clamscanLocation == null || clamscanLocation.isEmpty() || !Files.exists(Paths.get(clamscanLocation))) {
             LOG.warn("Not scanning file as clamscan not found at location '{}',", clamscanLocation);
             fileDirty = false;
         } else
@@ -48,9 +48,11 @@ public class VirusCheckerUtility {
                     fileDirty = true;
                     break;
                 case 2:
+                    LOG.error("Error on exit from clamscan: {}", err.toString());
                     throw new Exception("Error from clamscan: " + err.toString());
                 }
             } catch (IOException | InterruptedException e) {
+                LOG.error("Exception callingt clamscan: {}", e.getMessage());
                 throw new Exception(e.getMessage());
             } finally {
                 if (clamscanProcess != null) {

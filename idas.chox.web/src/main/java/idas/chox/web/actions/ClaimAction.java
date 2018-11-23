@@ -1714,6 +1714,12 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
             rejectEnabled = (claimDays < maxDays || (claimDays == maxDays && DateHelper.isBeforeCutOffTime(cutOffTime)));
         }
+        // Disable for subscriber claims when not assigned and/or routed - see CHOX-607
+        if (rejectEnabled && ClaimType.isSubscriber(claim.getClaimType()) &&
+                ((claim.getInsurer().isWorkgroupEnable() && claim.getWorkgroup() == null) || (claim.getInsurer().isClaimOwnershipEnable() && claim.getClaimOwner() == null))) {
+            rejectEnabled = false;
+        }
+        
 
         return rejectEnabled;
     }

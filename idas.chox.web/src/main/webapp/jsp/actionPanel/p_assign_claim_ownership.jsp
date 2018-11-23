@@ -318,12 +318,7 @@
                                 Alternatively, if you would like to reject the claim back to the CHO, then select a 'Reason For Rejection'.
                             </s:if>
                             <s:elseif test="isSubscriberClaim">
-                                <s:if test="slaExtDays > 0">
-                                    This claim cannot be rejected as the Subscriber notification <s:property value="subscriberSlaDays"/> day SLA + <s:property value="slaExtDays"/> day extension has passed.
-                                </s:if>
-                                <s:else>
-                                    This claim cannot be rejected as the Subscriber notification <s:property value="subscriberSlaDays"/> day SLA has passed.
-                                </s:else>
+                                This claim cannot be rejected as a Subscriber claim must be assigned before it can be rejected.
                             </s:elseif>
                             <s:elseif test="isFixedFeeClaim">
                                 <s:if test="slaExtDays > 0">
