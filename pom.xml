@@ -36,7 +36,7 @@
         <hibernate-validator.version>5.4.1.Final</hibernate-validator.version>
         
         <!-- Java 8 Official Postgres Driver -->
-        <postgresql-jdbc.version>42.2.2</postgresql-jdbc.version>
+        <postgresql-jdbc.version>42.2.5</postgresql-jdbc.version>
 
         <!-- Java 8, pgjdbc-ng driver -->
         <!--postgresql-jdbc-ng.version>0.7.1</postgresql-jdbc-ng.version--> <!-- use 0.7 for Java 7 -->
