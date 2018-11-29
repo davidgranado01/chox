@@ -1,4 +1,4 @@
-NewClaimsToBerouted
+NewClaimsToBeRouted
 ClaimUnacknowledgedUnassigned
 ClaimReferredToFNOL
 ClaimsAwaitingAcknowledgement
@@ -7,7 +7,7 @@ ClaimPending
 ClaimReferredToEngineer
 ClaimUpdatedByEngineer
 HireUpdateAnomalies
-EscalatedInvoices
+EscalatedInvoicesToSupervisor
 InvoiceEscalatedToHandler
 InvoiceReferredToClaimsHandler
 InvoicesReferredToEngineer

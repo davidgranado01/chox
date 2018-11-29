@@ -1,4 +1,4 @@
-NewClaimsToBerouted
+NewClaimsToBeRouted
 ClaimUnacknowledgedUnassigned
 ClaimsAwaitingAcknowledgement
 ReSubmittedClaimsAwaitingAcknowledgement

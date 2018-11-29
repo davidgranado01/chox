@@ -1,4 +1,4 @@
-NewClaimsToBerouted
+NewClaimsToBeRouted
 ClaimUnacknowledgedUnassigned
 RejectedClaims
 RejectedSubscriberClaims
@@ -18,7 +18,7 @@ ClaimPending
 ClaimReferredToEngineer
 ClaimUpdatedByEngineer
 HireUpdateAnomalies
-EscalatedInvoices
+EscalatedInvoicesToSupervisor
 InvoiceEscalatedToHandler
 InvoicesReferredToEngineer
 InvoiceReferredToClaimsHandler
