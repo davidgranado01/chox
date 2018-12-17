@@ -489,7 +489,8 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
     @Override
     public String kbbsInvalidate(String token) throws IOException {
-                LOG.debug("Invalidating KBBS authentication token: '{}'", token);
+                LOG.debug("Invalidating KBBS authentication token '{}': currently disabled", token);
+/*****************
                 try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
                     HttpPost httppost = new HttpPost(KBBS_INVALIDATE_URL);
                     Map paramMap = new HashMap();
@@ -505,9 +506,8 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
                     RequestConfig requestConfig = RequestConfig.custom()
                             .setSocketTimeout(30000)
-                            .setConnectTimeout(30000)
+                            .setConnectTimeout(3000)
                             .setConnectionRequestTimeout(30000)
-//                            .setAuthenticationEnabled(true)
                             .build();
                     httppost.setConfig(requestConfig);
                     HttpClientContext context = HttpClientContext.create();
@@ -523,10 +523,11 @@ public class UserServiceImpl extends BaseDataService implements UserService {
                             LOG.debug("KBBS Invalidate Token Result: {}", result);
                             return result;
                         }
-                    } catch (IOException | ParseException e) {
-                        LOG.warn("Error Parsing response from KBBS InvalidateToken: {}", e.getMessage());
+                    } catch (IOException | ParseException ex) {
+                        LOG.warn("Error Parsing response from KBBS InvalidateToken: {}", ex.getMessage(), ex);
                     }
                 }
+******************/
             return null;
     }
 

@@ -70,7 +70,7 @@ public class TimeoutFilter extends OncePerRequestFilter {
         if (!((auth != null && auth.isAuthenticated()) || serveletPath.contains(LOGIN_PAGE_REQUEST_URL)
                 || serveletPath.contains(LOGIN_FORM_AUTH_CHECK_STRING))) {
             // Session could have timed-out - lets try invalidating the KBBS token, just in case....
-            invalidateKbbsToken(request, response);
+//            invalidateKbbsToken(request, response);
             defaultRedirectStrategy.sendRedirect(request, response, LOGIN_PAGE_REQUEST_URL);
             return;
         }
@@ -98,7 +98,7 @@ public class TimeoutFilter extends OncePerRequestFilter {
                 SecurityContextHolder.clearContext();
 
                 LOG.debug("Login session has been expired - invalidating KBBS authentication token");
-                invalidateKbbsToken(request, response);
+//                invalidateKbbsToken(request, response);
 
                 if (isAjax) { // This error code(418) is caught by extjs and ajax global exception handler and appropriate error message is shown to the user.
 
