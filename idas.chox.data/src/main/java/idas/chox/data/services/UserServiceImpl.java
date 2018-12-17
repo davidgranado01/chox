@@ -489,7 +489,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
 
     @Override
     public String kbbsInvalidate(String token) throws IOException {
-                LOG.debug("Invalidating KBBS authentication token: {}", token);
+                LOG.debug("Invalidating KBBS authentication token: '{}'", token);
                 try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
                     HttpPost httppost = new HttpPost(KBBS_INVALIDATE_URL);
                     Map paramMap = new HashMap();

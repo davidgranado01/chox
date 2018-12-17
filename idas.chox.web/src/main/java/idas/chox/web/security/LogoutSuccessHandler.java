@@ -32,17 +32,19 @@ public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
             Cookie cookies[] = request.getCookies();
             Cookie kbbsCookie = null;
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("JD.Token")) {
+                if (cookie.getName().equals("ASP.NET_Token")) {
                     kbbsCookie = cookie;
                     kbbsToken = cookie.getValue();
                 }
             }
             if (kbbsToken != null && !kbbsToken.isEmpty()) {
                 try {
-                    result = userService.kbbsInvalidate(kbbsToken);
-                    LOG.debug("Result from invalidating KBBS authentication token: {}", result);
+                    if (!kbbsToken.equals("NOT_AUTHORISED")) {
+                        result = userService.kbbsInvalidate(kbbsToken);
+                        LOG.debug("Result from invalidating KBBS authentication token '{}': {}", kbbsToken, result);
+                    }
                 } catch (Exception ex) {
-                    LOG.warn("Exception thrown invaludating KBBS token '{}': {}", kbbsToken, ex.getMessage());
+                    LOG.warn("Exception thrown invalidating KBBS token '{}': {}", kbbsToken, ex.getMessage());
                 } finally {
                     kbbsCookie.setValue("");
                     kbbsCookie.setPath("/");
@@ -50,7 +52,7 @@ public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
                     response.addCookie(kbbsCookie);
                 }
            } else {
-                 LOG.debug("No KBBBStoken to invalidate");
+                 LOG.debug("No KBBBS token to invalidate");
             }
             
         }

@@ -220,7 +220,23 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                 cookie.setPath("/");
                 cookie.setSecure(true);
                 response.addCookie(cookie);
+            } else {
+                Cookie cookie = new Cookie("ASP.NET_Token", "NOT_AUTHORISED");
+                cookie.setDomain("idaschox.com");
+                cookie.setMaxAge(-1);
+                cookie.setHttpOnly(true);
+                cookie.setPath("/");
+                cookie.setSecure(true);
+                response.addCookie(cookie);
             }
+        } else {
+                Cookie cookie = new Cookie("ASP.NET_Token", "NOT_AUTHORISED");
+                cookie.setDomain("idaschox.com");
+                cookie.setMaxAge(-1);
+                cookie.setHttpOnly(true);
+                cookie.setPath("/");
+                cookie.setSecure(true);
+                response.addCookie(cookie);
         }
 
         // Add orgId to session

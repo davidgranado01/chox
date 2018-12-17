@@ -179,17 +179,17 @@ public class TimeoutFilter extends OncePerRequestFilter {
 
         if (kbbsToken != null && !kbbsToken.isEmpty()) {
             try {
-                result = userService.kbbsInvalidate(kbbsToken);
+                if (!kbbsToken.equals("NOT_AUTHORISED")) {
+                    result = userService.kbbsInvalidate(kbbsToken);
+                    LOG.debug("Result from invalidating KBBS authentication token '{}': {}", kbbsToken, result);
+                }
             } finally {
                 kbbsCookie.setValue("");
                 kbbsCookie.setPath("/");
                 kbbsCookie.setMaxAge(0);
                 response.addCookie(kbbsCookie);
             }
-        } else {
-            result = "No KBBS authentication token (cookie) available";
         }
 
-        LOG.debug("Result from invalidating KBBS authentication token: {}", result);
     }
 }
