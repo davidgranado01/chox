@@ -25,7 +25,7 @@ public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        if (authentication != null) {
+        if (authentication != null && false) {
             LOG.debug("Logging out.....");
             String result, kbbsToken = null;
             
