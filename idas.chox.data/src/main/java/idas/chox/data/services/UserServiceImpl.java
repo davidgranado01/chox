@@ -477,10 +477,10 @@ public class UserServiceImpl extends BaseDataService implements UserService {
                             LOG.debug("----------------------------------------");
                             return authenticationToken == null || authenticationToken.isEmpty() ? null : authenticationToken;
                         }
-                    } catch (IOException | ParseException e) {
-                        LOG.error("Error Parsing response from KBBS authentication: {}", e.getMessage(), e);
+                    } catch (IOException | ParseException ex) {
+                        LOG.warn("Error Parsing response from KBBS authentication: {}", ex.getMessage());
                     } catch (Exception ex) {
-                        LOG.error("Error Parsing response from KBBS authentication: {}", ex.getMessage(), ex);
+                        LOG.warn("Exception Parsing response from KBBS authentication: {}", ex.getMessage());
                     }
                 }
             }
@@ -524,7 +524,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
                             return result;
                         }
                     } catch (IOException | ParseException e) {
-                        LOG.error("Error Parsing response from KBBS InvalidateToken: {}", e.getMessage(), e);
+                        LOG.warn("Error Parsing response from KBBS InvalidateToken: {}", e.getMessage());
                     }
                 }
             return null;

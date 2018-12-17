@@ -16,9 +16,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import idas.chox.core.model.WebUser;
+import idas.chox.core.model.WebUserRole;
 import idas.chox.core.services.IPWhitelistService;
 import idas.chox.core.services.UserService;
 import idas.chox.core.util.DateHelper;
+import idas.chox.core.util.RoleHelper;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.web.security.CustomAuthenticationSuccessHandler.BrowserUtil.BrowserType;
 
@@ -192,7 +194,22 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                 new Object[]{user.toString(), request.getRemoteAddr(), request.getHeader("user-agent"), request.getSession().getId()});
 
         // Check if KBBS Dashboards enabled and if so authenticate
-        if ((isInsurer && user.getInsurer().isEnableKbbsDashboard()) || (isCHO && user.getChorganisation().isEnableKbbsDashboard())) {
+        boolean kbbsEnabled = false;
+        
+        if ((isInsurer && user.getInsurer().isEnableKbbsDashboard())) {
+            // Insurer must have both MI Access and Manager roles to access the dashboards
+            kbbsEnabled = RoleHelper.isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_INS_MNG)
+                                && RoleHelper.isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_INS_MI);
+        }
+        
+        if (isCHO && user.getChorganisation().isEnableKbbsDashboard()) {
+            // Currently no Dashboards for CHO
+//            kbbsEnabled = RoleHelper.isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_CHO_MNG)
+//                                && RoleHelper.isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_CHO_MI);            
+
+        }
+        
+        if (kbbsEnabled) {
             String kbbsAuthenticationToken = userService.kbbsAuthenticate(user);
             // Add Authentication Cookie
             if (kbbsAuthenticationToken != null) {

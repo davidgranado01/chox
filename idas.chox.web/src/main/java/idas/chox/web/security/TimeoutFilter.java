@@ -17,6 +17,7 @@ import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import idas.chox.core.services.UserService;
+
 /*
  * This class extends OncePerRequestFilter to prevent the forward(httpServelet DispatcherType) request being filterd by this filter.
  */
@@ -69,7 +70,7 @@ public class TimeoutFilter extends OncePerRequestFilter {
         if (!((auth != null && auth.isAuthenticated()) || serveletPath.contains(LOGIN_PAGE_REQUEST_URL)
                 || serveletPath.contains(LOGIN_FORM_AUTH_CHECK_STRING))) {
             // Session could have timed-out - lets try invalidating the KBBS token, just in case....
-            invalidateKbbsToken(request);
+            invalidateKbbsToken(request, response);
             defaultRedirectStrategy.sendRedirect(request, response, LOGIN_PAGE_REQUEST_URL);
             return;
         }
@@ -97,7 +98,7 @@ public class TimeoutFilter extends OncePerRequestFilter {
                 SecurityContextHolder.clearContext();
 
                 LOG.debug("Login session has been expired - invalidating KBBS authentication token");
-                invalidateKbbsToken(request);
+                invalidateKbbsToken(request, response);
 
                 if (isAjax) { // This error code(418) is caught by extjs and ajax global exception handler and appropriate error message is shown to the user.
 
@@ -161,25 +162,34 @@ public class TimeoutFilter extends OncePerRequestFilter {
     public void setDefaultRedirectStrategy(DefaultRedirectStrategy defaultRedirectStrategy) {
         this.defaultRedirectStrategy = defaultRedirectStrategy;
     }
-    
-    private void invalidateKbbsToken(HttpServletRequest request) throws IOException {
-                String result, kbbsToken = null;
 
-                Cookie cookies[] = request.getCookies();
-                if (cookies != null) {
-                    for (Cookie cookie : cookies) {
-                        if (cookie.getName().equals("ASP.NET_Token")) {
-                            kbbsToken = cookie.getValue();
-                        }
-                    }
-                }
-                
-                if (kbbsToken != null) {
-                    result = userService.kbbsInvalidate(kbbsToken);
-                } else {
-                    result = "No KBBS authentication token (cookie) available";
-                }
+    private void invalidateKbbsToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String result, kbbsToken = null;
 
-                LOG.debug("Result from invalidating KBBS authentication token: {}", result);
+        Cookie cookies[] = request.getCookies();
+        Cookie kbbsCookie = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("ASP.NET_Token")) {
+                    kbbsCookie = cookie;
+                    kbbsToken = cookie.getValue();
+                }
+            }
+        }
+
+        if (kbbsToken != null && !kbbsToken.isEmpty()) {
+            try {
+                result = userService.kbbsInvalidate(kbbsToken);
+            } finally {
+                kbbsCookie.setValue("");
+                kbbsCookie.setPath("/");
+                kbbsCookie.setMaxAge(0);
+                response.addCookie(kbbsCookie);
+            }
+        } else {
+            result = "No KBBS authentication token (cookie) available";
+        }
+
+        LOG.debug("Result from invalidating KBBS authentication token: {}", result);
     }
 }

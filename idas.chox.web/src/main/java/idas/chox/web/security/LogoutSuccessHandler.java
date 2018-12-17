@@ -30,18 +30,29 @@ public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
             String result, kbbsToken = null;
             
             Cookie cookies[] = request.getCookies();
+            Cookie kbbsCookie = null;
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("JD.Token")) {
+                    kbbsCookie = cookie;
                     kbbsToken = cookie.getValue();
                 }
             }
-            if (kbbsToken != null) {
-                result = userService.kbbsInvalidate(kbbsToken);
-            } else {
-                result = "No KBBS authentication token (cookie) available";
+            if (kbbsToken != null && !kbbsToken.isEmpty()) {
+                try {
+                    result = userService.kbbsInvalidate(kbbsToken);
+                    LOG.debug("Result from invalidating KBBS authentication token: {}", result);
+                } catch (Exception ex) {
+                    LOG.warn("Exception thrown invaludating KBBS token '{}': {}", kbbsToken, ex.getMessage());
+                } finally {
+                    kbbsCookie.setValue("");
+                    kbbsCookie.setPath("/");
+                    kbbsCookie.setMaxAge(0);
+                    response.addCookie(kbbsCookie);
+                }
+           } else {
+                 LOG.debug("No KBBBStoken to invalidate");
             }
             
-            LOG.debug("Result from invalidating KBBS authentication token: {}", result);
         }
 
         setDefaultTargetUrl("/login");
