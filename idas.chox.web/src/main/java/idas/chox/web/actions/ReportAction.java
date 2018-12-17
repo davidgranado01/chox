@@ -246,6 +246,7 @@ public class ReportAction extends BaseAction implements HttpParametersAware {
                     LOG.error("FileNotFoundException in generating report: {}\n", ex.getMessage(), ex);
                     createEmptyReport();
                 }
+                session.remove("reportFileLocation");
                 session.remove("exceptionThrown");
                 session.remove("cancelExportOperation");
             } else {
