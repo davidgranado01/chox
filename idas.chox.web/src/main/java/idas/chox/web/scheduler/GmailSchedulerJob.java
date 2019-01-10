@@ -140,14 +140,14 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
                 // To get the matching job, we need to remove trailing characters from the subject.
                 // All characters after the following strings (when present) should be removed: Request, Pack, Notification, Task
                 String matchSubject;
-                if (subject.contains("Request")) {
-                    matchSubject = subject.substring(0, subject.indexOf("Request") + 7);
-                } else if (subject.contains("Pack")) {
-                    matchSubject = subject.substring(0, subject.indexOf("Pack") + 4);
-                } else if (subject.contains("Notification")) {
-                    matchSubject = subject.substring(0, subject.indexOf("Notification") + 12);
-                } else if (subject.contains("Task")) {
-                    matchSubject = subject.substring(0, subject.indexOf("Task") + 4);
+                if (subject.toLowerCase().contains("request")) {
+                    matchSubject = subject.substring(0, subject.toLowerCase().indexOf("request") + 7);
+                } else if (subject.toLowerCase().contains("pack")) {
+                    matchSubject = subject.substring(0, subject.toLowerCase().indexOf("pack") + 4);
+                } else if (subject.toLowerCase().contains("notification")) {
+                    matchSubject = subject.substring(0, subject.toLowerCase().indexOf("notification") + 12);
+                } else if (subject.toLowerCase().contains("task")) {
+                    matchSubject = subject.substring(0, subject.toLowerCase().indexOf("task") + 4);
                 } else {
                     matchSubject = subject;
                 }
