@@ -1,0 +1,355 @@
+#!/bin/bash
+PSQL_COMMAND=/usr/bin/psql
+HOST=#{DB_HOST} #dev-ukre-pgs28.dc.solera-uk.com
+USER=#{DB_USER.CHOX} #chox
+DB=#{DB_NAME.CHOX} #dev_uk_chox
+MI_DIRECTORY=/home/chox/reports/
+
+echo '***********************************************************'
+echo `date`': Generating Weekly Monday Reports'
+echo '***********************************************************'
+
+
+#
+# Monthly Mobile Chox Report
+#
+#REPORT_DATE=`date +"%F"`
+#DUMPFILE1=Monthly-Mobile-Chox-Report-${REPORT_DATE}-All.txt
+#DUMPFILE2=Monthly-Mobile-Chox-Report-${REPORT_DATE}-RSA.txt
+#DUMPFILE3=Monthly-Mobile-Chox-Report-${REPORT_DATE}-Motability.txt
+#DUMPFILE4=Monthly-Mobile-Chox-Report-${REPORT_DATE}-DLG.txt
+#DUMPFILE4=RSAM-Weekly-Report-${REPORT_DATE}-Motability.txt
+
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE1} << --EOF--
+#SELECT * FROM monthly_mobile_chox_report();
+#--EOF--
+
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE2} << --EOF--
+#SELECT * FROM monthly_mobile_chox_report_by_insurer(3);
+#--EOF--
+
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE3} << --EOF--
+#SELECT * FROM monthly_mobile_chox_report_by_insurer(19);
+#--EOF--
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE4} << --EOF--
+#SELECT * FROM monthly_mobile_chox_report_by_insurer(6);
+#--EOF--
+
+#/bin/cp ${DUMPFILE1} ${DUMPFILE2} ${DUMPFILE3} ${MI_DIRECTORY}
+#/bin/rm ${DUMPFILE1} ${DUMPFILE2} ${DUMPFILE3} ${DUMPFILE4}
+
+# Disabled on 16/03/2016 as no longer being used (only sent internally)
+#DUMPFILE=ERS-Weekly_Action_Management_Report-`date +"%F"`.txt
+#REPORT_DATE=`date +"%F"`
+
+#echo "Generating 'equity_weekly_action_management_report'"
+
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select 'Sheet-1' as tab_name;
+#SELECT * FROM equity_weekly_action_management_report_part1();
+#select 'Sheet-2' as tab_name;
+#SELECT * FROM equity_weekly_action_management_report_part2();
+#select 'Sheet-3' as tab_name;
+#SELECT * FROM  equity_weekly_action_management_report_part3();
+#--EOF--
+
+#/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+#/bin/rm ${DUMPFILE}
+
+# Report removed on 06/10/2014 at request of ER
+#DUMPFILE=ERS-Passed_BRE_Review_Report-`date +"%F"`.txt
+#
+#START_DATE=`date -d "last week" +%F`
+#END_DATE=`date +"%F"`
+#YESTERDAY_DATE=`date -d "yesterday" +%F`
+#INS_ID=20
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#
+# SELECT * FROM passedBREReviewReport(${INS_ID}, '${START_DATE}', '${END_DATE}');
+#
+#--EOF--
+#
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+#
+#Slater Gordon Solutions Motor Review Report
+#
+echo 'Slater Gordon Solutions Motor Review Report'
+END_DATE=`date +"%F"`
+/home/chox/bin/reviewReport 1016 "2008-01-01" "${END_DATE}"
+
+#
+#Slater Gordon Solutions Motor Protocol Invoice WIP Report
+#
+#DUMPFILE=SGSM-Protocol_Invoice_WIP_Report-`date +"%F"`.txt
+#START_DATE='2008-01-01'
+#END_DATE=`date +"%F"`
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from invoiceWipReport(array[1341], null, '${START_DATE}', '${END_DATE}');
+#--EOF--
+#
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+#
+# Defaulted Claims Report for QBE
+#
+DUMPFILE=QBE-Defaulted_Claims_Report-`date +"%F"`.txt
+END_DATE=`date +%F`
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select "Supplier Reference", "Insurer Claim Number", "Workgroup", "Insurer Claim Owner", "CHO Name", "Claim Type", "Insurer Name", "Date Claim Defaulted" from default_claims_reports(array[25], '2015-06-01', '${END_DATE}') order by defaulted_date desc;
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+#
+#Sla Rejection Report (For Subscriber Claims only) for QBE
+#
+END_DATE=`date +"%F"`
+START_DATE=`date -d "last week" +%F`
+INS_ID=25
+
+/home/chox/bin/slaRejectionReport.sh Subscriber ${INS_ID} ${START_DATE} ${END_DATE}
+
+#
+#Sla Rejection Report (For Subscriber Claims only)
+#
+# Stopped by request from ER on 10/11/2014
+#DUMPFILE=RSA-Subscriber_SLA_Rejection_Report-`date +"%F"`.txt
+#DUMPFILE1=Motability-Subscriber_SLA_Rejection_Report-`date +"%F"`.txt
+#
+#END_DATE=`date +"%F"`
+#START_DATE='2013-01-28'
+#RSA_INS_ID=3
+#MOTABILITY_INS_ID=19
+
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#SELECT * FROM slaSubscriberRejectionReport('${START_DATE}', '${END_DATE}', ${RSA_INS_ID});
+#--EOF--
+
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE1} << --EOF--
+#SELECT * FROM slaSubscriberRejectionReport('${START_DATE}', '${END_DATE}', ${MOTABILITY_INS_ID});
+#--EOF--
+#
+#/bin/mv ${DUMPFILE} ${DUMPFILE1} ${MI_DIRECTORY}
+
+
+#
+#Sla Rejection Report (For Fixed Fee Claims only)
+#
+# Removed on 30/04/2014 at reqiest of BR
+#DUMPFILE=RSA_FixedFee_SLA_Rejection_Report-`date +"%F"`.txt
+#DUMPFILE1=Motability_FixedFee_SLA_Rejection_Report-`date +"%F"`.txt
+
+#END_DATE=`date +"%F"`
+#START_DATE='2013-01-28'
+#RSA_INS_ID=3
+#MOTABILITY_INS_ID=19
+
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#SELECT * FROM slaFixedFeeRejectionReport('${START_DATE}', '${END_DATE}', ${RSA_INS_ID});
+#--EOF--
+
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE1} << --EOF--
+#SELECT * FROM slaFixedFeeRejectionReport('${START_DATE}', '${END_DATE}', ${MOTABILITY_INS_ID});
+#--EOF--
+
+#/bin/mv ${DUMPFILE} ${DUMPFILE1} ${MI_DIRECTORY}
+
+
+#echo 'Report generating for RSA Commercial Area Report'
+#START_DATE=`date -d "last week" +%F`
+#END_DATE=`date +"%F"`
+#YESTERDAY_DATE=`date -d "yesterday" +%F`
+#CLAIM_UPLOAD_START_DATE='2013-10-07'
+#INS_ID=3
+#CHO_ID='array[1013, 1014, 1028, 1029, 1030]'
+#echo "Generating RSA Commercial Area Report Report from " ${START_DATE} " to " ${END_DATE}
+#DUMPFILE=RSA-Commercial-Area-Report-`date +"%F"`.txt
+
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from rsa_commercial_area_report(${INS_ID}, ${CHO_ID}, '${START_DATE}', '${END_DATE}', '${CLAIM_UPLOAD_START_DATE}', '${END_DATE}')
+#--EOF--
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+#echo 'Report generating for RSAM Commercial Area Report'
+#START_DATE=`date -d "last week" +%F`
+#END_DATE=`date +"%F"`
+#YESTERDAY_DATE=`date -d "yesterday" +%F`
+#CLAIM_UPLOAD_START_DATE='2007-01-01'
+#INS_ID=19
+#CHO_ID='array[1013, 1014, 1028, 1029, 1030]'
+#echo "Generating RSAM Commercial Area Report Report from " ${START_DATE} " to " ${END_DATE}
+#DUMPFILE=RSAM-Commercial-Area-Report-`date +"%F"`.txt
+
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from rsa_commercial_area_report(${INS_ID}, ${CHO_ID}, '${START_DATE}', '${END_DATE}', '${CLAIM_UPLOAD_START_DATE}', '${END_DATE}')
+#--EOF--
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+
+echo 'Report generating for ERAC Report'
+START_DATE='2009-01-01'
+END_DATE=`date  +%F`
+YESTERDAY=`date -d "yesterday" +%F`
+CHO_ID='array[1007]'
+DUMPFILE='ERAC-Repair_Report-'`date +"%F"`.txt
+FILE1='ERAC-Repair_Report-'`date +"%F"`.pt1
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${FILE1} << --EOF--
+
+select 'Open' as tab_name;
+
+select * from erac_repair_report(array[]::integer[], ${CHO_ID}, '${START_DATE}', '${END_DATE}', array[]::integer[], array['AwaitingCarHireInfo','AwaitingInvoiceData','AwaitingInvoicePayment','AwaitingLiabilityResolution','AwaitingLitigationOutcome','ClaimPending','ClaimReferredToFNOL','ClaimRejected','ClaimRejectionContested','ClaimUnacknowledgedRouted','ClaimUnacknowledgedUnassigned','ClaimUnacknowledgedUnrouted','ContestedInvoiceReferredToCHO','ContestedInvoiceReferredToInsurer','InvoiceApprovedByBRE','InvoiceDataCalculationIncorrect','InvoiceEscalatedToHandler','InvoiceReferredToEngineer','SubscriberClaimRejected']);
+
+select 'Closed' as tab_name;
+
+select * from erac_repair_report(array[]::integer[], ${CHO_ID}, '${START_DATE}', '${END_DATE}', array[]::integer[], array['ClaimClosed','ClaimRejectionAccepted','InvoiceRejectionAccepted']);
+
+select 'Paid' as tab_name;
+
+select * from erac_repair_report(array[]::integer[], ${CHO_ID}, '${START_DATE}', '${END_DATE}', array[]::integer[], array['PaymentReceived']);
+
+select 'Paid But Not Received' as tab_name;
+
+select * from erac_repair_report(array[]::integer[], ${CHO_ID}, '${START_DATE}', '${END_DATE}', array[]::integer[], array['InvoicePaymentLogged']);
+
+--EOF--
+
+FILE2='ERAC-Repair_Report-'`date +"%F"`.pt2
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${FILE2} << --EOF--
+select 'Repair Report Summary' as tab_name;
+
+select * from erac_repair_report_summary(array[]::integer[], ${CHO_ID}, '${START_DATE}', '${END_DATE}', array[]::integer[]);
+--EOF--
+
+/bin/cat ${FILE1} ${FILE2} > ${DUMPFILE}
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${FILE1} ${FILE2}
+
+echo 'Report generating for RSA Attachment Report'
+START_DATE=`date -d "last week" +%F`
+END_DATE=`date  +%F`
+DUMPFILE='RSA-Attachment_Report-'`date +"%F"`.txt
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from attachment_report(3, array[]::integer[], array['Engineer''s Reports']::varchar[], '${START_DATE}', '${END_DATE}',
+ array['AwaitingCarHireInfo','ClaimUnacknowledgedUnrouted',
+       'ClaimUnacknowledgedRouted','ClaimUnacknowledgedUnassigned',
+       'ClaimPending','ClaimReferredToFNOL',
+       'ClaimReferredToEngineer','ClaimUpdatedByEngineer',
+       'ClaimRejectionContested']::varchar[]);
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Report generating for DLG Audit Report'
+START_DATE=`date -d "last week" +%F`
+END_DATE=`date  +%F`
+DUMPFILE='ERAC-Audit_Report-'`date +"%F"`.txt
+DUMPFILE1='DLG-Audit_Report-'`date +"%F"`.txt
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from dlg_audit_report(array[6], array[1007], '${START_DATE}', '${END_DATE}', array[]::integer[]);
+--EOF--
+
+/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}/${DUMPFILE1}
+
+echo 'Report generating for Last ECD Update Report'
+DUMPFILE='ERS-Last_ECD_Update_Report-'`date +"%F"`.txt
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from last_ecd_update_report(20, array[]::integer[], array[]::integer[]);
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Report generating for ERAC CHOX Data Dump'
+END_DATE=`date  +%F`
+DUMPFILE='ERAC-CHOX_Data_Dump-'`date +"%F"`.txt
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from eracDataDump(null::integer[], array[1007], null::integer[], '2008-01-01','${END_DATE}');
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Report generating for RSA & Motability On Hire Report'
+DUMPFILE='RSA-On_Hire_Report-'`date +"%F"`.txt
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from on_hire_report(array[3, 19], null::int[], array[14,123,15]);
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Report generating for RSA & Motability Insurer Penalty Charge Report'
+DUMPFILE='RSA-Insurer_Penalty_Charge_Report-'`date +"%F"`.txt
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from insurer_penalty_charge_report(array[3,19], array[14,123,15,134], 10, 3);
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Report generating for LV Weekly dashboard report'
+DUMPFILE='LV-Weekly_Dashboard_Report-'`date +"%F"`.txt
+START_DATE=`date -d "last week" +%F`
+END_DATE=`date +"%F"`
+INS_ID=26
+#CHO_ID='array[1007, 1123, 1341]'
+CHO_ID=null
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from summary_revenue_dashboard(${INS_ID}, ${CHO_ID}, '${START_DATE}', '${END_DATE}');
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+#echo 'Report generating for DLG Pilot Report'
+#/home/chox/bin/dlgPilotReport
+#/home/chox/bin/dlgPilotReportQuery
+
+echo 'Generating Accident Exchange Invoice Notifications Report for LV / Manual Accident Exchange'
+DUMPFILE=AccidentExchange-Invoice_Notifications_Report_LV-`date +"%F"`.txt
+INS_ID=array[26]
+CHO_ID=1125
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from invoice_notifications_report(${INS_ID}, ${CHO_ID}, '${START_DATE}'::varchar, '${END_DATE}'::varchar);
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Generating Closed Claim Report for LV'
+DUMPFILE=LV-Closed_Claim_Report-`date +"%F"`.txt
+INS_ID=array[26]
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from closed_claim_report(${INS_ID}, null::integer[], '${START_DATE}'::varchar, '${END_DATE}'::varchar);
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Generating Paid Invoices Hire Claimed vs Paid Days report for DLG/ERAC'
+INS_ID=6
+CHO_ID=array[1007]
+DUMPFILE=DLG-Hire_Claimed_vs_Paid_Days-ERAC-`date +"%F"`.txt
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from paid_invoices_hire_claimed_vs_paid_days(${INS_ID},${CHO_ID},'${START_DATE}','${END_DATE}');
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Generating Audit History Report for DLG / Manual Helphire'
+INS_ID=6
+CHO_ID=array[1123]
+DUMPFILE=DLG-AuditHistoryReport-ManualAuxillis-`date +"%F"`.txt
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from auditHistoryReport(${INS_ID}, ${CHO_ID}, array[array[112,113,118,119,125], array[120,121,122,null,null]]::integer[][], array['Personal Workgroups','Commercial Workgroups'], 12, null::integer[]);
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo '***********************************************************'
+echo 'Finished generating weekly Monday reports'
+echo '***********************************************************'
+exit 0

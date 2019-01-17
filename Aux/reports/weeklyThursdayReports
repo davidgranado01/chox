@@ -1,0 +1,54 @@
+#!/bin/bash
+PSQL_COMMAND=/usr/bin/psql
+HOST=#{DB_HOST} #dev-ukre-pgs28.dc.solera-uk.com
+USER=#{DB_USER.CHOX} #chox
+DB=#{DB_NAME.CHOX} #dev_uk_chox
+
+DUMPFILE=Auxillis-Moved_To_InvoicePaymentLogged_Claim_Detail_Report-`date +"%F"`.txt
+MI_DIRECTORY=/home/chox/reports/
+
+echo '***********************************************************'
+echo `date`': Generating Weekly Thursday Reports'
+echo '***********************************************************'
+
+START_DATE=`date -d "last week" +%F`
+END_DATE=`date +"%F"`
+YESTERDAY_DATE=`date -d "yesterday" +%F`
+CHO_ID=1010
+
+echo "Generating 'Moved To Invoice Payment Logged Claim Detail Level Report' from " ${START_DATE} " to " ${YESTERDAY_DATE}
+#SUBJECT='CHOX: Moved To Invoice Payment Logged Claim Detail Level Report (Weekly: '${START_DATE}' to '${YESTERDAY_DATE}')'
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+
+select  c.cho_reference as "Supplier Reference", i.total_to_pay as "Total To Pay", a.created_date as "Date Claim Moved To InvoicePaymentLogged", c.status as "Current CHOX Status", ins.name as "Insurer Name"  from claim c , invoice i, audit_trail a, insurer ins where c.invoice_id = i.id
+        and a.claim_id = c.id
+        and c.insurer_id = ins.id
+        and a.new_status = 'InvoicePaymentLogged'
+        and a.reverted = false
+        and not exists ( select * from audit_trail a2 where c.id = a2.claim_id and a2.update_date > a.update_date and a2.new_status = a.new_status and a2.reverted = false )
+        and not exists ( select * from audit_trail a3 where a3.original_status = a.new_status and a3.update_date > a.update_date and c.id = a3.claim_id and a3.reverted = false and a3.new_status!='ClaimClosed' and a3.new_status!='PaymentReceived'  )
+        and c.chorganisation_id = '${CHO_ID}'  -- Cho Id
+        and a.created_date between '${START_DATE}' and '${END_DATE}' order by ins.id, a.created_date;
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+
+DUMPFILE=Kindertons-Invoice_Upload_Report-`date +"%F"`.txt
+START_DATE=`date -d "last week" +%F`
+END_DATE=`date +"%F"`
+CHO_ID=1015
+
+echo "Generating Invoice Upload Report for Kindertons..."
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from invoice_upload_report(array[${CHO_ID}], null::integer[], '${START_DATE}', '${END_DATE}');
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo "Done"
+
+echo '***********************************************************'
+exit 0

@@ -1,0 +1,205 @@
+#!/bin/bash
+PSQL_COMMAND=/usr/bin/psql
+HOST=#{DB_HOST} #dev-ukre-pgs28.dc.solera-uk.com
+USER=#{DB_USER.CHOX} #chox
+DB=#{DB_NAME.CHOX} #dev_uk_chox
+
+DUMPFILE=RSA-Subscriber_Task_Export_Report-`date +"%F"`.txt
+DUMPFILE1=RSA-FixedFee_Task_Export_Report-`date +"%F"`.txt
+RECIPIENTS=elliot.roberts@sherwoodts.co.uk,ben.richmond@sherwoodts.co.uk
+MI_DIRECTORY=/home/chox/reports/
+
+
+echo '***********************************************************'
+echo `date`': Generating Daily Reports'
+echo '***********************************************************'
+echo 'Generating RSA Subscriber Task Export Report'
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+SELECT * FROM taskExportReport('INS', 3, '{7,8,9}'::INT[]);
+--EOF--
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE1} << --EOF--
+SELECT * FROM taskExportReport('INS', 3, '{11,12,13}'::INT[]);
+--EOF--
+
+/bin/cp ${DUMPFILE} ${DUMPFILE1} ${MI_DIRECTORY}
+/bin/rm ${DUMPFILE} ${DUMPFILE1}
+
+# Removed on 30/04/2014 at request of BR
+#DUMPFILE=RSA_SUBSCRIBER_TASK_REPORT-`date +"%F"`.txt
+#SUBJECT='RSA Subscriber Task Report - '`date +"%d/%m/%Y"`
+#
+#echo 'Generating Subscriber Task Report for RSA'
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#SELECT * FROM subscriber_task_report(3);
+#--EOF--
+#
+#/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+#/bin/rm ${DUMPFILE}
+
+DUMPFILE=RSA-Default_Claims_Report-`date +"%F"`.txt
+END_DATE=`date +%F`
+
+echo 'Generating Default Claims Report for RSA/Motability'
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select "Supplier Reference", "Insurer Claim Number", "Workgroup", "Insurer Claim Owner", "CHO Name", "Claim Type", "Insurer Name", "Date Claim Defaulted" from default_claims_reports(array[3,19], '2013-01-28', '${END_DATE}') order by defaulted_date desc;
+--EOF--
+
+/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${DUMPFILE}
+
+DUMPFILE=AccidentExchange-Processed_Notifications_Report_LV-`date +"%F"`.rpt
+CHO_ID=1125
+INS_ID=array[26]
+DayOfWeek=`date +%a`
+
+# If its Monday, the start date will be the previous Friday, else yesterday.
+if [ "${DayOfWeek}" == "Mon" ]; then
+   START_DATE=`date -d "3 days ago" +%F`
+else
+   START_DATE=`date -d "yesterday" +%F`
+fi
+
+echo 'Generating Accident Exchange Processed Notifications Report for LV / Manual Accident Exchange'
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from processedNotificationsReport(${CHO_ID}, ${INS_ID}, '${START_DATE}'::varchar, '${END_DATE}'::varchar);
+--EOF--
+
+/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${DUMPFILE}
+
+
+echo 'Generating Accident Exchange Processed Notifications Report for DLG / Manual Accident Exchange'
+DUMPFILE=AccidentExchange-Processed_Notifications_Report_DLG-`date +"%F"`.rpt
+INS_ID=array[6]
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from processedNotificationsReport(${CHO_ID}, ${INS_ID}, '${START_DATE}'::varchar, '${END_DATE}'::varchar);
+--EOF--
+
+/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${DUMPFILE}
+
+#echo 'Generating Accident Exchange Invoice Notifications Report for DLG / Manual Accident Exchange'
+#DUMPFILE=AccidentExchange-Invoice_Notifications_Report_DLG-`date +"%F"`.txt
+#INS_ID=array[6]
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from invoice_notifications_report(${INS_ID}, ${CHO_ID}, '${START_DATE}'::varchar, '${END_DATE}'::varchar);
+#--EOF--
+#
+#/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+#/bin/rm ${DUMPFILE}
+
+DUMPFILE=ERAC-TotalLoss_LiabilityUpdate_Report-`date +"%F"`.txt
+CHO_ID=1007
+INS_ID=6
+
+echo 'Generating Total Loss Liability Updates Report for ERAC/DLG'
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from total_loss_liability_updates(array[${INS_ID}], array[${CHO_ID}], '${START_DATE}', '${END_DATE}');
+--EOF--
+
+/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${DUMPFILE}
+
+echo 'Generating Ultra-Prestige Report for RSA/Motability'
+DUMPFILE=RSA-Ultra_Prestige_Report-`date +"%F"`.txt
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from ultra_prestige_report(array[3,19], array[14,123,15], '${START_DATE}');
+--EOF--
+
+/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${DUMPFILE}
+
+# Claimfast Uploaded Claims Report
+/home/chox/bin/uploadedClaimsReport
+
+echo 'Generating On Hire Report for QBE'
+DUMPFILE='QBE-On_Hire_Report-'`date +"%F"`.txt
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from on_hire_report(array[25], null::int[], null::int[]);
+--EOF--
+
+/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${DUMPFILE}
+
+echo 'Generating Data Export for ERAC'
+DUMPFILE='ERAC-Daily_Data_Export-'`date +"%F"`.txt
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from eracDataExport(array[1007], null::integer[], null::integer[]);
+--EOF--
+
+/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${DUMPFILE}
+
+
+echo 'Generating FNOL Notifications for DLG'
+DUMPFILE='Auxillis-FNOL_Notifications_Report_DLG-'`date +"%F"`.txt
+CHO_ID=1123
+INS_ID=6
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from fnol_notifications_report(array[${INS_ID}], ${CHO_ID}, '${START_DATE}', '${END_DATE}');
+--EOF--
+
+/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${DUMPFILE}
+
+echo 'Generating Liability Update Report for Kindertons'
+DUMPFILE='Kindertons-Liability_Update_Report-'`date +"%F"`.txt
+CHO_ID=1015
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from liability_update_report(${CHO_ID}, null, '${START_DATE}', '${END_DATE}');
+--EOF--
+
+/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${DUMPFILE}
+
+#echo 'Generating LV Payment Bordereau'
+DUMPFILE='LVCHOXinvoice'`date +"%Y%m%d"`.csv
+INS_ID=26
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
+\copy (select * from paymentBordereau(${INS_ID}, null, '${START_DATE}', '${END_DATE}')) TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
+--EOF--
+
+/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${DUMPFILE}
+
+echo 'Generating Prestige Report for DLG'
+DUMPFILE='DLG-PrestigeClaimReport-'`date +"%Y%m%d"`.txt
+INS_ID=6
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from prestige_claim_report(${INS_ID}, null, null, null, '${START_DATE}', '${END_DATE}');
+--EOF--
+
+/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${DUMPFILE}
+
+echo 'Generating Hire Invoice Upload Report for DLG'
+DUMPFILE='DLG-HireInvoiceUploadReport-'`date +"%Y%m%d"`.txt
+INS_ID=6
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from hire_invoice_upload_report(array[${INS_ID}], array[1015, 1016, 1735], null::integer[], '${START_DATE}', '${END_DATE}');
+--EOF--
+
+/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${DUMPFILE}
+
+echo 'Generating Keoghs Daily Report'
+DUMPFILE='Keoghs-DailyReport-'`date +"%Y%m%d"`.txt
+INS_ID=26
+CHO_ID=1788
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select 'Rejected Claims' as tab_name;
+select * from keoghs_daily_report(${CHO_ID}, array[${INS_ID}], 'ClaimRejected', '${START_DATE}', '${END_DATE}');
+select 'Acknowledged Claims' as tab_name;
+select * from keoghs_daily_report(${CHO_ID}, array[${INS_ID}], 'AwaitingCarHireInfo', '${START_DATE}', '${END_DATE}');
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Done generating Daily Reports'
+echo '***********************************************************'
+echo
+
+exit 0;

@@ -1,0 +1,24 @@
+#!/bin/bash
+PSQL_COMMAND=/usr/bin/psql
+HOST=#{DB_HOST} #dev-ukre-pgs28.dc.solera-uk.com
+USER=#{DB_USER.CHOX} #chox
+DB=#{DB_NAME.CHOX} #dev_uk_chox
+
+MI_DIRECTORY=/home/chox/reports/
+
+echo 'Subscriber Stats Report generating for ERAC'
+DUMPFILE=ERAC-Subscriber_Stats_Report-`date +"%F"`.txt
+RECIPIENTS=elliot.roberts@sherwoodts.co.uk,ben.richmond@sherwoodts.co.uk
+END_DATE=`date -d "yesterday" +%F`
+REPORT_END_DATE=`date +%F`
+START_DATE=`date +%Y-%m-01`
+CHO_ID=1007
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from subscriber_stats_report(${CHO_ID}, '${START_DATE}', '${REPORT_END_DATE}')
+--EOF--
+
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+exit 0

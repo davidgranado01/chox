@@ -1,0 +1,81 @@
+#!/bin/bash
+#params :
+#1 = Insurers name as string ('Direct Line')
+#2 = Insurers id as int (6)
+#3 = Start date as String ('2012-11-11')
+PSQL_COMMAND=/usr/bin/psql
+HOST=#{DB_HOST} #dev-ukre-pgs28.dc.solera-uk.com
+USER=#{DB_USER.CHOX} #chox
+DB=#{DB_NAME.CHOX} #dev_uk_chox
+
+DUMPFILE=$1-Monthly_Manual_CHOX_Cost_Report_By_AccidentDate-`date +"%F"`.txt
+TMPFILE=$1-Monthly_Manual_CHOX_Cost_Report_By_AccidentDate-`date +"%F"`.tmp
+MI_DIRECTORY=/home/chox/reports/
+
+LIST_OF_MAN_CHOS_FILE=ChosNameAD.txt
+
+index=0
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${LIST_OF_MAN_CHOS_FILE} << --EOF--
+
+select distinct c.chorganisation_id as id from claim c left join insurer i on c.insurer_id = i.id join chorganisation ch on c.chorganisation_id = ch.id and i.id = $2 and ch.insurer_upload_only = true and ch.id != 1123;
+
+--EOF--
+
+while read line ; do
+        LIST_OF_EM_CHOS[$index]="$line"
+        index=$(($index+1))
+done < ${LIST_OF_MAN_CHOS_FILE}
+
+
+len=${#LIST_OF_EM_CHOS[*]}
+#LIST_OF_EM_CHOS[$len-2]="-1"
+
+i=2
+while [ $i -lt $(($len-2)) ]; do
+
+CHO_ID=${LIST_OF_EM_CHOS[$i]}
+CHO_LIST=${CHO_LIST}','${CHO_ID}
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} >> ${TMPFILE} << --EOF--
+
+select case when '${CHO_ID}' = '-1' then 'All CHOs' else (select name from chorganisation where id='${CHO_ID}') end as "CHO Name" ;
+
+select * from  manual_chox_cost_report_ad('$3', array[${CHO_ID}], $2);
+
+--EOF--
+
+let i++
+done
+CHO_LIST=${CHO_LIST:1:${#CHO_LIST}}
+
+#echo 'Report generating for all CHOs'
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} >> ${TMPFILE} << --EOF--
+
+select 'All CHOs' as "CHO Name" ;
+
+select * from  manual_chox_cost_report_ad('$3', array[${CHO_LIST}], $2);
+
+--EOF--
+
+# Assume current month of report is last month, i.e. we are being called on the 1st of the month
+currentMonth=`date +"%B" -d "-1 month"`
+previousMonth=`date +"%B" -d $3 -d "-2 month"`
+previous2Month=`date +"%B" -d $3 -d "-3 month"`
+previous3Month=`date +"%B" -d $3 -d "-4 month"`
+previous4Month=`date +"%B" -d $3 -d "-5 month"`
+previous5Month=`date +"%B" -d $3 -d "-6 month"`
+previous6Month=`date +"%B" -d $3 -d "-7 month"`
+previous7Month=`date +"%B" -d $3 -d "-8 month"`
+previous8Month=`date +"%B" -d $3 -d "-9 month"`
+previous9Month=`date +"%B" -d $3 -d "-10 month"`
+previous10Month=`date +"%B" -d $3 -d "-11 month"`
+previous11Month=`date +"%B" -d $3 -d "-12 month"`
+
+/bin/cat ${TMPFILE} | sed "s/last_12_months/Last 12 Months/g" | sed "s/current_month/$currentMonth/g" | sed "s/previous_month/$previousMonth/g" | sed "s/previous_2_month/$previous2Month/g" | sed "s/previous_3_month/$previous3Month/g"| sed "s/previous_4_month/$previous4Month/g"| sed "s/previous_5_month/$previous5Month/g"| sed "s/previous_6_month/$previous6Month/g"| sed "s/previous_7_month/$previous7Month/g"| sed "s/previous_8_month/$previous8Month/g"| sed "s/previous_9_month/$previous9Month/g"| sed "s/previous_10_month/$previous10Month/g"| sed "s/previous_11_month/$previous11Month/g" > ${DUMPFILE}
+
+/bin/rm ${LIST_OF_MAN_CHOS_FILE} ${TMPFILE}
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+exit 0

@@ -1,0 +1,37 @@
+#!/bin/bash
+PSQL_COMMAND=/usr/bin/psql
+HOST=#{DB_HOST} #dev-ukre-pgs28.dc.solera-uk.com
+USER=#{DB_USER.CHOX} #chox
+DB=#{DB_NAME.CHOX} #dev_uk_chox
+DUMPFILE=SGSM-Invoiced_Claims_Report-`date +"%F"`.txt
+DUMPFILE1=SGSM-Open_Claims_Report-`date +"%F"`.txt
+MI_DIRECTORY=/home/chox/reports/
+
+echo '***********************************************************'
+echo `date`': Generating Weekly Quindell Reports...'
+echo '***********************************************************'
+
+echo 'Generating Invoiced Claims Report for 2016, 2017 & 2018'
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select '2016' as tab_name;
+select * from invoiced_claims_report('{1016,1028,1013,1014,1029,1030,1341}'::INT[], null::INT[], '2016-01-01','2017-01-01');
+select '2017' as tab_name;
+select * from invoiced_claims_report('{1016,1028,1013,1014,1029,1030,1341}'::INT[], null::INT[], '2017-01-01','2018-01-01');
+select '2018' as tab_name;
+select * from invoiced_claims_report('{1016,1028,1013,1014,1029,1030,1341}'::INT[], null::INT[], '2018-01-01','2019-01-01');
+select '2019-' as tab_name;
+select * from invoiced_claims_report('{1016,1028,1013,1014,1029,1030,1341}'::INT[], null::INT[], '2019-01-01',null);
+--EOF--
+
+echo 'Generating Open Claims Report'
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE1} << --EOF--
+select * from open_claims_report('{1016,1028,1013,1014,1029,1030,1341}'::INT[]);
+--EOF--
+
+/bin/mv ${DUMPFILE} ${DUMPFILE1} ${MI_DIRECTORY}
+echo '***********************************************************'
+echo `date`': Done generating Weekly Quindell Reports'
+echo '***********************************************************'
+
+exit 0
+

@@ -1,0 +1,733 @@
+#!/bin/bash
+PSQL_COMMAND=/usr/bin/psql
+HOST=#{DB_HOST} #dev-ukre-pgs28.dc.solera-uk.com
+USER=#{DB_USER.CHOX} #chox
+DB=#{DB_NAME.CHOX} #dev_uk_chox
+
+echo '***********************************************************'
+echo `date`': Generating Monthly Reports'
+echo '***********************************************************'
+
+DUMPFILE=Claims-moved-to-InvoicePaymentLogged-`date +"%F"`.txt
+MI_DIRECTORY=/home/chox/reports/
+
+LAST_YEAR=`date -d "last month" +%Y`
+THIS_YEAR=`date +%Y`
+LAST_MONTH=`date -d "last month" +%m`
+THIS_MONTH=`date +%m`
+TODAY=`date +"%F"`
+YESTERDAY=`date --date yesterday +"%F"`
+
+
+#
+# Claims Moved To Invoice Payment Logged - Month
+#
+#echo 'Report generating for Claims Moved To Invoice Payment Logged - Month'
+# Removed on 01/05/2014 at request of BR
+#START_DATE=${LAST_YEAR}'-'${LAST_MONTH}'-01'
+#END_DATE=${THIS_YEAR}'-'${THIS_MONTH}'-01'
+#
+#echo "Generating Report from " ${START_DATE} " to " ${END_DATE}
+#SUBJECT='CHOX: Claims Moved To Invoice Payment Logged (Monthly: '${START_DATE}' to '${END_DATE}')'
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#
+#select i.name, cho.name, sum(inv.total_to_pay) as sum, count(*) as count from insurer i, claim c, chorganisation cho, audit_trail a, invoice inv
+#
+#where c.insurer_id=i.id and c.chorganisation_id=cho.id and c.id=a.claim_id
+#  and c.invoice_id=inv.id and a.new_status='InvoicePaymentLogged'
+#  and a.update_date between '${START_DATE}' and '${END_DATE}'  -- Period of report
+#  and a.reverted=false
+#  and not exists (select * from audit_trail a2 where a2.claim_id=c.id
+#                     and a2.new_status='InvoicePaymentLogged'
+#                     and a2.update_date > a.update_date and a.reverted=false)
+#  and not exists (select * from audit_trail a2
+#                  where a2.claim_id=c.id
+#                    and a2.original_status='InvoicePaymentLogged'
+#                    and a2.update_date > a.update_date and a2.reverted=false
+#                    and a2.new_status not in ('PaymentReceived', 'ClaimClosed'))
+#group by i.name, cho.name
+#order by i.name, cho.name;
+#--EOF--
+#
+#
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+#
+# Claims Moved To Invoice Payment Logged - Year
+#
+# Removed on 01/05/2014 at request of BR
+#echo 'Report generating for Claims Moved To Invoice Payment Logged - Year'
+#LAST_YEAR=`date -d "last year" +%Y`
+#START_DATE=${LAST_YEAR}'-'${THIS_MONTH}'-01'
+#DUMPFILE=Claims-moved-to-InvoicePaymentLogged-Yearly-`date +"%F"`.txt
+#
+#SUBJECT='CHOX: Claims Moved To Invoice Payment Logged (Yearly: '${START_DATE}' to '${END_DATE}')'
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#
+#select i.name, cho.name, sum(inv.total_to_pay) as sum, count(*) as count from insurer i, claim c, chorganisation cho, audit_trail a, invoice inv
+#
+#where c.insurer_id=i.id and c.chorganisation_id=cho.id and c.id=a.claim_id
+#  and c.invoice_id=inv.id and a.new_status='InvoicePaymentLogged'
+#  and a.update_date between '${START_DATE}' and '${END_DATE}'  -- Period of report
+#  and a.reverted=false
+#  and not exists (select * from audit_trail a2 where a2.claim_id=c.id
+#                     and a2.new_status='InvoicePaymentLogged'
+#                     and a2.update_date > a.update_date and a.reverted=false)
+#  and not exists (select * from audit_trail a2
+#                  where a2.claim_id=c.id
+#                    and a2.original_status='InvoicePaymentLogged'
+#                    and a2.update_date > a.update_date and a2.reverted=false
+#                    and a2.new_status not in ('PaymentReceived', 'ClaimClosed'))
+#group by i.name, cho.name
+#order by i.name, cho.name;
+#--EOF--
+#
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+
+#
+# Hastings Bespoke Report
+#
+# Removed on 01/05/2014 at request of BR
+#echo 'Report generating for Hastings Bespoke Report'
+#LAST_YEAR=`date -d "last month" +%Y`
+#START_DATE=${LAST_YEAR}'-'${LAST_MONTH}'-01'
+#SUBJECT='CHOX: Hastings Bespoke Report ('${START_DATE}' to '${END_DATE}')'
+#DUMPFILE=Hastings-bespoke-report-`date +"%F"`.txt
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#
+#select (select count(*) from claim c
+# where created_date between params.start_date and params.end_date and insurer_id = params.insurerId) as "New",
+#(select count(*) from claim c where c.insurer_id = params.insurerId
+#    and c.status in ('PaymentReceived', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted' )
+#    and exists (select * from audit_trail a where a.claim_id = c.id and a.new_status=c.status
+#                and a.update_date between params.start_date and params.end_date and reverted=false)) as "Closed",
+#(select count(*) from claim c where c.insurer_id = params.insurerId
+#    and c.status in ('PaymentReceived')
+#    and exists (select * from audit_trail a where a.claim_id = c.id and a.new_status=c.status
+#                and a.update_date between params.start_date and params.end_date and reverted=false)) as "Paid",
+#(select count(*) from claim c where c.insurer_id = params.insurerId
+#    and c.status not in ('PaymentReceived', 'ClaimClosed', 'ClaimRejectionAccepted', 'InvoiceRejectionAccepted' )) as "Open",
+#(select cast(avg(io.hire_gross) as numeric(8,2)) from claim c, invoice_original io, invoice i
+# where c.invoice_id = i.id and c.insurer_id = params.insurerId and i.invoice_original_id = io.id
+#   and exists (select * from audit_trail a where a.claim_id=c.id and a.new_status='PaymentReceived'
+#               and reverted = false and a.update_date between params.start_date and params.end_date)) as "Avg Hire Claimed",
+#(select cast(avg(i.hire_gross) as numeric(8,2)) from claim c, invoice i
+# where c.invoice_id = i.id and c.insurer_id = params.insurerId
+#   and exists (select * from audit_trail a where a.claim_id=c.id and a.new_status='PaymentReceived'
+#               and reverted = false and a.update_date between params.start_date and params.end_date)) as "Avg Hire Paid",
+#(select cast(avg(io.hire_gross - i.hire_gross) as numeric(8,2)) from claim c, invoice_original io, invoice i
+# where c.invoice_id = i.id and c.insurer_id = params.insurerId and i.invoice_original_id = io.id
+#   and exists (select * from audit_trail a where a.claim_id=c.id and a.new_status='PaymentReceived'
+#               and reverted = false and a.update_date between params.start_date and params.end_date)) as "Avg Hire Savings",
+#(select cast(avg((i.hire_gross / io.hire_gross) * 100.0) as numeric(8,2)) from claim c, invoice_original io, invoice i
+# where c.invoice_id = i.id and c.insurer_id = params.insurerId and i.invoice_original_id = io.id
+#   and io.hire_gross > 0
+#   and exists (select * from audit_trail a where a.claim_id=c.id and a.new_status='PaymentReceived'
+#               and reverted = false and a.update_date between params.start_date and params.end_date)) as "Avg % Paid",
+#(select sum(io.hire_gross) from claim c, invoice_original io, invoice i
+# where c.invoice_id = i.id and c.insurer_id = params.insurerId and i.invoice_original_id = io.id
+#   and exists (select * from audit_trail a where a.claim_id=c.id and a.new_status='PaymentReceived'
+#               and reverted = false and a.update_date between params.start_date and params.end_date)) as "Actual Hire Claimed",
+#(select sum(i.hire_gross) from claim c, invoice_original io, invoice i
+# where c.invoice_id = i.id and c.insurer_id = params.insurerId and i.invoice_original_id = io.id
+#   and exists (select * from audit_trail a where a.claim_id=c.id and a.new_status='PaymentReceived'
+#               and reverted = false and a.update_date between params.start_date and params.end_date)) as "Actual Hire Paid",
+#(select sum(io.hire_gross - i.hire_gross) from claim c, invoice_original io, invoice i
+# where c.invoice_id = i.id and c.insurer_id = params.insurerId and i.invoice_original_id = io.id
+#   and exists (select * from audit_trail a where a.claim_id=c.id and a.new_status='PaymentReceived'
+#               and reverted = false and a.update_date between params.start_date and params.end_date)) as "Actual Hire Savings",
+#(select cast(sum(i.hire_gross)*100.0/sum(io.hire_gross) as numeric(8,2)) from claim c, invoice_original io, invoice i
+# where c.invoice_id = i.id and c.insurer_id = params.insurerId and i.invoice_original_id = io.id
+#   and exists (select * from audit_trail a where a.claim_id=c.id and a.new_status='PaymentReceived'
+#               and reverted = false and a.update_date between params.start_date and params.end_date)) as "Actual % Paid",
+#(select cast(avg(vh.days) as numeric(6,2)) from claim c, vehicle_hire vh
+# where c.vehicle_hire_id = vh.id and exists (select * from audit_trail a where a.claim_id=c.id and a.new_status='PaymentReceived'
+#               and reverted = false and a.update_date between params.start_date and params.end_date)) as "Days Hired"
+#from (select '${START_DATE}'::Date as start_date, '${END_DATE}'::Date as end_date, 18 as insurerID) as params;
+#--EOF--
+#
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+
+
+#
+# ERS Monthly Insurer Manual CHO Cost Report
+#
+echo 'Report generating for ERS Monthly Insurer Manual CHO Cost Report'
+INS_ID=20
+START_DATE=`date -d "yesterday" +%F`
+DUMPFILE=ERS-Monthly_Manual_Chox_Cost_Report-`date +"%F"`.txt
+/home/chox/bin/monthlyManualInsurerCostReport "ERS" ${INS_ID} "${START_DATE}"
+
+#
+# DLG Monthly Insurer Manual CHO Cost Report
+#
+echo 'Report generating for DLG Monthly Insurer Manual CHO Cost Report'
+INS_ID=6
+START_DATE=`date -d "yesterday" +%F`
+DUMPFILE=DLG-Monthly_Manual_Chox_Cost_Report-`date +"%F"`.txt
+/home/chox/bin/monthlyManualInsurerCostReport "DLG" ${INS_ID} "${START_DATE}"
+/home/chox/bin/monthlyManualInsurerCostReportAD "DLG" ${INS_ID} "${START_DATE}"
+
+
+#
+# DLG Monthly Insurer Manual Cost Report for Manual Helphire
+#
+echo 'Report generating for DLG Monthly Insurer Manual Cost Report for Helphire'
+INS_ID=6
+CHO_ID=1123
+START_DATE=`date -d "yesterday" +%F`
+DUMPFILE=DLG-Monthly_Manual_Chox_Cost_Report-ManualHelphire-`date +"%F"`.txt
+TMPFILE=DLG-Monthly_Manual_Chox_Cost_Report-ManualHelphire-`date +"%F"`.tmp
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} >> ${TMPFILE} << --EOF--
+select * from  manual_chox_cost_report('${START_DATE}', array[${CHO_ID}], ${INS_ID});
+--EOF--
+
+# Assume current month of report is last month, i.e. we are being called on the 1st of the month
+currentMonth=`date +"%B" -d "-1 month"`
+previousMonth=`date +"%B" -d "-2 month"`
+previous2Month=`date +"%B" -d "-3 month"`
+previous3Month=`date +"%B" -d "-4 month"`
+previous4Month=`date +"%B" -d "-5 month"`
+previous5Month=`date +"%B" -d "-6 month"`
+previous6Month=`date +"%B" -d "-7 month"`
+previous7Month=`date +"%B" -d "-8 month"`
+previous8Month=`date +"%B" -d "-9 month"`
+previous9Month=`date +"%B" -d "-10 month"`
+previous10Month=`date +"%B" -d "-11 month"`
+previous11Month=`date +"%B" -d "-12 month"`
+
+/bin/cat ${TMPFILE} | sed "s/last_12_months/Last 12 Months/g" | sed "s/current_month/$currentMonth/g" | sed "s/previous_month/$previousMonth/g" | sed "s/previous_2_month/$previous2Month/g" | sed "s/previous_3_month/$previous3Month/g"| sed "s/previous_4_month/$previous4Month/g"| sed "s/previous_5_month/$previous5Month/g"| sed "s/previous_6_month/$previous6Month/g"| sed "s/previous_7_month/$previous7Month/g"| sed "s/previous_8_month/$previous8Month/g"| sed "s/previous_9_month/$previous9Month/g"| sed "s/previous_10_month/$previous10Month/g"| sed "s/previous_11_month/$previous11Month/g" > ${DUMPFILE}
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${TMPFILE}
+
+#
+# DLG Monthly Insurer Manual CHO Cost Report By Team
+#
+echo 'Report generating for DLG Monthly Insurer Manual CHO Cost Report By Team'
+INS_ID=6
+START_DATE=`date -d "yesterday" +%F`
+DUMPFILE=DLG-Monthly_Manual_Chox_Cost_Report_By_Team-`date +"%F"`.txt
+/home/chox/bin/monthlyManualInsurerCostReportByTeam "DLG" ${INS_ID} "${START_DATE}"
+/home/chox/bin/monthlyManualInsurerCostReportByTeamAD "DLG" ${INS_ID} "${START_DATE}"
+
+#
+# Monthly Mobile Chox Report
+#
+#echo 'Report generating for Monthly Mobile Chox Report'
+#DUMPFILE=Monthly_Mobile_Chox_Report-`date +"%F"`.txt
+#THIS_REPORT_YEAR=`date +%Y`
+#THIS_REPORT_MONTH=`date +%b`
+#REPORT_DATE=${THIS_REPORT_MONTH}'-'${THIS_REPORT_YEAR}
+#SUBJECT='CHOX: Monthly Mobile CHOX Report ('${REPORT_DATE}')'
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#
+#select * from monthly_mobile_chox_report();
+#
+#--EOF--
+#
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+#
+# Average Time To Allocate Work
+#
+echo 'Report generating for Average Time To Allocate Work'
+DUMPFILE=RSA-Average_Time_To_Allocate_Work-`date +"%F"`.txt
+SUBJECT='CHOX: Average Time To Allocate Work'
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+
+SELECT
+    ins.name AS insurer,
+    to_char(now() - '1 month'::interval, 'TMMonth') AS Month,
+    AVG(date_part('epoch', a.created_date - c.created_date)/(60*60*24.0))::numeric(4,3) AS "Average Time To Allocate Work"
+FROM
+    claim c,
+    audit_trail a,
+    insurer ins
+WHERE
+    c.id = a.claim_id
+    AND a.new_status='ClaimUnacknowledgedRouted'
+    AND a.reverted = FALSE
+    AND NOT EXISTS (SELECT * FROM audit_trail a2 WHERE a2.claim_id = c.id AND a2.new_status='ClaimUnacknowledgedRouted'
+                     AND a2.created_date > a.created_date)
+    AND ins.id in (3,19) -- Insurer
+    AND a.created_date BETWEEN (now() - '1 month'::interval)::date AND now()::date -- Period
+    AND ins.id = c.insurer_id GROUP BY ins.name;
+
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+
+#
+# Hastings Monthly Insurer Cost Report
+#
+#echo 'Report generating for Hastings Monthly Insurer Cost Report'
+#INS_ID=18
+#START_DATE=`date -d "yesterday" +%F`
+#CLAIM_TYPE=null
+#DUMPFILE=Hastings-Monthly-Insurer-Cost-Report-`date +"%F"`.txt
+#/home/chox/bin/monthlyInsurerCostReport "Hastings" "${INS_ID}" "${START_DATE}" "${CLAIM_TYPE}"
+
+#
+# ERS Monthly Insurer Cost Report
+#
+echo 'Report generating for ERS Monthly Insurer Cost Report'
+INS_ID=20
+START_DATE=`date -d "yesterday" +%F`
+CLAIM_TYPE=null
+DUMPFILE=ERS-Monthly_Insurer_Cost_Report-`date +"%F"`.txt
+#/home/chox/bin/monthlyInsurerCostReport 'INSURERS NAME' 'INS_ID' 'START_DATE' 'CLAIM_TYPE'
+/home/chox/bin/monthlyInsurerCostReport "ERS" "${INS_ID}" "${START_DATE}" "${CLAIM_TYPE}"
+
+#
+# QMH Monthly Insurer Cost Report
+#
+#echo 'Report generating for QMH Monthly Insurer Cost Report'
+#INS_ID=22
+#START_DATE=`date -d "yesterday" +%F`
+#CLAIM_TYPE=null
+#DUMPFILE=QMH-Monthly-Insurer-Cost-Report-`date +"%F"`.txt
+#/home/chox/bin/monthlyInsurerCostReport "QMH" "${INS_ID}" "${START_DATE}" "${CLAIM_TYPE}"
+
+#
+# DLG Monthly Insurer Cost Report
+#
+echo 'Report generating for DLG Monthly Insurer Cost Report'
+INS_ID=6
+START_DATE=`date -d "yesterday" +%F`
+CLAIM_TYPE=null
+DUMPFILE=DLG-Monthly_Insurer_Cost_Report-`date +"%F"`.txt
+#/home/chox/bin/monthlyInsurerCostReport 'INSURERS NAME' 'INS_ID' 'START_DATE' 'CLAIM_TYPE'
+/home/chox/bin/monthlyInsurerCostReport "DLG" "${INS_ID}" "${START_DATE}" "${CLAIM_TYPE}"
+/home/chox/bin/monthlyInsurerCostReportAD "DLG" "${INS_ID}" "${START_DATE}" "${CLAIM_TYPE}"
+
+#
+# OCTAGON Monthly Insurer Cost Report
+#
+echo 'Report generating for OCTAGON Monthly Insurer Cost Report'
+INS_ID=24
+START_DATE=`date -d "yesterday" +%F`
+CLAIM_TYPE=null
+#/home/chox/bin/monthlyInsurerCostReport 'INSURERS NAME' 'INS_ID' 'START_DATE' 'CLAIM_TYPE'
+/home/chox/bin/monthlyInsurerCostReport "Octagon" "${INS_ID}" "${START_DATE}" "${CLAIM_TYPE}"
+
+
+#
+# ERS Monthly Insurer Cost Report By Team
+#
+echo 'Report generating for ERS Monthly Insurer Cost Report By Team'
+START_DATE=`date -d "yesterday" +%F`
+INS_ID=20
+DUMPFILE=ERS-Monthly_Insurer_Cost_Report_byTeam-`date +"%F"`.txt
+#/home/chox/bin/monthlyInsurerCostReportByTeam 'INSURERS NAME' INS_ID 'START_DATE'
+/home/chox/bin/monthlyInsurerCostReportByTeam "ERS" ${INS_ID} "${START_DATE}"
+
+#
+# DLG Monthly Insurer Cost Report By Team
+#
+echo 'Report generating for DLG Monthly Insurer Cost Report By Team'
+START_DATE=`date -d "yesterday" +%F`
+INS_ID=6
+DUMPFILE=DLG-Monthly_Insurer_Cost_Report_byTeam-`date +"%F"`.txt
+#/home/chox/bin/monthlyInsurerCostReportByTeam 'INSURERS NAME' INS_ID 'START_DATE'
+/home/chox/bin/monthlyInsurerCostReportByTeam "DLG" ${INS_ID} "${START_DATE}"
+/home/chox/bin/monthlyInsurerCostReportByTeamAD "DLG" ${INS_ID} "${START_DATE}"
+
+#
+#Slater Gordon Solutions Motor CHO Payment Profile
+#
+echo 'Report generating for Slater Gordon Solutions Motor CHO Payment Profile for last month'
+END_DATE=`date -d "yesterday" +%F`
+START_DATE=`date -d "-1 month -1 day" +%Y-%m-%d`
+INS_ID=-1
+CHO_ID=1016
+#echo "Generating Report from " ${START_DATE} " to " ${END_DATE}
+SUBJECT='CHOX: Slater Gordon Solutions Motor CHO Payment Profile (Monthly: '${START_DATE}' to '${END_DATE}')'
+DUMPFILE=SGSM-CHO_PaymentProfile_Report-`date +"%F"`.txt
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from cho_payment_profile('${START_DATE}', '${END_DATE}', ${CHO_ID}, ${INS_ID})
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+#echo 'Report generating for Slater Gordon Solutions Motor CHO Payment Profile against DLG'
+#END_DATE=`date -d "yesterday" +%F`
+#START_DATE=2012-07-01
+#INS_ID=6
+#CHO_ID=1016
+#echo "Generating Report from " ${START_DATE} " to " ${END_DATE}
+#SUBJECT='CHOX: Slater Gordon Solutions Motor / DLG CHO Payment Profile (Monthly: '${START_DATE}' to '${END_DATE}')'
+#DUMPFILE=SGSM-DLG_CHO_PaymentProfile_Report-`date +"%F"`.txt
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from cho_payment_profile('${START_DATE}', '${END_DATE}', ${CHO_ID}, ${INS_ID})
+#--EOF--
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+#echo 'Report generating for Slater Gordon Solutions Motor CHO Payment Profile against RSA'
+#END_DATE=`date -d "yesterday" +%F`
+#START_DATE=2011-06-01
+#INS_ID=3
+#CHO_ID=1016
+#echo "Generating Report from " ${START_DATE} " to " ${END_DATE}
+#SUBJECT='CHOX: Slater Gordon Solutions Motor / RSA CHO Payment Profile (Monthly: '${START_DATE}' to '${END_DATE}')'
+#DUMPFILE=SGSM-RSA_CHO_PaymentProfile_Report-`date +"%F"`.txt
+
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from cho_payment_profile('${START_DATE}', '${END_DATE}', ${CHO_ID}, ${INS_ID})
+#--EOF--
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+#echo 'Report generating for Slater Gordon Solutions Motor Debt CHO Payment Profile'
+#END_DATE=`date -d "yesterday" +%F`
+#START_DATE=`date -d "-1 month -1 day" +%Y-%m-%d`
+#INS_ID=-1
+#CHO_ID=1028
+#echo "Generating Report from " ${START_DATE} " to " ${END_DATE}
+#SUBJECT='CHOX: Slater Gordon Solutions Motor Debt CHO Payment Profile (Monthly: '${START_DATE}' to '${END_DATE}')'
+#DUMPFILE=SGSM-Debt_CHO_PaymentProfile_Report-`date +"%F"`.txt
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from cho_payment_profile('${START_DATE}', '${END_DATE}', ${CHO_ID}, ${INS_ID})
+#--EOF--
+#
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+#echo 'Report generating for Slater Gordon Solutions Motor CHO Payment Profile'
+#END_DATE=`date -d "yesterday" +%F`
+#START_DATE=`date -d "-1 month -1 day" +%Y-%m-%d`
+#INS_ID=-1
+#CHO_ID=1013
+#echo "Generating Report from " ${START_DATE} " to " ${END_DATE}
+#SUBJECT='CHOX: Slater Gordon Solutions Motor Reserva CHO Payment Profile (Monthly: '${START_DATE}' to '${END_DATE}')'
+#DUMPFILE=SGSM-Reserva_CHO_PaymentProfile_Report-`date +"%F"`.txt
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from cho_payment_profile('${START_DATE}', '${END_DATE}', ${CHO_ID}, ${INS_ID})
+#--EOF--
+#
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+#echo 'Report generating for Slater Gordon Solutions Motor Reserva Clearance CHO Payment Profile'
+#END_DATE=`date -d "yesterday" +%F`
+#START_DATE=`date -d "-1 month -1 day" +%Y-%m-%d`
+#INS_ID=-1
+#CHO_ID=1014
+#echo "Generating Report from " ${START_DATE} " to " ${END_DATE}
+#SUBJECT='CHOX: Slater Gordon Solutions Motor Reserva Clearance CHO Payment Profile (Monthly: '${START_DATE}' to '${END_DATE}')'
+#DUMPFILE=SGSM-ReservaClearance_CHO_PaymentProfile_Report-`date +"%F"`.txt
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from cho_payment_profile('${START_DATE}', '${END_DATE}', ${CHO_ID}, ${INS_ID})
+#--EOF--
+#
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+#echo 'Report generating for Slater Gordon Solutions Motor RSA vs RSA CHO Payment Profile'
+#END_DATE=`date -d "yesterday" +%F`
+#START_DATE=`date -d "-1 month -1 day" +%Y-%m-%d`
+#INS_ID=-1
+#CHO_ID=1029
+#echo "Generating Report from " ${START_DATE} " to " ${END_DATE}
+#SUBJECT='CHOX: Slater Gordon Solutions Motor RSA vs RSA CHO Payment Profile (Monthly: '${START_DATE}' to '${END_DATE}')'
+#DUMPFILE=SGSM-RSAvsRSA_CHO_PaymentProfile_Report-`date +"%F"`.txt
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from cho_payment_profile('${START_DATE}', '${END_DATE}', ${CHO_ID}, ${INS_ID})
+#--EOF--
+#
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+#echo 'Report generating for Slater Gordon Solutions Motor RSA vs RSA Clearance CHO Payment Profile'
+#END_DATE=`date -d "yesterday" +%F`
+#START_DATE=`date -d "-1 month -1 day" +%Y-%m-%d`
+#INS_ID=-1
+#CHO_ID=1030
+#echo "Generating Report from " ${START_DATE} " to " ${END_DATE}
+#SUBJECT='CHOX: Slater Gordon Solutions Motor RSA vs RSA Clearance CHO Payment Profile (Monthly: '${START_DATE}' to '${END_DATE}')'
+#DUMPFILE=SGSM-RSAvsRSAClearance_CHO_PaymentProfile_Report-`date +"%F"`.txt
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from cho_payment_profile('${START_DATE}', '${END_DATE}', ${CHO_ID}, ${INS_ID})
+#--EOF--
+#
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Subscriber Stats Report generating for ERAC'
+END_DATE=`date -d "yesterday" +%F`
+REPORT_END_DATE=`date +%F`
+START_DATE=`date -d "-1 month" +%Y-%m-%d`
+CHO_ID=1007
+SUBJECT='CHOX: ERAC Subscriber Stats Report (Monthly: '${START_DATE}' to '${END_DATE}')'
+DUMPFILE=ERAC-Subscriber_Stats_Report-`date +"%F"`.txt
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from subscriber_stats_report(${CHO_ID}, '${START_DATE}', '${REPORT_END_DATE}')
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Generating DLG Monthly Review Report for 2014'
+INS_ID=6
+DUMPFILE=DLG-Monthly_Review_Report-2014-`date +"%F"`.csv
+START_DATE='2014-01-01'
+END_DATE='2015-01-01'
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
+\copy (select * from dlg_monthly_review(${INS_ID}, '${START_DATE}', '${END_DATE}')) TO '${DUMPFILE}' (format CSV);
+--EOF--
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Generating DLG Monthly Review Report for 2015'
+DUMPFILE=DLG-Monthly_Review_Report-2015-`date +"%F"`.csv
+START_DATE='2015-01-01'
+END_DATE='2016-01-01'
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
+\copy (select * from dlg_monthly_review(${INS_ID}, '${START_DATE}', '${END_DATE}')) TO '${DUMPFILE}' (format CSV);
+--EOF--
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Generating DLG Monthly Review Report for 2016'
+DUMPFILE=DLG-Monthly_Review_Report-2016-`date +"%F"`.csv
+START_DATE='2016-01-01'
+END_DATE='2017-01-01'
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
+\copy (select * from dlg_monthly_review(${INS_ID}, '${START_DATE}', '${END_DATE}')) TO '${DUMPFILE}' (format CSV);
+--EOF--
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Generating DLG Monthly Review Report for 2017'
+DUMPFILE=DLG-Monthly_Review_Report-2017-`date +"%F"`.csv
+START_DATE='2017-01-01'
+END_DATE='2018-01-01'
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
+\copy (select * from dlg_monthly_review(${INS_ID}, '${START_DATE}', '${END_DATE}')) TO '${DUMPFILE}' (format CSV);
+--EOF--
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Generating DLG Monthly Review Report for 2018'
+DUMPFILE=DLG-Monthly_Review_Report-2018-`date +"%F"`.csv
+START_DATE='2018-01-01'
+END_DATE=`2019-01-01`
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
+\copy (select * from dlg_monthly_review(${INS_ID}, '${START_DATE}', '${END_DATE}')) TO '${DUMPFILE}' (format CSV);
+--EOF--
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Generating DLG Monthly Review Report for 2019'
+DUMPFILE=DLG-Monthly_Review_Report-2019-`date +"%F"`.csv
+START_DATE='2019-01-01'
+END_DATE=`date +%F`
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
+\copy (select * from dlg_monthly_review(${INS_ID}, '${START_DATE}', '${END_DATE}')) TO '${DUMPFILE}' (format CSV);
+--EOF--
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+# Generate Protocol Management Reports for ERAC (1007)
+#/home/chox/bin/protocolMananagementReport "${YESTERDAY}" "1007" "ERAC" "${RECIPIENTS}"
+
+# Generate Protocol Management Reports for Helphire (1010)
+#/home/chox/bin/protocolMananagementReport "${YESTERDAY}" "1010" "Helphire" "${RECIPIENTS}"
+
+
+echo 'Report generating for RSA Commercial Area Report'
+END_DATE=`date -d "yesterday" +%F`
+CLAIM_UPLOAD_START_DATE='2013-10-07'
+START_DATE=`date -d "-1 month -1 day" +%Y-%m-%d`
+INS_ID=3
+CHO_ID='array[1013, 1014, 1028, 1029, 1030]'
+echo "Generating RSA Commercial Area Report Report from " ${START_DATE} " to " ${END_DATE}
+SUBJECT='CHOX: RSA Commercial Area Report (Monthly: '${START_DATE}' to '${END_DATE}')'
+DUMPFILE=RSA-Commercial_Area_Report-`date +"%F"`.txt
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from rsa_commercial_area_report(${INS_ID}, ${CHO_ID}, '${START_DATE}', '${END_DATE}', '${CLAIM_UPLOAD_START_DATE}', '${END_DATE}')
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Report generating for Motability Commercial Area Report'
+END_DATE=`date -d "yesterday" +%F`
+CLAIM_UPLOAD_START_DATE='2007-01-01'
+START_DATE=`date -d "-1 month -1 day" +%Y-%m-%d`
+INS_ID=19
+CHO_ID='array[1013, 1014, 1028, 1029, 1030]'
+echo "Generating Motability Commercial Area Report Report from " ${START_DATE} " to " ${END_DATE}
+SUBJECT='CHOX: Motability Commercial Area Report (Monthly: '${START_DATE}' to '${END_DATE}')'
+DUMPFILE=Motability-Commercial_Area_Report-`date +"%F"`.txt
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from rsa_commercial_area_report(${INS_ID}, ${CHO_ID}, '${START_DATE}', '${END_DATE}', '${CLAIM_UPLOAD_START_DATE}', '${END_DATE}')
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+#echo 'Report generating for CHO Payment Profile for ERS / Slater Gordon Solutions Motor Protocol'
+#END_DATE=`date +%F`
+#INS_ID=20
+#CHO_ID=1341
+#SUBJECT='CHOX: CHO Payment Profile Report For ERS against Slater Gordon Solutions Motor Protocol'
+#DUMPFILE=SGSM-ERS_Protocol_PaymentProfile_Report-`date +"%F"`.txt
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from cho_payment_profile('2009-01-01', '${END_DATE}', ${CHO_ID}, ${INS_ID})
+#--EOF--
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+
+#
+#DLG BRE Monthly Review Report
+#
+echo 'Report generating for DLG - BRE Monthly Review Report for last month'
+END_DATE=`date -d "yesterday" +%F`
+START_DATE=2012-06-01
+INS_ID=6
+#echo "Generating Report from " ${START_DATE} " to " ${END_DATE}
+SUBJECT='CHOX: DLG BRE Monthly Review Report (Monthly: '${START_DATE}' to '${END_DATE}')'
+DUMPFILE=DLG-BRE_Monthly_Review_Report-`date +"%F"`.txt
+FILE1=DLG-BRE_Monthly_Review_Report-`date +"%F"`.query1
+FILE2=DLG-BRE_Monthly_Review_Report-`date +"%F"`.query2
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${FILE1} << --EOF--
+select 'BRE Monthly Review Report' as tab_name;
+select * from monthlyBREReviewReportLine('${START_DATE}', '${END_DATE}', array[]::integer[], array[]::integer[], array[${INS_ID}]);
+--EOF--
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${FILE2} << --EOF--
+select 'Summary' as tab_name;
+select * from monthlyBREReviewReportSummary('${START_DATE}', '${END_DATE}', array[]::integer[], array[]::integer[], array[${INS_ID}]);
+--EOF--
+
+cat ${FILE1} ${FILE2} > ${DUMPFILE}
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${FILE1} ${FILE2}
+
+
+
+# Request report cancelled by BR on 01/08/2014.
+#
+#OCTAGON BRE Monthly Review Report
+#
+#echo 'Report generating for OCTAGON - BRE Monthly Review Report for last month'
+#END_DATE=`date -d "yesterday" +%F`
+#START_DATE=2012-06-01
+#INS_ID=24
+#echo "Generating Report from " ${START_DATE} " to " ${END_DATE}
+#SUBJECT='CHOX: OCTAGON BRE Monthly Review Report (Monthly: '${START_DATE}' to '${END_DATE}')'
+#DUMPFILE=OCTAGON-BRE-Monthly-Review-Report-`date +"%F"`.txt
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from monthlyBREReviewReportLine('${START_DATE}', '${END_DATE}', array[]::integer[], array[]::integer[], array[${INS_ID}]);
+#--EOF--
+
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+
+#
+# ERAC Supplementary Consolidation Report
+#
+# Disabled on 02/02/2016 at request of BR
+#echo 'Report generating for ERAC Supplementary Consolidation Report'
+#END_DATE=`date +%F`
+#START_DATE=2009-01-01
+#CHO_ID=1007
+#SUBJECT='CHOX: ERAC Supplementary ConsolidationReport (Monthly: '${START_DATE}' to '${END_DATE}')'
+#DUMPFILE=ERAC-Supplementary_Consolidation_Report-`date +"%F"`.txt
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from supplementaryConsolidationReport(null, array[${CHO_ID}], null, '${START_DATE}', '${END_DATE}');
+#--EOF--
+
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+
+echo 'Generating Contested Count Report for Slater Gordon Solutions Motor against DLG'
+END_DATE=`date +%F`
+CHO_ID=1016
+INS_ID=-1
+SUBJECT='CHOX: Slater Gordon Solutions Motor Contested Count Report for DLG - '${END_DATE}
+DUMPFILE=SGSM-Contested_Count_Report-`date +"%F"`.txt
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from contested_count_report(${CHO_ID}, ${INS_ID});
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Report generating for LV monthly dashboard report'
+DUMPFILE='LV-Monthly_Dashboard_Report-'`date +"%F"`.txt
+#START_DATE=`date -d "last week" +%F`
+START_DATE=`date -d "-1 month" +%F`
+END_DATE=`date +"%F"`
+INS_ID=26
+#CHO_ID='array[1007, 1123, 1341]'
+CHO_ID=null
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from summary_revenue_dashboard(${INS_ID}, ${CHO_ID}, '${START_DATE}', '${END_DATE}');
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+# disabled on 01/08/2018 at request of MPK
+#echo 'Generating Report For Audit Facility For DLG'
+#DUMPFILE='DLG-Audit_Facility_Report-'`date +"%F"`.txt
+#START_DATE=`date -d "-1 month" +%F`
+#END_DATE=`date --date yesterday +"%F"`
+#INS_ID=6
+#CHO_ID=-1
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from audit_facility(${INS_ID}, ${CHO_ID}, '${START_DATE}', '${END_DATE}');
+#--EOF--
+
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Generaring Invoice Notifications report for DLG against Manual Auxillis'
+DUMPFILE='DLG-Invoice_Notifications-ManualAuxillis-'`date +"%F"`.txt
+INS_ID=array[6]
+CHO_ID=1123
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from invoice_notifications_report(${INS_ID}, ${CHO_ID}, '${START_DATE}', '${END_DATE}');
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Generating User State Report for DLG'
+INS_ID=6
+DUMPFILE='DLG-Insurer_User_State_Report-'`date +"%F"`.txt
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from insurerUserStateReport(${INS_ID});
+--EOF--
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Generating DLG Pilot Report for DLG/Manual Auxillis'
+/home/chox/bin/dlgPilotReport
+
+echo 'Generating Monthly Insurer Cost Report for MPK/SGSM'
+INS_ID=6
+CHO_ID=1016
+START_DATE=`date -d "yesterday" +%F`
+DUMPFILE='MPK-SGSM-Insurer_Monthly_Cost_Report-DLG-'`date +"%F"`.txt
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from monthly_insurer_cost_report('${START_DATE}', ${CHO_ID}, ${INS_ID}, null);
+--EOF--
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Finished generating monthly reports'
+echo '***********************************************************'
+
+exit 0

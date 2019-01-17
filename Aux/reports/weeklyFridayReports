@@ -1,0 +1,20 @@
+#!/bin/bash
+PSQL_COMMAND=/usr/bin/psql
+HOST=#{DB_HOST} #dev-ukre-pgs28.dc.solera-uk.com
+USER=#{DB_USER.CHOX} #chox
+DB=#{DB_NAME.CHOX} #dev_uk_chox
+MI_DIRECTORY=/home/chox/reports/
+
+echo 'Generating Invoice Notifications Report for DLG / Manual Auxillis'
+DUMPFILE=Auxillis-Invoice_Notifications_Report_DLG-`date +"%F"`.txt
+INS_ID=array[6]
+CHO_ID=1123;
+START_DATE=`date -d "7 days ago" +%F`
+END_DATE=`date +%F`
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from invoice_notifications_report(${INS_ID}, ${CHO_ID}, '${START_DATE}'::varchar, '${END_DATE}'::varchar);
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+exit 0;

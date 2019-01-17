@@ -1,0 +1,21 @@
+#!/bin/bash
+PSQL_COMMAND=/usr/bin/psql
+HOST=#{DB_HOST} #dev-ukre-pgs28.dc.solera-uk.com
+USER=#{DB_USER.CHOX} #chox
+DB=#{DB_NAME.CHOX} #dev_uk_chox
+
+MI_DIRECTORY=/home/chox/reports/
+echo '***********************************************************'
+echo `date`': Generating Weekly Wednesday Reports'
+echo '***********************************************************'
+
+echo 'Report generating for RSA & Motability Insurer Penalty Charge Report'
+DUMPFILE='RSA-Insurer_Penalty_Charge_Report-'`date +"%F"`.txt
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from insurer_penalty_charge_report(array[3,19], array[14,123,15,134], 10, 4);
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+echo '***********************************************************'
+
+exit 0

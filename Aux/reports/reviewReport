@@ -1,0 +1,82 @@
+#!/bin/bash
+
+#params :
+#1 = CHO id as int (1008)
+#2 = Start date as String ('2012-11-11')
+#3 = end date as String ('2012-12-11')
+
+if [ $# -lt 3 ]
+  then
+    echo "arguments supplied are wrong, usage : reviewReport 1008 \"2012-01-01\" \"2012-12-01\" "
+    exit 0
+fi
+PSQL_COMMAND=/usr/bin/psql
+HOST=#{DB_HOST} #dev-ukre-pgs28.dc.solera-uk.com
+USER=#{DB_USER.CHOX} #chox
+DB=#{DB_NAME.CHOX} #dev_uk_chox
+
+MI_DIRECTORY=/home/chox/reports/
+DUMPFILE=SGSM-Review_Report-`date +"%F"`.txt
+REPORT_DATE=`date +"%F"`
+
+SUBJECT='CHOX: Review Report : '${REPORT_DATE}''
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+
+
+SELECT 'Payment Logged'::TEXT AS "SECTION NAME" ;
+
+SELECT * FROM reviewReport($1, 14, 'InvoicePaymentLogged', FALSE, '$2', '$3');
+
+SELECT 'Awaiting Liability Resolution'::TEXT AS "SECTION NAME" ;
+
+SELECT * FROM reviewReport($1, 30, 'AwaitingLiabilityResolution', TRUE, '$2', '$3');
+
+SELECT 'With CHO Awaiting Action'::TEXT AS "SECTION NAME" ;
+
+SELECT * FROM reviewReport($1, 10, 'ContestedInvoiceReferredToCHO', FALSE, '$2', '$3');
+
+SELECT 'With CHO In Litigation Status'::TEXT AS "SECTION NAME" ;
+
+SELECT * FROM reviewReport($1, 90, 'AwaitingLitigationOutcome', TRUE, '$2', '$3');
+
+SELECT 'With Insurer Awaiting Action'::TEXT AS "SECTION NAME" ;
+
+SELECT * FROM reviewReport($1, 30, 'ContestedInvoiceReferredToInsurer', TRUE, '$2', '$3');
+
+SELECT 'In Approved By Business Rules Queue'::TEXT AS "SECTION NAME" ;
+
+SELECT * FROM reviewReport($1, 14, 'InvoiceApprovedByBRE', TRUE, '$2', '$3');
+
+SELECT 'In Escalated To Handler Queue'::TEXT AS "SECTION NAME" ;
+
+SELECT * FROM reviewReport($1, 30, 'InvoiceEscalatedToHandler', FALSE, '$2', '$3');
+
+SELECT 'In Escalated To Engineer Queue'::TEXT AS "SECTION NAME" ;
+
+SELECT * FROM reviewReport($1, 30, 'InvoiceEscalated', FALSE, '$2', '$3');
+
+SELECT 'In Referred To Engineer Queue'::TEXT AS "SECTION NAME" ;
+
+SELECT * FROM reviewReport($1, 30, 'InvoiceReferredToEngineer', FALSE, '$2', '$3');
+
+SELECT 'In Referred To Handler Queue'::TEXT AS "SECTION NAME" ;
+
+SELECT * FROM reviewReport($1, 30, 'InvoiceReferredToClaimsHandler', FALSE, '$2', '$3');
+
+SELECT 'Approved And Awaiting Payment'::TEXT AS "SECTION NAME" ;
+
+SELECT * FROM reviewReport($1, 7, 'AwaitingInvoicePayment', FALSE, '$2', '$3');
+--EOF--
+
+#DUMPFILE1=SGSM-Invoice_WIP_Report-`date +"%F"`.txt
+#
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE1} << --EOF--
+#SELECT * from invoiceWipReport(array[$1], null, '$2', '$3');
+#--EOF--
+
+
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+exit 0

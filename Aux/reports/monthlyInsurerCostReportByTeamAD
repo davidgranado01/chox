@@ -1,0 +1,79 @@
+#!/bin/bash
+#params :
+#1 = Insurers name as string ('Direct Line')
+#2 = Insurers id as int (6)
+#3 = Start date as String ('2012-11-11')
+PSQL_COMMAND=/usr/bin/psql
+HOST=#{DB_HOST} #dev-ukre-pgs28.dc.solera-uk.com
+USER=#{DB_USER.CHOX} #chox
+DB=#{DB_NAME.CHOX} #dev_uk_chox
+
+MI_DIRECTORY=/home/chox/reports/
+DUMPFILE=$1-Monthly_Cost_Report_By_Team_By_AccidentDate-`date +"%F"`.txt
+TMPFILE=$1-Monthly_Cost_Report_By_Team_By_AccidentDate-`date +"%F"`.tmp
+LIST_OF_TEAM_FILE=TeamNameAD.txt
+
+CHO_ID=-1
+
+index=0
+
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${LIST_OF_TEAM_FILE} << --EOF--
+
+select DISTINCT team from workgroup where insurer_id = $2 order by team;
+
+--EOF--
+
+while read line ; do
+        LIST_OF_TEAM[$index]="$line"
+        index=$(($index+1))
+done < ${LIST_OF_TEAM_FILE}
+
+len=${#LIST_OF_TEAM[*]}
+LIST_OF_TEAM[$len-2]="-1"
+
+i=2
+while [ $i -lt $(($len-1)) ]; do
+
+TEAM_NAME=${LIST_OF_TEAM[$i]}
+
+echo 'Report generating for' ${TEAM_NAME}
+
+if [ "${TEAM_NAME}" == "-1" ]; then
+
+    $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} >> ${TMPFILE} << --EOF--
+select 'All Teams' as "Team Name";
+select * from monthly_insurer_cost_report_ad('$3', ${CHO_ID}, $2, null);
+--EOF--
+
+else
+
+    $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} >> ${TMPFILE} << --EOF--
+select '${TEAM_NAME}' as "Team Name";
+select * from monthly_chox_cost_report_by_team_ad('$3', ${CHO_ID}, $2, '${TEAM_NAME}');
+--EOF--
+
+fi
+
+let i++
+done
+
+# Assume current month of report is last month, i.e. we are being called on the 1st of the month
+currentMonth=`date +"%B" -d "-1 month"`
+previousMonth=`date +"%B" -d $3 -d "-2 month"`
+previous2Month=`date +"%B" -d $3 -d "-3 month"`
+previous3Month=`date +"%B" -d $3 -d "-4 month"`
+previous4Month=`date +"%B" -d $3 -d "-5 month"`
+previous5Month=`date +"%B" -d $3 -d "-6 month"`
+previous6Month=`date +"%B" -d $3 -d "-7 month"`
+previous7Month=`date +"%B" -d $3 -d "-8 month"`
+previous8Month=`date +"%B" -d $3 -d "-9 month"`
+previous9Month=`date +"%B" -d $3 -d "-10 month"`
+previous10Month=`date +"%B" -d $3 -d "-11 month"`
+previous11Month=`date +"%B" -d $3 -d "-12 month"`
+
+/bin/cat ${TMPFILE} | sed "s/last_12_months/Last 12 Months/g" | sed "s/current_month/$currentMonth/g" | sed "s/previous_month/$previousMonth/g" | sed "s/previous_2_month/$previous2Month/g" | sed "s/previous_3_month/$previous3Month/g"| sed "s/previous_4_month/$previous4Month/g"| sed "s/previous_5_month/$previous5Month/g"| sed "s/previous_6_month/$previous6Month/g"| sed "s/previous_7_month/$previous7Month/g"| sed "s/previous_8_month/$previous8Month/g"| sed "s/previous_9_month/$previous9Month/g"| sed "s/previous_10_month/$previous10Month/g"| sed "s/previous_11_month/$previous11Month/g" > ${DUMPFILE}
+
+/bin/rm ${LIST_OF_TEAM_FILE} ${TMPFILE}
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+exit 0

@@ -1,0 +1,58 @@
+#!/bin/bash
+PSQL_COMMAND=/usr/bin/psql
+HOST=#{DB_HOST} #dev-ukre-pgs28.dc.solera-uk.com
+USER=#{DB_USER.CHOX} #chox
+DB=#{DB_NAME.CHOX} #dev_uk_chox
+
+MI_DIRECTORY=/home/chox/reports/
+DUMPFILE=DLG-Pilot_Report-`date +"%F"`.txt
+TMPFILE=DLG-Pilot_Report-`date +"%F"`.tmp
+TMPFILE2=DLG-Pilot_Report-`date +"%F"`.tmp2
+QUERYFILE=DLG-Pilot_Report-`date +"%F"`.sql
+
+# Set report parameters
+insurerId=6;
+choId=1123
+choIds=array[${choId}]
+startDate=`date -d "yesterday" +"%F"`
+startDateForMonth=`date -d "last month" +"%F"`  # used to determine month names - should be set to the 1st of the year/month of the startDate
+claimUploadDate=2016-05-01
+rentalStartDate=2016-05-01
+months=12
+# Generate Report SQL
+echo 'set max_parallel_workers_per_gather = 0;' > ${TMPFILE2}
+$PSQL_COMMAND --pset footer -h ${HOST} -U ${USER} -d ${DB} >> ${TMPFILE2} << --EOF--
+select * from dlg_pilot_report_query('${startDate}', ${insurerId}, ${choIds}, null, '${claimUploadDate}', '${rentalStartDate}', ${months});
+--EOF--
+/usr/bin/tail -3 ${TMPFILE2} > ${QUERYFILE}
+/bin/rm ${TMPFILE2}
+
+# Generate Report
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} > ${TMPFILE} << --EOF--
+select name from chorganisation where id=${choId};
+--EOF--
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -f ${QUERYFILE} >> ${TMPFILE}
+
+# Update Report Column Headings
+currentMonth=`date +"%B" -d "${startDateForMonth}"`
+previousMonth=`date +"%B" -d "${startDateForMonth} -1 month"`
+previous2Month=`date +"%B" -d "${startDateForMonth} -2 month"`
+previous3Month=`date +"%B" -d "${startDateForMonth} -3 month"`
+previous4Month=`date +"%B" -d "${startDateForMonth} -4 month"`
+previous5Month=`date +"%B" -d "${startDateForMonth} -5 month"`
+previous6Month=`date +"%B" -d "${startDateForMonth} -6 month"`
+previous7Month=`date +"%B" -d "${startDateForMonth} -7 month"`
+previous8Month=`date +"%B" -d "${startDateForMonth} -8 month"`
+previous9Month=`date +"%B" -d "${startDateForMonth} -9 month"`
+previous10Month=`date +"%B" -d "${startDateForMonth} -10 month"`
+previous11Month=`date +"%B" -d "${startDateForMonth} -11 month"`
+previous12Month=`date +"%B" -d "${startDateForMonth} -12 month"`
+previous13Month=`date +"%B" -d "${startDateForMonth} -13 month"`
+previous14Month=`date +"%B" -d "${startDateForMonth} -14 month"`
+
+/bin/cat ${TMPFILE} | sed "s/last_6_months/Last 8 Months/g" | sed "s/current_month/$currentMonth/g" | sed "s/previous_month/$previousMonth/g" | sed "s/previous_2_month/$previous2Month/g" | sed "s/previous_3_month/$previous3Month/g"| sed "s/previous_4_month/$previous4Month/g"| sed "s/previous_5_month/$previous5Month/g" | sed "s/previous_6_month/$previous6Month/g"| sed "s/previous_7_month/$previous7Month/g" | sed "s/previous_8_month/$previous8Month/g"| sed "s/previous_9_month/$previous9Month/g"| sed "s/previous_10_month/$previous10Month/g"| sed "s/previous_11_month/$previous11Month/g"| sed "s/previous_12_month/$previous12Month/g"| sed "s/previous_13_month/$previous13Month/g"| sed "s/previous_14_month/$previous14Month/g"> ${DUMPFILE}
+
+/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${DUMPFILE} ${TMPFILE} ${QUERYFILE}
+
+exit 0
