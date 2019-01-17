@@ -1,3 +1,0 @@
-data/attachments/Payment-Pack.pdf,application/pdf
-data/attachments/attachment.xls,application/vnd.ms-excel
-data/attachments/rc049-010d-birt_0.pdf,application/pdf
