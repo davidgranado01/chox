@@ -1,11 +1,11 @@
-DROP FUNCTION unacknowledgedClaimsReport(IN insId integer, IN choIds  integer[], IN claimStatus character varying[], IN claimTypes integer[]);
+DROP FUNCTION IF EXISTS unacknowledgedClaimsReport(IN insId integer, IN choIds  integer[], IN claimStatus character varying[], IN claimTypes integer[]);
 
 CREATE OR REPLACE FUNCTION unacknowledgedClaimsReport(
     IN insId integer,
     IN choIds  integer[],
     IN claimStatus varchar[],
     IN claimTypes integer[])
-RETURNS TABLE(
+RETURNS TABLE (
     "Supplier Reference" varchar,
     "CHO Name" varchar,
     "Third Party Insurer" varchar,
@@ -76,7 +76,7 @@ AS $BODY$
               and c.insurer_id = insId and (choIds is null or array_length(choIds, 1) < 1 or c.chorganisation_id = ANY(choIds));
     END;
 $BODY$
-    LANGUAGE plpgsql VOLATILE COST 100;
+LANGUAGE plpgsql VOLATILE COST 100;
 
 GRANT EXECUTE ON FUNCTION unacknowledgedClaimsReport(IN insId integer, IN choIds  integer[], IN claimStatus character varying[], IN claimTypes integer[]) TO #{DB_USER.CHOX_USER};
 GRANT EXECUTE ON FUNCTION unacknowledgedClaimsReport(IN insId integer, IN choIds  integer[], IN claimStatus character varying[], IN claimTypes integer[]) TO #{DB_USER.MI_USER};
