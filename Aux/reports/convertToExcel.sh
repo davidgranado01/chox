@@ -46,7 +46,7 @@ function getEmailReceivers {
 # The 'ACTIVE' flag controls how the report is delivered, and can take the following options:
 #    0 - the report is password-protected zipped but is only emailed internally (to BCC_RECEIVERS)
 #    1 - the report is password-protected zipped and emailed to the client EMAIL_RECEIVERS, as well as being BCC'ed internally to the BCC_RECEIVERS
-#    2 - the report is password-protected zipped and sftp'ed to the FTP_CLIENT (using the transferToGateway.sh script)
+#    2 - the report is password-protected zipped and sftp'ed to the FTP_CLIENT (using the transferToGatewayWithTrigger.sh script)
 #    3 - the report is not password protected or zipped, but is emailed to the client EMAIL_RECEIVERS, as well as being BCC'ed internally to the BCC_RECEIVERS
 #    4 - the report is not password protected or zipped, and is sftp'ed to the FTP_CLIENT (using the transferToGateway.sh script)
     ACTIVE=0
@@ -184,6 +184,9 @@ function getEmailReceivers {
         "LVCHOXinvoice"* )
             ACTIVE=4
             FTP_CLIENT=LV;;
+        "DLG_NEW_NOTIFICATIONS_"* )
+            ACTIVE=4
+            FTP_CLIENT=DLG;;
         "AccidentExchange-Invoice_Notifications_Report_"* )
             ACTIVE=1
             EMAIL_RECEIVERS=kmartin@accidentexchange.com,ymiah@accidentexchange.com,proche@accidentexchange.com,ltrueman@accidentexchange.com;;
@@ -251,7 +254,7 @@ do
     if [ "${ACTIVE}" -eq "4" ]; then
 # SFTP unzipped and without password
         if [ "${MODE}" == "EXPORT" -o "${MODE}" == "NOEMAIL" ]; then
-            /home/chox/bin/transferToLVGateway.sh ${FTP_CLIENT} ${reportFile}
+            /home/chox/bin/transferToGateway.sh ${FTP_CLIENT} ${reportFile}
         fi
         /bin/mv ${reportFile} ${CWD}/${PROCESSED_DIR}/${reportFile}
     elif [ "${ACTIVE}" -eq "1" ]; then
@@ -293,7 +296,7 @@ Please find the attached excel report:
     elif [ "${ACTIVE}" -eq "4" ]; then
 # SFTP unzipped and without password
         if [ "${MODE}" == "EXPORT" -o "${MODE}" == "NOEMAIL" ]; then
-        /home/chox/bin/transferToGateway.sh ${FTP_CLIENT} ${CWD}/${OUTPUT_DIR}/${xlsFile}
+        /home/chox/bin/transferToGatewayWithTrigger.sh ${FTP_CLIENT} ${CWD}/${OUTPUT_DIR}/${xlsFile}
         fi
     else
     getPassword ${reportFile}
@@ -321,7 +324,7 @@ Please find the attached excel report:
     elif [ "${ACTIVE}" -eq "2" ]; then
         if [ "${MODE}" == "EXPORT" -o "${MODE}" == "NOEMAIL" ]; then
 #   Deliver password-protected zip file via SFTP
-        /home/chox/bin/transferToGateway.sh ${FTP_CLIENT} ${CWD}/${OUTPUT_DIR}/${zipFile}
+        /home/chox/bin/transferToGatewayWithTrigger.sh ${FTP_CLIENT} ${CWD}/${OUTPUT_DIR}/${zipFile}
         fi
     else # ACTIVE == 0
 #   email password-protected zip file to internal (bcc) recipients only
