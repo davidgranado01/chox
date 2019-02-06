@@ -25,7 +25,8 @@
 
 ## Convert reports to excel and email
 #{USE_CRONTAB_ENTRY}20 07 * * * /home/chox/bin/convertToExcelTemplate.sh reports reports/processed reports/excel  >> /home/chox/logs/convertToExcelTemplate.log 2>&1
-#{USE_CRONTAB_ENTRY}05 07 * * * /home/chox/bin/convertToExcel.sh reports reports/processed reports/excel  >> /home/chox/logs/convertToExcel.log 2>&1
+#{USE_CRONTAB_ENTRY}05 07-19 * * 1-5 /home/chox/bin/convertToExcel.sh reports reports/processed reports/excel  >> /home/chox/logs/convertToExcel.log 2>&1
+#{USE_CRONTAB_ENTRY}05 07 * * 0,6 /home/chox/bin/convertToExcel.sh reports reports/processed reports/excel  >> /home/chox/logs/convertToExcel.log 2>&1
 
 ##
 ## Generate CHOX access stats for reporting purposes (awstats)

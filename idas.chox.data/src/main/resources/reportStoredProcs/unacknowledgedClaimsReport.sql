@@ -79,6 +79,6 @@ $BODY$
 LANGUAGE plpgsql VOLATILE COST 100;
 
 GRANT EXECUTE ON FUNCTION unacknowledgedClaimsReport(IN insId integer, IN choIds  integer[], IN claimStatus character varying[], IN claimTypes integer[]) TO #{DB_USER.CHOX_USER};
-GRANT EXECUTE ON FUNCTION unacknowledgedClaimsReport(IN insId integer, IN choIds  integer[], IN claimStatus character varying[], IN claimTypes integer[]) TO #{DB_USER.MI_USER};
+GRANT EXECUTE ON FUNCTION unacknowledgedClaimsReport(IN insId integer, IN choIds  integer[], IN claimStatus character varying[], IN claimTypes integer[]) TO #{DB_USER.CHOX_MI};
 
 -- select * from unacknowledgedClaimsReport(6, null::integer[] , array['ClaimUnacknowledgedRouted'], null::integer[]);

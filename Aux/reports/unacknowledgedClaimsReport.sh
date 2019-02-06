@@ -1,5 +1,5 @@
 #!/bin/bash
-SQL_COMMAND=/usr/bin/psql
+PSQL_COMMAND=/usr/bin/psql
 HOST=#{DB_HOST} #dev-ukre-pgs28.dc.solera-uk.com
 USER=#{DB_USER.CHOX} #chox
 DB=#{DB_NAME.CHOX} #dev_uk_chox
