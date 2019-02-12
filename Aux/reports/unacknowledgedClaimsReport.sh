@@ -9,7 +9,7 @@ MI_DIRECTORY=/home/chox/reports/
 
 
 echo '***********************************************************'
-echo `date`': Generating Unacknowledged Vlaims Report for DLG'
+echo `date`': Generating Unacknowledged Claims Report for DLG'
 echo '***********************************************************'
 INS_ID=6
 $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--

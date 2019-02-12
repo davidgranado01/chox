@@ -40,6 +40,16 @@ public class WorkgroupServiceImpl extends SecureDataService implements Workgroup
         return (Workgroup) get(Workgroup.class, workgroupId);
     }
 
+    @Override
+    public Workgroup getWorkgroupByName(int insurerId, String workgroupName) {
+        Workgroup workgroup;
+        DetachedCriteria criteria = DetachedCriteria.forClass(Workgroup.class);
+        criteria.add(Restrictions.eq("name", workgroupName).ignoreCase());
+        criteria.add(Restrictions.eq("insurer.id", insurerId));
+        workgroup = (Workgroup)getByCriteria(criteria);
+        return workgroup;
+    }
+
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     @Override
     public void deleteWorkgroup(Workgroup workgroup) {

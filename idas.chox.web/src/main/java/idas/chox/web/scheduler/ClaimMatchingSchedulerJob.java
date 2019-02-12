@@ -99,7 +99,7 @@ public class ClaimMatchingSchedulerJob extends DbSchedulerJob {
                 releaseHibernateSessionConditionally();
             }
         } catch (Exception ex) {
-            LOG.error("Exception thrown checking fo claim matching: {}", ex.getMessage(), ex);
+            LOG.error("Exception thrown checking for claim matching: {}", ex.getMessage(), ex);
         }
 
         return true;

@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.quartz.DisallowConcurrentExecution;
 import org.springframework.orm.hibernate4.SessionHolder;
 import org.springframework.security.access.AccessDeniedException;
@@ -44,7 +43,6 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
     private boolean active;
     private Session session;
     private SessionFactory sessionFactory;
-    private Transaction hibernateTransaction;
     private ScheduleActivityFactory scheduleActivityFactory;
 
     public void setScheduleActivityFactory(ScheduleActivityFactory scheduleActivityFactory) {

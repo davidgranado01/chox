@@ -27,7 +27,7 @@ function getAccount {
             DIRECTORY_TO_STORE=/shared/nfs/chox/dataload/inbound/LV
             ;;
         "DLG" | "dlg" )
-            IRECTORY_TO_STORE=/shared/nfs/chox/dataload/inbound/DLG
+            DIRECTORY_TO_STORE=/shared/nfs/chox/dataload/inbound/DLG
             ;;
         "RSA" | "rsa" )
             DIRECTORY_TO_STORE=/shared/nfs/chox/dataload/inbound/RSA

@@ -1298,6 +1298,10 @@
                                 <label class="chox-form-std-label">Allow default notification of HM updates</label>
                                 <s:checkbox name="allowDefaultHMUpdates" value="allowDefaultHMUpdates" />
                             </div>
+                            <div class="chox-form-item">
+                                <label class="chox-form-std-label">Enable Claims Bulk Processing (via SFTP)</label>
+                                <s:checkbox name="unacknowldegedClaimBulkProcessing" value="unacknowldegedClaimBulkProcessing" />
+                            </div>
                         </fieldset>
                         
                         <div class="chox-form-button">

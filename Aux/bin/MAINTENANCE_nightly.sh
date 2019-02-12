@@ -15,7 +15,7 @@ echo `date`': Daily Maintenenace'
 echo '***********************************************************'
 echo 'Updating 'password last modified date' for admin users....'
 ${PSQL_COMMAND}  -h ${HOST} -U ${USER} -d ${DB} -c "update web_user set password_last_modified_date=now(), is_expired=false where user_name ilike 'admin@%'"
-${PSQL_COMMAND}  -h ${HOST} -U ${USER} -d ${DB} -c "update web_user set password_last_modified_date=now(), is_expired=false where user_name in ('erac_scheduler','easidrive_scheduler','paidInvoices.lv','claimmatcher.lv','ecdupdate@aiclaimssolutions.com','ecdupdate@erac.com')"
+${PSQL_COMMAND}  -h ${HOST} -U ${USER} -d ${DB} -c "update web_user set password_last_modified_date=now(), is_expired=false where user_name in ('erac_scheduler','easidrive_scheduler','paidInvoices.lv','claimmatcher.lv','acknowledgeClaims.dlg',ecdupdate@aiclaimssolutions.com','ecdupdate@erac.com')"
 
 echo 'Removing log files over 7 days old from '${log_dir}
 /usr/bin/find ${log_dir}/ -mtime +7 -type f -delete

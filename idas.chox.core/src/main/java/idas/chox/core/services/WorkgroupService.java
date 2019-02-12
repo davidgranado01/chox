@@ -8,6 +8,8 @@ import idas.chox.core.model.Workgroup;
 public interface WorkgroupService {
 
     Workgroup getWorkgroup(int workgroupId);
+    
+    Workgroup getWorkgroupByName(int insurerId, String workgroupName);
 
     void deleteWorkgroup(Workgroup workgroup);
 

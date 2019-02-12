@@ -656,7 +656,11 @@
             <version>v1-rev83-1.23.0</version>
             <!--version>1.23.0</version-->
         </dependency>
-
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>4.5</version>
+	</dependency>
         <!-- Runtime Dependencies -->
         <!--        <dependency>
             <groupId>org.jboss.logging</groupId>

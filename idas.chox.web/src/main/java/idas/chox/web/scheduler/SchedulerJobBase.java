@@ -13,7 +13,6 @@ import javax.mail.MessagingException;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +49,6 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     private String hostName;
     private ServerConfig serverConfig;
     private ApplicationContext applicationContext;
-    private Transaction hibernateTransaction;
     protected ClaimService claimService;
     
     protected abstract List<SchedulerJob> getSchedulerJobs();
@@ -143,14 +141,6 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     }
 
     public void releaseHibernateSessionConditionally() {
-        if (hibernateTransaction!=null && !hibernateTransaction.wasCommitted() && hibernateTransaction.isActive()) {
-            hibernateTransaction.commit();
-            LOG.debug("Hibernate Transaction committed: {}", hibernateTransaction);
-        } else if (hibernateTransaction != null) {
-            LOG.debug("Hibernate Transaction wasCommitted={}, wasRolledBack={}", hibernateTransaction.wasCommitted(), hibernateTransaction.wasRolledBack());
-        } else {
-            LOG.debug("Hibernate Transaction is null");
-        }
         TransactionSynchronizationManager.unbindResource(sessionFactory);
         session.clear();
         session.close();

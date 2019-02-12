@@ -96,6 +96,7 @@ public class Insurer extends Entity implements Serializable {
     private String kbbsManagerPassword;
     private String kbbsOperativePassword;
     private boolean copleyQuestion;
+    private boolean unacknowldegedClaimBulkProcessing;
 
     public boolean isCopleyQuestion() {
         return copleyQuestion;
@@ -103,6 +104,13 @@ public class Insurer extends Entity implements Serializable {
 
     public void setCopleyQuestion(boolean copleyQuestion) {
         this.copleyQuestion = copleyQuestion;
+    }
+    public boolean isUnacknowldegedClaimBulkProcessing() {
+        return unacknowldegedClaimBulkProcessing;
+    }
+
+    public void setUnacknowldegedClaimBulkProcessing(boolean unacknowldegedClaimBulkProcessing) {
+        this.unacknowldegedClaimBulkProcessing = unacknowldegedClaimBulkProcessing;
     }
 
     public boolean isEnableClaimMatching() {

@@ -25,6 +25,7 @@ public class ClaimRejection extends BaseActivity {
     // <editor-fold defaultstate="collapsed" desc="Member Variables">
     private String claimNumber;
     private String rejectionDescription;
+    private String indemnityStance;
     private BigDecimal indemnityAmount;
     private BigDecimal percentageLiabilityAccepted;
     private boolean isQuantumDispute;
@@ -44,6 +45,10 @@ public class ClaimRejection extends BaseActivity {
     // <editor-fold defaultstate="collapsed" desc="Parameters">
     public void setIndemnityAmount(BigDecimal indemnityAmount) {
         this.indemnityAmount = indemnityAmount;
+    }
+
+    public void setIndemnityStance(String indemnityStance) {
+        this.indemnityStance = indemnityStance;
     }
 
     public void setClaimNumber(String claimNumber) {
@@ -221,6 +226,9 @@ public class ClaimRejection extends BaseActivity {
 
         if (indemnityAmount != null) {
             claim.setIndemnityAmount(indemnityAmount);
+        }
+        if (indemnityStance != null) {
+            claim.setIndemnityStance(indemnityStance);
         }
         if (percentageLiabilityAccepted != null || percentageLiabilityCho != null) {
             claimService.updateLiabilityPercentages(claim, percentageLiabilityAccepted, percentageLiabilityCho);

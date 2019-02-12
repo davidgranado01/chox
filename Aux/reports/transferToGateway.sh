@@ -56,7 +56,7 @@ FILE_TO_TRANSFER=$2
 getAccount ${CLIENT}
 
 # Transfer
-/bin/mv ${FILE_TO_TRANSFER} ${DIRECTORY_TO_STORE}
+/bin/cp ${FILE_TO_TRANSFER} ${DIRECTORY_TO_STORE}
 
 echo "Done."
 
