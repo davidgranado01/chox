@@ -19,3 +19,8 @@ insert into web_user_user_role(web_user_id, web_user_role_id, created_by, last_m
 
 insert into scheduler_job (login_username, login_password, job_name, active, created_by, created_date, last_modified_by, last_modified_date, version)
     select 'acknowledgeClaims.dlg', '#{DB_USER.SYSTEM_PASSWORD}', 'UNACKNOWLEDGED_CLAIM_BULK_PROCESSING', true, 999, now(), 999, now(), 0;
+
+drop table claim_matching_import;
+drop table claim_matching_copy;
+drop table paid_invoices_import;
+drop table paid_invoices;

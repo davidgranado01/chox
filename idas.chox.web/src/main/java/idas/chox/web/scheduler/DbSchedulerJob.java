@@ -27,4 +27,19 @@ public abstract class DbSchedulerJob extends SchedulerJobBase {
             LOG.debug("{} job finished.", getClass().getSimpleName());
         }
     }
+    
+    protected String getInboundDirectory(String orgName) {
+        switch(orgName) {
+            case "Direct Line Group":
+                return "DLG";
+            case "LV=":
+                return "LV";
+            case "RSA":
+                return "RSA";
+            case "Enterprise Rent-A-Car UK Ltd":
+                return "EHI";
+            default:
+                return "";
+        }
+    }
 }

@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimMatchingBand;
 import idas.chox.core.model.ClaimMatchingEntry;
-import idas.chox.core.model.ClaimMatchingImportEntry;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.BreBandService;
@@ -40,8 +39,8 @@ public class ClaimMatchingServiceImpl extends SecureDataService implements Claim
     }
     
     @Override
-    public List<ClaimMatchingImportEntry> getClaimMatchingImportEntries(String insurerName) {
-        DetachedCriteria criteria = DetachedCriteria.forClass(ClaimMatchingImportEntry.class);
+    public List<ClaimMatchingEntry> getClaimMatchingEntries(String insurerName) {
+        DetachedCriteria criteria = DetachedCriteria.forClass(ClaimMatchingEntry.class);
         criteria.add(Restrictions.eq("insurerName", insurerName));
         return findByCriteria(criteria);
     }
@@ -125,12 +124,5 @@ public class ClaimMatchingServiceImpl extends SecureDataService implements Claim
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public void save(ClaimMatchingEntry entry) {
         super.save(entry);
-    }
-
-    @Override
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
-    public void delete(ClaimMatchingImportEntry entry) {
-        super.delete(entry);
-    }
-    
+    }    
 }

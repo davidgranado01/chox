@@ -37,9 +37,6 @@
     <bean id="appliedLiabilityService" class="idas.chox.data.services.AppliedLiabilityServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="paidInvoiceService" class="idas.chox.data.services.PaidInvoiceServiceImpl" scope="prototype">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
     <bean id="lookupService" class="idas.chox.data.services.LookupServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>

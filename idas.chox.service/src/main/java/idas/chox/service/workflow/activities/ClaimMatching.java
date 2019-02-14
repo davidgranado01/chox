@@ -109,14 +109,19 @@ public class ClaimMatching extends BaseActivity {
     }
 
     private String getIndemnityStanceFromString(String stance) {
-        switch (stance) {
-            case "Dealing Under Article 75":
-            case "Dealing Under Road Traffic Act":
-            case "No Involvement":
-            case "Not Indemnifying":
-            case "Pending Indemnity":
-            case "Providing Indemnity":
-                return stance;
+        switch (stance.toLowerCase()) {
+            case "dealing under article 75":
+                return "Dealing Under Article 75";
+            case "dealing under road traffic act":
+                return "Dealing Under Road Traffic Act";
+            case "no involvement":
+                 return "No Involvement";
+           case "not indemnifying":
+                return "Not Indemnifying";
+            case "pending indemnity":
+                return "Pending Indemnity";
+            case "providing indemnity":
+                return "Providing Indemnity";
             default:
                 return null;
         }

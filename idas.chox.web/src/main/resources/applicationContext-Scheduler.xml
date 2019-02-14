@@ -96,9 +96,14 @@
         <property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
         <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="insurerName" value="LV=" />
         <property name="claimMatchingService" ref="claimMatchingService" />
         <property name="activityFactory" ref="activityFactory" />
+        <!--property name="inboundDirectory" value="/shared/nfs/chox/dataload/inbound"/-->	
+        <!--property name="processedDirectory" value="/home/chox/logs/processed"/-->	
+        <!--property name="xlsx2csvLocation" value="/usr/bin/xlsx2csv" /-->
+        <property name="inboundDirectory" value="/Users/john/sprintTest/inbound"/>	
+        <property name="processedDirectory" value="/Users/john/sprintTest/processed"/>	
+        <property name="xlsx2csvLocation" value="/usr/local/bin/xlsx2csv" />
     </bean>
     <!--  Unacknowledged Claim BulkProcessing Job -->
     <bean id="unacknowledgedClaimsDbJob" class="idas.chox.web.scheduler.UnacknowledgedClaimsBulkProcessing">
@@ -114,7 +119,7 @@
         <property name="reasonOfRejectionService" ref="reasonOfRejectionService" />
         <property name="chorganisationService" ref="chorganisationService" />
         <property name="activityFactory" ref="activityFactory" />
-        <!--property name="inboundDirectory" value="/shared/nfs/chox/dataload/inbound/DLG"/-->	
+        <!--property name="inboundDirectory" value="/shared/nfs/chox/dataload/inbound"/-->	
         <!--property name="processedDirectory" value="/home/chox/logs/processed"/-->	
         <!--property name="xlsx2csvLocation" value="/usr/bin/xlsx2csv" /-->
         <property name="inboundDirectory" value="/Users/john/sprintTest/inbound"/>	
@@ -129,10 +134,12 @@
         <property name="hostName" value="${HOSTNAME}"/>	
         <property name="serverConfig" ref="serverConfig"/>
         <property name="sessionFactory" ref="sessionFactory"/>
-        <property name="insurerName" value="LV=" />
-        <property name="paidInvoiceService" ref="paidInvoiceService" />
         <property name="claimService" ref="claimService" />
         <property name="activityFactory" ref="activityFactory" />
+        <!--property name="inboundDirectory" value="/shared/nfs/chox/dataload/inbound"/-->	
+        <!--property name="processedDirectory" value="/home/chox/logs/processed"/-->	
+        <property name="inboundDirectory" value="/Users/john/sprintTest/inbound"/>	
+        <property name="processedDirectory" value="/Users/john/sprintTest/processed"/>	
     </bean>
     <!--  Reference update from queued token -->
     <bean id="referenceUpdateDbJob" class="idas.chox.web.scheduler.ReferenceUpdateDbSchedulerJob">
@@ -427,19 +434,19 @@
     </bean>
     <bean id="cronClaimMatchingDbTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="claimMatchingDbJobDetail" /> 
-        <property name="cronExpression" value="0 3 7-19 ? * 1-7" /> 
+        <property name="cronExpression" value="0 3/10 7-19 ? * 1-7" /> 
     </bean>
-    <bean id="cronClaimMatchingDbTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+    <bean id="cronUnacknowledgedClaimsDbTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="unacknowledgedClaimsDbJobDetail" /> 
-        <property name="cronExpression" value="0 2 7-19 ? * 2-6" /> 
+        <property name="cronExpression" value="0 2/10 7-19 ? * 2-6" /> 
     </bean>
-    <bean id="cronClaimMatchingDbTriggerWeekend" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+    <bean id="cronUnacknowledgedClaimsDbTriggerWeekend" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="unacknowledgedClaimsDbJobDetail" /> 
         <property name="cronExpression" value="0 2 7-14 ? * 1,7" /> 
     </bean>
     <bean id="cronPaidInvoicesDbTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="paidInvoicesDbJobDetail" /> 
-        <property name="cronExpression" value="0 4 7-19 ? * 1-7" /> 
+        <property name="cronExpression" value="0 4/10 7-19 ? * 1-7" /> 
     </bean>
     <bean id="cronImsChaseTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="imsChaseDbJobDetail" />
@@ -517,10 +524,10 @@
         <property name="jobDetails">
             <list>
                 <!--ref bean="keoghsDbJobDetail" /-->
-                <ref bean="claimMatchingDbJobDetail" />
-                <ref bean="unacknowledgedClaimsDbJobDetail" />
-                <ref bean="paidInvoicesDbJobDetail" />
                 <ref bean="referenceUpdateDbJobDetail" />
+                <ref bean="claimMatchingDbJobDetail" />
+                <ref bean="paidInvoicesDbJobDetail" />
+                <ref bean="unacknowledgedClaimsDbJobDetail" />
                 <ref bean="imsChaseDbJobDetail" />
                 <ref bean="addMissingEcdTaskJobDetail" />
                 <ref bean="addInvoicePenaltyTaskJobDetail" />
@@ -542,10 +549,10 @@
         <property name="triggers">
             <list>
                 <ref bean="cronRefDbUpdateTriggerWeek" />
-                <ref bean="cronClaimMatchingDbTriggerWeek" />
-                <ref bean="cronClaimMatchingDbTriggerWeekend" />
                 <ref bean="cronClaimMatchingDbTriggerDaily" />
                 <ref bean="cronPaidInvoicesDbTriggerDaily" />
+                <ref bean="cronUnacknowledgedClaimsDbTriggerWeek" />
+                <ref bean="cronUnacknowledgedClaimsDbTriggerWeekend" />
                 <!--ref bean="cronKeoghsDbTriggerDaily" /-->
                 <ref bean="cronImsChaseTriggerDaily" />
                 <ref bean="addMissingEcdTaskTriggerDaily" />
