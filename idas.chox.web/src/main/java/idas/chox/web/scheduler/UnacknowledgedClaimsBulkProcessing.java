@@ -235,22 +235,7 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
                                     releaseHibernateSessionConditionally();
                                     continue;
                                 }
-                                
-                                // Check Indemnity
-                                String indemnityStance = line[POSITION_INDEMNITY_STANCE].trim();
-                                if (indemnityStance.isEmpty()) {
-                                    LOG.error("Error processing entry {}: no indemnity stance provided", lineNo);
-                                    releaseHibernateSessionConditionally();
-                                    continue;
-                                }
-                                if (!indemnityStance.equals("Dealing Under Article 75") && !indemnityStance.equals("Dealing Under Road Traffic Act")
-                                        && !indemnityStance.equals("No Involvement") && !indemnityStance.equals("Not Indemnifying")
-                                        && !indemnityStance.equals("Pending Indemnity") && !indemnityStance.equals("Providing Indemnity")) {
-                                    LOG.error("Error processing entry {}: invalid indemnity stance provided: '{}'", lineNo, indemnityStance);
-                                    releaseHibernateSessionConditionally();
-                                    continue;
-                                }
-                                
+
                                 // Check Liability
                                 LiabilityStatus liabilityStatus;
                                 try {
@@ -260,7 +245,7 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
                                     releaseHibernateSessionConditionally();
                                     continue;
                                 }
-                                
+
                                 Date liabilityAgreedDate;
                                 if (line[POSITION_LIABILITY_AGREED_DATE].trim().isEmpty()) {
                                     liabilityAgreedDate = DateHelper.getCurrentDate();
@@ -273,9 +258,24 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
                                     releaseHibernateSessionConditionally();
                                     continue;
                                 }
-                                
+                                String indemnityStance = line[POSITION_INDEMNITY_STANCE].trim();
+
                                 switch (action) {
                                     case "acknowledge":
+                                        // Check Indemnity
+                                        if (indemnityStance.isEmpty()) {
+                                            LOG.error("Error processing entry {}: no indemnity stance provided", lineNo);
+                                            releaseHibernateSessionConditionally();
+                                            continue;
+                                        }
+                                        if (!indemnityStance.equals("Dealing Under Article 75") && !indemnityStance.equals("Dealing Under Road Traffic Act")
+                                                && !indemnityStance.equals("No Involvement") && !indemnityStance.equals("Not Indemnifying")
+                                                && !indemnityStance.equals("Pending Indemnity") && !indemnityStance.equals("Providing Indemnity")) {
+                                            LOG.error("Error processing entry {}: invalid indemnity stance provided: '{}'", lineNo, indemnityStance);
+                                            releaseHibernateSessionConditionally();
+                                            continue;
+                                        }
+
                                         // Acknowledge Claim
                                         AcknowledgeClaim acknowledgeActivity = (AcknowledgeClaim) activityFactory.getActivity("acknowledgeClaim");
                                         acknowledgeActivity.setClaimNumber(claimNumber);
@@ -387,10 +387,20 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
                                         break;
 
                                     case "reject":
-                                        // Reject Claim
                                         ClaimRejection rejectActivity = (ClaimRejection) activityFactory.getActivity("rejectClaim");
+                                        // Check Indemnity
+                                        if (!indemnityStance.isEmpty()) {
+                                            if (!indemnityStance.equals("Dealing Under Article 75") && !indemnityStance.equals("Dealing Under Road Traffic Act")
+                                                    && !indemnityStance.equals("No Involvement") && !indemnityStance.equals("Not Indemnifying")
+                                                    && !indemnityStance.equals("Pending Indemnity") && !indemnityStance.equals("Providing Indemnity")) {
+                                                LOG.error("Error processing entry {}: invalid indemnity stance provided: '{}'", lineNo, indemnityStance);
+                                                releaseHibernateSessionConditionally();
+                                                continue;
+                                            }
+                                            rejectActivity.setIndemnityStance(indemnityStance);
+                                        }
+                                        // Reject Claim
                                         rejectActivity.setClaimNumber(claimNumber);
-                                        rejectActivity.setIndemnityStance(indemnityStance);
 //                                      rejectActivity.setIndemnityAmount(indemnityAmount);
                                         rejectActivity.setLiabilityStatus(liabilityStatus);
                                         rejectActivity.setLiabilityAgreedDate(liabilityAgreedDate);
@@ -440,13 +450,13 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
                                                 String invoiceReviewReason = line[POSITION_INVOICE_REVIEW_REASON].trim();
                                                 if (invoiceReviewReason.isEmpty()) {
                                                     LOG.warn("Error processing entry {}: no invoice review reason provded", lineNo);
-                                                }
-                                                else if (!invoiceReviewReason.equals("Intervention") && !invoiceReviewReason.equals("Claims Investigation")
+                                                } else if (!invoiceReviewReason.equals("Intervention") && !invoiceReviewReason.equals("Claims Investigation")
                                                         && !invoiceReviewReason.equals("Indemnity") && !invoiceReviewReason.equals("Quantum/causation issue")
                                                         && !invoiceReviewReason.equals("Handler concerns")) {
                                                     LOG.warn("Error processing entry {}: invalid invoice review reason provded: '{}'", lineNo, invoiceReviewReason);
-                                                } else
+                                                } else {
                                                     rejectActivity.setInvoiceReviewReason(invoiceReviewReason);
+                                                }
                                             }
                                         }
 
@@ -491,8 +501,18 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
                                     case "pending":
                                         // Pending Claim
                                         ClaimPending pendingActivity = (ClaimPending) activityFactory.getActivity("pending");
+                                        // Check Indemnity
+                                        if (!indemnityStance.isEmpty()) {
+                                            if (!indemnityStance.equals("Dealing Under Article 75") && !indemnityStance.equals("Dealing Under Road Traffic Act")
+                                                    && !indemnityStance.equals("No Involvement") && !indemnityStance.equals("Not Indemnifying")
+                                                    && !indemnityStance.equals("Pending Indemnity") && !indemnityStance.equals("Providing Indemnity")) {
+                                                LOG.error("Error processing entry {}: invalid indemnity stance provided: '{}'", lineNo, indemnityStance);
+                                                releaseHibernateSessionConditionally();
+                                                continue;
+                                            }
+                                            pendingActivity.setIndemnityStance(indemnityStance);
+                                        }
                                         pendingActivity.setClaimNumber(claimNumber);
-                                        pendingActivity.setIndemnityStance(indemnityStance);
 //                                      pendingActivity.setIndemnityAmount(indemnityAmount);
                                         pendingActivity.setLiabilityStatus(liabilityStatus);
                                         pendingActivity.setLiabilityAgreedDate(liabilityAgreedDate);
@@ -542,13 +562,13 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
                                                 String invoiceReviewReason = line[POSITION_INVOICE_REVIEW_REASON].trim();
                                                 if (invoiceReviewReason.isEmpty()) {
                                                     LOG.warn("Error processing entry {}: no invoice review reason provded", lineNo);
-                                                }
-                                                else if (!invoiceReviewReason.equals("Intervention") && !invoiceReviewReason.equals("Claims Investigation")
+                                                } else if (!invoiceReviewReason.equals("Intervention") && !invoiceReviewReason.equals("Claims Investigation")
                                                         && !invoiceReviewReason.equals("Indemnity") && !invoiceReviewReason.equals("Quantum/causation issue")
                                                         && !invoiceReviewReason.equals("Handler concerns")) {
                                                     LOG.warn("Error processing entry {}: invalid invoice review reason provded: '{}'", lineNo, invoiceReviewReason);
-                                                } else
+                                                } else {
                                                     pendingActivity.setInvoiceReviewReason(invoiceReviewReason);
+                                                }
                                             }
                                         }
 
