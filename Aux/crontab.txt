@@ -18,7 +18,7 @@
 #{USE_CRONTAB_ENTRY}21 03 * * 4 /home/chox/bin/weeklyThursdayReports >> /home/chox/logs/weeklyThursdayReports.log 2>&1
 #{USE_CRONTAB_ENTRY}21 03 * * 5 /home/chox/bin/weeklyFridayReports >> /home/chox/logs/weeklyFridayReports.log 2>&1
 #{USE_CRONTAB_ENTRY}45 03 * * 1-5 /home/chox/bin/dailyReports >> /home/chox/logs/dailyReports.log 2>&1
-#{USE_CRONTAB_ENTRY}00 07-19 * * 1-5 /home/chox/bin/unacknowledgedClaimsReport.sh >> /home/chox/logs/unacknowledgedClaimsReport.log 2>&1
+#{USE_CRONTAB_ENTRY}00 07-15 * * 1-5 /home/chox/bin/unacknowledgedClaimsReport.sh >> /home/chox/logs/unacknowledgedClaimsReport.log 2>&1
 
 ## RSA XML Data Export
 #{USE_CRONTAB_ENTRY}55 00 * * 1 /home/chox/bin/choxDataTransfer.sh 3 >> /home/chox/logs/rsaXmlDataExport.log 2>&1
