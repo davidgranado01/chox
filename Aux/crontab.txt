@@ -23,6 +23,11 @@
 ## RSA XML Data Export
 #{USE_CRONTAB_ENTRY}55 00 * * 1 /home/chox/bin/choxDataTransfer.sh 3 >> /home/chox/logs/rsaXmlDataExport.log 2>&1
 
+##
+## Generate dashboard stats
+##
+#{USE_CRONTAB_ENTRY}15 01 * * * /home/chox/bin/generateDashboardStats.sh true >> /home/chox/logs/generateDashboardStats.log 2>&1
+
 ## Convert reports to excel and email
 #{USE_CRONTAB_ENTRY}20 07 * * * /home/chox/bin/convertToExcelTemplate.sh reports reports/processed reports/excel  >> /home/chox/logs/convertToExcelTemplate.log 2>&1
 #{USE_CRONTAB_ENTRY}05 07-19 * * 1-5 /home/chox/bin/convertToExcel.sh reports reports/processed reports/excel  >> /home/chox/logs/convertToExcel.log 2>&1
@@ -30,18 +35,10 @@
 
 ##
 ## Generate CHOX access stats for reporting purposes (awstats)
-##
+##  NB: access stats are no longer required since the move to the Audatex Infrastructure
 #30 23 * * * /home/chox/bin/awstats.sh >> /home/chox/logs/awstatsUpdate.log 2>&1
 
 ##
 ## Nightly maintenance
 ##
 15 04 * * 1-6 /home/chox/bin/MAINTENANCE_nightly.sh >> /home/chox/logs/MAINTENANCE_nightly.log 2>&1
-
-##
-## Generate dashboard stats
-##
-#{USE_CRONTAB_ENTRY}15 01 * * * /home/chox/bin/generateDashboardStats.sh true >> /home/chox/logs/generateDashboardStats.log 2>&1
-
-# Claim Matching: import excel fro sftp and process
-#00 7-19 * * 1-6 /home/chox/bin/getExcelFromGateway.sh LV >> /home/chox/logs/getExcelFromGateway.log 2>&1
