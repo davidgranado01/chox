@@ -34,11 +34,11 @@ public class PaidInvoicesSchedulerJob extends DbSchedulerJob {
     private ActivityFactory activityFactory;
     public static final String JOB_NAME = "PAID_INVOICES";
     @Autowired
-    private String inboundDirectory;
+    private String inboundDirectoryBase;
     private String processedDirectory;
 
-    public void setInboundDirectory(String inboundDirectory) {
-        this.inboundDirectory = inboundDirectory;
+    public void setInboundDirectoryBase(String inboundDirectory) {
+        this.inboundDirectoryBase = inboundDirectory;
     }
 
     public void setProcessedDirectory(String processedDirectory) {
@@ -57,7 +57,7 @@ public class PaidInvoicesSchedulerJob extends DbSchedulerJob {
             CSVReader reader;
             String[] line;
             // Check mounted inbound directory for *.xlsx/*.csv files
-            File folder = new File(inboundDirectory + "/" + getInboundDirectory(insurerName));
+            File folder = new File(inboundDirectoryBase + "/" + getInboundDirectory(insurerName));
             // Check file matches format LVCHOXInvoicepaid.csv
             Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter("LVCHOXInvoicepaid*.csv"), null);
             for (File csvFile : fileNames) {
@@ -105,7 +105,7 @@ public class PaidInvoicesSchedulerJob extends DbSchedulerJob {
                         handleHibernateTransactionIntricacies();
                         try {
                             List<Claim> claims = claimService.getClaimByCHOReferenceAndClaimNumber(choReference, claimNumber);
-                            if (claims.size() == 1 && claims.get(0).getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT.toString())) {
+                            if (claims.size() == 1 && claims.get(0).getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
                                 Claim claim = claims.get(0);
                                 LOG.debug("Match found for import entry with cho reference='{}' and claim number='{}': ", new Object[]{
                                     choReference, claimNumber});

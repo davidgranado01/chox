@@ -45,12 +45,12 @@ public class ClaimMatchingSchedulerJob extends DbSchedulerJob {
     public static final String JOB_NAME = "CLAIM_MATCHING";
     @Autowired
     private ClaimMatchingService claimMatchingService;
-    private String inboundDirectory;
+    private String inboundDirectoryBase;
     private String processedDirectory;
     private String xlsx2csvLocation;
 
-    public void setInboundDirectory(String inboundDirectory) {
-        this.inboundDirectory = inboundDirectory;
+    public void setInboundDirectoryBase(String inboundDirectory) {
+        this.inboundDirectoryBase = inboundDirectory;
     }
 
     public void setProcessedDirectory(String processedDirectory) {
@@ -80,7 +80,7 @@ public class ClaimMatchingSchedulerJob extends DbSchedulerJob {
         // First, convert any xlsx files to csv?
         try {
             boolean result;
-            File folder = new File(inboundDirectory + "/" + getInboundDirectory(insurerName));
+            File folder = new File(inboundDirectoryBase + "/" + getInboundDirectory(insurerName));
             Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter("CHOX_*.xlsx"), null);
             for (File xlsxFile : fileNames) {
                 try {
@@ -100,7 +100,7 @@ public class ClaimMatchingSchedulerJob extends DbSchedulerJob {
             CSVReader reader;
             String[] line;
             // Check mounted inbound directory for *.xlsx/*.csv files
-            File folder = new File(inboundDirectory + "/" + getInboundDirectory(insurerName));
+            File folder = new File(inboundDirectoryBase + "/" + getInboundDirectory(insurerName));
             // Check file matches format CHOX_YYYY_MM_DD_HH_MM_SS.csv
             Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter("CHOX_*.csv"), null);
             for (File csvFile : fileNames) {
@@ -239,6 +239,8 @@ public class ClaimMatchingSchedulerJob extends DbSchedulerJob {
                                 LOG.debug("Creating new ClaimMatchingEntry");
                                 entry = new ClaimMatchingEntry();
                                 entry.setClaimNumber(claimNumber);
+                                entry.setCreatedDate(new Date());
+                                entry.setCreatedBy(getSecurityInfoProvider().getCurrentUser());
                             }
                             entry.setClaim(matchedClaim);
                             entry.setIncidentDate(incidentDate);
@@ -249,6 +251,8 @@ public class ClaimMatchingSchedulerJob extends DbSchedulerJob {
                             entry.setLiabilityStance(liabilityStance);
                             entry.setThirdPartyVehicleRegistration(thirdPartyRegistration);
                             entry.setMatchStatus(matchStatus);
+                            entry.setLastModifiedDate(new Date());
+                            entry.setLastModifiedBy(getSecurityInfoProvider().getCurrentUser());
                             LOG.debug("Saving ClaimMatchingEntry for claim '{}' with match status={}", claimNumber, matchStatus);
                             claimMatchingService.save(entry);
                         } catch (Exception ex) {
@@ -256,7 +260,6 @@ public class ClaimMatchingSchedulerJob extends DbSchedulerJob {
                         } finally {
                             releaseHibernateSessionConditionally();
                         }
-
                     }
                 } catch (IOException ex) {
                     LOG.error("IOException thrown processing unacknowledged claim file '{}': {}", csvFile.getCanonicalPath(), ex.getMessage());

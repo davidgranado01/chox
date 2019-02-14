@@ -64,7 +64,7 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
     private static final int POSITION_REJECTION_NOTE = 16;
     public static final String JOB_NAME = "UNACKNOWLEDGED_CLAIM_BULK_PROCESSING";
     private ActivityFactory activityFactory;
-    private String inboundDirectory;
+    private String inboundDirectoryBase;
     private String processedDirectory;
     private String xlsx2csvLocation;
     private WorkgroupService workgroupService;
@@ -92,8 +92,8 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
         this.chorganisationService = chorganisationService;
     }
 
-    public void setInboundDirectory(String inboundDirectory) {
-        this.inboundDirectory = inboundDirectory;
+    public void setInboundDirectoryBase(String inboundDirectory) {
+        this.inboundDirectoryBase = inboundDirectory;
     }
 
     public void setProcessedDirectory(String processedDirectory) {
@@ -116,7 +116,7 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
         // First, convert any xlsx files to csv?
         try {
             boolean result;
-            File folder = new File(inboundDirectory + "/" + getInboundDirectory(ins.getName()));
+            File folder = new File(inboundDirectoryBase + "/" + getInboundDirectory(ins.getName()));
             Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter("NEW_NOTICIATION_ACTIONS_*.xlsx"), null);
             for (File xlsxFile : fileNames) {
                 try {
@@ -136,7 +136,7 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
             CSVReader reader;
             String[] line;
             // Check mounted inbound directory for *.xlsx/*.csv files
-            File folder = new File(inboundDirectory + "/" + getInboundDirectory(ins.getName()));
+            File folder = new File(inboundDirectoryBase + "/" + getInboundDirectory(ins.getName()));
             // Check file matches format NEW_NOTICIATION_ACTIONS_<DDMMYYYYHHMM>.csv
             Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter("NEW_NOTICIATION_ACTIONS_*.csv"), null);
             for (File csvFile : fileNames) {

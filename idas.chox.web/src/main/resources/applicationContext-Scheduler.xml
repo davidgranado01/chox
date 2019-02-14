@@ -101,7 +101,7 @@
         <!--property name="inboundDirectory" value="/shared/nfs/chox/dataload/inbound"/-->	
         <!--property name="processedDirectory" value="/home/chox/logs/processed"/-->	
         <!--property name="xlsx2csvLocation" value="/usr/bin/xlsx2csv" /-->
-        <property name="inboundDirectory" value="/Users/john/sprintTest/inbound"/>	
+        <property name="inboundDirectoryBase" value="/Users/john/sprintTest/inbound"/>	
         <property name="processedDirectory" value="/Users/john/sprintTest/processed"/>	
         <property name="xlsx2csvLocation" value="/usr/local/bin/xlsx2csv" />
     </bean>
@@ -122,7 +122,7 @@
         <!--property name="inboundDirectory" value="/shared/nfs/chox/dataload/inbound"/-->	
         <!--property name="processedDirectory" value="/home/chox/logs/processed"/-->	
         <!--property name="xlsx2csvLocation" value="/usr/bin/xlsx2csv" /-->
-        <property name="inboundDirectory" value="/Users/john/sprintTest/inbound"/>	
+        <property name="inboundDirectoryBase" value="/Users/john/sprintTest/inbound"/>	
         <property name="processedDirectory" value="/Users/john/sprintTest/processed"/>	
         <property name="xlsx2csvLocation" value="/usr/local/bin/xlsx2csv" />
     </bean>
@@ -138,7 +138,7 @@
         <property name="activityFactory" ref="activityFactory" />
         <!--property name="inboundDirectory" value="/shared/nfs/chox/dataload/inbound"/-->	
         <!--property name="processedDirectory" value="/home/chox/logs/processed"/-->	
-        <property name="inboundDirectory" value="/Users/john/sprintTest/inbound"/>	
+        <property name="inboundDirectoryBase" value="/Users/john/sprintTest/inbound"/>	
         <property name="processedDirectory" value="/Users/john/sprintTest/processed"/>	
     </bean>
     <!--  Reference update from queued token -->
