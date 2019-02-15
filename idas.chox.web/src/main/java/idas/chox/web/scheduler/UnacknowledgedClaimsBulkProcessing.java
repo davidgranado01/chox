@@ -117,7 +117,7 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
         try {
             boolean result;
             File folder = new File(inboundDirectoryBase + "/" + getInboundDirectory(ins.getName()));
-            Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter("DLG_CREDIT_HIRE_NEW_NOTICIATION_ACTIONS_*.xlsx"), null);
+            Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter("CREDIT_HIRE_NEW_NOTICIATION_ACTIONS_*.xlsx"), null);
             for (File xlsxFile : fileNames) {
                 try {
                     result = Xlsx2csvUtility.convert(xlsxFile.getCanonicalPath(), xlsx2csvLocation);
@@ -138,7 +138,7 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
             // Check mounted inbound directory for *.xlsx/*.csv files
             File folder = new File(inboundDirectoryBase + "/" + getInboundDirectory(ins.getName()));
             // Check file matches format NEW_NOTICIATION_ACTIONS_<DDMMYYYYHHMM>.csv
-            Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter("DLG_CREDIT_HIRE_NEW_NOTICIATION_ACTIONS_*.csv"), null);
+            Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter("CREDIT_HIRE_NEW_NOTICIATION_ACTIONS_*.csv"), null);
             for (File csvFile : fileNames) {
                 try {
                     LOG.info("Processing Unacknowledged Claims CSV file '{}'", csvFile.getCanonicalPath());

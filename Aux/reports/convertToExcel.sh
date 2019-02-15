@@ -184,7 +184,7 @@ function getEmailReceivers {
         "LVCHOXinvoice"* )
             ACTIVE=4
             FTP_CLIENT=LV;;
-        "DLG_NEW_NOTIFICATIONS_"* )
+        "DLG-CREDIT_HIRE_NEW_NOTIFICATIONS_"* )
             ACTIVE=4
             FTP_CLIENT=DLG;;
         "AccidentExchange-Invoice_Notifications_Report_"* )
