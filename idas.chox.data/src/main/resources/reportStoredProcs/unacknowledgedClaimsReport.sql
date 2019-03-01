@@ -51,7 +51,9 @@ RETURNS TABLE (
     "Repair Book in Date" varchar,
     "Date Repair Authorised" varchar,
     "Date Repair Commenced" varchar,
-    "Repair Completion Date" varchar
+    "Repair Completion Date" varchar,
+    "Hire Start" varchar,
+    "Comprehensive?" varchar
 )
 AS $BODY$
     BEGIN
@@ -66,14 +68,17 @@ AS $BODY$
                    tp.policy_number, tp.title, tp.first_name, tp.last_name, tp.vehicle_registration, to_char(inc.date, 'dd/mm/yyyy')::varchar,
                    inc.location::varchar, inc.incident_description::varchar, hmd.name_of_repairer, case when hmd.is_non_fault_insurer_managing_repair then 'Yes'::varchar else 'No'::varchar end,
                    to_char(hmd.repair_book_in_date, 'dd/mm/yyyy hh:mm:ss')::varchar, to_char(hmd.repair_authorised_date, 'dd/mm/yyyy hh:mm:ss')::varchar,
-                   to_char(hmd.repair_commenced_date, 'dd/mm/yyyy hh:mm:ss')::varchar, to_char(hmd.repair_completion_date, 'dd/mm/yyyy hh:mm:ss')::varchar
+                   to_char(hmd.repair_commenced_date, 'dd/mm/yyyy hh:mm:ss')::varchar, to_char(hmd.repair_completion_date, 'dd/mm/yyyy hh:mm:ss')::varchar,
+                   to_char(vh.rental_start, 'dd/mm/yyyy hh:mm:ss')::varchar, case when cu.comprehensive then 'Yes'::varchar else 'No'::varchar end
             from claim c left outer join workgroup w on (w.id=c.workgroup_id)
                          left outer join web_user wu on (wu.id=c.claim_owner_id),
-                 customer cu, third_party tp, chorganisation cho, insurer ins, vehicle_class customer_vc, incident inc, hire_monitoring_detail hmd
+                 customer cu, third_party tp, chorganisation cho, insurer ins, vehicle_class customer_vc, incident inc,
+                 hire_monitoring_detail hmd, vehicle_hire vh
             where c.third_party_id=tp.id and c.customer_id=cu.id and c.chorganisation_id=cho.id and c.insurer_id = ins.id
               and customer_vc.id=cu.vehicle_class_id and c.incident_id = inc.id and c.hire_monitoring_detail_id = hmd.id
               and c.status= ANY(claimStatus) and (claimTypes is null or array_length(claimTypes, 1) < 1 or c.claim_type = ANY(claimTypes))
-              and c.insurer_id = insId and (choIds is null or array_length(choIds, 1) < 1 or c.chorganisation_id = ANY(choIds));
+              and c.insurer_id = insId and (choIds is null or array_length(choIds, 1) < 1 or c.chorganisation_id = ANY(choIds))
+              and c.vehicle_hire_id = vh.id;
     END;
 $BODY$
 LANGUAGE plpgsql VOLATILE COST 100;
