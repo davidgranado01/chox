@@ -98,7 +98,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="claimMatchingService" ref="claimMatchingService" />
         <property name="activityFactory" ref="activityFactory" />
-        <property name="inboundDirectory" value="/shared/nfs/chox/dataload/inbound"/>	
+        <property name="inboundDirectoryBase" value="/shared/nfs/chox/dataload/inbound"/>	
         <property name="processedDirectory" value="/home/chox/logs/processed"/>	
         <property name="xlsx2csvLocation" value="/usr/bin/xlsx2csv" />
         <!--property name="inboundDirectoryBase" value="/Users/john/sprintTest/inbound"/-->	
@@ -119,7 +119,7 @@
         <property name="reasonOfRejectionService" ref="reasonOfRejectionService" />
         <property name="chorganisationService" ref="chorganisationService" />
         <property name="activityFactory" ref="activityFactory" />
-        <property name="inboundDirectory" value="/shared/nfs/chox/dataload/inbound"/>	
+        <property name="inboundDirectoryBase" value="/shared/nfs/chox/dataload/inbound"/>	
         <property name="processedDirectory" value="/home/chox/logs/processed"/>	
         <property name="xlsx2csvLocation" value="/usr/bin/xlsx2csv" />
         <!--property name="inboundDirectoryBase" value="/Users/john/sprintTest/inbound"/-->	
@@ -136,7 +136,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="claimService" ref="claimService" />
         <property name="activityFactory" ref="activityFactory" />
-        <property name="inboundDirectory" value="/shared/nfs/chox/dataload/inbound"/>	
+        <property name="inboundDirectoryBase" value="/shared/nfs/chox/dataload/inbound"/>	
         <property name="processedDirectory" value="/home/chox/logs/processed"/>	
         <!--property name="inboundDirectoryBase" value="/Users/john/sprintTest/inbound"/-->	
         <!--property name="processedDirectory" value="/Users/john/sprintTest/processed"/-->	
