@@ -4,7 +4,7 @@ HOST=#{DB_HOST} #dev-ukre-pgs28.dc.solera-uk.com
 USER=#{DB_USER.CHOX} #chox
 DB=#{DB_NAME.CHOX} #dev_uk_chox
 
-DUMPFILE=DLG-CREDIT_HIRE_NEW_NOTIFICATIONS_`date +"%Y%m%d%H%M"`.csv
+DUMPFILE=DLG-CREDIT_HIRE_NEW_NOTIFICATIONS_`date +"%d%m%Y%H%M"`.csv
 MI_DIRECTORY=/home/chox/reports/
 
 
