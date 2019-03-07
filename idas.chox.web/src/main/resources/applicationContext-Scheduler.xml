@@ -100,10 +100,9 @@
         <property name="activityFactory" ref="activityFactory" />
         <property name="inboundDirectoryBase" value="/shared/nfs/chox/dataload/inbound"/>	
         <property name="processedDirectory" value="/home/chox/logs/processed"/>	
-        <property name="xlsx2csvLocation" value="/usr/bin/xlsx2csv" />
+        <property name="xlsx2csvLocation" value="/usr/local/bin/xlsx2csv" />
         <!--property name="inboundDirectoryBase" value="/Users/john/sprintTest/inbound"/-->	
         <!--property name="processedDirectory" value="/Users/john/sprintTest/processed"/-->	
-        <!--property name="xlsx2csvLocation" value="/usr/local/bin/xlsx2csv" /-->
     </bean>
     <!--  Unacknowledged Claim BulkProcessing Job -->
     <bean id="unacknowledgedClaimsDbJob" class="idas.chox.web.scheduler.UnacknowledgedClaimsBulkProcessing">
@@ -121,10 +120,9 @@
         <property name="activityFactory" ref="activityFactory" />
         <property name="inboundDirectoryBase" value="/shared/nfs/chox/dataload/inbound"/>	
         <property name="processedDirectory" value="/home/chox/logs/processed"/>	
-        <property name="xlsx2csvLocation" value="/usr/bin/xlsx2csv" />
+        <property name="xlsx2csvLocation" value="/usr/local/bin/xlsx2csv" />
         <!--property name="inboundDirectoryBase" value="/Users/john/sprintTest/inbound"/-->	
         <!--property name="processedDirectory" value="/Users/john/sprintTest/processed"/-->	
-        <!--property name="xlsx2csvLocation" value="/usr/local/bin/xlsx2csv" /-->
     </bean>
     <!--  Paid Invoices Job -->
     <bean id="paidInvoicesDbJob" class="idas.chox.web.scheduler.PaidInvoicesSchedulerJob">
