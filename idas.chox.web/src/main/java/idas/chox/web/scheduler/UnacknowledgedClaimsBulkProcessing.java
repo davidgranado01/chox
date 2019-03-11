@@ -240,6 +240,8 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
                                 LiabilityStatus liabilityStatus;
                                 try {
                                     liabilityStatus = LiabilityStatus.getLiabilityStatus(line[POSITION_LIABILITY_STATUS].trim());
+                                    if (liabilityStatus == null || liabilityStatus == LiabilityStatus.LIABILITY_NULL)
+                                        throw new Exception("No Liability stance Provided");
                                 } catch (Exception ex) {
                                     LOG.error("Error processing entry {}: invalid liability stance provided: '{}'", lineNo, line[POSITION_LIABILITY_STATUS].trim());
                                     releaseHibernateSessionConditionally();
