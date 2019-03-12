@@ -117,7 +117,7 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
         try {
             boolean result;
             File folder = new File(inboundDirectoryBase + "/" + getInboundDirectory(ins.getName()));
-            Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter("CREDIT_HIRE_NEW_NOTIFICIATION_ACTIONS_*.xlsx"), null);
+            Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter("CREDIT_HIRE_NEW_NOTIFICATION_ACTIONS_*.xlsx"), null);
             for (File xlsxFile : fileNames) {
                 try {
                     result = Xlsx2csvUtility.convert(xlsxFile.getCanonicalPath(), xlsx2csvLocation);
@@ -125,7 +125,12 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
                 } catch (Exception ex) {
                     LOG.error("Exception converting xlsx file '{}' to csv: {}", xlsxFile.getCanonicalPath(), ex.getMessage());
                 } finally {
-                    FileUtils.moveFileToDirectory(xlsxFile, FileUtils.getFile(processedDirectory), false);
+                    try {
+                        FileUtils.moveFileToDirectory(xlsxFile, FileUtils.getFile(processedDirectory), false);
+                    } catch (IOException ex) {
+                        LOG.error("Exception moving xlsx file '{}' to processed directory: {}", xlsxFile.getAbsolutePath(), ex.getMessage());
+                        FileUtils.deleteQuietly(xlsxFile);
+                    }
                 }
             }
         } catch (IOException ex) {
@@ -138,7 +143,7 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
             // Check mounted inbound directory for *.xlsx/*.csv files
             File folder = new File(inboundDirectoryBase + "/" + getInboundDirectory(ins.getName()));
             // Check file matches format NEW_NOTICIATION_ACTIONS_<DDMMYYYYHHMM>.csv
-            Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter("CREDIT_HIRE_NEW_NOTIFICIATION_ACTIONS_*.csv"), null);
+            Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter("CREDIT_HIRE_NEW_NOTIFICATION_ACTIONS_*.csv"), null);
             for (File csvFile : fileNames) {
                 try {
                     LOG.info("Processing Unacknowledged Claims CSV file '{}'", csvFile.getCanonicalPath());
@@ -351,7 +356,7 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
                                         acknowledgeActivity.setPercentageLiabilityCho((new BigDecimal("100.00")).subtract(insurerLiability));
 
                                         // Invoice Review
-                                        String invoiceReviewStr = line[POSITION_INVOICE_REVIEW_FLAG].trim();
+                                        String invoiceReviewStr = line[POSITION_INVOICE_REVIEW_FLAG].toLowerCase().trim();
                                         Boolean invoiceReview = null;
                                         if (invoiceReviewStr.equals("yes") || invoiceReviewStr.equals("true")) {
                                             invoiceReview = Boolean.TRUE;
@@ -438,7 +443,7 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
                                         rejectActivity.setPercentageLiabilityAccepted(insurerLiability);
                                         rejectActivity.setPercentageLiabilityCho((new BigDecimal("100.00")).subtract(insurerLiability));
                                         // Invoice Review
-                                        invoiceReviewStr = line[POSITION_INVOICE_REVIEW_FLAG].trim();
+                                        invoiceReviewStr = line[POSITION_INVOICE_REVIEW_FLAG].toLowerCase().trim();
                                         invoiceReview = null;
                                         if (invoiceReviewStr.equals("yes") || invoiceReviewStr.equals("true")) {
                                             invoiceReview = Boolean.TRUE;
@@ -550,7 +555,7 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
                                         pendingActivity.setPercentageLiabilityAccepted(insurerLiability);
                                         pendingActivity.setPercentageLiabilityCho((new BigDecimal("100.00")).subtract(insurerLiability));
                                         // Invoice Review
-                                        invoiceReviewStr = line[POSITION_INVOICE_REVIEW_FLAG].trim();
+                                        invoiceReviewStr = line[POSITION_INVOICE_REVIEW_FLAG].toLowerCase().trim();
                                         invoiceReview = null;
                                         if (invoiceReviewStr.equals("yes") || invoiceReviewStr.equals("true")) {
                                             invoiceReview = Boolean.TRUE;
@@ -598,7 +603,22 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
                     LOG.error("IOException thrown processing unacknowledged claim file '{}': {}", csvFile.getCanonicalPath(), ex.getMessage());
                 } finally {
                     // Move file to 'processed' directory
-                    FileUtils.moveFileToDirectory(csvFile, FileUtils.getFile(processedDirectory), false);
+                    try {
+                        FileUtils.moveFileToDirectory(csvFile, FileUtils.getFile(processedDirectory), false);
+                    } catch (Exception ex) {
+                        LOG.error("Exception thrown moving csv file '{}': {}", csvFile.getAbsolutePath(), ex.getMessage());
+                        String newFile = processedDirectory + "/" + csvFile.getName().concat(".1");
+                        for (int i=1; i<10; i++) {
+                            newFile = newFile.substring(0, newFile.length() - 1) + (char)(i + '0');
+                            try {
+                                FileUtils.moveFile(csvFile, new File(newFile));
+                                LOG.info("CSV file '{}' renamed to '{}'", csvFile.getAbsolutePath(), newFile);
+                                break;
+                            } catch (Exception ex2) {
+//                                LOG.error("Exception thrown moving csv file '{}' to '{}': {}", csvFile.getAbsolutePath(), newFile, ex2.getMessage());
+                            }
+                        }
+                    }
                 }
             }
         } catch (Exception ex) {
