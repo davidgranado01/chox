@@ -82,6 +82,7 @@ public class ClaimMatchingSchedulerJob extends DbSchedulerJob {
             boolean result;
             File folder = new File(inboundDirectoryBase + "/" + getInboundDirectory(insurerName));
             Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter("CHOX_*.xlsx"), null);
+            LOG.debug("Found {} files in folder '{}'", fileNames.size(), folder.getAbsolutePath());
             for (File xlsxFile : fileNames) {
                 try {
                     result = Xlsx2csvUtility.convert(xlsxFile.getCanonicalPath(), xlsx2csvLocation);
@@ -89,7 +90,12 @@ public class ClaimMatchingSchedulerJob extends DbSchedulerJob {
                 } catch (Exception ex) {
                     LOG.error("Exception converting xlsx file '{}' to csv: {}", xlsxFile.getCanonicalPath(), ex.getMessage());
                 } finally {
-                    FileUtils.moveFileToDirectory(xlsxFile, FileUtils.getFile(processedDirectory), false);
+                    try {
+                        FileUtils.moveFileToDirectory(xlsxFile, FileUtils.getFile(processedDirectory), false);
+                    } catch (IOException ex) {
+                        LOG.error("Exception moving xlsx file '{}' to processed directory: {}", xlsxFile.getAbsolutePath(), ex.getMessage());
+                        FileUtils.deleteQuietly(xlsxFile);
+                    }
                 }
             }
         } catch (IOException ex) {
@@ -265,7 +271,22 @@ public class ClaimMatchingSchedulerJob extends DbSchedulerJob {
                     LOG.error("IOException thrown processing unacknowledged claim file '{}': {}", csvFile.getCanonicalPath(), ex.getMessage());
                 } finally {
                     // Move file to 'processed' directory
-                    FileUtils.moveFileToDirectory(csvFile, FileUtils.getFile(processedDirectory), false);
+                    try {
+                        FileUtils.moveFileToDirectory(csvFile, FileUtils.getFile(processedDirectory), false);
+                    } catch (Exception ex) {
+                        LOG.error("Exception thrown moving csv file '{}': {}", csvFile.getAbsolutePath(), ex.getMessage());
+                        String newFile = processedDirectory + "/" + csvFile.getName().concat(".1");
+                        for (int i=1; i<10; i++) {
+                            newFile = newFile.substring(0, newFile.length() - 1) + (char)(i + '0');
+                            try {
+                                FileUtils.moveFile(csvFile, new File(newFile));
+                                LOG.info("CSV file '{}' renamed to '{}'", csvFile.getAbsolutePath(), newFile);
+                                break;
+                            } catch (Exception ex2) {
+//                                LOG.error("Exception thrown moving csv file '{}' to '{}': {}", csvFile.getAbsolutePath(), newFile, ex2.getMessage());
+                            }
+                        }
+                    }
                 }
             }
         } catch (Exception ex) {
