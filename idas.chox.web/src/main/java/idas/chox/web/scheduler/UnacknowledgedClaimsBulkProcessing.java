@@ -118,6 +118,7 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
             boolean result;
             File folder = new File(inboundDirectoryBase + "/" + getInboundDirectory(ins.getName()));
             Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter("CREDIT_HIRE_NEW_NOTIFICATION_ACTIONS_*.xlsx"), null);
+            LOG.debug("Found {} files in folder '{}'", fileNames.size(), folder.getAbsolutePath());
             for (File xlsxFile : fileNames) {
                 try {
                     result = Xlsx2csvUtility.convert(xlsxFile.getCanonicalPath(), xlsx2csvLocation);
