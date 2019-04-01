@@ -15,7 +15,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 	    "classpath:applicationContext-security.xml",
 	    "classpath:applicationContext-BRE.xml", 
 	    "classpath:applicationContext-Scheduler.xml", 
-            "classpath:applicationContext-activemq.xml", 
 	    "classpath:applicationContext-XMLReader.xml"})
 public abstract class BaseWebTest {
 

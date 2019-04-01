@@ -105,8 +105,6 @@
                 <value>hbm/InvoiceSavingRule.hbm.xml</value>
                 <value>hbm/ClaimMatchingBand.hbm.xml</value>
                 <value>hbm/ClaimMatchingEntry.hbm.xml</value>
-                <value>hbm/ClaimMatchingImportEntry.hbm.xml</value>
-                <value>hbm/PaidInvoiceEntry.hbm.xml</value>
                 <value>hbm/GmailSchedulerJob.hbm.xml</value>
                 <value>hbm/BreAppliedLiability.hbm.xml</value>
                 <value>hbm/events/AwaitingLitigationOutcomeEvent.hbm.xml</value>
