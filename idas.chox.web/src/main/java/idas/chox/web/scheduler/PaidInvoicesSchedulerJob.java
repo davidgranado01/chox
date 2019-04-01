@@ -33,7 +33,6 @@ public class PaidInvoicesSchedulerJob extends DbSchedulerJob {
     private static final int POSITION_CLAIM_NUMBER = 2;
     private ActivityFactory activityFactory;
     public static final String JOB_NAME = "PAID_INVOICES";
-    @Autowired
     private String inboundDirectoryBase;
     private String processedDirectory;
 
