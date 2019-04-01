@@ -20,16 +20,11 @@ fi
 PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
 JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
-TOMCAT_HOME=/opt/tomcat
-CATALINA_HOME=/opt/tomcat
-CATALINA_BASE=/home/chox/tomcat/chox_9080
 HTTP_PROXY=#{HTTP_PROXY}
 HTTPS_PROXY=#{HTTPS_PROXY}
 
-export JAVA_HOME TOMCAT_HOME CATALINA_HOME CATALINA_BASE HTTP_PROXY HTTPS_PROXY
+export JAVA_HOME HTTP_PROXY HTTPS_PROXY
 
 alias h='history | tail -20'
 alias vi=vim
-alias stop_tomcat='export CATALINA_HOME=$CATALINA_HOME; export CATALINA_BASE=$CATALINA_BASE; export TOMCAT_HOME=$TOMCAT_HOME;${TOMCAT_HOME}/bin/shutdown.sh'
 alias psql='psql -h #{DB_HOST} -U #{DB_USER.CHOX}'
-

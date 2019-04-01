@@ -56,7 +56,8 @@ if [ ! -d /home/chox/bin ]; then
     mkdir /home/chox/bin
     echo '/home/chox/bin directory created'
 else
-    echo '/home/chox/bin already exists'
+    echo '/home/chox/bin already exists - emptying'
+    /bin/rm -rf /home/chox/bin/*
 fi
 if [ ! -d /home/chox/logs ]; then
     mkdir /home/chox/logs
@@ -70,23 +71,9 @@ if [ ! -d /home/chox/logs/processed ]; then
 else
     echo '/home/chox/logs/processed already exists'
 fi
-if [ ! -d /home/chox/reports ]; then
-    mkdir /home/chox/reports
-    echo '/home/chox/reports directory created'
-else
-    echo '/home/chox/reports already exists'
-fi
-if [ ! -d /home/chox/reports/processed ]; then
-    mkdir /home/chox/reports/processed
-    echo '/home/chox/reports/processed directory created'
-else
-    echo '/home/chox/reports/processed already exists'
-fi
-if [ ! -d /home/chox/reports/excel ]; then
-    mkdir /home/chox/reports/excel
-    echo '/home/chox/reports/excel directory created'
-else
-    echo '/home/chox/reports/excel already exists'
+if [ -d /home/chox/reports ]; then
+#    /bin/rm -rf /home/chox/reports
+    echo 'Disabled: /home/chox/reports directory removed'
 fi
 if [ ! -d /home/chox/tomcat/chox_9080/temp ]; then
     mkdir /home/chox/tomcat/chox_9080/temp
@@ -127,10 +114,6 @@ fi
 if [ -d bin ]; then
     cp -a bin/* /home/chox/bin/
     echo "bin contents installed"
-fi
-if [ -d reports ]; then
-    cp -a reports/* /home/chox/bin/
-    echo "reports contents installed"
 fi
 if [ -d tomcat/ROOT ]; then
     if [ -d /home/chox/tomcat/chox_9080/webapps/ROOT ]; then
@@ -180,8 +163,6 @@ fi
 ## Fix Ownership & permissions
 chown -R chox:chox /home/chox/*
 chmod +x /home/chox/bin/*
-chmod +x /home/chox/reports/*
-
 
 sleep 10
 

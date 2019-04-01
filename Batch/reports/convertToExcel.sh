@@ -63,7 +63,9 @@ function getEmailReceivers {
         "DLG-Monthly_Manual_CHOX_Cost_Report_By_Team_By_AccidentDate-"* )
 	        ACTIVE=0
             EMAIL_RECEIVERS=Steven.Talbot@directlinegroup.co.uk,stephen.hiscock@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk,Karen.Dean@nig-uk.com,claire.wills@directline.com,Angela.Kehoe@nig-uk.com,Simon.Holt@directlinegroup.co.uk,Claire.Ratcliffe@nig-uk.com,Annalise.Bartlett@nig-uk.com,tam.bedford@directlinegroup.co.uk;;
-        "DLG-Monthly_Insurer_Cost_Report-"* |\
+        "DLG-Monthly_Insurer_Cost_Report-"* )
+            ACTIVE=1
+            EMAIL_RECEIVERS=Steven.Talbot@directlinegroup.co.uk,stephen.hiscock@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk,Karen.Dean@nig-uk.com,Claire.Ratcliffe@nig-uk.com,Annalise.Bartlett@nig-uk.com,tam.bedford@directlinegroup.co.uk;;
         "DLG-Monthly_Cost_Report_By_Team-"* |\
         "DLG-Monthly_Manual_CHOX_Cost_Report-"* |\
         "DLG-Monthly_Manual_CHOX_Cost_Report_By_Team-"* )
