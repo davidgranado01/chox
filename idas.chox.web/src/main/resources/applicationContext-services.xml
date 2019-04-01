@@ -385,9 +385,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     
-    <bean id="choxJmsEventSender" class="idas.chox.events.old.ChoxJmsEventSender" scope="singleton"/>
     <bean id="eventRegister" class="idas.chox.events.old.ChoxEventRegister" scope="prototype">
-        <property name="choxJmsEventSender" ref="choxJmsEventSender"/>
         <property name="active" value="${events.active}"/>
     </bean>
     <bean id="eventGenerator" class="idas.chox.data.events.EventGenerator" scope="prototype">
