@@ -370,7 +370,7 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
                                             if (invoiceReview) { // must have reason
                                                 String invoiceReviewReason = line[POSITION_INVOICE_REVIEW_REASON].trim();
                                                 if (invoiceReviewReason.isEmpty()) {
-                                                    LOG.error("Error processing entry {}: no invoice review reason provded", lineNo);
+                                                    LOG.error("Error processing entry {}: no invoice review reason provided", lineNo);
                                                     releaseHibernateSessionConditionally();
                                                     continue;
                                                 }
