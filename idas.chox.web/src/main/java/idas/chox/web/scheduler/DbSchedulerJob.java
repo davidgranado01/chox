@@ -42,4 +42,15 @@ public abstract class DbSchedulerJob extends SchedulerJobBase {
                 return "";
         }
     }
+    
+    protected String getPaidInvoiceFileFilter(String orgName) {
+        switch(orgName) {
+            case "LV=":
+                return "LVCHOXInvoicepaid*.csv";
+            case "RSA":
+                return "RSACHOXInvoicepaid*.csv";
+            default:
+                return "";
+        }
+    }
 }

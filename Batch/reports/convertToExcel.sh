@@ -183,6 +183,9 @@ function getEmailReceivers {
             FTP_CLIENT=EHI;;
 #            EMAIL_RECEIVERS=jenny.graham@sherwoodts.co.uk,Nicola.A.Imlach@ehi.com,Christopher.J.Smith@ehi.com,Lauren.D.Walker@ehi.com;;
 # This AE Processed Notification report now has its own template
+        "RSA-CHOXinvoice"* )
+            ACTIVE=4
+            FTP_CLIENT=RSA;;
         "LVCHOXinvoice"* )
             ACTIVE=4
             FTP_CLIENT=LV;;

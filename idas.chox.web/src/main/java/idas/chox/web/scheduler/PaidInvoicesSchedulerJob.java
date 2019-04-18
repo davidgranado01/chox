@@ -15,8 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
@@ -35,6 +33,7 @@ public class PaidInvoicesSchedulerJob extends DbSchedulerJob {
     public static final String JOB_NAME = "PAID_INVOICES";
     private String inboundDirectoryBase;
     private String processedDirectory;
+    private String fileFilter;
 
     public void setInboundDirectoryBase(String inboundDirectory) {
         this.inboundDirectoryBase = inboundDirectory;
@@ -42,6 +41,10 @@ public class PaidInvoicesSchedulerJob extends DbSchedulerJob {
 
     public void setProcessedDirectory(String processedDirectory) {
         this.processedDirectory = processedDirectory;
+    }
+
+    public void setFileFilter(String fileFilter) {
+        this.fileFilter = fileFilter;
     }
 
     @Override
@@ -58,7 +61,7 @@ public class PaidInvoicesSchedulerJob extends DbSchedulerJob {
             // Check mounted inbound directory for *.xlsx/*.csv files
             File folder = new File(inboundDirectoryBase + "/" + getInboundDirectory(insurerName));
             // Check file matches format LVCHOXInvoicepaid.csv
-            Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter("LVCHOXInvoicepaid*.csv"), null);
+            Collection<File> fileNames = FileUtils.listFiles(folder, new WildcardFileFilter(getPaidInvoiceFileFilter(insurerName)), null);
             for (File csvFile : fileNames) {
                 try {
                     LOG.info("Processing Paid Invoices CSV file '{}'", csvFile.getCanonicalPath());

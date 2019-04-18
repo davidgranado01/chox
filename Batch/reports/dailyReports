@@ -165,6 +165,16 @@ $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
 /bin/cp ${DUMPFILE} ${MI_DIRECTORY}
 /bin/rm ${DUMPFILE}
 
+#echo 'Generating RSA Payment Bordereau'
+DUMPFILE='RSA-CHOXinvoice'`date +"%Y%m%d"`.csv
+INS_ID=3
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
+\copy (select * from paymentBordereau(${INS_ID}, null, '${START_DATE}', '${END_DATE}')) TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
+--EOF--
+
+/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+/bin/rm ${DUMPFILE}
+
 echo 'Generating Prestige Report for DLG'
 DUMPFILE='DLG-PrestigeClaimReport-'`date +"%Y%m%d"`.txt
 INS_ID=6
