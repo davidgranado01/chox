@@ -71,6 +71,13 @@ public class TotalLossPack extends BaseScheduleActivity {
                     LOG.debug("Cannot add attachment to claim {} in status '{}'", claim.getChoReference(), claim.getStatus());
                     statusString.append("Claim '").append(claim.getChoReference()).append("' is closed");
                 }
+                /* Validate attachment file extension */
+                List<String> attTypes = attachmentTypeService.getAttachmentTypeCode();
+                if (!FileHelper.isFileTypeAllow(attachment.getName(), attTypes)) {
+                    LOG.debug("Invalid extension for attachemnt: '{}'", attachment.getName());
+                    statusString.append("Attachment File extension is not valid.");
+                }
+                
                 /* Validate attachment file size */
                 if (attachment.getSize() > FileHelper.MAX_FILE_SIZE_ALLOW) {
                     LOG.debug("Attachment too big to be added to claim {}: {} > {}", referenceNumber, attachment.getSize(), FileHelper.MAX_FILE_SIZE_ALLOW);
