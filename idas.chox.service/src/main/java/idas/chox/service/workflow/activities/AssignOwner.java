@@ -153,15 +153,19 @@ public class AssignOwner extends BaseActivity {
         }
 
         if (ownershipEnabled) {
-            Comment comment;
+            Comment comment = null;
             if (oldOwnerName == null && claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
                 comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ").", true);
             } else if (oldOwnerName == null && (claimOwner.getTelephone() == null || claimOwner.getTelephone().length() == 0)) {
                 comment = Comment.newComment(0, "Insurer Claims Handler is '" + claimOwner.getFullName() + "'.", true);
-            } else if (oldOwnerName != null && claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
+            } else if (oldOwnerName != null && !oldOwnerName.equals(claimOwner.getFullName()) && claimOwner.getTelephone() != null && claimOwner.getTelephone().length() > 0) {
                 comment = Comment.newComment(0, "Insurer Claims Handler changed from '" + oldOwnerName + "' to '" + claimOwner.getFullName() + "' (contact number: " + claimOwner.getTelephone() + ")", true);
-            } else {
+            } else if (oldOwnerName != null && oldOwnerName.equals(claimOwner.getFullName()) && workgroupsEnabled) {
+                comment = Comment.newComment(0, "Insurer Claims Handler workgroup changed to '" + workgroup + "'", true);
+            } else if (oldOwnerName != null && !oldOwnerName.equals(claimOwner.getFullName())) {
                 comment = Comment.newComment(0, "Insurer Claims Handler changed from '" + oldOwnerName + "' to '" + claimOwner.getFullName() + "'", true);
+            } else {
+                LOG.error("This should never be reached!!!!");
             }
             claim.addComment(comment);
         }
