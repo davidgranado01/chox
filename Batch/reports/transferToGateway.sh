@@ -34,6 +34,9 @@ function getAccount {
         "DLG" | "dlg" )
             DIRECTORY_TO_STORE=/shared/nfs/chox/dataload/outbound/DLG
             ;;
+        "Kindertons" | "kindertons" )
+            DIRECTORY_TO_STORE=/shared/nfs/chox/dataload/outbound/Kindertons
+            ;;
         *)
             echo "No account defined for $CLIENT"
             echo "Usage: $0 RSA|EHI|LV|DLG <file>"

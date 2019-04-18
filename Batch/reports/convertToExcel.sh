@@ -200,11 +200,13 @@ function getEmailReceivers {
 	        ACTIVE=1
 	        EMAIL_RECEIVERS=andrew.seedhouse@lv.com;;
 	    "Kindertons-Invoice_Upload_Report-"* )
-	        ACTIVE=1
-	        EMAIL_RECEIVERS=thomas.maddock@kindertons.co.uk;;
+	        ACTIVE=4
+#            EMAIL_RECEIVERS=thomas.maddock@kindertons.co.uk;;
+            FTP_CLIENT=Kindertons;;
 	    "Kindertons-Liability_Update_Report-"* )
-	        ACTIVE=1
-	        EMAIL_RECEIVERS=richard.bettley@kindertons.co.uk,thomas.beech@kindertons.co.uk,luke.rush@kindertons.co.uk,Stephen.gilligan@kindertons.com;;
+	        ACTIVE=4
+#	        EMAIL_RECEIVERS=richard.bettley@kindertons.co.uk,thomas.beech@kindertons.co.uk,luke.rush@kindertons.co.uk,Stephen.gilligan@kindertons.com;;
+            FTP_CLIENT=Kindertons;;
 	    "Keoghs-DailyReport-"* )
 	        ACTIVE=1
 	        EMAIL_RECEIVERS=alane@keoghs.co.uk,lkearsley@keoghs.co.uk;;
