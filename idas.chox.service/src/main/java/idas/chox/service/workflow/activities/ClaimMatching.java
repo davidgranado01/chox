@@ -91,6 +91,7 @@ public class ClaimMatching extends BaseActivity {
                     return;
                 }
                 claimService.setLiability(claim, liabilityStatus);
+                claim.addComment(Comment.newComment(0, "Liability updated via Claim Matching"));
                 if (liabilityStatus == LiabilityStatus.LIABILITY_ACCEPTED || liabilityStatus == LiabilityStatus.PROCEED_WITHOUT_PREJUDICE
                         || liabilityStatus == LiabilityStatus.LIABILITY_SPLIT) {
                     claim.setLiabilityAgreedDate(new Date());
@@ -103,6 +104,7 @@ public class ClaimMatching extends BaseActivity {
             claim.setMatchStatus(2);
             if (claimMatchingBand.isAutoAcknowledge()) {
                 progressClaim(claim);
+                claim.addComment(Comment.newComment(0, "Claim acknowledged via Claim Matching"));
                 claim.setMatchStatus(3);
             }
         }
