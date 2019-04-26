@@ -57,7 +57,7 @@ then
     exit 1
 fi
 
-BCC_RECIPIENTS=MichaelPaul.Kemp@valexa.com
+BCC_RECIPIENTS=MichaelPaul.Kemp@valexa.com,Robert.Hon@audatex.co.uk
 RECIPIENTS=John.Dowson@valexa.com
 
 REPORT_DIR=$1

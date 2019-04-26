@@ -230,7 +230,7 @@ fi
 #BCC_RECIPIENTS=Elliot.Roberts@Valexa.com
 #BCC_RECIPIENTS=John.Dowson@Valexa.com
 #BCC_RECIPIENTS=John.Strawhorne@Valexa.com
-BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com
+BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk
 
 REPORT_DIR=$1
 PROCESSED_DIR=$2
