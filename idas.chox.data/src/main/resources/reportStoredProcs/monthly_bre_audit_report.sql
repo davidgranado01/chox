@@ -6,6 +6,7 @@ CREATE OR REPLACE FUNCTION monthly_bre_audit_report(IN insurerIds integer[], IN 
     RETURNS TABLE (
         "Supplier Reference" character varying(128),
         "CHO" character varying(128),
+        "Insurer" character varying(128),
         "Claim Type" text,
         "Claim Status" varchar(40),
         "Invoice Upload Date" text,
@@ -52,7 +53,7 @@ BEGIN
     endDate = endPeriod::Date;
 RETURN QUERY
 
-    select c.cho_reference, cho.name, getClaimType(c.claim_type), c.status, to_char(i.created_date, 'dd/mm/yyyy'), vhvc.name,
+    select c.cho_reference, cho.name, ins.name, getClaimType(c.claim_type), c.status, to_char(i.created_date, 'dd/mm/yyyy'), vhvc.name,
            case when exists(select * from audit_trail at where at.claim_id=c.id and at.new_status in ('InvoiceApprovedByBRE','ManualInvoiceBREApproved') and at.reverted=false and not exists (select * from audit_trail at2 where at2.claim_id=c.id and at.new_status in ('InvoiceEscalatedToHandler','ManualInvoiceBRERejected') and at2.created_date > at.created_date)) then 'Passed' else 'Failed' end,
            i.full_total_to_pay, i.hire_net,
            case when hire_net_does_not_exceed_band_hire_net_ceiling then bre.hire_net_ceiling else null end,
@@ -98,10 +99,10 @@ RETURN QUERY
                  case when exists (select * from history h where h.claim_id=c.id and h.rule_id='027' and is_old=false and type='INFO' and narrative like '%Passed%') then 'Passed' else case when exists (select * from history h where h.claim_id=c.id and h.rule_id='027' and is_old=false and type='INFO' and narrative like '%Skipped%') then 'Skipped' else 'Passed/Skipped' end end end
     from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id=vh.id) left outer join vehicle_class_ceiling vcc on (vcc.insurer_id=c.insurer_id and vcc.vehicle_class_id=vh.vehicle_class_id)
          left outer join hire_monitoring_detail hmd on (c.hire_monitoring_detail_id=hmd.id),
-         chorganisation cho, invoice i, vehicle_class vhvc, bre_band_organisation bbo, bre_band bre, customer cu
+         chorganisation cho, invoice i, vehicle_class vhvc, bre_band_organisation bbo, bre_band bre, customer cu, insurer ins
     where c.chorganisation_id = cho.id and c.invoice_id=i.id and c.vehicle_hire_id=vh.id and vh.vehicle_class_id=vhvc.id
       and bre.insurer_id=c.insurer_id and bbo.chorganisation_id=c.chorganisation_id and bbo.band_id=bre.id
-      and c.customer_id = cu.id
+      and c.customer_id = cu.id and c.insurer_id = ins.id
       and (insurerIds is null or c.insurer_id = ANY(insurerIds))
       and (choIds is null or c.chorganisation_id = ANY(choIds))
       and (claimTypes is null or c.claim_type = ANY(claimTypes))
@@ -109,5 +110,7 @@ RETURN QUERY
 
 END;
 $$ LANGUAGE plpgsql;
-GRANT EXECUTE ON FUNCTION monthly_bre_audit_report(integer[], integer[], text, text, integer[]) TO chox_user;
-GRANT EXECUTE ON FUNCTION monthly_bre_audit_report(integer[], integer[], text, text, integer[]) TO chox_mi;
+--GRANT EXECUTE ON FUNCTION monthly_bre_audit_report(integer[], integer[], text, text, integer[]) TO chox_user;
+--GRANT EXECUTE ON FUNCTION monthly_bre_audit_report(integer[], integer[], text, text, integer[]) TO chox_mi;
+GRANT EXECUTE ON FUNCTION monthly_bre_audit_report(integer[], integer[], text, text, integer[]) TO #{DB_USER.CHOX_USER};
+GRANT EXECUTE ON FUNCTION monthly_bre_audit_report(integer[], integer[], text, text, integer[]) TO #{DB_USER.CHOX_MI};
