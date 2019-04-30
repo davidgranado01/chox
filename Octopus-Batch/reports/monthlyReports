@@ -727,6 +727,16 @@ select * from monthly_insurer_cost_report('${START_DATE}', ${CHO_ID}, ${INS_ID},
 --EOF--
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
+echo 'Generating Monthly BRE Audit Report for DLG'
+INS_ID=6
+START_DATE=`date -d "-1 month" +%F`
+END_DATE=`date +"%F"`
+DUMPFILE='DLG-Monthly_BRE_Audit_Report-'`date +"%F"`.txt
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from monthly_bre_audit_report(array[${INS_ID}], null::integer[], '${START_DATE}', '${END_DATE}', null::integer[]);
+--EOF--
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
 echo 'Finished generating monthly reports'
 echo '***********************************************************'
 

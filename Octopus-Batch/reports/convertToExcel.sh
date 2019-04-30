@@ -74,6 +74,7 @@ function getEmailReceivers {
         "Octagon-Monthly_Insurer_Cost_Report-"* )
 	        ACTIVE=1
             EMAIL_RECEIVERS=carl.cripps@catalystcsl.co.uk,Terry.Clarke@catalystcsl.co.uk,tony.collins@horizon.gi;;
+        "DLG-Monthly_BRE_Audit_Report-"* |\
         "DLG-Pilot_Report-"* )
 	        ACTIVE=1
             EMAIL_RECEIVERS=Tam.Bedford@directlinegroup.co.uk;;
