@@ -48,7 +48,7 @@ public abstract class DbSchedulerJob extends SchedulerJobBase {
             case "LV=":
                 return "LVCHOXInvoicepaid*.csv";
             case "RSA":
-                return "RSACHOXInvoicepaid*.csv";
+                return "RSA-CHOXInvoicepaid*.csv";
             default:
                 return "";
         }
