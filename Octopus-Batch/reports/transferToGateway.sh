@@ -39,7 +39,7 @@ function getAccount {
             ;;
         *)
             echo "No account defined for $CLIENT"
-            echo "Usage: $0 RSA|EHI|LV|DLG <file>"
+            echo "Usage: $0 RSA|EHI|LV|DLG|Kindertons <file>"
             exit 1;;
     esac
 }
@@ -47,7 +47,7 @@ function getAccount {
 
 if [ $# -ne 2 ];
 then
-    echo "Usage: $0 RSA|EHI|LV|DLG <file>"
+    echo "Usage: $0 RSA|EHI|LV|DLG|Kindertons <file>"
     echo
     exit 1
 fi
