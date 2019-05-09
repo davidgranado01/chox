@@ -48,7 +48,8 @@ function getEmailReceivers {
 #    1 - the report is password-protected zipped and emailed to the client EMAIL_RECEIVERS, as well as being BCC'ed internally to the BCC_RECEIVERS
 #    2 - the report is password-protected zipped and sftp'ed to the FTP_CLIENT (using the transferToGatewayWithTrigger.sh script)
 #    3 - the report is not password protected or zipped, but is emailed to the client EMAIL_RECEIVERS, as well as being BCC'ed internally to the BCC_RECEIVERS
-#    4 - the report is not password protected or zipped, and is sftp'ed to the FTP_CLIENT (using the transferToGateway.sh script)
+#    4 - the report is not password protected or zipped, and is sftp'ed to the FTP_CLIENT, with trg files added for txt/xls files (but not csv) (using transferToGateway.sh script for csv, transferToGatewayWithTrigger.sh for xls)
+#    5 - the report is not password protected or zipped, and is sftp'ed to the FTP_CLIENT (using transferToGateway.sh script). txt/xls files only.
     ACTIVE=0
     unset -v FTP_CLIENT
     case "$REPORT_NAME" in
@@ -82,10 +83,12 @@ function getEmailReceivers {
 	        ACTIVE=1
             EMAIL_RECEIVERS=Richard.e.brown@directlinegroup.co.uk,Tam.Bedford@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk;;
         "DLG-Hire_Claimed_vs_Paid_Days-ERAC-"* |\
-	    "DLG-Invoice_Notifications-ManualAuxillis-"* |\
+	    "DLG-Invoice_Notifications-ManualAuxillis-"* )
+            ACTIVE=1
+            EMAIL_RECEIVERS=tam.bedford@directlinegroup.co.uk;;
 	    "DLG-HireInvoiceUploadReport-"* )
 	        ACTIVE=1
-            EMAIL_RECEIVERS=tam.bedford@directlinegroup.co.uk;;
+            EMAIL_RECEIVERS=tam.bedford@directlinegroup.co.uk,phil.room@directlinegroup.co.uk;;
         "DLG-PrestigeClaimReport-"* )
 	        ACTIVE=1
             EMAIL_RECEIVERS=tam.bedford@directlinegroup.co.uk;;
@@ -204,11 +207,11 @@ function getEmailReceivers {
 	        ACTIVE=1
 	        EMAIL_RECEIVERS=andrew.seedhouse@lv.com;;
 	    "Kindertons-Invoice_Upload_Report-"* )
-	        ACTIVE=4
+	        ACTIVE=5
 #            EMAIL_RECEIVERS=thomas.maddock@kindertons.co.uk;;
             FTP_CLIENT=Kindertons;;
 	    "Kindertons-Liability_Update_Report-"* )
-	        ACTIVE=4
+	        ACTIVE=5
 #	        EMAIL_RECEIVERS=richard.bettley@kindertons.co.uk,thomas.beech@kindertons.co.uk,luke.rush@kindertons.co.uk,Stephen.gilligan@kindertons.com;;
             FTP_CLIENT=Kindertons;;
 	    "Keoghs-DailyReport-"* )
@@ -302,9 +305,14 @@ Please find the attached excel report:
 --EOF--
         fi
     elif [ "${ACTIVE}" -eq "4" ]; then
-# SFTP unzipped and without password
+# SFTP with trigger, unzipped and without password
         if [ "${MODE}" == "EXPORT" -o "${MODE}" == "NOEMAIL" ]; then
         /home/chox/bin/transferToGatewayWithTrigger.sh ${FTP_CLIENT} ${CWD}/${OUTPUT_DIR}/${xlsFile}
+        fi
+    elif [ "${ACTIVE}" -eq "5" ]; then
+    # SFTP unzipped and without password
+        if [ "${MODE}" == "EXPORT" -o "${MODE}" == "NOEMAIL" ]; then
+            /home/chox/bin/transferToGateway.sh ${FTP_CLIENT} ${CWD}/${OUTPUT_DIR}/${xlsFile}
         fi
     else
     getPassword ${reportFile}
