@@ -464,7 +464,6 @@ public class UploadServiceBean {
     public Result closeClaim(String supplierReference) {
         Result result = new Result();
 
-        Activity activity = activityFactory.getActivity("closeClaim");
         Claim claim = null;
 
         // Get the claim
@@ -475,6 +474,18 @@ public class UploadServiceBean {
                 result.setErrorMessage("Claim with supplier reference number '" + supplierReference + "' does not exist.");
             } else {
                 claim.setBreBand(breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()));
+                Activity activity;
+                if (claim.getStatus().equals(idas.chox.core.model.ClaimStatus.CLAIM_REJECTED)) {
+                    activity = activityFactory.getActivity("claimRejectionAccept");
+                } else if (claim.getStatus().equals(idas.chox.core.model.ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO)) {
+                    activity = activityFactory.getActivity("invoiceRejectionAccept");
+//                } else if (claim.getStatus().equals(idas.chox.core.model.ClaimStatus.MANUAL_INVOICE_REJECTED)) {
+//                    activity = activityFactory.getActivity("closeClaim");
+//                } else if (claim.getStatus().equals(idas.chox.core.model.ClaimStatus.SUBSCRIBER_CLAIM_REJECTED)) {
+//                    activity = activityFactory.getActivity("closeClaim");
+                } else {
+                    activity = activityFactory.getActivity("closeClaim");
+                }
                 activity.process(claim);
                 result.setStatus(true);
             }
