@@ -237,7 +237,7 @@ public class ClaimsGridExportReport {
             .append(" c.credit_agreement_date, c.gta_notice_date,c.claim_number, ")
             .append(" case when wu.hashed then 'GDPR: data removed (' || ins.name || ')' else wu.last_name || ' ' || wu.first_name end as claim_owner,")
             .append(" cust.title as customer_title, c.final_review_cho, c.final_review_ins,")
-            .append(" case when wuc.hashed then 'GDPR: data removed (' || cho.name || ')' else wuc.last_name || ' ' || wuc.first_name as claim_supplier_owner,")
+            .append(" case when wuc.hashed then 'GDPR: data removed (' || cho.name || ')' else wuc.last_name || ' ' || wuc.first_name end as claim_supplier_owner,")
             .append(" c.remaining_sla_days_str, c.is_invoice_review_required, c.invoice_review_reason,")
             .append(" c.fraud_check_status, c.copley_offer_made, c.copley_offer_made_date, ins.copley_question, kr.total_score as fraud_score, kr.rag_result as fraud_status,")
             .append(" cust.first_name as customer_first_name, cust.last_name as customer_last_name, cust.address1 as customer_address1, cust.address2 as customer_address2,")
