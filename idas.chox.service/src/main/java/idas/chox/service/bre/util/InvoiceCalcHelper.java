@@ -32,7 +32,7 @@ public final class InvoiceCalcHelper {
     }
 
     public BigDecimal getCalculatedHireGross() {
-        return invoice.getHireVat().add(invoice.getHireNet()).setScale(2, BigDecimal.ROUND_HALF_UP);
+       return getCalculatedHireVat().add(invoice.getHireNet()).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getCalculatedTotalLossVat() {
@@ -60,7 +60,7 @@ public final class InvoiceCalcHelper {
     }
 
     public BigDecimal getCalculatedRepairGross() {
-        return invoice.getRepairVat().add(invoice.getRepairNet()).setScale(2, BigDecimal.ROUND_HALF_UP);
+       return getCalculatedRepairVat().add(invoice.getRepairNet()).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public BigDecimal getCalculatedTotalNet() {
