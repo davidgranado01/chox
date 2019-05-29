@@ -58,6 +58,13 @@
         <property name="attachmentTypeService" ref="attachmentTypeService" />
     </bean>
 
+    <bean id="attachmentUpload" class="idas.chox.service.workflow.scheduleActivities.AttachmentUpload" scope="prototype">
+        <property name="claimService" ref="claimService" />
+        <property name="workflowContext" ref="workflowContext"/>
+        <property name="attachmentService" ref="attachmentService" />
+        <property name="attachmentTypeService" ref="attachmentTypeService" />
+    </bean>
+
     <bean id="totalLossNotification" class="idas.chox.service.workflow.scheduleActivities.TotalLossNotification" scope="prototype">
         <property name="claimService" ref="claimService" />
         <property name="workflowContext" ref="workflowContext"/>

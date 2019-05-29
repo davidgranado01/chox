@@ -146,6 +146,8 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
                     matchSubject = subject.substring(0, subject.toLowerCase().indexOf("notification") + 12);
                 } else if (subject.toLowerCase().contains("task")) {
                     matchSubject = subject.substring(0, subject.toLowerCase().indexOf("task") + 4);
+                } else if (subject.toLowerCase().contains("attachment upload:")) {
+                    matchSubject = subject.substring(0, subject.toLowerCase().indexOf("attachment upload:") + 17);
                 } else {
                     matchSubject = subject;
                 }

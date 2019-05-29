@@ -435,6 +435,18 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     }
 
     @Override
+    public Claim getUniqueClaimByCHOReferenceNumber(String sClaimReferenceNumber) {
+        Claim claim;
+        DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
+        criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber.trim()).ignoreCase());
+        List<Claim> claims = (List<Claim>) findByCriteria(criteria);
+        if (claims.size() == 1)
+            return claims.get(0);
+        
+        return null;
+    }
+
+    @Override
     public List<Claim> getClaimByCHOReferenceAndClaimNumber(String sClaimReferenceNumber, String sClaimNumber) {
         Claim claim;
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
