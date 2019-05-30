@@ -476,7 +476,7 @@ public class UploadServiceBean {
                 claim.setBreBand(breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId()));
                 Activity activity;
                 if (claim.getStatus().equals(idas.chox.core.model.ClaimStatus.CLAIM_REJECTED)) {
-                    activity = activityFactory.getActivity("claimRejectionAccept");
+                    activity = activityFactory.getActivity("acceptRejectedInvoice");
                 } else if (claim.getStatus().equals(idas.chox.core.model.ClaimStatus.CONTESTED_INVOICE_REF_TO_CHO)) {
                     activity = activityFactory.getActivity("invoiceRejectionAccept");
 //                } else if (claim.getStatus().equals(idas.chox.core.model.ClaimStatus.MANUAL_INVOICE_REJECTED)) {
