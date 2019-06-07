@@ -171,7 +171,7 @@ function getEmailReceivers {
             EMAIL_RECEIVERS=jonathan.lee@ers.com,terry.joseph@ers.com;;
         "ERAC-User_State_Report-"* )
 	        ACTIVE=1
-            EMAIL_RECEIVERS=Jesus.Gandara@ehi.com;;
+            EMAIL_RECEIVERS=andrew.r.findlay@ehi.com;;
         "ERAC-Repair_Report-"* )
 	        ACTIVE=1
             EMAIL_RECEIVERS=chris@crashworth.co.uk,Aisling.L.Tuft@ehi.com,Lauren.D.Walker@ehi.com,odonnellj@uk.innovation-group.com;;
