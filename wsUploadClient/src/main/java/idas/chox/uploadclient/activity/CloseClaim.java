@@ -69,7 +69,7 @@ public class CloseClaim {
         if (!result.isStatus()) {
             LOG.error("Error closing claim '{}' : {}", choReference, result.getErrorMessage());
         } else {
-            LOG.info("Claim with CHO reference '{}' has been updated to 'ClaimClosed'.", choReference);
+            LOG.info("Claim with CHO reference '{}' has been closed.", choReference);
         }
     }
 }
