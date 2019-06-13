@@ -13,13 +13,13 @@ DECLARE
 BEGIN
        insPassChange = (select force_password_change from insurer where id = ins_id);
 RETURN QUERY
-select w.user_name , w.first_name || ' ' || w.last_name, 
+select w.user_name , case when hashed then 'GDPR: data removed' else w.first_name || ' ' || w.last_name end, 
     (case when w.status then 'Yes' else 'No' end), 
-    (select array_to_string(array_agg(wr.description),', ')
-     from web_user_role wr
+    (select array_to_string(array_agg(t.description),', ')
+     from (select description from web_user_role wr
      JOIN web_user_user_role wuur on wr.id = wuur.web_user_role_id
                                  and wuur.web_user_id = w.id
-                                 and wr.name != 'ROLE_INS'),
+                                 and wr.name != 'ROLE_INS' order by wr.created_date) t),
     (case when w.is_expired then 'Yes' else 
     (case when insPassChange > 0 then 
         (case when (select extract(day from (now() - w.password_last_modified_date)) >= (insPassChange)) then 'Yes' else 'No' end)
