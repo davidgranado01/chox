@@ -260,9 +260,9 @@ public class UserRoleAction extends BaseAction {
                 }
                 // Check that the role is one we can add
                 if (!isRoleAvailable(webUserRoleId, OrganisationType.getOrganisationTypeId(user.getOrganisationType()))) {
-//                    throw new AccessDeniedException("Trying to add a role not available (POSSIBLE HACK ATTEMPT)");
-                    throw new Exception("Record was updated by another transaction/user, please try again.",
-                            new StaleObjectStateException(WebUserUserRole.class.getSimpleName().concat("Version"), 0));
+                    throw new AccessDeniedException("Trying to add a role not available (POSSIBLE HACK ATTEMPT)");
+//                    throw new Exception("Record was updated by another transaction/user, please try again.",
+//                            new StaleObjectStateException(WebUserUserRole.class.getSimpleName().concat("Version"), 0));
                 }
                 ActionResponse response = adminUserService.addNewWebUserRoleMapping(webUserId, webUserRoleId);
                 setActionResponse(response);

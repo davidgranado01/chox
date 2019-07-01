@@ -318,9 +318,10 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
                     new Object[] {getUserOrganisationType(), getUserOrganisationId(), this.insurerId, this.supplierId, model.isAnInsurer()});
             
             if ((getUserOrganisationType() == 2 && ((this.insurerId == -1 && (!model.isAnInsurer() || model.getInsurer().getId().intValue() != getUserOrganisationId()))
-                    || (this.insurerId != -1 && (this.insurerId != getUserOrganisationId()))))
+                        || (this.insurerId != -1 && (this.insurerId != getUserOrganisationId()))))
                     || (getUserOrganisationType() == 3 && ((model.isAnInsurer() || (this.supplierId == -1 && model.getChorganisation().getId().intValue() != getUserOrganisationId()))
-                    || (this.supplierId != -1 && this.supplierId != getUserOrganisationId())))) {
+                        || (this.supplierId != -1 && this.supplierId != getUserOrganisationId())))
+                    || (getUserOrganisationType() != 1 && this.organisationTypeId != getUserOrganisationType()) ) {
                 throw new AccessDeniedException("Trying to create a user not of my organisation (POSSIBLE HACK ATTEMPT)");
             }
             
