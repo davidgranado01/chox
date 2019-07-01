@@ -39,7 +39,7 @@ public class ClaimReviewByEng extends BaseActivity {
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
-        if (isInvoiceReviewRequired && (invoiceReviewReason == null || invoiceReviewReason.isEmpty())) {
+        if (claim.getInsurer().isInvoiceReviewEnable() && isInvoiceReviewRequired && (invoiceReviewReason == null || invoiceReviewReason.isEmpty())) {
             throw new AccessDeniedException("You must provide a reason for the Invoice Review");
         }
     }
@@ -48,7 +48,7 @@ public class ClaimReviewByEng extends BaseActivity {
     protected void beforeProcess(Claim claim) {
         claim.setIndemnityAmount(getIndemnityAmount());
         claim.setIsInvoiceReviewRequired(isIsInvoiceReviewRequired());
-        if (isInvoiceReviewRequired) {
+        if (isInvoiceReviewRequired && claim.getInsurer().isInvoiceReviewEnable()) {
             claim.setInvoiceReviewReason(invoiceReviewReason);
         } else {
             claim.setInvoiceReviewReason(null);
