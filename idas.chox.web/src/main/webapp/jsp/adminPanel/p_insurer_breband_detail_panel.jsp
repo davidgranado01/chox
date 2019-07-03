@@ -3458,6 +3458,13 @@
                             </div>
                         </div>
                         <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="blankLabourRateCheck" value="blankLabourRateCheck" /></div>
+                            <label class="chox-form-check-label">Blank or NIL Labour Rate Check</label>
+                            <div class="chox-form-check-description">
+                                Check to ensure the invoice contains a valid labour rate. Invoice will fail if the labour rate is left blank or shows as £0.
+                            </div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hireNetDoesNotExceedProtocolVehicleClassHireNetCeiling" value="hireNetDoesNotExceedProtocolVehicleClassHireNetCeiling" /></div>
                             <label class="chox-form-check-label">Protocol Vehicle Class Hire Net Ceiling Check</label>
                             <div class="chox-form-check-description">Check to ensure that the Hire Net billed by the CHO does not exceed the agreed protocol cost for the specific customer vehicle class.</div>

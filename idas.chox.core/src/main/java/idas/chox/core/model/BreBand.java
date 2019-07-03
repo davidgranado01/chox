@@ -196,8 +196,17 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean vedChargeCheck;
     private BigDecimal vedChargeCeiling = BigDecimal.ZERO;
     private boolean appliedLiabilityEnabled;
+    private boolean blankLabourRateCheck;
 
     public BreBand() {
+    }
+
+    public boolean isBlankLabourRateCheck() {
+        return blankLabourRateCheck;
+    }
+
+    public void setBlankLabourRateCheck(boolean blankLabourRateCheck) {
+        this.blankLabourRateCheck = blankLabourRateCheck;
     }
 
     public boolean isAppliedLiabilityEnabled() {
