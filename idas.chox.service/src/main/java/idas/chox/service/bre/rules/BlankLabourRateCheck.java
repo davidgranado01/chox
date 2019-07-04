@@ -26,7 +26,7 @@ public class BlankLabourRateCheck implements IBusinessRule {
 
             if (claim.getInvoice().getRepairNet().compareTo(BigDecimal.ZERO) != 0 && (claim.getHireMonitoringDetail().getLabourRate() == null || claim.getHireMonitoringDetail().getLabourRate().compareTo(BigDecimal.ZERO) == 0)) {
                 success = false;
-                narrative = "No repair allowed when there is no Labour Rate provided.";
+                narrative = "No repair allowed when no Labour Rate provided.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
