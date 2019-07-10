@@ -189,6 +189,12 @@
         </action>
 
         <!-- MORE ACTION UPDATE - DROP DOWN -->
+        <action name="doReinstateGtaDiscount" class="idas.chox.web.actions.ClaimAction" method="reinstateGtaDiscount">
+            <result name="success" type="redirectAction">
+                <param name="actionName">claimDetails</param>
+            </result>
+            <result name="error">/jsp/claim_detail.jsp</result>
+        </action>
         <action name="updateFinalReview" class="idas.chox.web.actions.ClaimAction" method="updateFinalReview">
             <result name="success" type="redirectAction">
                 <param name="actionName">claimDetails</param>
@@ -606,6 +612,10 @@
         <action name="reviewClaimAudit" class="idas.chox.web.actions.ClaimAction" method="getClaimAuditPanel">
             <result name="success">/jsp/actionPanel/p_more_action_update_claim_audit.jsp</result>
             <result name="empty">/jsp/p_blank.jsp</result>
+        </action>
+        <action name="gtaDiscountReinstatement" class="idas.chox.web.actions.ClaimAction" method="getGtaDiscountReinstatement">
+            <result name="success">/jsp/actionPanel/p_more_action_gta_discount_reinstatement.jsp</result>
+            <result name="error">/jsp/claim_detail.jsp</result>
         </action>
 
        <!-- CLAIM - CUSTOMER DETAIL -->

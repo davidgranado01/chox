@@ -268,15 +268,15 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
         }
 
         //Do nothing if invoice > 30 days old
-        if (claim.getInvoice().getCreatedDate() != null) {
-            long days = DateHelper.getNumberOfDaysBetween(claim.getInvoice().getCreatedDate(), new Date())+1;
+        if (claim.getInvoice().getGtaDiscountStart() != null) {
+            long days = DateHelper.getNumberOfDaysBetween(claim.getInvoice().getGtaDiscountStart(), new Date())+1;
             if (days > 30) {
                 if (claim.getInvoice().getGtaDiscount() != null && claim.getInvoice().getGtaDiscount().compareTo(BigDecimal.ZERO) != 0) {
                     claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(claim.getInvoice().getGtaDiscount()).setScale(2, RoundingMode.HALF_UP));
                     claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
                     claim.getInvoice().setGtaDiscount(BigDecimal.ZERO);
                 }
-                LOG.debug("GTA discount not added as invoice > 30 days old.");
+                LOG.debug("GTA discount not added as invoice > 30 days old: {}", days);
                 return;
             }
         }

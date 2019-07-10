@@ -5,6 +5,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -158,6 +159,7 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     private int actionSelected;
     private String jsonData;
     private Date autoPenaltyStart;
+    private Date gtaDiscountExpiry;
     private Integer claimDays;
     private String statusMsg = null;
     private boolean showMessage = false;
@@ -255,6 +257,14 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
 
     public void setAutoPenaltyStart(Date autoPenaltyStart) {
         this.autoPenaltyStart = autoPenaltyStart;
+    }
+
+    public Date getGtaDiscountExpiry() {
+        return gtaDiscountExpiry;
+    }
+
+    public void setGtaDiscountExpiry(Date gtaDiscountExpiry) {
+        this.gtaDiscountExpiry = gtaDiscountExpiry;
     }
 
     public boolean isStopAutoPenaltyCharge() {
@@ -655,6 +665,10 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
     }
 
     public String getFraudCheck() {
+        return SUCCESS;
+    }
+
+    public String getGtaDiscountReinstatement() {
         return SUCCESS;
     }
 
@@ -1221,10 +1235,28 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                         && !claim.getChorganisation().isSolicitorEnable()) {
                     accessRight = 0;
                 }
+                else if (actionName.equals(ExtraAction.GTA_DISCOUNT_REINSTATEMENT)
+                        && !claim.getInvoice().isGtaDiscountRemoved()) {
+                    accessRight = 0;
+                }
             }
 
             if (accessRight >= 2) {
                 switch (actionName) {
+                    case ExtraAction.GTA_DISCOUNT_REINSTATEMENT:
+                        if (claim.getInvoice() != null) {
+                            if (claim.getBreBand() == null) {
+                                BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                                claim.setBreBand(choBand);
+                            }
+
+                            if (!claim.getBreBand().isEnableGtaDiscount()) {
+                                accessRight = 0;
+                            }
+                        } else { // No invoice! or wrong claim type
+                            accessRight = 0;
+                        }
+                        break;
                     case ExtraAction.UPDATE_INTERIM_PAYMENT_FULL_AND_FINAL:
                         boolean b = true;
                         try {
@@ -2946,9 +2978,33 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
             return SUCCESS;
         }
     }
+    
+    public String reinstateGtaDiscount() {
+
+        Map resultMap = claimService.reinstateGTADiscount(claim, gtaDiscountExpiry);
+
+        if (resultMap.containsKey("error")) {
+            this.setActionError((String) resultMap.get("error"));
+            return ERROR;
+        } else {
+            if (resultMap.containsKey("claim")) {
+                // Invoice details may have changed  so we need to reload the claim
+                claim = (Claim) resultMap.get("claim");
+            }
+            return SUCCESS;
+        }
+    }
 
     public Date getAutoPenaltyStartDate() {
         return claim.getInvoice().getAutoPenaltyStart();
+    }
+
+    public Date getGtaDiscountExpiryDate() {
+        Date start = claim.getInvoice().getGtaDiscountStart();
+        Calendar c = Calendar.getInstance();
+        c.setTime(start); 
+        c.add(Calendar.DATE, 30); 
+        return c.getTime();
     }
 
     public String getPenaltyChargeConfiguration() {

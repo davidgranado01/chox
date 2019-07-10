@@ -165,7 +165,8 @@ public class AssignOwner extends BaseActivity {
             } else if (oldOwnerName != null && !oldOwnerName.equals(claimOwner.getFullName())) {
                 comment = Comment.newComment(0, "Insurer Claims Handler changed from '" + oldOwnerName + "' to '" + claimOwner.getFullName() + "'", true);
             } else {
-                LOG.error("This should never be reached!!!!");
+                LOG.error("This should never be reached: oldOwnerName='{}', new owner id='{}' (telephone='{}', workgroupsEnabled={})",
+                        new Object[]{oldOwnerName, claimOwner.getId(), claimOwner.getTelephone(), workgroupsEnabled});
             }
             claim.addComment(comment);
         }

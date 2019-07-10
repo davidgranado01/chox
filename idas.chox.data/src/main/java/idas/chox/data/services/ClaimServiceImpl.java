@@ -269,8 +269,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                     if (claim.getInvoice().isInterimPaymentReceivedFullAndFinal()) {
                         claim.getInvoice().setInterimPaymentReceivedFullAndFinal(false);
                     }
-                }
-                else if (claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
+                } else if (claim.getStatus().equals(ClaimStatus.AWAITING_INVOICE_PAYMENT)) {
                     claim.getInvoice().setHireGrossPaid(BigDecimal.ZERO);
                     claim.getInvoice().setRepairGrossPaid(BigDecimal.ZERO);
                     claim.getInvoice().setEngineerFeeGrossPaid(BigDecimal.ZERO);
@@ -440,9 +439,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         DetachedCriteria criteria = DetachedCriteria.forClass(Claim.class);
         criteria.add(Restrictions.eq("choReference", sClaimReferenceNumber.trim()).ignoreCase());
         List<Claim> claims = (List<Claim>) findByCriteria(criteria);
-        if (claims.size() == 1)
+        if (claims.size() == 1) {
             return claims.get(0);
-        
+        }
+
         return null;
     }
 
@@ -1146,9 +1146,9 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
             if (null == getCurrentUser().getOrganisationType()) {
                 LOG.warn("Error in search criteria: only CHO and Insurer with manual invoices can filter for penalty charges");
-            } else switch (getCurrentUser().getOrganisationType()) {
-                case OrganisationType.INS:
-                    {
+            } else {
+                switch (getCurrentUser().getOrganisationType()) {
+                    case OrganisationType.INS: {
                         // Restrict to Manual claims
                         criteria.add(Restrictions.in("this.claimType", Arrays.asList(ClaimType.INSURER_CLAIM, ClaimType.INSURER_INVOICE, ClaimType.INSURER_UPLOAD, ClaimType.INSURER_ORIGINAL_INVOICE, ClaimType.INSURER_SUPPLEMENTARY_INVOICE)));
                         // Don't show claims for CHOs that do not allow penalty charges (from BRE band)
@@ -1161,8 +1161,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                         criteria.add(Property.forName("this.chorganisation").notIn(bCriteria));
                         break;
                     }
-                case OrganisationType.CHO:
-                    {
+                    case OrganisationType.CHO: {
                         criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
                         criteria.add(Restrictions.ne("status", ClaimStatus.INVOICE_PAYMENT_LOGGED));
                         // Get the id's of the BRE Bands mapped to this CHO
@@ -1224,9 +1223,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                         criteria.add(Property.forName("this.insurer").notIn(pCriteria));
                         break;
                     }
-                default:
-                    LOG.warn("Error in search criteria: only CHO and Insurer with manual invoices can filter for penalty charges");
-                    break;
+                    default:
+                        LOG.warn("Error in search criteria: only CHO and Insurer with manual invoices can filter for penalty charges");
+                        break;
+                }
             }
         }
 
@@ -1873,21 +1873,21 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         }
         if (claim.getBreBand() == null) {
             LOG.warn("Cannot update liability %ages for claim '{}' ({}) as there is no BRE band associated with claim",
-                    new Object[] {claim.getChoReference(), claim.getId()});
+                    new Object[]{claim.getChoReference(), claim.getId()});
             return;
         }
         if (insurerLiability == null) {
             LOG.warn("Cannot update liability with null insurer liability");
             return;
         }
-        
-    /*    
+
+        /*    
      * In the case when the Applied Liability functionaity is enabled but no entry for the given claim type is present, then the actual liability shall be used.
      * In the case when the Applied Liability functionality is not enabled, the existing functionality should be maintained, that is:
      * for Subscriber, Fixed-Fee and Insurer vs Insurer prototcol claims, the applied liability is always 100%
      * for Collaboration protocol claims, the applied liability is always 100%, unless the liability is repudiated in which case it is 0%.
      * For all other claim types, the Applied Liability %age will equal the Actual Insurer-specified liability %age
-     */
+         */
         ClaimType claimType = claim.getClaimType();
         if (claim.getBreBand().isAppliedLiabilityEnabled()) {
             BreAppliedLiability appliedLiabilityBand = appliedLiabilityService.getAppliedLiability(claim.getBreBand().getId(), claim.getClaimType());
@@ -1895,7 +1895,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             // Determine Applied Liability
             if (appliedLiabilityBand == null || (claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED && !appliedLiabilityBand.isApplyToRepudiated())) {
                 if (ClaimType.isSubscriber(claimType) || ClaimType.isFixedFee(claimType) || ClaimType.isInsurerVsInsurer(claimType)
-                        || (ClaimType.isCollaborationProtocol(claimType) && claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_REPUDIATED) ) {
+                        || (ClaimType.isCollaborationProtocol(claimType) && claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_REPUDIATED)) {
                     appliedLiability = new BigDecimal("100.00");
                 } else if (ClaimType.isCollaborationProtocol(claimType) && claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED) {
                     appliedLiability = BigDecimal.ZERO.setScale(2);
@@ -1907,7 +1907,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             }
         } else {
             if (ClaimType.isSubscriber(claimType) || ClaimType.isFixedFee(claimType) || ClaimType.isInsurerVsInsurer(claimType)
-                    || (ClaimType.isCollaborationProtocol(claimType) && claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_REPUDIATED) ) {
+                    || (ClaimType.isCollaborationProtocol(claimType) && claim.getLiabilityStatus() != LiabilityStatus.LIABILITY_REPUDIATED)) {
                 appliedLiability = new BigDecimal("100.00");
             } else if (ClaimType.isCollaborationProtocol(claimType) && claim.getLiabilityStatus() == LiabilityStatus.LIABILITY_REPUDIATED) {
                 appliedLiability = BigDecimal.ZERO.setScale(2);
@@ -1936,7 +1936,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
     public void updateLiabilityPayment(Claim claim) {
         updateLiabilityPayment(claim, true);
     }
-    
+
     @Override
     public void updateLiabilityPayment(Claim claim, boolean addNote) {
 
@@ -2126,7 +2126,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claim.setLiability(liabilityStatus);
             claim.setLiabilityStatusModifiedDate(new Date());
             Comment comment = Comment.newComment(0, note);
-            comment.setClaim(claim);
             claim.addComment(comment);
             notificationService.addNotification(claim, new LiabilityStatusUpdatedNotification(liabilityStatus));
             updated = true;
@@ -2417,6 +2416,65 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             } else {
                 LOG.debug("Auto Penalty charges not updated for claim '{}'", claim.getChoReference());
             }
+        }
+
+        return resultMap;
+    }
+
+    private static Date getZeroTimeDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        
+        return calendar.getTime();
+    }
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
+    public Map reinstateGTADiscount(Claim claim, Date gtaDiscountExpiry) {
+        Map resultMap = new HashMap();
+        if (gtaDiscountExpiry != null) {
+            if (gtaDiscountExpiry.compareTo(getZeroTimeDate(new Date())) < 0) {
+                LOG.warn("Attempt to set GTA expiry date to before today ({}): {}", getZeroTimeDate(new Date()), gtaDiscountExpiry);
+                resultMap.put("error", "The 'New GTA Discount Expiry Date' cannot be set to before today.");
+                return resultMap;
+            }
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(gtaDiscountExpiry);
+            c.add(Calendar.DATE, -29);
+            claim.getInvoice().setGtaDiscountStart(c.getTime());
+
+            // Remove any penalty charges? Should be done automatically when we change the penalty start date and update
+            // Calculate new penalty charge start date: Pnew = gtaDiscountExpiry - b1, wher b1 is the first penalty band
+            Date hireStart = (claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null) ? claim.getVehicleHire().getHireStart()
+                    : (claim.getInvoice() != null && claim.getInvoice().getDateInvoiced() != null) ? claim.getInvoice().getDateInvoiced() : new Date();
+            BrePenaltyBand brePenaltyBand = brePenaltyBandService.getBrePenaltyBand(claim, hireStart);
+            if (brePenaltyBand != null) {
+                int days = brePenaltyBand.getHirePeriodStartDay1() < brePenaltyBand.getRepairPeriodStartDay1() ? brePenaltyBand.getHirePeriodStartDay1() : brePenaltyBand.getRepairPeriodStartDay1();
+                c.setTime(gtaDiscountExpiry);
+                c.add(Calendar.DATE, -(days-1)); 
+                updatePenaltyStartDate(claim, c.getTime());
+            } else {
+                LOG.warn("No penalty bands defined for claim '{}' (id={})", claim.getChoReference(), claim.getId());
+            }
+
+            // Apply the GTA discount
+            insurerDiscountService.applyGtaDiscount(claim);
+            claim.getInvoice().setGtaDiscountRemoved(false);
+
+            // Add note
+            Comment comment = Comment.newComment(0, "The CHO has re-instated the GTA discount");
+            claim.addComment(comment);
+
+            // Progress claim
+            LOG.debug("GTA Discount re-instated for claim '{}'", claim.getChoReference());
+            // Invoice details will have changed  so we need to reload the claim
+            claim = getClaim(claim.getId());
+            resultMap.put("claim", claim);
         }
 
         return resultMap;

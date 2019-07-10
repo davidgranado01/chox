@@ -244,7 +244,25 @@ public class Invoice extends Entity implements Serializable {
     private Integer collaborationQty;
     private boolean paymentTeam;
     private BigDecimal gtaDiscount = BigDecimal.ZERO;
+    private Date gtaDiscountStart;
+    private boolean gtaDiscountRemoved = false;
 
+    public Date getGtaDiscountStart() {
+        return gtaDiscountStart;
+    }
+
+    public void setGtaDiscountStart(Date gtaDiscountStart) {
+        this.gtaDiscountStart = gtaDiscountStart;
+    }
+
+    public boolean isGtaDiscountRemoved() {
+        return gtaDiscountRemoved;
+    }
+
+    public void setGtaDiscountRemoved(boolean gtaDiscountRemoved) {
+        this.gtaDiscountRemoved = gtaDiscountRemoved;
+    }
+    
     public BigDecimal getVedFee() {
         return vedFee;
     }

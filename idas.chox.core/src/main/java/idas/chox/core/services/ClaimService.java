@@ -131,7 +131,8 @@ public interface ClaimService extends DataService {
     boolean setPenaltyStartToDateInvoiced(String choReference);
     
     Map adjustAutoPenaltyCharge(Claim claim, Date autoPenaltyStart, boolean isCHO);
-            
+    Map reinstateGTADiscount(Claim claim, Date gtaDiscountExpiry);
+
     Map applyPenaltyCharge(Claim claim, Boolean isPenaltyAlertNotUsed, BigDecimal hirePenaltyChargeAmount, 
             String hirePenaltyPercentage, BigDecimal repairPenaltyChargeAmount, String repairPenaltyPercentage);
     

@@ -18,6 +18,24 @@ DECLARE
 
 BEGIN
 
+--
+-- First,  remove GTA discounts on invoices over 30 days old
+--
+update invoice
+  set full_total_to_pay = full_total_to_pay - gta_discount,
+      total_to_pay = case when c.liability_status=5 then total_to_pay - gta_discount*c.applied_liability/100.0 else total_to_pay - gta_discount end,
+      gta_discount = 0.00,
+      gta_discount_removed = true,
+      last_modified_by = $1,
+      last_modified_date = now(),
+      version = invoice.version + 1
+from claim c
+where c.invoice_id = invoice.id
+  and (c.id = $2 OR $2 = -1)
+  and gta_discount != 0.0
+  and c.status not in ('PaymentReceived','InvoicePaymentLogged','InvoiceRejectionAccepted','ClaimClosed','ManualInvoicePaid')
+  and now()::date - invoice.gta_discount_start::date + 1 > 30 ;
+
 FOR claimRecord IN
 
 SELECT
@@ -108,16 +126,15 @@ RAISE NOTICE 'invoice is % days > % days : choRef %    hireStartDate=%    hirepe
       penalty_band = nextPenaltyBand,
       hire_penalty_charge_applied_date = (CASE WHEN(hirepenalPerVal > 0.0) THEN now() ELSE null END),
       repair_penalty_charge_applied_date = (CASE WHEN(repairpenalPerVal > 0.0) THEN now() ELSE null END),
-      full_total_to_pay = (full_total_to_pay - gta_discount - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2),
+      full_total_to_pay = (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2),
       total_to_pay = (CASE WHEN claimRecord.applied_liability != 100
-                           THEN ((claimRecord.applied_liability/100) * (full_total_to_pay - gta_discount - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal)))::NUMERIC(8,2)
+                           THEN ((claimRecord.applied_liability/100) * (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal)))::NUMERIC(8,2)
                       WHEN ((claimRecord.liability_status = 4) AND claimRecord.claim_type NOT IN (7,8,9,11,12,13,18,19,20))
                            THEN (0.00)
-                      ELSE (full_total_to_pay - gta_discount - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2)
+                      ELSE (full_total_to_pay - (hire_penalty_charge + repair_penalty_charge) + (hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2)
                            END),
       hire_penalty_charge = (hire_gross * hirepenalPerVal)::NUMERIC(8,2),
       repair_penalty_charge = (repair_gross * repairpenalPerVal)::NUMERIC(8,2),
-      gta_discount = 0.00,
       hire_penalty_percentage = (CASE WHEN(hire_net > 0) THEN (hirepenalPerVal*100.0)::numeric(6,2) || '%' ELSE null END),
       repair_penalty_percentage = (CASE WHEN(repair_net > 0) THEN (repairpenalPerVal*100.0)::numeric(6,2) || '%' ELSE null END),
       total_penalty_charge = ((hire_gross * hirepenalPerVal) + (repair_gross * repairpenalPerVal))::NUMERIC(8,2),
@@ -276,22 +293,6 @@ END IF;
 
 END LOOP;
 
---
--- Now remove GTA discounts on invoices over 30 days old
---
-update invoice
-  set full_total_to_pay = full_total_to_pay - gta_discount,
-      total_to_pay = case when c.liability_status=5 then total_to_pay - gta_discount*applied_liability/100.0 else total_to_pay - gta_discount end,
-      gta_discount = 0.00,
-      last_modified_by = $1,
-      last_modified_date = now(),
-      version = invoice.version + 1
-from claim c
-where c.invoice_id = invoice.id
-  and (c.id = $2 OR $2 = -1)
-  and gta_discount != 0.0
-  and c.status not in ('PaymentReceived','InvoicePaymentLogged','InvoiceRejectionAccepted','ClaimClosed','ManualInvoicePaid')
-  and now()::date - invoice.created_date::date + 1 > 30 ;
 
 RETURN TRUE;
 

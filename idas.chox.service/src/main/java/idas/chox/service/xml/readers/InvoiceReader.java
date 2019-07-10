@@ -133,9 +133,12 @@ public class InvoiceReader extends BaseEntityReader {
         
         if (ClaimType.isInsurerUpload(claimResult.getClaim().getClaimType())) {
             invoice.setAutoPenaltyStart(invoice.getDateInvoiced());
+            invoice.setGtaDiscountStart(invoice.getDateInvoiced());
         } else {
             invoice.setAutoPenaltyStart(new Date());
+            invoice.setGtaDiscountStart(new Date());
         }
+        
         claimResult.getClaim().setInvoice(invoice);
         getBordereauReaderContext().getClaimService().updateLiabilityPayment(claimResult.getClaim(), false);
         // Now remove from invoice. This is necessary as some of the invoice sub-sections may not be valid.
