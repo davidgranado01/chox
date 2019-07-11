@@ -3050,7 +3050,7 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hireNetDoesNotExceedVehicleClassHireNetCeiling" value="hireNetDoesNotExceedVehicleClassHireNetCeiling" /></div>
                             <label class="chox-form-check-label">Vehicle Class Hire Net Ceiling Check</label>
-                            <div class="chox-form-check-description">Check to ensure the Hire Net billed by the CHO does not exceed the specified Hire Net ceiling for the replacement hire vehicle’s vehicle class.</div>
+                            <div class="chox-form-check-description">Check to ensure the Hire Net billed by the CHO does not exceed the specified Hire Net ceiling for the customer vehicle’s vehicle class.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedBandRepairNetCeiling" value="repairNetDoesNotExceedBandRepairNetCeiling" /></div>
@@ -3065,7 +3065,7 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedVehicleClassRepairNetCeiling" value="repairNetDoesNotExceedVehicleClassRepairNetCeiling" /></div>
                             <label class="chox-form-check-label">Vehicle Class Repair Net Ceiling Check</label>
-                            <div class="chox-form-check-description">Check to ensure the Repair Net billed by the CHO does not exceed the specified Repair Net ceiling for the replacement hire vehicle's vehicle class.</div>
+                            <div class="chox-form-check-description">Check to ensure the Repair Net billed by the CHO does not exceed the specified Repair Net ceiling for the customer vehicle's vehicle class.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hireDayCountDoesNotExceedBandHireDayCeiling" value="hireDayCountDoesNotExceedBandHireDayCeiling" /></div>
