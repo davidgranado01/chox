@@ -1,14 +1,10 @@
 package idas.chox.service.bre;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import idas.chox.core.bre.RuleEvaluation;
-import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.bre.RulesEngine;
 import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.model.BreBand;
@@ -16,14 +12,12 @@ import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.EngineerReport;
-import idas.chox.core.model.History;
 import idas.chox.core.model.VehicleClassCeiling;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.BusinessRulesEngService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.HistoryService;
 import idas.chox.core.services.InsurerService;
-import idas.chox.core.xmlValidation.ClaimResult;
 
 public class BusinessRulesEngServiceImpl implements BusinessRulesEngService {
 
