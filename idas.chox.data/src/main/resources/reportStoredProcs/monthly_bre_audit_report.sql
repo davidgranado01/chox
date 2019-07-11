@@ -1,7 +1,6 @@
 --DROP FUNCTION monthly_bre_audit_report(IN insurerIds integer[], IN choIds integer[],IN startPeriod text, IN endPeriod text, IN claimTypes integer[]);
 -- Example use:
---     select * from monthly_bre_audit_report(null::integer[], null::integer[], '2018-01-01', '2019-01-01', null::integer[]);
-
+--     select * from monthly_bre_audit_report(array[6], null::integer[], '2019-06-01', '2019-07-01', null::integer[]);
 CREATE OR REPLACE FUNCTION monthly_bre_audit_report(IN insurerIds integer[], IN choIds integer[], IN startPeriod text, IN endPeriod text, IN claimTypes integer[])
     RETURNS TABLE (
         "Supplier Reference" character varying(128),
@@ -60,8 +59,8 @@ RETURN QUERY
            case when (hire_net_does_not_exceed_band_hire_net_ceiling and i.hire_net <= bre.hire_net_ceiling and c.claim_type not in (7,8,9,11,12,13,18,19,20)) then 'Passed' else case when (hire_net_does_not_exceed_band_hire_net_ceiling and i.hire_net > bre.hire_net_ceiling and c.claim_type not in (7,8,9,11,12,13,18,19,20)) then 'Failed' else 'Skipped' end end,
            case when exists (select * from history h where h.claim_id=c.id and h.rule_id='040' and is_old=false and type='ERROR') then 'Failed' else
                 case when exists (select * from history h where h.claim_id=c.id and h.rule_id='040' and is_old=false and type='INFO' and narrative like '%Passed%') then 'Passed' else case when exists (select * from history h where h.claim_id=c.id and h.rule_id='040' and is_old=false and type='INFO' and narrative like '%Skipped%') then 'Skipped' else 'Passed/Skipped' end end end,
-           case when hire_net_does_not_exceed_vehicle_class_hire_net_ceiling then vcc.hire_net_ceiling else null end,
-           case when (hire_net_does_not_exceed_vehicle_class_hire_net_ceiling and vcc is not null and i.hire_net <= vcc.hire_net_ceiling and c.claim_type not in (7,8,9,11,12,13,18,19,20)) then 'Passed' else case when (hire_net_does_not_exceed_vehicle_class_hire_net_ceiling and vcc is not null and i.hire_net > vcc.hire_net_ceiling and c.claim_type not in (7,8,9,11,12,13,18,19,20)) then 'Failed' else 'Skipped' end end,
+           case when hire_net_does_not_exceed_vehicle_class_hire_net_ceiling then cvcc.hire_net_ceiling else null end,
+           case when (hire_net_does_not_exceed_vehicle_class_hire_net_ceiling and cvcc is not null and i.hire_net <= cvcc.hire_net_ceiling and c.claim_type not in (7,8,9,11,12,13,18,19,20)) then 'Passed' else case when (hire_net_does_not_exceed_vehicle_class_hire_net_ceiling and cvcc is not null and i.hire_net > cvcc.hire_net_ceiling and c.claim_type not in (7,8,9,11,12,13,18,19,20)) then 'Failed' else 'Skipped' end end,
            case when exists (select * from history h where h.claim_id=c.id and h.rule_id='003' and is_old=false and type='ERROR') then 'Failed' else
                  case when exists (select * from history h where h.claim_id=c.id and h.rule_id='003' and is_old=false and type='INFO' and narrative like '%Passed%') then 'Passed' else case when exists (select * from history h where h.claim_id=c.id and h.rule_id='003' and is_old=false and type='INFO' and narrative like '%Skipped%') then 'Skipped' else 'Passed/Skipped' end end end,
            i.repair_net,
@@ -69,8 +68,8 @@ RETURN QUERY
            case when (repair_net_does_not_exceed_band_repair_net_ceiling and i.repair_net <= bre.max_repair_value and c.claim_type not in (7,8,9,11,12,13,18,19,20)) then 'Passed' else case when (repair_net_does_not_exceed_band_repair_net_ceiling and i.repair_net > bre.max_repair_value and c.claim_type not in (7,8,9,11,12,13,18,19,20)) then 'Failed' else 'Skipped' end end,
            case when exists (select * from history h where h.claim_id=c.id and h.rule_id='041' and is_old=false and type='ERROR') then 'Failed' else
                  case when exists (select * from history h where h.claim_id=c.id and h.rule_id='041' and is_old=false and type='INFO' and narrative like '%Passed%') then 'Passed' else case when exists (select * from history h where h.claim_id=c.id and h.rule_id='041' and is_old=false and type='INFO' and narrative like '%Skipped%') then 'Skipped' else 'Passed/Skipped' end end end,
-           case when repair_net_does_not_exceed_vehicle_class_repair_net_ceiling then vcc.repair_net_ceiling else null end,
-           case when (repair_net_does_not_exceed_vehicle_class_repair_net_ceiling and vcc is not null and i.repair_net <= vcc.repair_net_ceiling and c.claim_type not in (7,8,9,11,12,13,18,19,20)) then 'Passed' else case when (repair_net_does_not_exceed_vehicle_class_repair_net_ceiling and vcc is not null and i.repair_net > vcc.repair_net_ceiling and c.claim_type not in (7,8,9,11,12,13,18,19,20)) then 'Failed' else 'Skipped' end end,
+           case when repair_net_does_not_exceed_vehicle_class_repair_net_ceiling then cvcc.repair_net_ceiling else null end,
+           case when (repair_net_does_not_exceed_vehicle_class_repair_net_ceiling and cvcc is not null and i.repair_net <= cvcc.repair_net_ceiling and c.claim_type not in (7,8,9,11,12,13,18,19,20)) then 'Passed' else case when (repair_net_does_not_exceed_vehicle_class_repair_net_ceiling and cvcc is not null and i.repair_net > cvcc.repair_net_ceiling and c.claim_type not in (7,8,9,11,12,13,18,19,20)) then 'Failed' else 'Skipped' end end,
            case when exists (select * from history h where h.claim_id=c.id and h.rule_id='023' and is_old=false and type='ERROR') then 'Failed' else
                  case when exists (select * from history h where h.claim_id=c.id and h.rule_id='023' and is_old=false and type='INFO' and narrative like '%Passed%') then 'Passed' else case when exists (select * from history h where h.claim_id=c.id and h.rule_id='023' and is_old=false and type='INFO' and narrative like '%Skipped%') then 'Skipped' else 'Passed/Skipped' end end end,
            vh.days,
@@ -98,8 +97,8 @@ RETURN QUERY
            case when exists (select * from history h where h.claim_id=c.id and h.rule_id='027' and is_old=false and type='ERROR') then 'Failed' else
                  case when exists (select * from history h where h.claim_id=c.id and h.rule_id='027' and is_old=false and type='INFO' and narrative like '%Passed%') then 'Passed' else case when exists (select * from history h where h.claim_id=c.id and h.rule_id='027' and is_old=false and type='INFO' and narrative like '%Skipped%') then 'Skipped' else 'Passed/Skipped' end end end
     from claim c left outer join vehicle_hire vh on (c.vehicle_hire_id=vh.id) left outer join vehicle_class_ceiling vcc on (vcc.insurer_id=c.insurer_id and vcc.vehicle_class_id=vh.vehicle_class_id)
-         left outer join hire_monitoring_detail hmd on (c.hire_monitoring_detail_id=hmd.id),
-         chorganisation cho, invoice i, vehicle_class vhvc, bre_band_organisation bbo, bre_band bre, customer cu, insurer ins
+         left outer join hire_monitoring_detail hmd on (c.hire_monitoring_detail_id=hmd.id) left outer join customer cu on (c.customer_id=cu.id) left outer join vehicle_class_ceiling cvcc on (cvcc.insurer_id=c.insurer_id and cvcc.vehicle_class_id=cu.vehicle_class_id),
+         chorganisation cho, invoice i, vehicle_class vhvc, bre_band_organisation bbo, bre_band bre, insurer ins
     where c.chorganisation_id = cho.id and c.invoice_id=i.id and c.vehicle_hire_id=vh.id and vh.vehicle_class_id=vhvc.id
       and bre.insurer_id=c.insurer_id and bbo.chorganisation_id=c.chorganisation_id and bbo.band_id=bre.id
       and c.customer_id = cu.id and c.insurer_id = ins.id
