@@ -125,9 +125,9 @@ select * from on_hire_report(array[25], null::int[], null::int[]);
 /bin/rm ${DUMPFILE}
 
 echo 'Generating Data Export for ERAC'
-DUMPFILE='ERAC-Daily_Data_Export-'`date +"%F"`.txt
+DUMPFILE='ERAC-Daily_Data_Export-'`date +"%F"`.csv
 $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
-select * from eracDataExport(array[1007], null::integer[], null::integer[]);
+\copy (select * from eracDataExport(array[1007], null::integer[], null::integer[])) TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
 --EOF--
 
 /bin/cp ${DUMPFILE} ${MI_DIRECTORY}
