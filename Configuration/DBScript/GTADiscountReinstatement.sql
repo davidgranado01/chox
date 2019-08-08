@@ -30,7 +30,7 @@ ALTER TABLE invoice ADD COLUMN gta_discount_start timestamp without time zone;
 ALTER TABLE invoice ADD COLUMN gta_discount_removed Boolean NOT NULL Default FALSE;
 
 UPDATE invoice set gta_discount_start = created_date;
-ContestedInvoiceReferredToCHO
+
 INSERT into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled)
     VALUES ('extraAction.gtaDiscountReinstatement.ContestedInvoiceReferredToCHO', false, false, false, false);
 
