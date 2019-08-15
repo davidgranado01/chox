@@ -399,7 +399,7 @@
     <bean id="keoghsRequestService" class="idas.chox.data.services.KeoghsRequestServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="keoghs" class="idas.chox.keoghs.Keoghs" scope="prototype">
+    <!--bean id="keoghs" class="idas.chox.keoghs.Keoghs" scope="prototype">
         <property name="claimService" ref="claimService" />
         <property name="keoghsRequestService" ref="keoghsRequestService" />
         <property name="keoghsToken" value="${keoghs.token}" />
@@ -408,5 +408,5 @@
         <property name="maxAttempts" value="${keoghs.maxAttempts}" />
         <property name="maxRequeues" value="${keoghs.maxRequeues}" />
         <property name="useDebugEndpoint" value="${keoghs.useDebugEndpoint}" />
-    </bean>
+    </bean-->
 </beans>

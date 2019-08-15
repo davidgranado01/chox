@@ -2167,8 +2167,8 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
                 evict(claim.getInvoice());
                 evict(claim);
                 // Then the second-level cache (if activated)
-                getCurrentSession().getSessionFactory().evict(Claim.class, claim.getId());
-                getCurrentSession().getSessionFactory().evict(Invoice.class, claim.getInvoice().getId());
+                getCurrentSession().getSessionFactory().getCurrentSession().evict(claim);
+                getCurrentSession().getSessionFactory().getCurrentSession().evict(claim.getInvoice());
                 LOG.debug("Auto penalty charge applied to claim: {}", claim.getChoReference());
                 return true;
             } catch (Exception ex) {
