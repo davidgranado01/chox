@@ -275,6 +275,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
                     claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(claim.getInvoice().getGtaDiscount()).setScale(2, RoundingMode.HALF_UP));
                     claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
                     claim.getInvoice().setGtaDiscount(BigDecimal.ZERO);
+                    claim.getInvoice().setGtaDiscountRemoved(true);
                 }
                 LOG.debug("GTA discount not added as invoice > 30 days old: {}", days);
                 return;
@@ -291,6 +292,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
                 claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(claim.getInvoice().getGtaDiscount()).setScale(2, RoundingMode.HALF_UP));
                 claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
                 claim.getInvoice().setGtaDiscount(BigDecimal.ZERO);
+                claim.getInvoice().setGtaDiscountRemoved(true);
             }
             LOG.debug("GTA discount not added as disabled in BRE band.");
             return;
@@ -311,6 +313,7 @@ public class InsurerDiscountServiceImpl extends SecureDataService implements Ins
                         claim.getInvoice().setFullTotalToPay(claim.getInvoice().getFullTotalToPay().add(claim.getInvoice().getGtaDiscount()).setScale(2, RoundingMode.HALF_UP));
                         claim.getInvoice().setTotalToPay(claim.getInvoice().getTotalToPay().add(claim.getInvoice().getGtaDiscount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100))).setScale(2, RoundingMode.HALF_UP));
                         claim.getInvoice().setGtaDiscount(BigDecimal.ZERO);
+                        claim.getInvoice().setGtaDiscountRemoved(true);
                     }
                     return;
                 }

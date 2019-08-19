@@ -249,7 +249,7 @@ public class ExcelClaim {
         claimCustomerComprehensive = ((Boolean) data.get("customer_comprehensive")) ? "Yes" : "No";
         claimCustomerVehicleManufacturer = (String) data.get("customer_vehicle_manufacturer");
         claimCustomerVehicleModel = (String) data.get("customer_vehicle_model");
-        claimCustomerVehicleRegistration = (String) data.get("customer_vehicle_registration");
+        claimCustomerVehicleRegistration = ((String) data.get("customer_vehicle_registration")).startsWith("~~") ? "GDPR: data removed" : (String) data.get("customer_vehicle_registration");
         claimCustomerVehicleYear = (String) data.get("customer_vehicle_year");
         claimCustomerVehicleClassName = (String) data.get("customer_vehicle_class");
         claimCustomerLocation = (String) data.get("customer_location");
@@ -338,7 +338,7 @@ public class ExcelClaim {
         claimThirdPartyPolicyNumber = (String) data.get("tp_policy_number");
         claimThirdPartyVehicleManufacturer = (String) data.get("tp_vehicle_manufacturer");
         claimThirdPartyVehicleModel = (String) data.get("tp_vehicle_model");
-        claimThirdPartyVehicleRegistration = (String) data.get("tp_vehicle_registration");
+        claimThirdPartyVehicleRegistration = ((String) data.get("tp_vehicle_registration")).startsWith("~~") ? "GDPR: data removed" : (String) data.get("tp_vehicle_registration");
         claimThirdPartyVehicleClassName = (String) data.get("tp_vehicle_class");
         claimIncidentDate = (Date) data.get("incident_date");
         claimIncidentLocation = (String) data.get("incident_location");
@@ -409,7 +409,7 @@ public class ExcelClaim {
 
         claimVehicleHireVehicleManufacturer = (String) data.get("vh_vehicle_manufacturer");
         claimVehicleHireVehicleModel = (String) data.get("vh_vehicle_model");
-        claimVehicleHireVehicleRegistration = (String) data.get("vh_vehicle_registration");
+        claimVehicleHireVehicleRegistration = ((String) data.get("vh_vehicle_registration")).startsWith("~~") ? "GDPR: data removed" : (String) data.get("vh_vehicle_registration");
         claimVehicleHireVehicleClassName = (String) data.get("vh_vehicle_class_name");
         claimVehicleHireRentalStart = (Date) data.get("vh_rental_start");
         claimVehicleHireRentalEnd = (Date) data.get("vh_rental_end");

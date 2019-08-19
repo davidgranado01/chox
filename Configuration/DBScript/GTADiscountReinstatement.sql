@@ -37,6 +37,12 @@ INSERT into accessibility(name,is_workgroup_check,is_ownership_check, check_manu
 INSERT INTO accessibility_item(accessibility_id, role, access_right)
     SELECT id, 'ROLE_CHO', 2 FROM accessibility WHERE name='extraAction.gtaDiscountReinstatement.ContestedInvoiceReferredToCHO';
 
+INSERT into accessibility(name,is_workgroup_check,is_ownership_check, check_manual_inv_workgroup_enabled, check_manual_inv_claimownership_enabled, claim_type)
+    VALUES ('extraAction.gtaDiscountReinstatement.ManualInvoiceContested', false, false, false, false, 17);
+
+INSERT INTO accessibility_item(accessibility_id, role, access_right)
+    SELECT id, 'ROLE_INS', 2 FROM accessibility WHERE name='extraAction.gtaDiscountReinstatement.ManualInvoiceContested';
+
 --
 -- Updated applyAutoPenaltyCharge function
 --

@@ -507,7 +507,7 @@ public class ClaimFileReportData {
                 if (cust.getVehicleClass() != null) {
                     customerVehicleClass = cust.getVehicleClass().getName();
                 }
-                customerVRN = cust.getVehicleRegistration();
+                customerVRN = claim.isHashed() && (cust.getVehicleRegistration() != null && !cust.getVehicleRegistration().isEmpty()) ? "GDPR: data removed" : cust.getVehicleRegistration();
                 customerVehicleLocation = cust.getLocation();
                 customerHpiVehicleManufacturer = cust.getHpiVehicleManufacturer();
                 customerHpiVehicleModel = cust.getHpiVehicleModel();
@@ -565,7 +565,7 @@ public class ClaimFileReportData {
                 thirdPartyPolicyNumber = thirdParty.getPolicyNumber();
                 thirdPartyVehicleManufacturer = thirdParty.getVehicleManufacturer();
                 thirdPartyVehicleModel = thirdParty.getVehicleModel();
-                thirdPartyVRN = thirdParty.getVehicleRegistration();
+                thirdPartyVRN = claim.isHashed() && (thirdParty.getVehicleRegistration() != null && !thirdParty.getVehicleRegistration().isEmpty()) ? "GDPR: data removed" : thirdParty.getVehicleRegistration();
                 if (thirdParty.getVehicleClass() != null) {
                     thirdPartyVehicleClass = thirdParty.getVehicleClass().getName();
                 }
@@ -697,7 +697,7 @@ public class ClaimFileReportData {
                 LOG.debug("Adding vehicleHire info.");
                 hireVehicleManufacturer = vehicleHire.getVehicleManufacturer();
                 hireVehicleModel = vehicleHire.getVehicleModel();
-                hireVehicleRegistration = vehicleHire.getVehicleRegistration();
+                hireVehicleRegistration = claim.isHashed() && (vehicleHire.getVehicleRegistration() != null && !vehicleHire.getVehicleRegistration().isEmpty()) ? "GDPR: data removed" : vehicleHire.getVehicleRegistration();
                 if (vehicleHire.getVehicleClass() != null) {
                     hireVehicleClass = vehicleHire.getVehicleClass().getName();
                 }
