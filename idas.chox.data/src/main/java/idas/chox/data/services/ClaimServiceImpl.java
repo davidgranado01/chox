@@ -2323,7 +2323,10 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             Invoice invoice = claim.getInvoice();
             BigDecimal newTotalAmountToPay = invoice.getFullTotalToPay().subtract(invoice.getHirePenaltyCharge())
                     .subtract(invoice.getRepairPenaltyCharge()).add(hirePenaltyChargeAmount).add(repairPenaltyChargeAmount).subtract(invoice.getGtaDiscount());
-            invoice.setGtaDiscount(BigDecimal.ZERO);
+            if (invoice.getGtaDiscount() != null && invoice.getGtaDiscount().compareTo(BigDecimal.ZERO) != 0) {
+                invoice.setGtaDiscount(BigDecimal.ZERO);
+                invoice.setGtaDiscountRemoved(true);
+            }
             if (hirePenaltyChargeAmount.compareTo(BigDecimal.ZERO) > 0 && (hirePenaltyPercentage == null || hirePenaltyPercentage.length() == 0)) {
                 resultMap.put("error", "You must supply a value for 'Hire Penalty Percentage'.");
                 return resultMap;
@@ -2466,15 +2469,36 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             insurerDiscountService.applyGtaDiscount(claim);
             claim.getInvoice().setGtaDiscountRemoved(false);
 
+            // Add task for insurer to review
+            Task task = new Task();
+            task.setClaim(claim);
+            task.setDescription("The CHO has reinstated the GTA discount on the invoice. Please review.");
+            task.setDueDate(DateHelper.addDay(new Date(), 1));
+            task.setRaisedBy(getCurrentUser());
+            task.setType("GTA Discount");
+            task.setInsurer(Boolean.FALSE);
+            task.setVisibility(3);
+            task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+
+            try {
+                taskService.createNewTask(task);
+            } catch (IllegalArgumentException ex) {
+                LOG.error("IllegalArgumentException thrown creating GTA Discount review task for claim Id '{}': {}", claim.getId(), ex.getMessage());
+            } catch (Exception ex) {
+                LOG.error("Exception thrown creating GTA Discount review task for claim Id '{}': {}", claim.getId(), ex.getMessage());
+            }
+            
             // Add note
             Comment comment = Comment.newComment(0, "The CHO has re-instated the GTA discount");
             claim.addComment(comment);
 
-            // Progress claim
-            LOG.debug("GTA Discount re-instated for claim '{}'", claim.getChoReference());
+            comment.setTask(task);
+            
+
             // Invoice details will have changed  so we need to reload the claim
             claim = getClaim(claim.getId());
             resultMap.put("claim", claim);
+            LOG.debug("GTA Discount re-instated for claim '{}'", claim.getChoReference());
         }
 
         return resultMap;

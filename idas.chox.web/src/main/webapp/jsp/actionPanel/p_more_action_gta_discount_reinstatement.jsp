@@ -14,7 +14,6 @@
             format: 'd/m/Y',
             msgTarget : 'qtip',
             minValue: new Date(),
-            value: '<s:date format="dd/MM/yyyy" name="gtaDiscountExpiryDate" />',
             showWeekNumber: true
         });
         
