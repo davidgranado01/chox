@@ -4,7 +4,7 @@
     <class name="idas.chox.core.model.Invoice" table="invoice">
         <id column="id" name="id">
             <generator class="sequence">
-                <param name="sequence">invoice_id_seq</param>
+                <param name="sequence_name">invoice_id_seq</param>
             </generator>
         </id>
         <version column="version" name="version" unsaved-value="null"/>

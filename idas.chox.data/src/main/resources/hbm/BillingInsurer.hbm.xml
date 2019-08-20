@@ -6,7 +6,7 @@
     <cache usage="nonstrict-read-write"/>
     <id column="id" name="id">
         <generator class="sequence">
-            <param name="sequence">billing_insurer_id_seq</param>
+            <param name="sequence_name">billing_insurer_id_seq</param>
         </generator>
     </id>
     <many-to-one class="idas.chox.core.model.Insurer" column="insurer_id" name="insurer"/>

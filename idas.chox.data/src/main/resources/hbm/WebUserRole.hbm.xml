@@ -5,7 +5,7 @@
     <cache usage="read-only"/>
     <id column="id" name="id">
             <generator class="sequence">
-                <param name="sequence">web_user_role_id_seq</param>
+                <param name="sequence_name">web_user_role_id_seq</param>
             </generator>
     </id>
     <version column="version" name="version" unsaved-value="null"/>
