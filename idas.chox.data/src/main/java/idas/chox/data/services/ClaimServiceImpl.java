@@ -2431,7 +2431,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        
+
         return calendar.getTime();
     }
 
@@ -2459,7 +2459,7 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             if (brePenaltyBand != null) {
                 int days = brePenaltyBand.getHirePeriodStartDay1() < brePenaltyBand.getRepairPeriodStartDay1() ? brePenaltyBand.getHirePeriodStartDay1() : brePenaltyBand.getRepairPeriodStartDay1();
                 c.setTime(gtaDiscountExpiry);
-                c.add(Calendar.DATE, -(days-1)); 
+                c.add(Calendar.DATE, -(days - 1));
                 updatePenaltyStartDate(claim, c.getTime());
             } else {
                 LOG.warn("No penalty bands defined for claim '{}' (id={})", claim.getChoReference(), claim.getId());
@@ -2470,30 +2470,32 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
             claim.getInvoice().setGtaDiscountRemoved(false);
 
             // Add task for insurer to review
-            Task task = new Task();
-            task.setClaim(claim);
-            task.setDescription("The CHO has reinstated the GTA discount on the invoice. Please review.");
-            task.setDueDate(DateHelper.addDay(new Date(), 1));
-            task.setRaisedBy(getCurrentUser());
-            task.setType("GTA Discount");
-            task.setInsurer(Boolean.FALSE);
-            task.setVisibility(3);
-            task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
+            Task task = null;
+            if (claim.getInsurer().isTaskManagementEnable()) {
+                task = new Task();
+                task.setClaim(claim);
+                task.setDescription("The CHO has reinstated the GTA discount on the invoice. Please review.");
+                task.setDueDate(DateHelper.addDay(new Date(), 1));
+                task.setRaisedBy(getCurrentUser());
+                task.setType("GTA Discount");
+                task.setInsurer(Boolean.FALSE);
+                task.setVisibility(3);
+                task.setVisibilityRole(WebUserRole.ROLE_INS_CH);
 
-            try {
-                taskService.createNewTask(task);
-            } catch (IllegalArgumentException ex) {
-                LOG.error("IllegalArgumentException thrown creating GTA Discount review task for claim Id '{}': {}", claim.getId(), ex.getMessage());
-            } catch (Exception ex) {
-                LOG.error("Exception thrown creating GTA Discount review task for claim Id '{}': {}", claim.getId(), ex.getMessage());
+                try {
+                    taskService.createNewTask(task);
+                } catch (IllegalArgumentException ex) {
+                    LOG.error("IllegalArgumentException thrown creating GTA Discount review task for claim Id '{}': {}", claim.getId(), ex.getMessage());
+                } catch (Exception ex) {
+                    LOG.error("Exception thrown creating GTA Discount review task for claim Id '{}': {}", claim.getId(), ex.getMessage());
+                }
             }
-            
             // Add note
             Comment comment = Comment.newComment(0, "The CHO has re-instated the GTA discount");
+            if (task != null) {
+                comment.setTask(task);
+            }
             claim.addComment(comment);
-
-            comment.setTask(task);
-            
 
             // Invoice details will have changed  so we need to reload the claim
             claim = getClaim(claim.getId());
