@@ -103,9 +103,12 @@ public class KeoghsCheckJob implements Runnable {
         } else {
             LOG.debug("Hibernate Transaction is null");
         }
-        TransactionSynchronizationManager.unbindResource(sessionFactory);
-        session.clear();
-        session.close();
+        if (session != null) {
+            TransactionSynchronizationManager.unbindResource(sessionFactory);
+            session.clear();
+            session.close();
+            session = null;
+        }
     }
 
     private void authenticateSender(String userName, String password) {

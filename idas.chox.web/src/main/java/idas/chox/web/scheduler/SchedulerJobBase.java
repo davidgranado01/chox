@@ -13,6 +13,8 @@ import javax.mail.MessagingException;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +52,8 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     private ServerConfig serverConfig;
     private ApplicationContext applicationContext;
     protected ClaimService claimService;
-    
+    private Transaction hibernateTransaction;
+   
     protected abstract List<SchedulerJob> getSchedulerJobs();
     protected abstract void process(SchedulerJob schedulerJob) throws MessagingException;
 
@@ -138,12 +141,34 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
             session = sessionFactory.openSession();
         }
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
+        if (!TransactionSynchronizationManager.isActualTransactionActive()) {
+            try {
+                hibernateTransaction = session.beginTransaction();
+                LOG.debug("Hibernate Transaction started: {}", hibernateTransaction);
+            } catch (HibernateException ex) {
+                LOG.error("Exception thrown starting hibernate transaction: {}\n", ex.getMessage(), ex);
+            }
+        } else {
+            LOG.debug("Transaction already active: {}", TransactionSynchronizationManager.getCurrentTransactionName());
+        }
     }
 
     public void releaseHibernateSessionConditionally() {
-        TransactionSynchronizationManager.unbindResource(sessionFactory);
-        session.clear();
-        session.close();
+        if (hibernateTransaction != null && hibernateTransaction.getStatus() == TransactionStatus.ACTIVE) {
+            hibernateTransaction.commit();
+            LOG.debug("Hibernate Transaction committed: {}", hibernateTransaction);
+        } else if (hibernateTransaction != null) {
+            LOG.debug("Hibernate Transaction status={}, ", hibernateTransaction.getStatus());
+        } else {
+            LOG.debug("Hibernate Transaction is null");
+        }
+
+        if (session != null) {
+            TransactionSynchronizationManager.unbindResource(sessionFactory);
+            session.clear();
+            session.close();
+            session = null;
+        }
     }
 
     public void setSessionFactory(SessionFactory sessionFactory) {

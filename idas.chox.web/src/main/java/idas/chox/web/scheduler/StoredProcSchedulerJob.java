@@ -256,9 +256,12 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
         } else {
             LOG.debug("Hibernate Transaction is null");
         }
-        TransactionSynchronizationManager.unbindResource(sessionFactory);
-        session.clear();
-        session.close();
+        if (session != null) {
+            TransactionSynchronizationManager.unbindResource(sessionFactory);
+            session.clear();
+            session.close();
+            session = null;
+        }
     }
     
     public void setSessionFactory(SessionFactory sessionFactory) {
