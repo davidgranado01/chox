@@ -116,14 +116,14 @@ public class Rule069InsurancePremiumTaxCheckTest extends BaseTest {
         claim.getBreBand().setInsurancePremiumTaxCheck(true);
 
         claim.getInvoice().setNonStandardInsurancePremiumFee(new BigDecimal(36.00));
-        claim.getInvoice().setNonStandardInsurancePremiumQty(9);
+        claim.getInvoice().setNonStandardInsurancePremiumQty(4);
 
         InsurancePremiumTaxCheck rule = new InsurancePremiumTaxCheck();
 
         RuleEvaluation rv = rule.applyToClaim(claim);
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging £4.00 per day for the Insurance Premium Tax/Non Standard Risk Insurance Premium Tax, please review."));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The CHO is charging £9.00 per day for the Insurance Premium Tax/Non Standard Risk Insurance Premium Tax, please review."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
     }
