@@ -126,8 +126,8 @@ select * from on_hire_report(array[25], null::int[], null::int[]);
 
 echo 'Generating Data Export for ERAC'
 DUMPFILE='ERAC-Daily_Data_Export-'`date +"%F"`.csv
-$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
-\copy (select * from eracDataExport(array[1007], null::integer[], null::integer[])) TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
+\copy (select * from eracDataExport(array[1007], null::integer[], null::integer[]))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
 --EOF--
 
 /bin/cp ${DUMPFILE} ${MI_DIRECTORY}
@@ -205,8 +205,37 @@ select * from keoghs_daily_report(${CHO_ID}, array[${INS_ID}], 'ClaimRejected', 
 select 'Acknowledged Claims' as tab_name;
 select * from keoghs_daily_report(${CHO_ID}, array[${INS_ID}], 'AwaitingCarHireInfo', '${START_DATE}', '${END_DATE}');
 --EOF--
-
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Generating DLG Daily Claim Details Dump'
+DUMPFILE='DLG-ClaimDetailsDump-'`date +"%Y%m%d"`.csv
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
+\copy (select * from claimDetailsReport(array[6], null::integer[], null::integer[], '2017-01-01', '${START_DATE}', 'INS', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['ClaimRejected']))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
+--EOF--
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Generating DLG Daily Invoice Details Dump'
+DUMPFILE='DLG-InvoiceDetailsDump-'`date +"%Y%m%d"`.csv
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
+\copy (select * from invoiceDetailsReport(array[6], null::integer[], null::integer[], '2017-01-01', '${START_DATE}', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['ClaimRejected']))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
+--EOF--
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Generating DLG Daily Claim Cycle Dump'
+DUMPFILE='DLG-ClaimCycleDump-'`date +"%Y%m%d"`.csv
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
+\copy (select * from claimCycleReport(array[6], null::integer[], null::integer[], '2017-01-01', '${START_DATE}', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['ClaimRejected']))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
+--EOF--
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+
+echo 'Generating DLG Daily Notes Dump'
+DUMPFILE='DLG-NotesDump-'`date +"%Y%m%d"`.csv
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
+\copy (select * from notesReport(array[6], null::integer[], null::integer[], '2017-01-01', '${START_DATE}', 'INS', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['ClaimRejected']))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
+--EOF--
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
 
 echo 'Done generating Daily Reports'
 echo '***********************************************************'
