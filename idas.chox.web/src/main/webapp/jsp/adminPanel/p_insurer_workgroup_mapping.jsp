@@ -197,6 +197,7 @@
     
 </script>
 <div class="sub-admin-tab-css">
+<s:if test="insurerIsWorkgroupEnabled">
 
     <div class="status-info">
         The Workgroups that dictate where claims are routed to and therefore which users have access/visibility of the
@@ -232,4 +233,5 @@
     </div>
     <div id="CDInsurerWorkgroupMessageBox" class="chox-form-submit-result"></div>
     <div id="workgroup_gridviewGrid"></div>
+</s:if>
 </div>

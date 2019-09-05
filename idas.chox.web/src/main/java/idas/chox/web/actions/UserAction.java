@@ -2,6 +2,7 @@ package idas.chox.web.actions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
@@ -27,6 +28,7 @@ import idas.chox.web.viewdata.UserViewData;
 public class UserAction extends BaseAction implements ModelDriven<WebUser>, Preparable {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserAction.class);
+    private final String passwordPatternString = "^.*(?=.{<minPasswordLength>,})(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).*$";
     private List<UserViewData> users = new ArrayList<>();
     private int organisationTypeId = -1;
     private int organisationId = -1;
@@ -60,35 +62,31 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         if (organisationTypeId == 2 && model != null && model.getInsurer() != null) { // Insurer
             LOG.debug("Insurer user: getting minimum password length for insurerId={}", model.getInsurer().getId());
             minPasswordLength = model.getInsurer().getMinimumPasswordLength();
-        }
-        else if (organisationTypeId == 3 && model != null && model.getChorganisation() != null) { // CHO
+        } else if (organisationTypeId == 3 && model != null && model.getChorganisation() != null) { // CHO
             LOG.debug("CHO user: getting minimum password length for supplierId={}", model.getChorganisation().getId());
             minPasswordLength = model.getChorganisation().getMinimumPasswordLength();
-        }
-        else if (organisationTypeId == 2 && insurerService != null && orgId != 1) {
+        } else if (organisationTypeId == 2 && insurerService != null && orgId != 1) {
             LOG.debug("Insurer user from orgId={}", orgId);
             minPasswordLength = insurerService.getInsurer(orgId).getMinimumPasswordLength();
-        }
-        else if (organisationTypeId == 3 && chorganisationService != null && orgId != 1) {
+        } else if (organisationTypeId == 3 && chorganisationService != null && orgId != 1) {
             LOG.debug("CHO user from orgId={}", orgId);
             minPasswordLength = chorganisationService.getChorganisation(orgId).getMinimumPasswordLength();
-        }else {
+        } else {
             LOG.debug("CHOX Admin user ?: organisationTypeId={}, orgId={}", organisationTypeId, orgId);
             LOG.debug("insurerId={}, supplierId={}", insurerId, supplierId);
         }
 
         LOG.debug("Returning minPasswordLength={}", minPasswordLength);
-        
+
         return minPasswordLength;
     }
-    
+
     public String getUserPasswordMessage() {
         LOG.debug("Getting user password message for orgtype={}, org={}", organisationTypeId, organisationId);
         int minPasswordLength = 8;
         if (organisationTypeId == 2 && insurerService != null) {
             minPasswordLength = insurerService.getInsurer(organisationId).getMinimumPasswordLength();
-        }
-        else if (organisationTypeId == 3 && chorganisationService != null) {
+        } else if (organisationTypeId == 3 && chorganisationService != null) {
             Chorganisation cho = chorganisationService.getChorganisation(organisationId);
             LOG.debug("CHO is {}", cho.getName());
             minPasswordLength = cho.getMinimumPasswordLength();
@@ -199,12 +197,17 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         } catch (Exception ex) {
             handleException(ex);
         }
-               
 
         if (model.isHashed()) {
-            if (model.getEmail() != null && model.getEmail().startsWith("~~")) model.setEmail(GDPR_REMOVED_STRING);
-            if (model.getFirstName() != null && model.getFirstName().startsWith("~~")) model.setFirstName(GDPR_REMOVED_STRING);
-            if (model.getLastName() != null && model.getLastName().startsWith("~~")) model.setLastName(GDPR_REMOVED_STRING);
+            if (model.getEmail() != null && model.getEmail().startsWith("~~")) {
+                model.setEmail(GDPR_REMOVED_STRING);
+            }
+            if (model.getFirstName() != null && model.getFirstName().startsWith("~~")) {
+                model.setFirstName(GDPR_REMOVED_STRING);
+            }
+            if (model.getLastName() != null && model.getLastName().startsWith("~~")) {
+                model.setLastName(GDPR_REMOVED_STRING);
+            }
         }
     }
 
@@ -286,7 +289,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
 
     public String getGridViewUser() {
 
-        if((!getIsChoxAdmin() && getUserOrganisationType() != organisationTypeId)
+        if ((!getIsChoxAdmin() && getUserOrganisationType() != organisationTypeId)
                 || (!getIsChoxAdmin() && getUserOrganisationId() != organisationId)) {
             LOG.warn("Not in correct organisation to view data: organisationTypeId={} ({}), organisationId={} ({})",
                     new Object[]{organisationTypeId, getUserOrganisationType(), organisationId, getUserOrganisationId()});
@@ -307,8 +310,6 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         return SUCCESS;
     }
 
-
-    
     public boolean getIsWorkgroupEnabled() {
         boolean isEnable = false;
         if (model.getInsurer() != null) {
@@ -321,17 +322,32 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     public String updateUserDetail() throws Exception {
 
         try {
-            LOG.debug("getUserOrganisationType(): {} getUserOrganisationId(): {} this.insurerId: {} this.supplierId: {} model.isAnInsurer(): {}", 
-                    new Object[] {getUserOrganisationType(), getUserOrganisationId(), this.insurerId, this.supplierId, model.isAnInsurer()});
-            
+            LOG.debug("getUserOrganisationType(): {} getUserOrganisationId(): {} this.insurerId: {} this.supplierId: {} model.isAnInsurer(): {}",
+                    new Object[]{getUserOrganisationType(), getUserOrganisationId(), this.insurerId, this.supplierId, model.isAnInsurer()});
+
             if ((getUserOrganisationType() == 2 && ((this.insurerId == -1 && (!model.isAnInsurer() || model.getInsurer().getId().intValue() != getUserOrganisationId()))
-                        || (this.insurerId != -1 && (this.insurerId != getUserOrganisationId()))))
+                    || (this.insurerId != -1 && (this.insurerId != getUserOrganisationId()))))
                     || (getUserOrganisationType() == 3 && ((model.isAnInsurer() || (this.supplierId == -1 && model.getChorganisation().getId().intValue() != getUserOrganisationId()))
-                        || (this.supplierId != -1 && this.supplierId != getUserOrganisationId())))
-                    || (getUserOrganisationType() != 1 && this.organisationTypeId != getUserOrganisationType()) ) {
+                    || (this.supplierId != -1 && this.supplierId != getUserOrganisationId())))
+                    || (getUserOrganisationType() != 1 && this.organisationTypeId != getUserOrganisationType())) {
                 throw new AccessDeniedException("Trying to create a user not of my organisation (POSSIBLE HACK ATTEMPT)");
             }
-            
+
+            // Check password: min length, one digit, one lowercase letter, one uppercase letter
+            int minPasswordLength = 8;
+            if (organisationTypeId == 2 && insurerService != null) {
+                minPasswordLength = insurerService.getInsurer(organisationId).getMinimumPasswordLength();
+            } else if (organisationTypeId == 3 && chorganisationService != null) {
+                Chorganisation cho = chorganisationService.getChorganisation(organisationId);
+                minPasswordLength = cho.getMinimumPasswordLength();
+            }
+
+            Pattern passwordPattern = Pattern.compile(passwordPatternString.replace("<minPasswordLength>", Integer.toString(minPasswordLength)));
+            if (!passwordPattern.matcher(model.getPassword()).matches()) {
+                LOG.warn("Attempt to set an invalid password: {}", model.getPassword());
+                throw new AccessDeniedException("Trying to create an invalid password");
+            }
+
             if (model.isHashed() && !model.getStatus()) {
                 throw new Exception("Cannot update an inactive user that has been hashed - this user must be activated to update.");
             }
@@ -340,12 +356,12 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             }
 
             checkVersion(model);
-            
+
             ActionResponse response;
-            
+
             if (getIsNew()) {
                 response = adminUserService.doAddNewUser(model, this.insurerId, this.supplierId, this.organisationTypeId);
-            } else if (model.getStatus()){
+            } else if (model.getStatus()) {
                 // CHOX-313: if user was previously inactive, we need to clear the last login date
                 if (!originalUserStatus) {
                     model.setLastLoginDate(null);
@@ -364,7 +380,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             }
             updateModelInSession(model);
             setActionResponse(response);
-        
+
         } catch (Exception ex) {
             handleException(ex);
             return ERROR;
@@ -377,12 +393,12 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     public String updateUserPassword() throws Exception {
         LOG.debug("Updating user password.");
         try {
-            LOG.debug("getUserOrganisationType()={} model.isAnInsurer()={} model.getId()={} model.getChorganisation()={} getUserOrganisationId()={} getAuthenticatedUser().getId()={} getRoleTypeForHelpFile()={}", 
+            LOG.debug("getUserOrganisationType()={} model.isAnInsurer()={} model.getId()={} model.getChorganisation()={} getUserOrganisationId()={} getAuthenticatedUser().getId()={} getRoleTypeForHelpFile()={}",
                     new Object[]{getUserOrganisationType(), model.isAnInsurer(), model.getId(), model.getChorganisation(), getUserOrganisationId(), getAuthenticatedUser().getId(), getRoleTypeForHelpFile()});
 
             if ((getUserOrganisationType() == 2 && (!model.isAnInsurer() || model.getInsurer().getId().intValue() != getUserOrganisationId()))
                     || (getUserOrganisationType() == 3 && (model.isAnInsurer() || (model.getChorganisation() == null || model.getChorganisation().getId().intValue() != getUserOrganisationId())))) {
-                    LOG.warn("Access Denied for user trying to update password: getUserOrganisationType()={} model.isAnInsurer()={} model.getId()={} model.getChorganisation()={} getUserOrganisationId()={} getAuthenticatedUser().getId()={} getRoleTypeForHelpFile()={}", 
+                LOG.warn("Access Denied for user trying to update password: getUserOrganisationType()={} model.isAnInsurer()={} model.getId()={} model.getChorganisation()={} getUserOrganisationId()={} getAuthenticatedUser().getId()={} getRoleTypeForHelpFile()={}",
                         new Object[]{getUserOrganisationType(), model.isAnInsurer(), model.getId(), model.getChorganisation(), getUserOrganisationId(), getAuthenticatedUser().getId(), getRoleTypeForHelpFile()});
                 throw new AccessDeniedException("Trying to update the password of a user not of my organisation (or not me) (POSSIBLE HACK ATTEMPT)");
             }

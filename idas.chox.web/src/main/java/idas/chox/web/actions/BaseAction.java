@@ -371,6 +371,14 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
     }
 
+    public boolean getInsurerIsDiscountsEnabled() {
+        if (!getIsInsurer()) {
+            return true;
+        } else {
+            return getAuthenticatedUser().getInsurer().isInsurerDiscountEnable();
+        }
+    }
+
     public boolean getInsurerOnlineSupportEnabled() {
         if (!getIsInsurer()) {
             return true;

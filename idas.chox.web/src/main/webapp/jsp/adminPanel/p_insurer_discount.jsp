@@ -563,6 +563,7 @@
     
 </script>
 <div class="sub-admin-tab-css">
+<s:if test="insurerIsDiscountsEnabled">
     
     <div class="status-info">
         This tab allows you to setup discounts for CHOs. The discount can be off the hire, repair and/or total as submitted by the CHO and you can also select the period the discount should be applied from and to, the period will be based on the date the invoice was submitted into CHOX by the CHO. If the invoice is amended by the CHO then the discount will be applied to the revised amount(s).
@@ -640,4 +641,5 @@
     </div>
     
     <div id="insurerDiscount_gridviewGridPanel"></div>
+</s:if>
 </div>
