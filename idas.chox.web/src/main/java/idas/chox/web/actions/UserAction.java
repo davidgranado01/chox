@@ -148,6 +148,13 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String doRenderActionPage() {
+        // Check org of user model is in same org as user
+        WebUser user = this.getAuthenticatedUser();
+        if ((user.isCHO() && !model.isCHO()) || (user.isAnInsurer() && !model.isAnInsurer())) {
+            LOG.error("Illegal attempt to access user data from user {} ({}): attempted to access user {} ({})",
+                    new Object[]{user.getDisplayName(), user.getId(), model.getDisplayName(), model.getId()});
+            throw new AccessDeniedException("Illegal attempt to access user data");
+        }
         updateModelInSession(model);
         return SUCCESS;
     }
