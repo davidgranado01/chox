@@ -125,6 +125,14 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 
         if (orgId >= 0) {
             boolean isValid = false;
+            // Check user has at least 2 roles
+            if (user.getRoles().size() < 2) {
+                String blockedMessage = URLEncoder.encode("Login failed due to incorrect role assignment - please contact CHOX Support", "UTF-8");
+                HttpServletResponse httpResponse = response;
+                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                request.getSession().invalidate();
+                getRedirectStrategy().sendRedirect(request, response, blockedUrl + "&message=" + blockedMessage);
+            }
 
             LOG.trace("IP Whitelist enabled for user '{}' - validating.", user.getFullName());
             // Get client's IP address
