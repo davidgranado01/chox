@@ -68,13 +68,13 @@ public class AdminUserService extends SecureDataService {
     }
 
     // <editor-fold defaultstate="collapsed" desc="USERS">
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
-    public ActionResponse updateUser(WebUser webUser) {
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager", rollbackFor = Exception.class)
+    public ActionResponse updateUser(WebUser webUser) throws Exception {
         this.actionResponse = new ActionResponse();
         if (!this.userService.isUserNameExist(webUser.getUserName(), webUser.getId())) {
             this.userService.saveUser(webUser);
         } else {
-            this.getActionResponse().AddError("User Name already exists in CHOX");
+            throw new Exception("User Name already exists in CHOX");
         }
         return this.actionResponse;
     }
@@ -132,8 +132,8 @@ public class AdminUserService extends SecureDataService {
         return this.actionResponse;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
-    public ActionResponse doAddNewUser(WebUser webUser, Integer insurerId, Integer supplierId, Integer organisationTypeId) {
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager", rollbackFor = Exception.class)
+    public ActionResponse doAddNewUser(WebUser webUser, Integer insurerId, Integer supplierId, Integer organisationTypeId) throws Exception {
 
         this.actionResponse = new ActionResponse();
 
@@ -158,7 +158,7 @@ public class AdminUserService extends SecureDataService {
             this.actionResponse.AssignNewIdResult(webUser.getId());
 
         } else {
-            this.actionResponse.AddError("User Name already exists in CHOX");
+            throw new Exception("User Name already exists in CHOX");
         }
         return this.actionResponse;
     }
