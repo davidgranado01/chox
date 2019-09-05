@@ -72,6 +72,12 @@ function getEmailReceivers {
         "DLG-Monthly_Manual_CHOX_Cost_Report_By_Team-"* )
 	        ACTIVE=1
             EMAIL_RECEIVERS=Steven.Talbot@directlinegroup.co.uk,stephen.hiscock@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk,Karen.Dean@nig-uk.com,claire.wills@directline.com,Angela.Kehoe@nig-uk.com,Simon.Holt@directlinegroup.co.uk,Claire.Ratcliffe@nig-uk.com,Annalise.Bartlett@nig-uk.com,tam.bedford@directlinegroup.co.uk;;
+        "DLG-ClaimDetailsDump-"* |\
+        "DLG-InvoiceDetailsDump-"* |\
+        "DLG-ClaimCycleDump-"* |\
+        "DLG-NotesDump-"* )
+            ACTIVE=1
+            EMAIL_RECEIVERS=ClaimsAnalytics-motor@directlinegroup.co.uk:;;
         "Octagon-Monthly_Insurer_Cost_Report-"* )
 	        ACTIVE=1
             EMAIL_RECEIVERS=carl.cripps@catalystcsl.co.uk,Terry.Clarke@catalystcsl.co.uk,tony.collins@horizon.gi;;
@@ -185,7 +191,7 @@ function getEmailReceivers {
         "ERAC-Daily_Data_Export-"* )
             ACTIVE=4
             FTP_CLIENT=EHI;;
-#            EMAIL_RECEIVERS=jenny.graham@sherwoodts.co.uk,Nicola.A.Imlach@ehi.com,Christopher.J.Smith@ehi.com,Lauren.D.Walker@ehi.com;;
+#            EMAIL_RECEIVERS=Nicola.A.Imlach@ehi.com,Christopher.J.Smith@ehi.com,Lauren.D.Walker@ehi.com;;
 # This AE Processed Notification report now has its own template
         "RSA-CHOXinvoice"* )
             ACTIVE=4
