@@ -49,7 +49,7 @@ where c.id = at.claim_id
     and (choIds is null or c.chorganisation_id = ANY(choIds))
     and (claimTypes is null or c.claim_type = ANY(claimTypes))
     and c.created_date >= claimUploadDate::Date
-    and ((c.status!=ALL(closedClaimStatuses) and c.status!=ALL(openClaimStatuses))
+    and ((c.status!=ALL(closedClaimStatuses) and (openClaimStatuses is null or c.status!=ALL(openClaimStatuses)))
             or ((c.status=ANY(closedClaimStatuses) or (openClaimStatuses is not null and c.status=ANY(openClaimStatuses))) and c.status_modified_date >= closedClaimDate::Date))
 order by c.created_date, c.cho_reference, at.last_modified_date;
 
