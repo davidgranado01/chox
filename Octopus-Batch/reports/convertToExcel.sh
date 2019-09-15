@@ -77,7 +77,7 @@ function getEmailReceivers {
         "DLG-ClaimCycleDump-"* |\
         "DLG-NotesDump-"* )
             ACTIVE=1
-            EMAIL_RECEIVERS=ClaimsAnalytics-motor@directlinegroup.co.uk:;;
+            EMAIL_RECEIVERS=ClaimsAnalytics-motor@directlinegroup.co.uk;;
         "Octagon-Monthly_Insurer_Cost_Report-"* )
 	        ACTIVE=1
             EMAIL_RECEIVERS=carl.cripps@catalystcsl.co.uk,Terry.Clarke@catalystcsl.co.uk,tony.collins@horizon.gi;;
