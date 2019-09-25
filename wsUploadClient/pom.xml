@@ -59,17 +59,11 @@
                             <vmArgs>
                                 <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
                             </vmArgs>
-                            <!--wsdlFiles>
-                                <wsdlFile>test.idaschox.com_8443/services/UploadService.wsdl</wsdlFile>
-                            </wsdlFiles -->
-                            <wsdlUrls>
-                                <wsdlUrl>https://www.idaschox.com/services/UploadService?wsdl</wsdlUrl>
-                                <!--                                <wsdlUrl>https://localhost:8443/services/UploadService?wsdl</wsdlUrl>-->
-                                <!--                                <wsdlUrl>https://test.idaschox.com/services/UploadService?wsdl</wsdlUrl>-->
-                            </wsdlUrls>
-                            <wsdlLocation>https://www.idaschox.com/services/UploadService?wsdl</wsdlLocation>
-                            <!--                           <wsdlLocation>https://localhost:8443/services/UploadService?wsdl</wsdlLocation>-->
-                            <!--                            <wsdlLocation>https://test.idaschox.com/services/UploadService?wsdl</wsdlLocation> -->
+                            <wsdlDirectory>../idas.chox.web/src/main/resources/wsdl/</wsdlDirectory>
+                            <wsdlFiles>
+                                <wsdlFile>chox-webservices.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <wsdlLocation>wsdl/*</wsdlLocation>
                             <staleFile>${project.build.directory}/jaxws/stale/UploadService.stale</staleFile>
                         </configuration>
                     </execution>
@@ -150,7 +144,8 @@
                     <groupId>com.sun.xml.bind</groupId>
                     <artifactId>jaxb-impl</artifactId>
                 </exclusion>
-            </exclusions>        </dependency>
+            </exclusions>        
+        </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http-jetty</artifactId>

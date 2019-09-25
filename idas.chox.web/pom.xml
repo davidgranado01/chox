@@ -262,7 +262,7 @@
                             <targetPath>WEB-INF</targetPath>
                             <includes>
                                 <include>jax-ws-catalog.xml</include>
-                                <include>wsdl/**</include>
+                                <!--include>wsdl/**</include-->
                             </includes>
                         </resource>
                     </webResources>
