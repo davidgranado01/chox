@@ -55,7 +55,7 @@
         
             
         var userManagementPagingBar = new Ext.PagingToolbar({
-            pageSize: (function(){return ($.browser.mozilla === true ? 22 : 23);}()),
+            pageSize: (function(){return 23;}()),
             store: userManagementgridStore,
             displayInfo: true,
             displayMsg: 'Displaying users {0} - {1} of {2}'
@@ -135,7 +135,7 @@
             params:
                 {
                 start:0, 
-                limit:(function(){return ($.browser.mozilla === true ? 22 : 23);}())
+                limit:(function(){return 23;}())
             }
         });
 

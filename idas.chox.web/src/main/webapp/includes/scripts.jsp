@@ -1,19 +1,20 @@
-<script src="<%= request.getContextPath()%>/scripts/jquery/jquery-1.7.1.js" type="text/javascript" ></script>
+<script src="<%= request.getContextPath()%>/scripts/jquery/jquery-3.4.1.js" type="text/javascript" ></script>
+<script src="<%= request.getContextPath()%>/scripts/jquery/jquery-migrate-3.1.0.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.form.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.blockUI.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.metadata.js" type="text/javascript"></script>
-<script src="<%= request.getContextPath()%>/scripts/jquery/ext-jquery-adapter.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/additional-methods.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/jquery/jquery.timer.js" type="text/javascript" ></script>
+<script src="<%= request.getContextPath()%>/scripts/jquery/ext-jquery-adapter.js" type="text/javascript" ></script>
 <script src="<%= request.getContextPath()%>/scripts/extjs/ext-base-3.4.1.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/extjs/ext-all-3.4.1.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/extjs/SuperBoxSelect.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/extjs/ProgressBarPager-3.4.0.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/extjs/RowEditor-3.3.1.js" type="text/javascript"></script>
-<script src="<%= request.getContextPath()%>/scripts/jquery/jquery.form.js" type="text/javascript" ></script>
-<script src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.js" type="text/javascript"></script>
-<script src="<%= request.getContextPath()%>/scripts/jquery/additional-methods.js" type="text/javascript"></script>
+<!--script src="<%= request.getContextPath()%>/scripts/jquery/jquery.form.js" type="text/javascript" ></script-->
+<!--script src="<%= request.getContextPath()%>/scripts/jquery/jquery.validate.js" type="text/javascript"></script-->
+<!--script src="<%= request.getContextPath()%>/scripts/jquery/additional-methods.js" type="text/javascript"></script-->
 
 <script src="<%= request.getContextPath()%>/scripts/general.js" type="text/javascript"></script>
 <script src="<%= request.getContextPath()%>/scripts/Application.js" type="text/javascript"></script>

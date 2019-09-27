@@ -61,7 +61,7 @@
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>yuicompressor-maven-plugin</artifactId>
-                <version>1.1</version>
+                <version>1.5.1</version>
                 <executions>
                     <execution>
                         <phase>process-classes</phase>
@@ -72,26 +72,33 @@
                 </executions>
                 <configuration>
                     <!-- For non-minimised (i.e. development=true) builds, the include order for js/css files is defined in the styles/scripts files. -->
+                            <excludes>
+                                <exclude>**/jquery/jquery-3.4.1.js</exclude>
+                            </excludes>
                     <aggregations>
                         <!--  JS aggregation  -->
                         <aggregation>
                             <insertNewLine>true</insertNewLine>
                             <removeIncluded>false</removeIncluded>
                             <includes>
-                                <include>**/jquery/jquery-1.7.1-min.js</include>
+                                <include>**/jquery/jquery-3.4.1.min.js</include>
+                                <include>**/jquery/jquery-migrate-3.1.0-min.js</include>
                                 <include>**/jquery/jquery.form-min.js</include>
                                 <include>**/jquery/jquery.validate-min.js</include>
                                 <include>**/jquery/jquery.blockUI-min.js</include>
-                                <include>**/query/jquery.metadata-min.js</include>
-                                <include>**/extjs/ext-jquery-adapter-min.js</include>
+                                <include>**/jquery/jquery.metadata-min.js</include>
                                 <include>**/jquery/additional-methods-min.js</include>
                                 <include>**/jquery/jquery.timer-min.js</include>
+                                <include>**/extjs/ext-jquery-adapter-min.js</include>
                                 <include>**/extjs/ext-base-3.4.1-min.js</include>
                                 <include>**/extjs/ext-all-3.4.1-min.js</include>
                                 <include>**/extjs/SuperBoxSelect-min.js</include>
                                 <include>**/extjs/RowEditor-3.3.1-min.js</include>
                                 <include>**/extjs/ProgressBarPager-3.4.0-min.js</include>
                             </includes>
+                            <!--excludes>
+                                <exclude>**/jquery/jquery-3.4.1.min.js</exclude>
+                            </excludes-->
                             <output>${project.build.directory}/${project.build.finalName}/scripts/libs-${js.aggregator.libs}-min.js</output>
                         </aggregation>
                         <aggregation>
@@ -660,7 +667,7 @@
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
             <version>4.5</version>
-	</dependency>
+        </dependency>
         <!-- Runtime Dependencies -->
         <!--        <dependency>
             <groupId>org.jboss.logging</groupId>

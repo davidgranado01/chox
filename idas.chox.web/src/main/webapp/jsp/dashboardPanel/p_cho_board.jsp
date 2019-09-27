@@ -35,7 +35,7 @@
             
             var thisList = $(".dbValue");
 
-            for (i=0; i<thisList.size(); i=i+1)
+            for (i=0; i<thisList.length; i=i+1)
             {
                var bValue = $(".dbValue:eq("+i+")").html();
 

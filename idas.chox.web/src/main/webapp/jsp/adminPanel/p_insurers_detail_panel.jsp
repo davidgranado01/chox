@@ -204,7 +204,7 @@
        // the default value to the claimOwner and Workgroup. The actual form submission 
        // is performed by ui.ajaxForm($("form#formUpdateInsurerDetail"), doSubmitInsurerSucceed);
        // The below submit will not submit the form because the above said(ui.ajaxform) call back function returns false. 
-        $("#formUpdateInsurerDetail").submit(function(){
+        $("#formUpdateInsurerDetail").on("submit", function(){
             if($("[name='claimOwnerIdField']").val() === ""){
                 $("[name='claimOwnerIdField']").val(-1);
                 }

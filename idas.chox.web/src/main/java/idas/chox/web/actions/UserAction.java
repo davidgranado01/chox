@@ -253,6 +253,14 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
         this.organisationTypeId = organisationTypeId;
     }
 
+    public int getOrganisationTypeId2() {
+        return organisationTypeId;
+    }
+
+    public void setOrganisationTypeId2(int organisationTypeId) {
+        this.organisationTypeId = organisationTypeId;
+    }
+
     public int getOrganisationId() {
         return organisationId;
     }
@@ -325,27 +333,29 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             LOG.debug("getUserOrganisationType(): {} getUserOrganisationId(): {} this.insurerId: {} this.supplierId: {} model.isAnInsurer(): {}",
                     new Object[]{getUserOrganisationType(), getUserOrganisationId(), this.insurerId, this.supplierId, model.isAnInsurer()});
 
-            if ((getUserOrganisationType() == 2 && ((this.insurerId == -1 && (!model.isAnInsurer() || model.getInsurer().getId().intValue() != getUserOrganisationId()))
+            if ((getUserOrganisationType() == 2 && ((this.insurerId == -1 && (!model.isAnInsurer() || model.getInsurer().getId() != getUserOrganisationId()))
                     || (this.insurerId != -1 && (this.insurerId != getUserOrganisationId()))))
-                    || (getUserOrganisationType() == 3 && ((model.isAnInsurer() || (this.supplierId == -1 && model.getChorganisation().getId().intValue() != getUserOrganisationId()))
+                    || (getUserOrganisationType() == 3 && ((model.isAnInsurer() || (this.supplierId == -1 && model.getChorganisation().getId() != getUserOrganisationId()))
                     || (this.supplierId != -1 && this.supplierId != getUserOrganisationId())))
                     || (getUserOrganisationType() != 1 && this.organisationTypeId != getUserOrganisationType())) {
                 throw new AccessDeniedException("Trying to create a user not of my organisation (POSSIBLE HACK ATTEMPT)");
             }
 
-            // Check password: min length, one digit, one lowercase letter, one uppercase letter
-            int minPasswordLength = 8;
-            if (organisationTypeId == 2 && insurerService != null) {
-                minPasswordLength = insurerService.getInsurer(organisationId).getMinimumPasswordLength();
-            } else if (organisationTypeId == 3 && chorganisationService != null) {
-                Chorganisation cho = chorganisationService.getChorganisation(organisationId);
-                minPasswordLength = cho.getMinimumPasswordLength();
-            }
+            if (getIsNew()) { // Check Password
+                // Check password: min length, one digit, one lowercase letter, one uppercase letter
+                int minPasswordLength = 8;
+                if (organisationTypeId == 2 && insurerService != null) {
+                    minPasswordLength = insurerService.getInsurer(insurerId).getMinimumPasswordLength();
+                } else if (organisationTypeId == 3 && chorganisationService != null) {
+                    Chorganisation cho = chorganisationService.getChorganisation(supplierId);
+                    minPasswordLength = cho.getMinimumPasswordLength();
+                }
 
-            Pattern passwordPattern = Pattern.compile(passwordPatternString.replace("<minPasswordLength>", Integer.toString(minPasswordLength)));
-            if (!passwordPattern.matcher(model.getPassword()).matches()) {
-                LOG.warn("Attempt to set an invalid password: {}", model.getPassword());
-                throw new AccessDeniedException("Trying to create an invalid password");
+                Pattern passwordPattern = Pattern.compile(passwordPatternString.replace("<minPasswordLength>", Integer.toString(minPasswordLength)));
+                if (!passwordPattern.matcher(model.getPassword()).matches()) {
+                    LOG.warn("Attempt to set an invalid password: {}", model.getPassword());
+                    throw new AccessDeniedException("Trying to create an invalid password");
+                }
             }
 
             if (model.isHashed() && !model.getStatus()) {
@@ -355,12 +365,12 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
                 model.setHashed(false);
             }
 
-            checkVersion(model);
+           checkVersion(model);
 
             ActionResponse response;
 
             if (getIsNew()) {
-                response = adminUserService.doAddNewUser(model, this.insurerId, this.supplierId, this.organisationTypeId);
+                response = adminUserService.doAddNewUser(model, insurerId, supplierId, this.organisationTypeId);
             } else if (model.getStatus()) {
                 // CHOX-313: if user was previously inactive, we need to clear the last login date
                 if (!originalUserStatus) {
@@ -382,6 +392,7 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
             setActionResponse(response);
 
         } catch (Exception ex) {
+            LOG.debug("Exceptio updating user: {}", ex.getMessage(), ex);
             handleException(ex);
             return ERROR;
         }
@@ -391,13 +402,12 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
 
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String updateUserPassword() throws Exception {
-        LOG.debug("Updating user password.");
         try {
             LOG.debug("getUserOrganisationType()={} model.isAnInsurer()={} model.getId()={} model.getChorganisation()={} getUserOrganisationId()={} getAuthenticatedUser().getId()={} getRoleTypeForHelpFile()={}",
                     new Object[]{getUserOrganisationType(), model.isAnInsurer(), model.getId(), model.getChorganisation(), getUserOrganisationId(), getAuthenticatedUser().getId(), getRoleTypeForHelpFile()});
 
-            if ((getUserOrganisationType() == 2 && (!model.isAnInsurer() || model.getInsurer().getId().intValue() != getUserOrganisationId()))
-                    || (getUserOrganisationType() == 3 && (model.isAnInsurer() || (model.getChorganisation() == null || model.getChorganisation().getId().intValue() != getUserOrganisationId())))) {
+            if ((getUserOrganisationType() == 2 && (!model.isAnInsurer() || model.getInsurer().getId() != getUserOrganisationId()))
+                    || (getUserOrganisationType() == 3 && (model.isAnInsurer() || (model.getChorganisation() == null || model.getChorganisation().getId() != getUserOrganisationId())))) {
                 LOG.warn("Access Denied for user trying to update password: getUserOrganisationType()={} model.isAnInsurer()={} model.getId()={} model.getChorganisation()={} getUserOrganisationId()={} getAuthenticatedUser().getId()={} getRoleTypeForHelpFile()={}",
                         new Object[]{getUserOrganisationType(), model.isAnInsurer(), model.getId(), model.getChorganisation(), getUserOrganisationId(), getAuthenticatedUser().getId(), getRoleTypeForHelpFile()});
                 throw new AccessDeniedException("Trying to update the password of a user not of my organisation (or not me) (POSSIBLE HACK ATTEMPT)");
@@ -420,8 +430,8 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String triggerUserAccountStatus() throws Exception {
 
-        if ((getUserOrganisationType() == 2 && (!model.isAnInsurer() || model.getInsurer().getId().intValue() != getUserOrganisationId()))
-                || (getUserOrganisationType() == 3 && (model.isAnInsurer() || (model.getChorganisation() == null || model.getChorganisation().getId().intValue() != getUserOrganisationId())))) {
+        if ((getUserOrganisationType() == 2 && (!model.isAnInsurer() || model.getInsurer().getId() != getUserOrganisationId()))
+                || (getUserOrganisationType() == 3 && (model.isAnInsurer() || (model.getChorganisation() == null || model.getChorganisation().getId() != getUserOrganisationId())))) {
             LOG.debug("Failed access validation - throwing AccessDeniedException");
             throw new AccessDeniedException("Trying to update the triggerUserAccountStatus of a user not of my organisation (or not me) (POSSIBLE HACK ATTEMPT)");
         }
@@ -442,8 +452,8 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
     @Secured({"ROLE_CHOX_ADMIN", "ROLE_INS_USER", "ROLE_CHO_USER"})
     public String triggerPasswordExpiredStatus() {
 
-        if ((getUserOrganisationType() == 2 && (!model.isAnInsurer() || model.getInsurer().getId().intValue() != getUserOrganisationId()))
-                || (getUserOrganisationType() == 3 && (model.isAnInsurer() || (model.getChorganisation() == null || model.getChorganisation().getId().intValue() != getUserOrganisationId())))) {
+        if ((getUserOrganisationType() == 2 && (!model.isAnInsurer() || model.getInsurer().getId() != getUserOrganisationId()))
+                || (getUserOrganisationType() == 3 && (model.isAnInsurer() || (model.getChorganisation() == null || model.getChorganisation().getId() != getUserOrganisationId())))) {
             LOG.debug("Failed access validation - throwing AccessDeniedException");
             throw new AccessDeniedException("Trying to update the triggerPasswordExpiredStatus of a user not of my organisation (or not me) (POSSIBLE HACK ATTEMPT)");
         }

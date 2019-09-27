@@ -78,7 +78,8 @@
         ui.ajaxForm($("form#formUpdateUserDetail"), function(responseText, statusText){
 
             var response = eval('(' + responseText.trim() + ')');
-
+console.log("ResponseText is " + responseText);
+console.log("statusText is " + statusText);
             if(response && response.isValid)
             {
 
@@ -374,7 +375,7 @@
                 <div style="padding-top:20px;">
                     <form autocomplete="off" id="formUpdatePassword" action="<%= request.getContextPath()%>/prv/p/updateUserPassword.action" class="XXentity-form" method="post">
                         <input type="hidden" name="objectId" value='<s:property value="objectId"/>'>
-                        <input name="organisationTypeId" id="organisationTypeId" type="hidden" value="<s:property value="organisationTypeId" />">
+                        <input name="organisationTypeId2" id="organisationTypeId2" type="hidden" value="<s:property value="organisationTypeId" />">
                         <div class="form-container">
                             <div class="chox-form-item">
                                 <label class="chox-form-std-label" style="width: 260px;">Password<span class="mandatory">*</span></label>

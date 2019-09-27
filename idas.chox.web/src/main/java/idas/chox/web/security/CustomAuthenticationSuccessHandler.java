@@ -123,16 +123,17 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                 break;
         }
 
+        if (user.getRoles().size() < 2) {
+            String blockedMessage = URLEncoder.encode("Login failed due to incorrect role assignment - please contact CHOX Support", "UTF-8");
+            HttpServletResponse httpResponse = response;
+            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            request.getSession().invalidate();
+            getRedirectStrategy().sendRedirect(request, response, blockedUrl + "&message=" + blockedMessage);
+        }
+
         if (orgId >= 0) {
             boolean isValid = false;
             // Check user has at least 2 roles
-            if (user.getRoles().size() < 2) {
-                String blockedMessage = URLEncoder.encode("Login failed due to incorrect role assignment - please contact CHOX Support", "UTF-8");
-                HttpServletResponse httpResponse = response;
-                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                request.getSession().invalidate();
-                getRedirectStrategy().sendRedirect(request, response, blockedUrl + "&message=" + blockedMessage);
-            }
 
             LOG.trace("IP Whitelist enabled for user '{}' - validating.", user.getFullName());
             // Get client's IP address
@@ -203,20 +204,20 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
 
         // Check if KBBS Dashboards enabled and if so authenticate
         boolean kbbsEnabled = false;
-        
+
         if ((isInsurer && user.getInsurer().isEnableKbbsDashboard())) {
             // Insurer must have both MI Access and Manager roles to access the dashboards
             kbbsEnabled = RoleHelper.isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_INS_MNG)
-                                && RoleHelper.isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_INS_MI);
+                    && RoleHelper.isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_INS_MI);
         }
-        
+
         if (isCHO && user.getChorganisation().isEnableKbbsDashboard()) {
             // Currently no Dashboards for CHO
 //            kbbsEnabled = RoleHelper.isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_CHO_MNG)
 //                                && RoleHelper.isCheckSelectedRoleExist(user.getRoles(), WebUserRole.ROLE_CHO_MI);            
 
         }
-        
+
         if (kbbsEnabled) {
             String kbbsAuthenticationToken = userService.kbbsAuthenticate(user);
             // Add Authentication Cookie
@@ -238,13 +239,13 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                 response.addCookie(cookie);
             }
         } else {
-                Cookie cookie = new Cookie("ASP.NET_Token", "NOT_AUTHORISED");
-                cookie.setDomain("idaschox.com");
-                cookie.setMaxAge(-1);
-                cookie.setHttpOnly(true);
-                cookie.setPath("/");
-                cookie.setSecure(true);
-                response.addCookie(cookie);
+            Cookie cookie = new Cookie("ASP.NET_Token", "NOT_AUTHORISED");
+            cookie.setDomain("idaschox.com");
+            cookie.setMaxAge(-1);
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");
+            cookie.setSecure(true);
+            response.addCookie(cookie);
         }
 
         // Add orgId to session
