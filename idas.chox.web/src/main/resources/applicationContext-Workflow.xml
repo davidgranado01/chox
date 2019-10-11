@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
        default-autowire="byName">
 
     <bean id="workflowContext" class="idas.chox.service.workflow.ClaimProcessWorkflowContext" scope="prototype">
@@ -17,7 +17,7 @@
     <bean id="newClaim" class="idas.chox.service.workflow.activities.NewClaim" scope="prototype">
         <property name="chainActivity" ref="workgroupRouting" />
         <property name="breBandService" ref="breBandService" />
-        <property name="keoghs" ref="keoghs" />
+        <!--property name="keoghs" ref="keoghs" /-->
     </bean>
     <bean id="claimMatching" class="idas.chox.service.workflow.activities.ClaimMatching" scope="prototype">
         <property name="claimMatchingBandService" ref="claimMatchingBandService" />
@@ -66,13 +66,13 @@
         <property name="vehicleClassPriceService" ref="vehicleClassPriceService" />
         <property name="userService" ref="userService" />
         <property name="brePenaltyBandService" ref="brePenaltyBandService" />
-        <property name="keoghs" ref="keoghs" />
+        <!--property name="keoghs" ref="keoghs" /-->
     </bean>
     <bean id="insurerUpload" class="idas.chox.service.workflow.activities.InsurerUpload" scope="prototype">
         <property name="breBandService" ref="breBandService" />
         <property name="insurerDiscountService" ref="insurerDiscountService" />
         <property name="userService" ref="userService" />
-        <property name="keoghs" ref="keoghs" />
+        <!--property name="keoghs" ref="keoghs" /-->
     </bean>
     <bean id="newTpiClaim" class="idas.chox.service.workflow.activities.NewTpiClaim" scope="prototype"/>
     <bean id="closeClaim" class="idas.chox.service.workflow.activities.CloseClaim" scope="prototype"/>
@@ -166,7 +166,7 @@
         <property name="vehicleClassService" ref="vehicleClassService" />
     </bean>
     <bean id="runFraudCheck" class="idas.chox.service.workflow.activities.RunFraudCheck" scope="prototype">
-        <property name="keoghs" ref="keoghs" />
+        <!--property name="keoghs" ref="keoghs" /-->
     </bean>
     <bean id="referFraudCheck" class="idas.chox.service.workflow.activities.ReferFraudCheck" scope="prototype">
         <property name="keoghsReceiver" value="${keoghsReceiver}"/>

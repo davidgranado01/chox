@@ -14,6 +14,8 @@ import net.sf.jxls.transformer.XLSTransformer;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.ClientAnchor.AnchorType;
 import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -64,7 +66,7 @@ public class ExcelReportBuilder implements ReportBuilder {
             Sheet sheet = resultWorkbook.getSheetAt(0);
             Drawing patriarch = sheet.createDrawingPatriarch();
             patriarch.createPicture(anchor, index);
-            anchor.setAnchorType(2);
+            anchor.setAnchorType(AnchorType.DONT_MOVE_DO_RESIZE);
 
         } catch (IOException ioe) {
             LOG.error("Exception adding image to report: " + ioe.getMessage(), ioe);

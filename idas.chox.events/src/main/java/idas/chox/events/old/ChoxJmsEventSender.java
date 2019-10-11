@@ -1,8 +1,5 @@
 package idas.chox.events.old;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Session;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +8,6 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 
 import com.google.gson.Gson;
-import javax.jms.DeliveryMode;
 
 /**
  *
@@ -28,6 +24,9 @@ public class ChoxJmsEventSender {
 
     
     public void send(final Event event) throws Exception {
+        LOG.error("JMS functionality has been removed");
+        throw new Exception("No JMS!");
+/****
         // Create a json string from the Event object and send as text message
         Gson gson = new Gson();
         final String jsonMessage = gson.toJson(event);
@@ -60,6 +59,7 @@ public class ChoxJmsEventSender {
             LOG.error("Error sending message: {}", ex.getMessage(), ex);
             throw ex;
         }
+*****/
     }
 
 }

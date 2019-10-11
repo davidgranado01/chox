@@ -12,6 +12,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
 
 import org.slf4j.Logger;
@@ -63,10 +64,10 @@ public class ReportToExcelTemplate {
 //                            cellStyle.setAlignment(existingCell.getCellStyle().getAlignment());
 //                            newCell.setCellType(existingCell.getCellType());
                             //           newCell.setCellType(Cell.CELL_TYPE_STRING);
-                            cellStyle.setBorderBottom(CellStyle.BORDER_THIN);
-                            cellStyle.setBorderTop(CellStyle.BORDER_THIN);
-                            cellStyle.setBorderLeft(CellStyle.BORDER_THIN);
-                            cellStyle.setBorderRight(CellStyle.BORDER_THIN);
+                            cellStyle.setBorderBottom(BorderStyle.THIN);
+                            cellStyle.setBorderTop(BorderStyle.THIN);
+                            cellStyle.setBorderLeft(BorderStyle.THIN);
+                            cellStyle.setBorderRight(BorderStyle.THIN);
                             newCell.setCellStyle(cellStyle);
 
                             newCell.setCellValue(row[i]);

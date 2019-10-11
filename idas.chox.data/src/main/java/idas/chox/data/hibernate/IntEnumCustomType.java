@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.Arrays;
 import org.hibernate.HibernateException;
-import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.usertype.UserType;
 
 /**
@@ -60,7 +60,7 @@ public class IntEnumCustomType <E extends Enum<E>> implements UserType {
      * @throws java.sql.SQLException 
      */
     @Override
-    public Object nullSafeGet(ResultSet resultSet, String[] names, SessionImplementor session, Object owner)
+    public Object nullSafeGet(ResultSet resultSet, String[] names, SharedSessionContractImplementor session, Object owner)
         throws HibernateException, SQLException {
         final int val = resultSet.getShort(names[0]);
         E result = null;
@@ -89,7 +89,7 @@ public class IntEnumCustomType <E extends Enum<E>> implements UserType {
      */
     @Override
     public void nullSafeSet(PreparedStatement preparedStatement,
-      Object value, int index, SessionImplementor session) throws HibernateException, SQLException {
+      Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException {
         if (null == value) {
             preparedStatement.setNull(index, Types.SMALLINT);
         } else {

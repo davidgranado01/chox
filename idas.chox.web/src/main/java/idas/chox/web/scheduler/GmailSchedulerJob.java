@@ -16,8 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.quartz.DisallowConcurrentExecution;
-import org.springframework.orm.hibernate4.SessionHolder;
+import org.springframework.orm.hibernate5.SessionHolder;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -26,6 +27,7 @@ import idas.chox.core.services.GmailSchedulerJobService;
 import idas.chox.core.util.GmailUtils;
 import idas.chox.core.workflow.ScheduleActivity;
 import idas.chox.service.workflow.ScheduleActivityFactory;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 /**
  *
@@ -44,6 +46,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
     private Session session;
     private SessionFactory sessionFactory;
     private ScheduleActivityFactory scheduleActivityFactory;
+    private Transaction hibernateTransaction;
 
     public void setScheduleActivityFactory(ScheduleActivityFactory scheduleActivityFactory) {
         this.scheduleActivityFactory = scheduleActivityFactory;
@@ -248,9 +251,29 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
             LOG.debug("Session created.");
         }
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
+
+        if (!TransactionSynchronizationManager.isActualTransactionActive()) {
+            try {
+                hibernateTransaction = session.beginTransaction();
+                LOG.debug("Hibernate Transaction started: {}", hibernateTransaction);
+            } catch (HibernateException ex) {
+                LOG.error("Exception thrown starting hibernate transaction: {}\n", ex.getMessage(), ex);
+            }
+        } else {
+            LOG.debug("Transaction already active: {}", TransactionSynchronizationManager.getCurrentTransactionName());
+        }
     }
 
     private void releaseHibernateSessionConditionally() {
+        if (hibernateTransaction != null && hibernateTransaction.getStatus() == TransactionStatus.ACTIVE) {
+            hibernateTransaction.commit();
+            LOG.debug("Hibernate Transaction committed: {}", hibernateTransaction);
+        } else if (hibernateTransaction != null) {
+            LOG.debug("Hibernate Transaction status={}, ", hibernateTransaction.getStatus());
+        } else {
+            LOG.debug("Hibernate Transaction is null");
+        }
+
         if (session != null) {
             TransactionSynchronizationManager.unbindResource(sessionFactory);
             session.clear();

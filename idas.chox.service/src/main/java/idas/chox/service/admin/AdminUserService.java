@@ -6,8 +6,8 @@ import java.util.Date;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
@@ -202,8 +202,9 @@ public class AdminUserService extends SecureDataService {
     }
 
     public String encodePassword(String sPassword) {
-        PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
-        return passwordEncoder.encodePassword(sPassword, null);
+        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+        return passwordEncoder.encode(sPassword);
     }
 
     public ActionResponse triggerUserStatus(WebUser webUser) {

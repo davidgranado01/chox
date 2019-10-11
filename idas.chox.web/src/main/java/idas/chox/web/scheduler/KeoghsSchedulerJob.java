@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import idas.chox.core.model.SchedulerJob;
-import idas.chox.keoghs.Keoghs;
+//import idas.chox.keoghs.Keoghs;
 
 public class KeoghsSchedulerJob extends DbSchedulerJob {
 
@@ -17,11 +17,11 @@ public class KeoghsSchedulerJob extends DbSchedulerJob {
     private int maxPendingRequests;
     private int maxQueuedRequests;
     @Autowired
-    private Keoghs keoghs;
+//    private Keoghs keoghs;
 
-    public void setKeoghs(Keoghs keoghs) {
-        this.keoghs = keoghs;
-    }
+//    public void setKeoghs(Keoghs keoghs) {
+//        this.keoghs = keoghs;
+//    }
 
     public void setMaxPendingRequests(int maxPendingRequests) {
         this.maxPendingRequests = maxPendingRequests;
@@ -38,7 +38,8 @@ public class KeoghsSchedulerJob extends DbSchedulerJob {
             // Start new transaction?
             handleHibernateTransactionIntricacies();
             LOG.debug("Checking status of submitted requests...");
-            int noPendingRequests = keoghs.check();
+            int noPendingRequests = 0;
+//            int noPendingRequests = keoghs.check();
             LOG.debug("Total of {} claims pending at Keoghs (maxQueuedRequests={})", noPendingRequests, maxQueuedRequests);
             if ((maxQueuedRequests > 0 && noPendingRequests + maxQueuedRequests > maxPendingRequests)
                     || maxQueuedRequests < 0) {
@@ -47,7 +48,7 @@ public class KeoghsSchedulerJob extends DbSchedulerJob {
             
             if (noRequestsToQueue > 0) {
                 LOG.debug("Submitting maximum of {} new requests (maxPending={})", noRequestsToQueue, maxPendingRequests);
-                keoghs.submit(noRequestsToQueue);
+//                keoghs.submit(noRequestsToQueue);
             } else {
                 LOG.debug("Not submitting any new requests as there are {} already pending (noRequestsToQueue={})", maxPendingRequests, noRequestsToQueue);
             }

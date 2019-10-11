@@ -12,10 +12,11 @@ import org.hibernate.Transaction;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.orm.hibernate4.SessionHolder;
+import org.springframework.orm.hibernate5.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import idas.chox.data.services.BaseDataService;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 /**
  *
@@ -247,17 +248,20 @@ public class StoredProcSchedulerJob implements Scheduler, ApplicationContextAwar
     }
 
     public void releaseHibernateSessionConditionally() {
-        if (hibernateTransaction!=null && !hibernateTransaction.wasCommitted()) {
+        if (hibernateTransaction!=null && hibernateTransaction.getStatus() == TransactionStatus.ACTIVE) {
             hibernateTransaction.commit();
             LOG.debug("Transaction committed.");
         } else if (hibernateTransaction != null) {
-            LOG.debug("Hibernate Transaction wasCommitted={}, wasRolledBack={}", hibernateTransaction.wasCommitted(), hibernateTransaction.wasRolledBack());
+            LOG.debug("Hibernate Transaction getStatus={}", hibernateTransaction.getStatus());
         } else {
             LOG.debug("Hibernate Transaction is null");
         }
-        TransactionSynchronizationManager.unbindResource(sessionFactory);
-        session.clear();
-        session.close();
+        if (session != null) {
+            TransactionSynchronizationManager.unbindResource(sessionFactory);
+            session.clear();
+            session.close();
+            session = null;
+        }
     }
     
     public void setSessionFactory(SessionFactory sessionFactory) {

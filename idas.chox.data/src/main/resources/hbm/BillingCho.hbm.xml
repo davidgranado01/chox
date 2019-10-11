@@ -5,7 +5,7 @@
     <cache usage="nonstrict-read-write"/>
     <id column="id" name="id">
         <generator class="sequence">
-            <param name="sequence">billing_cho_id_seq</param>
+            <param name="sequence_name">billing_cho_id_seq</param>
         </generator>
     </id>
     <many-to-one class="idas.chox.core.model.Chorganisation" column="cho_id" name="cho"/>

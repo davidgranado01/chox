@@ -12,14 +12,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import idas.chox.service.security.PermissionedUser;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.services.UserService;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 
 
 public class WebUserService implements UserDetailsService {
     private static final Logger LOG = LoggerFactory.getLogger(WebUserService.class);
 
     private UserService userService;
-    private PasswordEncoder passwordEncoder;
-
+    private static PasswordEncoder passwordEncoder;
+    static {
+        passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+//        passwordEncoder.setDefaultPasswordEncoderForMatches(new MessageDigestPasswordEncoder("MD5"));
+    }
+    
     public WebUser findByUserName(String userName) {
         return userService.findByUserName(userName);
     }
@@ -69,10 +74,6 @@ public class WebUserService implements UserDetailsService {
 
     public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-
-    public final void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
     }
 
 }

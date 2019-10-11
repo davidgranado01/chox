@@ -5,7 +5,7 @@
         <cache usage="read-write"/>
         <id column="id" name="id">
             <generator class="sequence">
-                <param name="sequence">insurer_intelligent_note_id_seq</param>
+                <param name="sequence_name">insurer_intelligent_note_id_seq</param>
             </generator>
         </id>
         <property column="intelligent_note_id" name="intelligentNoteId" not-null="true"/>

@@ -2,8 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:s="http://www.springframework.org/schema/security"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
-	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 	
     <bean id="gmailUtils" class="idas.chox.core.util.GmailUtils" scope="singleton">
     </bean>
@@ -84,7 +84,7 @@
     </bean>
 
     <!--  Keoghs Check Job -->
-    <bean id="keoghsDbJob" class="idas.chox.web.scheduler.KeoghsSchedulerJob">
+    <!--bean id="keoghsDbJob" class="idas.chox.web.scheduler.KeoghsSchedulerJob">
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
         <property name="securityInfoProvider" ref="securityInfoProvider" />
         <property name="schedulerJobService" ref="schedulerJobService" />
@@ -94,7 +94,7 @@
         <property name="maxQueuedRequests" value="${keoghs.maxQueuedRequests}" />
         <property name="maxPendingRequests" value="${keoghs.maxPendingRequests}" />
         <property name="keoghs" ref="keoghs" />
-    </bean>
+    </bean-->
     <!--  Claim Matching Job -->
     <bean id="claimMatchingDbJob" class="idas.chox.web.scheduler.ClaimMatchingSchedulerJob">
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
@@ -304,11 +304,11 @@
         <property name="concurrent" value="false" />
     </bean>
         
-    <bean id="keoghsDbJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <!--bean id="keoghsDbJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="keoghsDbJob" />
         <property name="targetMethod" value="execute" />
         <property name="concurrent" value="false" />
-    </bean>
+    </bean-->
         
     <bean id="claimMatchingDbJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="claimMatchingDbJob" />
@@ -433,10 +433,10 @@
         <property name="jobDetail" ref="referenceUpdateDbJobDetail" /> 
         <property name="cronExpression" value="0 1 18 ? * 2-6" /> 
     </bean>
-    <bean id="cronKeoghsDbTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+    <!--bean id="cronKeoghsDbTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="keoghsDbJobDetail" /> 
         <property name="cronExpression" value="0 1/15 7-19 ? * 1-7" /> 
-    </bean>
+    </bean-->
     <bean id="cronClaimMatchingDbTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="claimMatchingDbJobDetail" /> 
         <property name="cronExpression" value="0 3 7-19 ? * 1-7" /> 
