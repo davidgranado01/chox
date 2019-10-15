@@ -16,6 +16,7 @@ import idas.chox.core.model.ReasonOfRejection;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleHire;
 import idas.chox.core.util.DateHelper;
+import java.util.Date;
 
 public class MockObjects {
 
@@ -88,7 +89,7 @@ public class MockObjects {
         band.setAverageLabourHoursPerHireDay(4);
         band.setInspectionDelayDays(4);
         band.setHireDayCeiling(22);
-        band.setHireRateChargeTolerance(new BigDecimal("0.00"));
+        band.setHireRateChargeTolerance(BigDecimal.ZERO);
         band.setTotalVatTolerance(null);
         band.setHireDaysPriorToDateRepairCommenced(5);
         band.setHireDaysPriorToDateRepairBookInDateNonMobileVehicles(3);
@@ -254,74 +255,78 @@ public class MockObjects {
         // EXTRA
         invoice.setAdminFee(new BigDecimal(30));
         invoice.setAdminQty(0);
-        invoice.setAutomaticFee(new BigDecimal(10));
+        invoice.setAutomaticFee(BigDecimal.TEN);
         invoice.setAutomaticQty(0);
-        invoice.setBabySeatFee(new BigDecimal(0));
+        invoice.setBabySeatFee(BigDecimal.ZERO);
         invoice.setBabySeatQty(0);
-        invoice.setMiscellaneousFee(new BigDecimal(0));
+        invoice.setMiscellaneousFee(BigDecimal.ZERO);
         invoice.setMiscellaneousQty(0);
-        invoice.setEstateFee(new BigDecimal(0));
+        invoice.setEstateFee(BigDecimal.ZERO);
         invoice.setEstateQty(0);
-        invoice.setDeliveryCollectionFee(new BigDecimal(0));
+        invoice.setDeliveryCollectionFee(BigDecimal.ZERO);
         invoice.setDeliveryCollectionQty(0);
-        invoice.setDualControlFee(new BigDecimal(0));
+        invoice.setDualControlFee(BigDecimal.ZERO);
         invoice.setDualControlQty(0);
-        invoice.setRoofRackFee(new BigDecimal(0));
+        invoice.setRoofRackFee(BigDecimal.ZERO);
         invoice.setRoofRackQty(0);
-        invoice.setSatNavFee(new BigDecimal(0));
+        invoice.setSatNavFee(BigDecimal.ZERO);
         invoice.setSatNavQty(0);
-        invoice.setTowBarsFee(new BigDecimal(0));
+        invoice.setTowBarsFee(BigDecimal.ZERO);
         invoice.setTowBarsQty(0);
-        invoice.setNonStandardInsurancePremiumFee(new BigDecimal(0));
+        invoice.setNonStandardInsurancePremiumFee(BigDecimal.ZERO);
         invoice.setNonStandardInsurancePremiumQty(0);
 
         // INVOICE
         invoice.setClaimInvoiceNo(null);
-        invoice.setDateInvoiced(null);
+        invoice.setDateInvoiced(new Date());
         invoice.setHandlingInvoiceNo(null);
         invoice.setEngineerInvoiceReviewNotes(null);
-        invoice.setHireRateChargedPerDay(new BigDecimal(0));
+        invoice.setHireRateChargedPerDay(BigDecimal.ZERO);
         invoice.setIsEngineerDecisionApproved(true);
         invoice.setIsPaymentMode(true);
         invoice.setHirePenaltyChargeAppliedDate(null);
         invoice.setReasonOfRejection(getTestReasonOfRejection());
         
-        invoice.setClaimsHandlingInvoiceAmount(new BigDecimal(0));
-        invoice.setDeductionForClaimsHandlingFee(new BigDecimal(0));
-        invoice.setDiscount(new BigDecimal(0));
-        invoice.setExcessAmountCollected(new BigDecimal(0));
+        invoice.setClaimsHandlingInvoiceAmount(BigDecimal.ZERO);
+        invoice.setDeductionForClaimsHandlingFee(BigDecimal.ZERO);
+        invoice.setDiscount(BigDecimal.ZERO);
+        invoice.setInsurerDiscount(BigDecimal.ZERO);
+        invoice.setTotalGrossInsurerDiscount(BigDecimal.ZERO);
+        invoice.setRepairGrossInsurerDiscount(BigDecimal.ZERO);
+        invoice.setHireGrossInsurerDiscount(BigDecimal.ZERO);
+        invoice.setExcessAmountCollected(BigDecimal.ZERO);
 //        invoice.setOriginalFullTotalToPay(new BigDecimal(0));
 //        invoice.setPenaltyAlertQty(0);
-        invoice.setHirePenaltyCharge(new BigDecimal(0));
-        invoice.setVatAmountCollected(new BigDecimal(0));
+        invoice.setHirePenaltyCharge(BigDecimal.ZERO);
+        invoice.setVatAmountCollected(BigDecimal.ZERO);
         
         // ADDITIONAL CHARGES
-        invoice.setEngineerFeeNet(new BigDecimal(0));
-        invoice.setEngineerFeeVat(new BigDecimal(0));
-        invoice.setEngineerFeeGross(new BigDecimal(0));
+        invoice.setEngineerFeeNet(BigDecimal.ZERO);
+        invoice.setEngineerFeeVat(BigDecimal.ZERO);
+        invoice.setEngineerFeeGross(BigDecimal.ZERO);
 
-        invoice.setHireGross(new BigDecimal(0));
-        invoice.setHireNet(new BigDecimal(0));
-        invoice.setHireVat(new BigDecimal(0));
+        invoice.setHireGross(BigDecimal.ZERO);
+        invoice.setHireNet(BigDecimal.ZERO);
+        invoice.setHireVat(BigDecimal.ZERO);
 
-        invoice.setStorageRecoveryGross(new BigDecimal(0));
-        invoice.setStorageRecoveryNet(new BigDecimal(0));
-        invoice.setStorageRecoveryVat(new BigDecimal(0));
+        invoice.setStorageRecoveryGross(BigDecimal.ZERO);
+        invoice.setStorageRecoveryNet(BigDecimal.ZERO);
+        invoice.setStorageRecoveryVat(BigDecimal.ZERO);
 
-        invoice.setRepairGross(new BigDecimal(0));
-        invoice.setRepairNet(new BigDecimal(0));
-        invoice.setRepairVat(new BigDecimal(0));
+        invoice.setRepairGross(BigDecimal.ZERO);
+        invoice.setRepairNet(BigDecimal.ZERO);
+        invoice.setRepairVat(BigDecimal.ZERO);
 
         // TOTAL
-        invoice.setTotalGross(new BigDecimal(0));
-        invoice.setTotalNet(new BigDecimal(0));
-        invoice.setTotalVat(new BigDecimal(0));
-        invoice.setFullTotalToPay(new BigDecimal(0));
+        invoice.setTotalGross(BigDecimal.ZERO);
+        invoice.setTotalNet(BigDecimal.ZERO);
+        invoice.setTotalVat(BigDecimal.ZERO);
+        invoice.setFullTotalToPay(BigDecimal.ZERO);
 
 
-        invoice.setTotalLossFeeNet(new BigDecimal(0));
-        invoice.setTotalLossFeeVat(new BigDecimal(0));
-        invoice.setTotalLossFeeGross(new BigDecimal(0));
+        invoice.setTotalLossFeeNet(BigDecimal.ZERO);
+        invoice.setTotalLossFeeVat(BigDecimal.ZERO);
+        invoice.setTotalLossFeeGross(BigDecimal.ZERO);
 
         invoice.setCollaborationFee(BigDecimal.ZERO);
 
@@ -363,25 +368,25 @@ public class MockObjects {
 
         extra.setAdminFee(new BigDecimal(30));
         extra.setAdminQty(0);
-        extra.setAutomaticFee(new BigDecimal(10));
+        extra.setAutomaticFee(BigDecimal.TEN);
         extra.setAutomaticQty(0);
-        extra.setBabySeatFee(new BigDecimal(0));
+        extra.setBabySeatFee(BigDecimal.ZERO);
         extra.setBabySeatQty(0);
-        extra.setMiscellaneousFee(new BigDecimal(0));
+        extra.setMiscellaneousFee(BigDecimal.ZERO);
         extra.setMiscellaneousQty(0);
-        extra.setEstateFee(new BigDecimal(0));
+        extra.setEstateFee(BigDecimal.ZERO);
         extra.setEstateQty(0);
-        extra.setDeliveryCollectionFee(new BigDecimal(0));
+        extra.setDeliveryCollectionFee(BigDecimal.ZERO);
         extra.setDeliveryCollectionQty(0);
-        extra.setDualControlFee(new BigDecimal(0));
+        extra.setDualControlFee(BigDecimal.ZERO);
         extra.setDualControlQty(0);
-        extra.setRoofRackFee(new BigDecimal(0));
+        extra.setRoofRackFee(BigDecimal.ZERO);
         extra.setRoofRackQty(0);
-        extra.setSatNavFee(new BigDecimal(0));
+        extra.setSatNavFee(BigDecimal.ZERO);
         extra.setSatNavQty(0);
-        extra.setTowBarsFee(new BigDecimal(0));
+        extra.setTowBarsFee(BigDecimal.ZERO);
         extra.setTowBarsQty(0);
-        extra.setNonStandardInsurancePremiumFee(new BigDecimal(0));
+        extra.setNonStandardInsurancePremiumFee(BigDecimal.ZERO);
         extra.setNonStandardInsurancePremiumQty(0);
         extra.setCollaborationFee(BigDecimal.ZERO);
         extra.setCollaborationQty(0);

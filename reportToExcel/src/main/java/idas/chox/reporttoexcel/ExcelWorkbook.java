@@ -115,8 +115,12 @@ public class ExcelWorkbook {
                 }
             }
             int rowNo = 1;
-
+            boolean rowCountExceeded = false;
             for (Object[] row : report.getBody()) {
+                if (rowCountExceeded) {
+                    LOG.error("Max rowcount ({}) has been exceeded - stopping.", rowNo);
+                    break;
+                }
                 columnNo = 0;
                 for (Object cell : row) {
                     if (cell instanceof String) {
@@ -129,6 +133,7 @@ public class ExcelWorkbook {
                         try {
                             sheet.addCell(label);
                         } catch (WriteException ex) {
+                            if (ex.getMessage().startsWith("The maximum number of rows permitted on a worksheet been exceeded")) rowCountExceeded = true;
                             LOG.error("Error adding String report cell at position ({},{}) - cell='{}': {}",
                                     new Object[]{rowNo, columnNo - 1, (String)cell, ex.getMessage()});
                         }
@@ -137,6 +142,7 @@ public class ExcelWorkbook {
                         try {
                             sheet.addCell(number);
                         } catch (WriteException ex) {
+                            if (ex.getMessage().startsWith("The maximum number of rows permitted on a worksheet been exceeded")) rowCountExceeded = true;
                             LOG.error("Error adding Money report cell at position ({},{}) - cell='{}': {}",
                                     new Object[]{rowNo, columnNo - 1, ((BigDecimal) cell).doubleValue(), ex.getMessage()});
                         }
@@ -145,6 +151,7 @@ public class ExcelWorkbook {
                         try {
                             sheet.addCell(number);
                         } catch (WriteException ex) {
+                            if (ex.getMessage().startsWith("The maximum number of rows permitted on a worksheet been exceeded")) rowCountExceeded = true;
                             LOG.error("Error adding BigDecimal report cell at position ({},{}) - cell='{}': {}",
                                     new Object[]{rowNo, columnNo - 1, ((BigDecimal) cell).doubleValue(), ex.getMessage()});
                         }

@@ -41,6 +41,7 @@ public class AdminUserServiceTest extends BaseTest {
     public void testUser_AddNewUserWithNewUserName() throws Exception {
         WebUser newUser = new WebUser();
         newUser.setUserName("jenny.jackson");
+        newUser.setPassword("Abc1234567890");
         newUser.setEmail("jenny@abc.com");
         newUser.setFirstName("Jenny");
         newUser.setLastName("Jackson");
@@ -57,6 +58,7 @@ public class AdminUserServiceTest extends BaseTest {
         WebUser existingUser = userService.getUsers().get(0);
         WebUser newUser = new WebUser();
         newUser.setUserName(existingUser.getUserName());
+        newUser.setPassword("Abc1234567890");
         newUser.setEmail("jenny@abc.com");
         newUser.setFirstName("Jenny");
         newUser.setLastName("Jackson");
@@ -82,7 +84,8 @@ public class AdminUserServiceTest extends BaseTest {
         webUser.setPassword(newPassword);
         ActionResponse response = adminUserService.updateUserPassword(webUser);
         Assert.assertTrue(response.getIsValid());
-        Assert.assertEquals(encodedNewPassword, webUser.getPassword());
+// Passwords no longer equal due to switch to bcrypt (and use of salt) in java 11 upgrade
+//        Assert.assertEquals(encodedNewPassword, webUser.getPassword());
     }
 
     @Test

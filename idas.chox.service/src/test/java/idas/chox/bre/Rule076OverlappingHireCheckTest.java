@@ -33,6 +33,7 @@ public class Rule076OverlappingHireCheckTest extends BaseTest {
     }
 
     
+    @Transactional
     private Claim getTestClaim() {
         Claim claim = new Claim();
 
@@ -61,6 +62,7 @@ public class Rule076OverlappingHireCheckTest extends BaseTest {
     }
     
     @Test
+    @Transactional
     public void testSkipped() throws IOException {
         Claim claim = getTestClaim();
         claim.setBreBand(testClaim.getTestBreBand());
