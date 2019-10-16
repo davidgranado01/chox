@@ -48,7 +48,7 @@ public class AssignOwner extends BaseActivity {
         }
 
         if (workgroupsEnabled && oasWorkgroupId <= 0) {
-            LOG.error("No workgroup specified: {}", oasWorkgroupId);
+            LOG.error("No workgroup specified for claim '{}' ({}): workgroupId={}", new Object[]{claim.getChoReference(), claim.getId(), oasWorkgroupId});
             throw new Exception("No workgroup specified");
         } else if (workgroupsEnabled) {
             workgroup = (Workgroup) getDataService().get(Workgroup.class, oasWorkgroupId);
@@ -63,7 +63,7 @@ public class AssignOwner extends BaseActivity {
         }
 
         if (ownershipEnabled && claimOwnerId <= 0) {
-            LOG.error("No owner specified: {}", oasWorkgroupId);
+            LOG.error("No owner specified for claim '{}' ({}) with workgroupId={}: claimOwnerId={}", new Object[]{claim.getChoReference(), claim.getId(), oasWorkgroupId, claimOwnerId});
             throw new Exception("No owner specified");
         } else if (ownershipEnabled) {
             claimOwner = (WebUser) getDataService().get(WebUser.class, claimOwnerId);
