@@ -153,6 +153,13 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
                     new Object[]{user.getDisplayName(), user.getId(), model.getDisplayName(), model.getId()});
             throw new AccessDeniedException("Illegal attempt to access user data");
         }
+        if ((getUserOrganisationType() == 2 && ((!model.isAnInsurer() || model.getInsurer().getId() != getUserOrganisationId())
+                || (this.insurerId != -1 && (this.insurerId != getUserOrganisationId()))))
+                || (getUserOrganisationType() == 3 && ((model.isAnInsurer() || (model.getChorganisation().getId() != getUserOrganisationId()))
+                || (this.supplierId != -1 && this.supplierId != getUserOrganisationId())))
+                || (getUserOrganisationType() != 1 && this.organisationTypeId != getUserOrganisationType())) {
+            throw new AccessDeniedException("Trying to access a user not of my organisation (POSSIBLE HACK ATTEMPT)");
+        }
         updateModelInSession(model);
         return SUCCESS;
     }
@@ -332,14 +339,12 @@ public class UserAction extends BaseAction implements ModelDriven<WebUser>, Prep
                     || (getUserOrganisationType() != 1 && this.organisationTypeId != getUserOrganisationType())) {
                 throw new AccessDeniedException("Trying to create a user not of my organisation (POSSIBLE HACK ATTEMPT)");
             }
-
             // Check password: min length, one digit, one lowercase letter, one uppercase letter
             int minPasswordLength = 8;
-            if (organisationTypeId == 2 && insurerService != null) {
-                minPasswordLength = insurerService.getInsurer(organisationId).getMinimumPasswordLength();
-            } else if (organisationTypeId == 3 && chorganisationService != null) {
-                Chorganisation cho = chorganisationService.getChorganisation(organisationId);
-                minPasswordLength = cho.getMinimumPasswordLength();
+            if (model.getInsurer() != null) {
+                minPasswordLength = model.getInsurer().getMinimumPasswordLength();
+            } else if (model.getChorganisation() != null) {
+                minPasswordLength = model.getChorganisation().getMinimumPasswordLength();
             }
 
             Pattern passwordPattern = Pattern.compile(passwordPatternString.replace("<minPasswordLength>", Integer.toString(minPasswordLength)));
