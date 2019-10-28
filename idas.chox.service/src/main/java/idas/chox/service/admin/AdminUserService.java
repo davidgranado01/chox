@@ -5,7 +5,11 @@ import java.util.List;
 import java.util.Date;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import javax.xml.bind.DatatypeConverter;
 
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Propagation;
@@ -57,7 +61,7 @@ public class AdminUserService extends SecureDataService {
         this.actionResponse = actionResponse;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public ActionResponse updateUserBrowserWarning(int webUserId, boolean showSplash) {
         this.actionResponse = new ActionResponse();
         WebUser webUser = userService.getWebUser(webUserId);
@@ -68,7 +72,7 @@ public class AdminUserService extends SecureDataService {
     }
 
     // <editor-fold defaultstate="collapsed" desc="USERS">
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager", rollbackFor = Exception.class)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager", rollbackFor = Exception.class)
     public ActionResponse updateUser(WebUser webUser) throws Exception {
         this.actionResponse = new ActionResponse();
         if (!this.userService.isUserNameExist(webUser.getUserName(), webUser.getId())) {
@@ -79,7 +83,7 @@ public class AdminUserService extends SecureDataService {
         return this.actionResponse;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public ActionResponse updateUserTelephone(int webUserId, String newTelephone) {
         LOG.debug("Updating user telephone number to '{}'", newTelephone);
         this.actionResponse = new ActionResponse();
@@ -92,17 +96,16 @@ public class AdminUserService extends SecureDataService {
         return this.actionResponse;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public ActionResponse updateUserPassword(int webUserId, String newPassword, String oldPassword) {
         int minPasswordLength = 8;
         WebUser webUser = userService.getWebUser(webUserId);
         if (webUser.isAnInsurer()) {
             minPasswordLength = webUser.getInsurer().getMinimumPasswordLength();
-        }
-        else if (!webUser.isCHOXAdmin()) {
+        } else if (!webUser.isCHOXAdmin()) {
             minPasswordLength = webUser.getChorganisation().getMinimumPasswordLength();
         }
-        
+
         this.actionResponse = new ActionResponse();
         Pattern passwordPattern = Pattern.compile(passwordPatternString.replace("<minPasswordLength>", Integer.toString(minPasswordLength)));
         if (!passwordPattern.matcher(newPassword).matches()) {
@@ -110,29 +113,29 @@ public class AdminUserService extends SecureDataService {
             this.actionResponse.AddError("Invalid password provided");
             return this.actionResponse;
         }
+        
+        LOG.debug("Updating user password from '{}' ('{}') to '{}'", new Object[]{oldPassword, webUser.getPassword(), newPassword});
 
-        if (!webUser.getPassword().equals(encodePassword(oldPassword))) {
+        if ((webUser.getPassword().startsWith("{MD5}") && !webUser.getPassword().toUpperCase().equals(encodePasswordMD5(oldPassword))) || (webUser.getPassword().startsWith("{bcrypt}") && !BCrypt.checkpw(oldPassword, webUser.getPassword().substring(8)))) {
             LOG.debug("Error trying to update user password for user '{}'", webUser.getId());
-            LOG.debug("Current password is '{}' but got '{}'", webUser.getPassword(), encodePassword(oldPassword));
             this.actionResponse.AddError("'Current Password' is not correct.");
-        } else if (webUser.getPassword().equals(encodePassword(newPassword))) {
+        } else if ((webUser.getPassword().startsWith("{MD5}") && webUser.getPassword().toUpperCase().equals(encodePasswordMD5(newPassword))) || (webUser.getPassword().startsWith("{bcrypt}") && BCrypt.checkpw(newPassword, webUser.getPassword().substring(8)))) {
             this.actionResponse.AddError("'New password' is the same as the old one.");
-        } else if (!validatePasswordHistory(webUserId, encodePassword(newPassword))) {
+        } else if (!validatePasswordHistory(webUserId, newPassword)) {
             this.actionResponse.AddError("'New password' is the same as a previous one.");
         } else {
-            LOG.debug("Setting new password '{}'(encoded '{}')", newPassword, encodePassword(newPassword));
+//            LOG.debug("Setting new password '{}'(encoded '{}')", newPassword, encodePassword(newPassword));
             webUser.setPassword(encodePassword(newPassword));
             webUser.setIsExpired(Boolean.FALSE);
             webUser.setPasswordLastModifiedDate(new Date());
             userService.saveUser(webUser);
-//            this.evict(webUser);
             LOG.debug("DONE Updating user password for user '{}'", webUser.getId());
             this.actionResponse.AssignMessageResult("Your password has been changed.");
         }
         return this.actionResponse;
     }
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager", rollbackFor = Exception.class)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager", rollbackFor = Exception.class)
     public ActionResponse doAddNewUser(WebUser webUser, Integer insurerId, Integer supplierId, Integer organisationTypeId) throws Exception {
 
         this.actionResponse = new ActionResponse();
@@ -170,25 +173,23 @@ public class AdminUserService extends SecureDataService {
     public SearchResult getUsers(int organisationId, int organisationTypeId, int userRoleId, int start, int limit, String sort, String dir, boolean activeUsersOnly) {
         return this.userService.getUsers(organisationId, organisationTypeId, userRoleId, start, limit, sort, dir, activeUsersOnly, true);
     }
-    
 
-    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public ActionResponse updateUserPassword(WebUser webUser) {
         int minPasswordLength = 8;
 
         if (webUser.isAnInsurer()) {
             minPasswordLength = webUser.getInsurer().getMinimumPasswordLength();
-        }
-        else if (!webUser.isCHOXAdmin()) {
+        } else if (!webUser.isCHOXAdmin()) {
             minPasswordLength = webUser.getChorganisation().getMinimumPasswordLength();
         }
-        
+
         this.actionResponse = new ActionResponse();
         Pattern passwordPattern = Pattern.compile(passwordPatternString.replace("<minPasswordLength>", Integer.toString(minPasswordLength)));
         if (!passwordPattern.matcher(webUser.getPassword()).matches()) {
             LOG.warn("Invalid password found: {}", webUser.getPassword());
             this.actionResponse.AddError("Invalid password provided");
-        } else if (!validatePasswordHistory(webUser.getId(), encodePassword(webUser.getPassword()))) {
+        } else if (!validatePasswordHistory(webUser.getId(), webUser.getPassword())) {
             LOG.warn("Invalid password found: {} (matches previous password)", webUser.getPassword());
             this.actionResponse.AddError("New password is the same as a previous one.");
         } else {
@@ -200,11 +201,26 @@ public class AdminUserService extends SecureDataService {
         return this.actionResponse;
 
     }
-
     public String encodePassword(String sPassword) {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
         return passwordEncoder.encode(sPassword);
+    }
+
+    public String encodePasswordMD5(String sPassword) {
+//        PasswordEncoder passwordEncoder = new MessageDigestPasswordEncoder("MD5");
+        MessageDigest md;
+        try {
+            md = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException ex) {
+            LOG.error("Cannot encode password '{}' with MD5: {}", sPassword, ex.getMessage());
+            return "invalid";
+        }
+        md.update(sPassword.getBytes());
+        byte[] digest = md.digest();
+        String myHash = DatatypeConverter
+                .printHexBinary(digest).toUpperCase();
+        return "{MD5}" + myHash;
     }
 
     public ActionResponse triggerUserStatus(WebUser webUser) {
@@ -218,8 +234,7 @@ public class AdminUserService extends SecureDataService {
             webUser.setBlockedDate(null);
             webUser.setStatus(true);
             webUser.setHashed(false);
-        }
-        else {
+        } else {
             webUser.setStatus(!webUser.getStatus());
             // CHOX-313: clear last_login_date when user activated
             if (webUser.getStatus()) {
@@ -232,7 +247,6 @@ public class AdminUserService extends SecureDataService {
         }
 
         boolean isAllowUpdate = true;
-        
 
         if (!webUser.getStatus() && claimService.isUserHasOpenClaim(webUser.getId(), (webUser.getInsurer() != null))) {
             this.actionResponse.AssignResult(ActionResponse.RESULT_TYPE_MESSAGE, "This user currently has assigned claims. Please reassign these claims before de-activating this user account");
@@ -245,7 +259,6 @@ public class AdminUserService extends SecureDataService {
 
         return this.actionResponse;
     }
-
 
     public ActionResponse triggerPasswordExpiredStatus(WebUser webUser) {
         this.actionResponse = new ActionResponse();
@@ -260,22 +273,22 @@ public class AdminUserService extends SecureDataService {
     }
 
     public Set<WebUserRole> getAllAvailableUserRoles(int organisationTypeId, boolean isWorkgroupEnebled,
-                                    boolean isClaimownershipEnabled, boolean isFnolEnabled,
-                                    boolean isEngineersEnabled, boolean isInsurerUploadEnabled,
-                                    boolean isSupervisorEnabled, boolean isAdmin) {
+            boolean isClaimownershipEnabled, boolean isFnolEnabled,
+            boolean isEngineersEnabled, boolean isInsurerUploadEnabled,
+            boolean isSupervisorEnabled, boolean isAdmin) {
         return getAllAvailableUserRoles(organisationTypeId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled, isAdmin, false);
     }
 
     public Set<WebUserRole> getAllAvailableUserRoles(int organisationTypeId, boolean isWorkgroupEnebled,
-                                    boolean isClaimownershipEnabled, boolean isFnolEnabled,
-                                    boolean isEngineersEnabled, boolean isInsurerUploadEnabled,
-                                    boolean isSupervisorEnabled, boolean isAdmin, boolean canBeAssignedTasksOnly) {
+            boolean isClaimownershipEnabled, boolean isFnolEnabled,
+            boolean isEngineersEnabled, boolean isInsurerUploadEnabled,
+            boolean isSupervisorEnabled, boolean isAdmin, boolean canBeAssignedTasksOnly) {
         return this.webUserUserRoleService.getWebUserRoles(organisationTypeId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnabled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled, isAdmin, canBeAssignedTasksOnly);
     }
 
     // <editor-fold defaultstate="collapsed" desc="USER ROLES">
     public List<IdLookupItem> getAvailableUserRoles(int organisationTypeId, int webUserId,
-            boolean isWorkgroupEnebled, boolean isClaimownershipEnabled, boolean isFnolEnebled, 
+            boolean isWorkgroupEnebled, boolean isClaimownershipEnabled, boolean isFnolEnebled,
             boolean isEngineersEnabled, boolean isInsurerUploadEnabled, boolean isSupervisorEnabled, boolean isAdmin) {
         List<IdLookupItem> availableUserRoles = this.webUserUserRoleService.getSelectedUserAvailableRoleLookupItem(organisationTypeId, webUserId, isWorkgroupEnebled, isClaimownershipEnabled, isFnolEnebled, isEngineersEnabled, isInsurerUploadEnabled, isSupervisorEnabled, isAdmin);
 
@@ -555,38 +568,37 @@ public class AdminUserService extends SecureDataService {
     }
     // </editor-fold>
 
-    private boolean validatePasswordHistory(int webUserId, String encodeNewPassword) {
+    private boolean validatePasswordHistory(int webUserId, String password) {
         boolean passwordOk = true;
         WebUser webUser = userService.getWebUser(webUserId);
         int uniqueHistory = 0;
         LOG.debug("Checking password history for user: '{}' (id={})", webUser.getDisplayName(), webUserId);
 
-        if (webUser.isAnInsurer() && webUser.getInsurer()!=null && webUser.getInsurer().getUniquePasswordHistory() > 1) {
+        if (webUser.isAnInsurer() && webUser.getInsurer() != null && webUser.getInsurer().getUniquePasswordHistory() > 1) {
             uniqueHistory = webUser.getInsurer().getUniquePasswordHistory();
-        }
-        else if (!webUser.isAnInsurer() && !webUser.isCHOXAdmin() && webUser.getChorganisation()!=null && webUser.getChorganisation().getUniquePasswordHistory() > 1) {
+        } else if (!webUser.isAnInsurer() && !webUser.isCHOXAdmin() && webUser.getChorganisation() != null && webUser.getChorganisation().getUniquePasswordHistory() > 1) {
             uniqueHistory = webUser.getChorganisation().getUniquePasswordHistory();
         }
 
         if (passwordOk && uniqueHistory > 0) {
             List<PasswordHistory> passwordHistory = userService.getPasswordHistory(webUserId, uniqueHistory);
-        
-            for(PasswordHistory p: passwordHistory) {
-                if (encodeNewPassword.equals(p.getPassword())) {
+
+            for (PasswordHistory p : passwordHistory) {
+                if ((p.getPassword().startsWith("{bcrypt}") && BCrypt.checkpw(password, p.getPassword().substring(8))) || (p.getPassword().startsWith("{MD5}") && encodePasswordMD5(password).equals(p.getPassword().toUpperCase()))) {
                     passwordOk = false;
                     break;
                 }
             }
         }
-        
+
         if (passwordOk) {
             // Add current password to password history
             PasswordHistory p = new PasswordHistory();
-            p.setPassword(encodeNewPassword);
+            p.setPassword(encodePassword(password));
             p.setWebUser(webUser);
             userService.savePasswordHistory(p);
         }
-        
+
         return passwordOk;
     }
 }

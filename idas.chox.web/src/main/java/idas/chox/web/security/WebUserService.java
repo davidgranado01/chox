@@ -64,8 +64,15 @@ public class WebUserService implements UserDetailsService {
     }
 
     public String encodePassword(final UserDetails userDetails) {
-        LOG.debug("Returning encoded password: {}", passwordEncoder.encode(userDetails.getPassword()));
-        return passwordEncoder.encode(userDetails.getPassword());
+        String encodedPassword = passwordEncoder.encode(userDetails.getPassword());
+        LOG.debug("Returning encoded password: {}", encodedPassword);
+        return encodedPassword;
+    }
+
+    public String encodePassword(final String password) {
+        String encodedPassword = passwordEncoder.encode(password);
+        LOG.debug("Returning encoded password: {}", encodedPassword);
+        return encodedPassword;
     }
 
     public UserService getUserService() {
