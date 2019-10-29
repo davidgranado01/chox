@@ -45,6 +45,7 @@ import idas.chox.core.model.WebUserRole;
 import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.UserService;
 import idas.chox.core.util.RoleHelper;
+import org.hibernate.FlushMode;
 
 public class UserServiceImpl extends BaseDataService implements UserService {
 
@@ -74,7 +75,6 @@ public class UserServiceImpl extends BaseDataService implements UserService {
     public boolean isUserNameExist(String userName) {
         DetachedCriteria criteria = DetachedCriteria.forClass(WebUser.class).add(Restrictions.eq("userName", userName).ignoreCase());
         WebUser result = (WebUser) getByCriteria(criteria);
-
         return result != null;
     }
 
@@ -85,6 +85,7 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         if (userId > 0) {
             criteria.add(Restrictions.ne("id", userId));
         }
+        this.currentSession().setHibernateFlushMode(FlushMode.COMMIT);
         WebUser result = (WebUser) getByCriteria(criteria);
 
         return result != null;
