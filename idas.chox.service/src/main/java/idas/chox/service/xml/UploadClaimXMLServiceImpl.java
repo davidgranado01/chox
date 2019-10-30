@@ -57,7 +57,6 @@ import idas.chox.service.workflow.activities.NewSupplementaryInvoice;
 import idas.chox.service.workflow.event.EventBusWrapper;
 import idas.chox.service.xml.readers.BordereauReader;
 import idas.chox.service.xml.validations.BordereauSchemaValidation;
-import java.math.BigDecimal;
 
 public class UploadClaimXMLServiceImpl extends SecureDataService implements UploadClaimXMLService {
 
@@ -437,6 +436,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public boolean processFile(int bordereauId, Map session) {
         int noClaims;
         int noProcessed = 0;
