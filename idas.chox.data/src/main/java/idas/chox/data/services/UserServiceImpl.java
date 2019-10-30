@@ -85,8 +85,9 @@ public class UserServiceImpl extends BaseDataService implements UserService {
         if (userId > 0) {
             criteria.add(Restrictions.ne("id", userId));
         }
-        this.currentSession().setHibernateFlushMode(FlushMode.COMMIT);
+        currentSession().setHibernateFlushMode(FlushMode.COMMIT);
         WebUser result = (WebUser) getByCriteria(criteria);
+        currentSession().setHibernateFlushMode(FlushMode.AUTO);
 
         return result != null;
     }

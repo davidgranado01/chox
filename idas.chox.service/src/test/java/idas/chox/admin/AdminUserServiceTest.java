@@ -130,7 +130,7 @@ public class AdminUserServiceTest extends BaseTest {
 
         // CHECK PROCESSED RESULT
         Assert.assertTrue(response2.getIsValid());
-        Assert.assertEquals(response2.getResult(), "This user currently has assigned claims. Please reassign these claims before de-activating this user account");
+        Assert.assertEquals("This user currently has assigned claims. Please reassign these claims before de-activating this user account", response2.getResult());
     }
 
     // TRUE to FALSE: WITHOUT OPEN ITEM
