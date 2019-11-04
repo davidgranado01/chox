@@ -52,6 +52,7 @@ public class HireMonitoringDetail extends Entity implements Serializable {
     private Date totalLossOfferAcceptedDate;
     private Date totalLossOfferCheckIssuedDate;
     private Date totalLossOfferCheckReceivedDate;
+    private Date engineersReportSentDate;
 
     /** 
      * This attribute maps to the column labour_cost in the hire_monitoring_detail table.
@@ -76,18 +77,29 @@ public class HireMonitoringDetail extends Entity implements Serializable {
     private Date totalLossOfferAcceptedLastModified;
     private Date totalLossCheckIssuedLastModified;
     private Date totalLossCheckReceivedLastModified;
+    private Date engineersReportSentLastModified;
     private Date repairCompletionDateLastModified;
     private Date isRepairOnlyCheckLastModified;
     private Date isNFInsurerManagingRepairLastModified;
     private Date clientVatRegisteredLastModified;
     private boolean updateInsurer = false;
     private Claim claim;
+    private String whoIsSendingPav;
 
     
     public Claim getClaim() {
         return claim;
     }
 
+    public String getWhoIsSendingPav() {
+        return whoIsSendingPav;
+    }
+
+    public void setWhoIsSendingPav(String whoIsSendingPav) {
+        this.whoIsSendingPav = whoIsSendingPav;
+    }
+
+    
     public void setClaim(Claim claim) {
         this.claim = claim;
     }
@@ -351,7 +363,14 @@ public class HireMonitoringDetail extends Entity implements Serializable {
     public void setTotalLossOfferCheckReceivedDate(Date totalLossOfferCheckReceivedDate) {
         this.totalLossOfferCheckReceivedDate = totalLossOfferCheckReceivedDate;
     }
+        
+    public Date getEngineersReportSentDate() {
+        return engineersReportSentDate;
+    }
 
+    public void setEngineersReportSentDate(Date engineersReportSentDate) {
+        this.engineersReportSentDate = engineersReportSentDate;
+    }
     public Date getTotalLossOfferMadeDate() {
         return totalLossOfferMadeDate;
     }
@@ -507,6 +526,15 @@ public class HireMonitoringDetail extends Entity implements Serializable {
         this.totalLossCheckReceivedLastModified = totalLossCheckReceivedLastModified;
     }
 
+
+    public Date getEngineersReportSentLastModified() {
+        return engineersReportSentLastModified;
+    }
+
+    public void setEngineersReportSentLastModified(Date engineersReportSentLastModified) {
+        this.engineersReportSentLastModified = engineersReportSentLastModified;
+    }
+    
     /**
      * @return the repairCompletionDateLastModified
      */

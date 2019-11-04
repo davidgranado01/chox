@@ -9,6 +9,11 @@
         <data-mandatory-newClaim>t</data-mandatory-newClaim>
     </claimheader-first-contact>
 
+    <claimheader-note>
+        <data-description>Note</data-description>
+        <data-type></data-type>
+    </claimheader-note>
+
     <claimheader-managing-repair>
         <data-description>Managing repair</data-description>
         <data-type>char</data-type>
@@ -781,6 +786,16 @@
         <data-description>Date Total Loss Cheque Received</data-description>
         <data-type>date</data-type>
     </hiremonitoringdetail-tl-cheque-received>
+
+    <hiremonitoringdetail-tl-who-is-sending-PAV>
+        <data-description>Who is sending PAV if TL?</data-description>
+        <data-length>21</data-length>
+    </hiremonitoringdetail-tl-who-is-sending-PAV>
+
+    <hiremonitoringdetail-engineers-report-date>
+        <data-description>Date Engineers Report Sent</data-description>
+        <data-type>date</data-type>
+    </hiremonitoringdetail-engineers-report-date>
 
     <hiremonitoringdetail-name-ime>
         <data-description>Name of IME</data-description>

@@ -29,6 +29,8 @@
     <property column="total_loss_offer_accepted" name="totalLossOfferAcceptedDate"/>
     <property column="total_loss_check_issued" name="totalLossOfferCheckIssuedDate"/>
     <property column="total_loss_check_received" name="totalLossOfferCheckReceivedDate"/>
+    <property column="engineers_report_sent" name="engineersReportSentDate"/>
+    <property column="who_is_sending_pav" name="whoIsSendingPav"/>
     <property column="labour_rate" name="labourRate"/>
     <property column="labour_hour" name="labourHour"/>
     <property column="labour_cost" name="labourCost"/>
@@ -48,6 +50,7 @@
     <property column="is_Repair_Only_Check_last_modified" name="isRepairOnlyCheckLastModified"/>
     <property column="isNF_Insurer_Repair_last_modified" name="isNFInsurerManagingRepairLastModified"/>
     <property column="client_vat_registered_last_modified" name="clientVatRegisteredLastModified"/>
+    <property column="engineers_report_sent_last_modified" name="engineersReportSentLastModified"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>
   </class>

@@ -27,6 +27,7 @@ import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.model.Bordereau;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.Comment;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.History;
 import idas.chox.core.model.Task;
@@ -342,6 +343,24 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                 if (claimResult.isCheckForOnHireTask()) {
                     LOG.debug("Checking for On Hire Task.");
                     claimService.addOnHireTask(claim);
+                }
+                
+                if (claimResult.getNote() != null && !claimResult.getNote().isEmpty()
+                        && (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_CLAIM)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_NEW_SUPPLEMENTARY_INVOICE)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_COLLABORATION_CLAIM)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_FIXEDFEE_CLAIM)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION))) {
+                    Comment comment = Comment.newComment(0, !ClaimType.isInsurerUpload(claim.getClaimType()), claimResult.getNote(), true);
+                    claim.addComment(comment);
                 }
 
             } catch (Exception ex) {

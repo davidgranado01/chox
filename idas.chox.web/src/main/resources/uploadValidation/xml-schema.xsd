@@ -18,6 +18,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="first-contact"/>
+                <xs:element name="note" minOccurs="0" maxOccurs="1"/>
                 <xs:element name="supplier-name" minOccurs="0" maxOccurs="1"/>
                 <xs:element name="supplier-reference"/>
                 <xs:element name="managing-repair"/>
@@ -208,6 +209,8 @@
                             <xs:element name="tl-offer-accepted-date"/>
                             <xs:element name="tl-cheque-issued"/>
                             <xs:element name="tl-cheque-received"/>
+                            <xs:element name="tl-who-is-sending-PAV" minOccurs="0" maxOccurs="1"/>
+                            <xs:element name="engineers-report-date" minOccurs="0" maxOccurs="1"/>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>

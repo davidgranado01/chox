@@ -145,6 +145,14 @@
             closable: true,
             draggable:true
         });
+        new Ext.ToolTip({
+            target: 'dateEngineersReportSent_r_Id',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="engineersReportSentLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
     }
 
 </script>
@@ -200,14 +208,14 @@
 
             <s:if test="repairAuthorisedDateLastModified!=null">
                 <tr>
-                    <td><label class="std-label-ro">Date Repair Authorised</label></td>
+                    <td><label class="std-label-ro">Date Repair Authorised or TL Identified</label></td>
                     <td>&nbsp;</td>
                     <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairAuthorisedDate" /> <img src="../images/sign_info.png" alt="" width="13" height="13" id="dateRepairAuthorised_r_Id" /></label></td>
                 </tr>
             </s:if>
             <s:else>
                 <tr>
-                    <td><label class="std-label-ro">Date Repair Authorised</label></td>
+                    <td><label class="std-label-ro">Date Repair Authorised or TL Identified</label></td>
                     <td>&nbsp;</td>
                     <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairAuthorisedDate" /> <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateRepairAuthorised_r_Id" /></label></td>
                 </tr>
@@ -270,6 +278,21 @@
                     <td><label class="std-label-ro">Is Total Loss?</label></td>
                     <td>&nbsp;</td>
                     <td><label id="hireMonitoringTotalLossId" class="std-data-ro"><s:property value="isTotalLossDesc" /> <img style="display: none" alt="" src="../images/sign_info.png" width="13" height="13" id="isTotalLoss_r_Id" /></label></td>
+                </tr>
+            </s:else>
+
+            <s:if test="engineersReportSentLastModified!=null">
+                <tr>
+                    <td><label class="std-label-ro">Date Engineers Report Sent</label></td>
+                    <td>&nbsp;</td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="engineersReportSentDate" /> <img src="../images/sign_info.png" alt="" width="13" height="13" id="dateEngineersReportSent_r_Id" /></label></td>
+                </tr>
+            </s:if>
+            <s:else>
+                <tr>
+                    <td><label class="std-label-ro">Date Engineers Report Sent</label></td>
+                    <td>&nbsp;</td>
+                    <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="engineersReportSentDate" /> <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateEngineersReportSent_r_Id" /></label></td>
                 </tr>
             </s:else>
 

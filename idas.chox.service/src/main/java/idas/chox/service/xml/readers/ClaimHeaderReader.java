@@ -125,12 +125,17 @@ public class ClaimHeaderReader extends BaseEntityReader {
         }
 
         NodeHelper.nodeValidate(sectionName, "first-contact", claimResult.getElement(), claimResult, getDataValidationParameter());
+        NodeHelper.nodeValidate(sectionName, "note", claimResult.getElement(), claimResult, getDataValidationParameter());
         NodeHelper.nodeValidate(sectionName, "managing-repair", claimResult.getElement(), claimResult, getDataValidationParameter());
         NodeHelper.nodeValidate(sectionName, "agreement-signed", claimResult.getElement(), claimResult, getDataValidationParameter());
         NodeHelper.nodeValidate(sectionName, "gta-notice", claimResult.getElement(), claimResult, getDataValidationParameter());
 
         if (NodeHelper.nodeValidateBoolean(sectionName, "first-contact", claimResult.getElement(), claimResult, getDataValidationParameter())) {
             firstContactDate = XmlHelper.getDateFromNode(claimResult.getElement(), "first-contact");
+        }
+
+        if (XmlHelper.isNotNull(XmlHelper.getNodeValue(claimResult.getElement(), "note"))) {
+            claimResult.setNote(XmlHelper.getNodeValue(claimResult.getElement(), "note"));
         }
 
         if (NodeHelper.nodeValidateBoolean(sectionName, "managing-repair", claimResult.getElement(), claimResult, getDataValidationParameter())) {
