@@ -3680,6 +3680,16 @@
                             <label class="chox-form-check-label">Total Loss Duration for Claims Where CHO is Dealing At-Fault Insurer is Sending PAV and Vehicle is Deemed <i>Not Roadworthy</i> Check</label>
                             <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for Total Loss hire type where the at-fault insurer is dealing and the vehicle is deemed NOT roadworthy.</div>
                         </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="totalLossDiaryInfoCheck" value="totalLossDiaryInfoCheck" /></div>
+                            <label class="chox-form-check-label">Total Loss Diary Information Check</label>
+                            <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for Total Loss hire type where the at-fault insurer is dealing and the vehicle is deemed NOT roadworthy.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="repairDiaryInfoCheck" value="repairDiaryInfoCheck" /></div>
+                            <label class="chox-form-check-label">Repair Diary Information Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO has provided the correct total loss diary information.</div>
+                        </div>
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>
             </div>
