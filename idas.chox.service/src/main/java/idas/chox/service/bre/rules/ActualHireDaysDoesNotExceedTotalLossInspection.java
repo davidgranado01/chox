@@ -1,5 +1,10 @@
 package idas.chox.service.bre.rules;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,10 +31,19 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
         res.setClaimType(claim.getClaimType());
 
         if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType())
+                && !ClaimType.isFixedFee(claim.getClaimType())
                 && claim.getBreBand().isActualHireDaysDoesNotExceedTotalLossInspection()
-                && claim.getCustomer() != null && claim.getVehicleHire() != null) {
+                && claim.getCustomer() != null && claim.getVehicleHire() != null && claim.getHireMonitoringDetail() != null) {
 
-            if (claim.getCustomer().getIsTotalLoss()) {
+            Date firstJuly2019 = new Date();
+            try {
+                firstJuly2019 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse("2019-06-30 23:59:59.999");
+            } catch (ParseException ex) {
+                ; // Not reached
+            }
+            
+            if (claim.getCustomer().getIsTotalLoss() && claim.getVehicleHire().getHireStart().after(firstJuly2019)
+                    && (claim.getHireMonitoringDetail().getEngineersReportSentDate() == null || claim.getHireMonitoringDetail().getWhoIsSendingPav() == null)) {
                 LOG.debug("Total loss claim - rule applies, hire days = ", claim.getVehicleHire().getDays());
                 CHOBandCalcHelper bandCalc = CHOBandCalcHelper.getInstance(claim.getBreBand());
                 boolean success = claim.getVehicleHire().getDays() <= bandCalc.getTotalLossInspectionDays();
