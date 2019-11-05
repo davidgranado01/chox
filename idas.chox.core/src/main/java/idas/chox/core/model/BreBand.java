@@ -205,6 +205,7 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean totalLossChoAtFaultUnroadworthyCheck;
     private boolean totalLossDiaryInfoCheck;
     private boolean repairDiaryInfoCheck;
+    private boolean upload414Check;
     private BigDecimal timeToAuthoriseRepair1;
     private BigDecimal timeToOffHire1;
     private BigDecimal timeToAuthoriseRepair2;
@@ -231,6 +232,14 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private BigDecimal totalAllowableDays6;
       
     public BreBand() {
+    }
+
+    public boolean isUpload414Check() {
+        return upload414Check;
+    }
+
+    public void setUpload414Check(boolean upload414Check) {
+        this.upload414Check = upload414Check;
     }
 
     public boolean isTotalLossDiaryInfoCheck() {

@@ -3651,6 +3651,11 @@
                         </div>
 </s:if>
                         <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="upload414Check" value="upload414Check" /></div>
+                            <label class="chox-form-check-label">4.14 Upload Check</label>
+                            <div class="chox-form-check-description">Check to ensure that the CHO has provided the correct Managing Repair information in support of 4.14 of the GTA.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalLossOwnRoadworthyCheck" value="totalLossOwnRoadworthyCheck" /></div>
                             <label class="chox-form-check-label">100: Total Loss Duration for Claims Where Claimants Own Insurer is Dealing and Vehicle is Deemed <i>Roadworthy</i> Check</label>
                             <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for Total Loss hire type where the own insurer is dealing and the vehicle is deemed roadworthy.</div>

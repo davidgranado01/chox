@@ -10,6 +10,7 @@ ALTER TABLE bre_band
     ADD COLUMN total_loss_cho_atFault_unroadworthy_check boolean not null default false,
     ADD COLUMN total_loss_diary_info_check boolean not null default false,
     ADD COLUMN repair_diary_info_check boolean not null default false,
+    ADD COLUMN upload_414_check boolean not null default false,
     ADD COLUMN time_authorise_repair_1 integer not null default 3,
     ADD COLUMN time_off_hire_1 integer not null default 1,
     ADD COLUMN time_authorise_repair_2 integer not null default 10,
