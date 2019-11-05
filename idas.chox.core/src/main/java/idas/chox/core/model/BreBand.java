@@ -197,8 +197,278 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private BigDecimal vedChargeCeiling = BigDecimal.ZERO;
     private boolean appliedLiabilityEnabled;
     private boolean blankLabourRateCheck;
-
+    private boolean totalLossOwnRoadworthyCheck;
+    private boolean totalLossOwnUnroadworthyCheck;
+    private boolean totalLossChoRoadworthyCheck;
+    private boolean totalLossChoUnroadworthyCheck;
+    private boolean totalLossChoAtFaultRoadworthyCheck;
+    private boolean totalLossChoAtFaultUnroadworthyCheck;
+    private BigDecimal timeToAuthoriseRepair1;
+    private BigDecimal timeToOffHire1;
+    private BigDecimal timeToAuthoriseRepair2;
+    private BigDecimal timeToOffHire2;
+    private BigDecimal timeToAuthoriseRepair3;
+    private BigDecimal timeToSubmittEngineersReport3;
+    private BigDecimal timeToOffHire3;
+    private BigDecimal totalAllowableDays3;
+    private BigDecimal timeToInstructEngineer4;
+    private BigDecimal timeToInspect4;
+    private BigDecimal timeToAuthoriseRepair4;
+    private BigDecimal timeToSubmittEngineersReport4;
+    private BigDecimal timeToOffHire4;
+    private BigDecimal totalAllowableDays4;
+    private BigDecimal timeToAuthoriseRepair5;
+    private BigDecimal timeToSubmittEngineersReport5;
+    private BigDecimal timeToOffHire5;
+    private BigDecimal totalAllowableDays5;
+    private BigDecimal timeToInstructEngineer6;
+    private BigDecimal timeToInspect6;
+    private BigDecimal timeToAuthoriseRepair6;
+    private BigDecimal timeToSubmittEngineersReport6;
+    private BigDecimal timeToOffHire6;
+    private BigDecimal totalAllowableDays6;
+      
     public BreBand() {
+    }
+
+    public boolean isTotalLossOwnRoadworthyCheck() {
+        return totalLossOwnRoadworthyCheck;
+    }
+
+    public void setTotalLossOwnRoadworthyCheck(boolean totalLossOwnRoadworthyCheck) {
+        this.totalLossOwnRoadworthyCheck = totalLossOwnRoadworthyCheck;
+    }
+
+    public boolean isTotalLossOwnUnroadworthyCheck() {
+        return totalLossOwnUnroadworthyCheck;
+    }
+
+    public void setTotalLossOwnUnroadworthyCheck(boolean totalLossOwnUnroadworthyCheck) {
+        this.totalLossOwnUnroadworthyCheck = totalLossOwnUnroadworthyCheck;
+    }
+
+    public boolean isTotalLossChoRoadworthyCheck() {
+        return totalLossChoRoadworthyCheck;
+    }
+
+    public void setTotalLossChoRoadworthyCheck(boolean totalLossChoRoadworthyCheck) {
+        this.totalLossChoRoadworthyCheck = totalLossChoRoadworthyCheck;
+    }
+
+    public boolean isTotalLossChoUnroadworthyCheck() {
+        return totalLossChoUnroadworthyCheck;
+    }
+
+    public void setTotalLossChoUnroadworthyCheck(boolean totalLossChoUnroadworthyCheck) {
+        this.totalLossChoUnroadworthyCheck = totalLossChoUnroadworthyCheck;
+    }
+
+    public boolean isTotalLossChoAtFaultRoadworthyCheck() {
+        return totalLossChoAtFaultRoadworthyCheck;
+    }
+
+    public void setTotalLossChoAtFaultRoadworthyCheck(boolean totalLossChoAtFaultRoadworthyCheck) {
+        this.totalLossChoAtFaultRoadworthyCheck = totalLossChoAtFaultRoadworthyCheck;
+    }
+
+    public boolean isTotalLossChoAtFaultUnroadworthyCheck() {
+        return totalLossChoAtFaultUnroadworthyCheck;
+    }
+
+    public void setTotalLossChoAtFaultUnroadworthyCheck(boolean totalLossChoAtFaultUnroadworthyCheck) {
+        this.totalLossChoAtFaultUnroadworthyCheck = totalLossChoAtFaultUnroadworthyCheck;
+    }
+
+    public BigDecimal getTimeToAuthoriseRepair1() {
+        return timeToAuthoriseRepair1;
+    }
+
+    public void setTimeToAuthoriseRepair1(BigDecimal timeToAuthoriseRepair1) {
+        this.timeToAuthoriseRepair1 = timeToAuthoriseRepair1;
+    }
+
+    public BigDecimal getTimeToOffHire1() {
+        return timeToOffHire1;
+    }
+
+    public void setTimeToOffHire1(BigDecimal timeToOffHire1) {
+        this.timeToOffHire1 = timeToOffHire1;
+    }
+
+    public BigDecimal getTimeToAuthoriseRepair2() {
+        return timeToAuthoriseRepair2;
+    }
+
+    public void setTimeToAuthoriseRepair2(BigDecimal timeToAuthoriseRepair2) {
+        this.timeToAuthoriseRepair2 = timeToAuthoriseRepair2;
+    }
+
+    public BigDecimal getTimeToOffHire2() {
+        return timeToOffHire2;
+    }
+
+    public void setTimeToOffHire2(BigDecimal timeToOffHire2) {
+        this.timeToOffHire2 = timeToOffHire2;
+    }
+
+    public BigDecimal getTimeToAuthoriseRepair3() {
+        return timeToAuthoriseRepair3;
+    }
+
+    public void setTimeToAuthoriseRepair3(BigDecimal timeToAuthoriseRepair3) {
+        this.timeToAuthoriseRepair3 = timeToAuthoriseRepair3;
+    }
+
+    public BigDecimal getTimeToSubmittEngineersReport3() {
+        return timeToSubmittEngineersReport3;
+    }
+
+    public void setTimeToSubmittEngineersReport3(BigDecimal timeToSubmittEngineersReport3) {
+        this.timeToSubmittEngineersReport3 = timeToSubmittEngineersReport3;
+    }
+
+    public BigDecimal getTimeToOffHire3() {
+        return timeToOffHire3;
+    }
+
+    public void setTimeToOffHire3(BigDecimal timeToOffHire3) {
+        this.timeToOffHire3 = timeToOffHire3;
+    }
+
+    public BigDecimal getTotalAllowableDays3() {
+        return totalAllowableDays3;
+    }
+
+    public void setTotalAllowableDays3(BigDecimal totalAllowableDays3) {
+        this.totalAllowableDays3 = totalAllowableDays3;
+    }
+
+    public BigDecimal getTimeToInstructEngineer4() {
+        return timeToInstructEngineer4;
+    }
+
+    public void setTimeToInstructEngineer4(BigDecimal timeToInstructEngineer4) {
+        this.timeToInstructEngineer4 = timeToInstructEngineer4;
+    }
+
+    public BigDecimal getTimeToInspect4() {
+        return timeToInspect4;
+    }
+
+    public void setTimeToInspect4(BigDecimal timeToInspect4) {
+        this.timeToInspect4 = timeToInspect4;
+    }
+
+    public BigDecimal getTimeToAuthoriseRepair4() {
+        return timeToAuthoriseRepair4;
+    }
+
+    public void setTimeToAuthoriseRepair4(BigDecimal timeToAuthoriseRepair4) {
+        this.timeToAuthoriseRepair4 = timeToAuthoriseRepair4;
+    }
+
+    public BigDecimal getTimeToSubmittEngineersReport4() {
+        return timeToSubmittEngineersReport4;
+    }
+
+    public void setTimeToSubmittEngineersReport4(BigDecimal timeToSubmittEngineersReport4) {
+        this.timeToSubmittEngineersReport4 = timeToSubmittEngineersReport4;
+    }
+
+    public BigDecimal getTimeToOffHire4() {
+        return timeToOffHire4;
+    }
+
+    public void setTimeToOffHire4(BigDecimal timeToOffHire4) {
+        this.timeToOffHire4 = timeToOffHire4;
+    }
+
+    public BigDecimal getTotalAllowableDays4() {
+        return totalAllowableDays4;
+    }
+
+    public void setTotalAllowableDays4(BigDecimal totalAllowableDays4) {
+        this.totalAllowableDays4 = totalAllowableDays4;
+    }
+
+    public BigDecimal getTimeToAuthoriseRepair5() {
+        return timeToAuthoriseRepair5;
+    }
+
+    public void setTimeToAuthoriseRepair5(BigDecimal timeToAuthoriseRepair5) {
+        this.timeToAuthoriseRepair5 = timeToAuthoriseRepair5;
+    }
+
+    public BigDecimal getTimeToSubmittEngineersReport5() {
+        return timeToSubmittEngineersReport5;
+    }
+
+    public void setTimeToSubmittEngineersReport5(BigDecimal timeToSubmittEngineersReport5) {
+        this.timeToSubmittEngineersReport5 = timeToSubmittEngineersReport5;
+    }
+
+    public BigDecimal getTimeToOffHire5() {
+        return timeToOffHire5;
+    }
+
+    public void setTimeToOffHire5(BigDecimal timeToOffHire5) {
+        this.timeToOffHire5 = timeToOffHire5;
+    }
+
+    public BigDecimal getTotalAllowableDays5() {
+        return totalAllowableDays5;
+    }
+
+    public void setTotalAllowableDays5(BigDecimal totalAllowableDays5) {
+        this.totalAllowableDays5 = totalAllowableDays5;
+    }
+
+    public BigDecimal getTimeToInstructEngineer6() {
+        return timeToInstructEngineer6;
+    }
+
+    public void setTimeToInstructEngineer6(BigDecimal timeToInstructEngineer6) {
+        this.timeToInstructEngineer6 = timeToInstructEngineer6;
+    }
+
+    public BigDecimal getTimeToInspect6() {
+        return timeToInspect6;
+    }
+
+    public void setTimeToInspect6(BigDecimal timeToInspect6) {
+        this.timeToInspect6 = timeToInspect6;
+    }
+
+    public BigDecimal getTimeToAuthoriseRepair6() {
+        return timeToAuthoriseRepair6;
+    }
+
+    public void setTimeToAuthoriseRepair6(BigDecimal timeToAuthoriseRepair6) {
+        this.timeToAuthoriseRepair6 = timeToAuthoriseRepair6;
+    }
+
+    public BigDecimal getTimeToSubmittEngineersReport6() {
+        return timeToSubmittEngineersReport6;
+    }
+
+    public void setTimeToSubmittEngineersReport6(BigDecimal timeToSubmittEngineersReport6) {
+        this.timeToSubmittEngineersReport6 = timeToSubmittEngineersReport6;
+    }
+
+    public BigDecimal getTimeToOffHire6() {
+        return timeToOffHire6;
+    }
+
+    public void setTimeToOffHire6(BigDecimal timeToOffHire6) {
+        this.timeToOffHire6 = timeToOffHire6;
+    }
+
+    public BigDecimal getTotalAllowableDays6() {
+        return totalAllowableDays6;
+    }
+
+    public void setTotalAllowableDays6(BigDecimal totalAllowableDays6) {
+        this.totalAllowableDays6 = totalAllowableDays6;
     }
 
     public boolean isBlankLabourRateCheck() {

@@ -2540,7 +2540,7 @@
                     </div>
                 </div>
                 <div class="admin-bre-band-detail-section">                 
-                    <div class="section-heading">Business Rules</div>
+                    <div class="section-heading">Business Rule Parameters</div>
 
 <s:if test="impecuniosRuleEnabled">
                     <div class="admin-bre-band-detail-section">
@@ -2991,9 +2991,133 @@
                             </div>
                         </div>
                     </div>
+                    <div class="admin-bre-band-detail-section">
+                        <div class="section-name">GTA 4.14 Business Rule Parameters</div>
+
+                        <div class="status-info">
+                            Total Loss Duration for Claims Where Claimants Own Insurer is Dealing and Vehicle is Deemed <b>Roadworthy</b>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Authorise Repair or Identify Total Loss (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToAuthoriseRepair1Id" name="timeToAuthoriseRepair1" value="<s:property value="timeToAuthoriseRepair1" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Off-Hire (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToOffHire1Id" name="timeToOffHire1" value="<s:property value="timeToOffHire1" />"/>
+                        </div>
+
+                        <div class="status-info">
+                            Total Loss Duration for Claims Where Claimants Own Insurer is Dealing and Vehicle is Deemed <b>Not Roadworthy</b>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Authorise Repair or Identify Total Loss (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToAuthoriseRepair2Id" name="timeToAuthoriseRepair2" value="<s:property value="timeToAuthoriseRepair2" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Off-Hire (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToOffHire2Id" name="timeToOffHire2" value="<s:property value="timeToOffHire2" />"/>
+                        </div>
+                        
+                        <div class="status-info">
+                            Total Loss Duration for Claims Where CHO is Dealing and Sending PAV and Vehicle is Deemed <b>Roadworthy</b>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Authorise Repair or Identify Total Loss (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToAuthoriseRepair3Id" name="timeToAuthoriseRepair3" value="<s:property value="timeToAuthoriseRepair3" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Submit Engineers Report (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToSubmittEngineersReport3Id" name="timeToSubmittEngineersReport3" value="<s:property value="timeToSubmittEngineersReport3" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Off-Hire (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToOffHire3Id" name="timeToOffHire3" value="<s:property value="timeToOffHire3" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Total Allowable Days</label>
+                            <input type="text" class="chox-ttxt" id="totalAllowableDays3Id" name="totalAllowableDays3" value="<s:property value="totalAllowableDays3" />"/>
+                        </div>
+                        
+                        <div class="status-info">
+                            Total Loss Duration for Claims Where CHO is Dealing and Sending PAV and Vehicle is Deemed <b>Not Roadworthy</b>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Instruct Engineer (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToInstructEngineer4Id" name="timeToInstructEngineer4" value="<s:property value="timeToInstructEngineer4" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Inspect</label>
+                            <input type="text" class="chox-ttxt" id="timeToInspect4Id" name="timeToInspect4" value="<s:property value="timeToInspect4" />"/>
+                        </div>
+                       <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Authorise Repair or Identify Total Loss (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToAuthoriseRepair4Id" name="timeToAuthoriseRepair4" value="<s:property value="timeToAuthoriseRepair4" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Submit Engineers Report (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToSubmittEngineersReport4Id" name="timeToSubmittEngineersReport4" value="<s:property value="timeToSubmittEngineersReport4" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Off-Hire (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToOffHire4Id" name="timeToOffHire4" value="<s:property value="timeToOffHire4" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Total Allowable Days</label>
+                            <input type="text" class="chox-ttxt" id="totalAllowableDays4Id" name="totalAllowableDays4" value="<s:property value="totalAllowableDays4" />"/>
+                        </div>
+
+                        <div class="status-info">
+                            Total Loss Duration for Claims Where CHO is Dealing At-Fault Insurer is Sending PAV and Vehicle is Deemed <b>Roadworthy</b>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Authorise Repair or Identify Total Loss (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToAuthoriseRepair5Id" name="timeToAuthoriseRepair5" value="<s:property value="timeToAuthoriseRepair5" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Submit Engineers Report (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToSubmittEngineersReport5Id" name="timeToSubmittEngineersReport5" value="<s:property value="timeToSubmittEngineersReport5" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Off-Hire (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToOffHire5Id" name="timeToOffHire5" value="<s:property value="timeToOffHire5" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Total Allowable Days</label>
+                            <input type="text" class="chox-ttxt" id="totalAllowableDays5Id" name="totalAllowableDays5" value="<s:property value="totalAllowableDays5" />"/>
+                        </div>
+
+                        <div class="status-info">
+                            Total Loss Duration for Claims Where CHO is Dealing and At-Fault Insurer is Sending PAV and Vehicle is Deemed <b> Not Roadworthy</b>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Instruct Engineer (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToInstructEngineer6Id" name="timeToInstructEngineer6" value="<s:property value="timeToInstructEngineer6" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Inspect</label>
+                            <input type="text" class="chox-ttxt" id="timeToInspect6Id" name="timeToInspect6" value="<s:property value="timeToInspect6" />"/>
+                        </div>
+                       <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Authorise Repair or Identify Total Loss (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToAuthoriseRepair6Id" name="timeToAuthoriseRepair6" value="<s:property value="timeToAuthoriseRepair6" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Submit Engineers Report (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToSubmittEngineersReport6Id" name="timeToSubmittEngineersReport6" value="<s:property value="timeToSubmittEngineersReport6" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Time to Off-Hire (Days)</label>
+                            <input type="text" class="chox-ttxt" id="timeToOffHire6Id" name="timeToOffHire6" value="<s:property value="timeToOffHire6" />"/>
+                        </div>
+                        <div class="chox-form-item">
+                            <label class="chox-form-std-label-longer">Total Allowable Days</label>
+                            <input type="text" class="chox-ttxt" id="totalAllowableDays6Id" name="totalAllowableDays6" value="<s:property value="totalAllowableDays6" />"/>
+                        </div>
+                    </div>
+                </div>
 
                     <div class="admin-bre-band-detail-section">
-                        <div class="section-name">Additional Invoice Validations</div>
+                        <div class="section-name">Business Rules</div>
 
 <s:if test="impecuniosRuleEnabled">
                         <div class="chox-form-checkboxitem">
@@ -3526,9 +3650,38 @@
                             <div class="chox-form-check-description">Check to ensure the CHO is not claiming where a Copley offer has been made.</div>
                         </div>
 </s:if>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="totalLossOwnRoadworthyCheck" value="totalLossOwnRoadworthyCheck" /></div>
+                            <label class="chox-form-check-label">Total Loss Duration for Claims Where Claimants Own Insurer is Dealing and Vehicle is Deemed <i>Roadworthy</i> Check</label>
+                            <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for Total Loss hire type where the own insurer is dealing and the vehicle is deemed roadworthy.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="totalLossOwnUnroadworthyCheck" value="totalLossOwnUnroadworthyCheck" /></div>
+                            <label class="chox-form-check-label">Total Loss Duration for Claims Where Claimants Own Insurer is Dealing and Vehicle is Deemed <i>Not Roadworthy</i> Check</label>
+                            <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for Total Loss hire type where the own insurer is dealing and the vehicle is deemed NOT roadworthy.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="totalLossChoRoadworthyCheck" value="totalLossChoRoadworthyCheck" /></div>
+                            <label class="chox-form-check-label">Total Loss Duration for Claims Where CHO is Dealing and Sending PAV and Vehicle is Deemed <i>Roadworthy</i> Check</label>
+                            <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for Total Loss hire type where the CHO is dealing and the vehicle is deemed roadworthy.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="totalLossChoUnroadworthyCheck" value="totalLossChoUnroadworthyCheck" /></div>
+                            <label class="chox-form-check-label">Total Loss Duration for Claims Where CHO is Dealing and Sending PAV and Vehicle is Deemed <i>Not Roadworthy</i> Check</label>
+                            <div class="chox-form-check-description">his is the maximum number of days the CHO can bill for Total Loss hire type where the own insurer is dealing and the vehicle is deemed NOT roadworthy.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="totalLossChoAtFaultRoadworthyCheck" value="totalLossChoAtFaultRoadworthyCheck" /></div>
+                            <label class="chox-form-check-label">Total Loss Duration for Claims Where CHO is Dealing At-Fault Insurer is Sending PAV and Vehicle is Deemed <i>Roadworthy</i> Check</label>
+                            <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for Total Loss hire type where the at-fault insurer is dealing and the vehicle is deemed roadworthy.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="totalLossChoAtFaultUnroadworthyCheck" value="totalLossChoAtFaultUnroadworthyCheck" /></div>
+                            <label class="chox-form-check-label">Total Loss Duration for Claims Where CHO is Dealing At-Fault Insurer is Sending PAV and Vehicle is Deemed <i>Not Roadworthy</i> Check</label>
+                            <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for Total Loss hire type where the at-fault insurer is dealing and the vehicle is deemed NOT roadworthy.</div>
+                        </div>
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>
-                </div>
             </div>
         </div>
     </form>
