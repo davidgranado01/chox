@@ -198,6 +198,8 @@
         <property column="total_loss_cho_unroadworthy_check" name="totalLossChoUnroadworthyCheck" not-null="true"/>
         <property column="total_loss_cho_atFault_roadworthy_check" name="totalLossChoAtFaultRoadworthyCheck" not-null="true"/>
         <property column="total_loss_cho_atFault_unroadworthy_check" name="totalLossChoAtFaultUnroadworthyCheck" not-null="true"/>
+        <property column="total_loss_diary_info_check" name="totalLossDiaryInfoCheck" not-null="true"/>
+        <property column="repair_diary_info_check" name="repairDiaryInfoCheck" not-null="true"/>
         <property column="time_authorise_repair_1" name="timeToAuthoriseRepair1" not-null="true"/>
         <property column="time_off_hire_1" name="timeToOffHire1" not-null="true"/>
         <property column="time_authorise_repair_2" name="timeToAuthoriseRepair2" not-null="true"/>

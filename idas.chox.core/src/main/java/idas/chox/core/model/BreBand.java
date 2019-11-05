@@ -203,6 +203,8 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean totalLossChoUnroadworthyCheck;
     private boolean totalLossChoAtFaultRoadworthyCheck;
     private boolean totalLossChoAtFaultUnroadworthyCheck;
+    private boolean totalLossDiaryInfoCheck;
+    private boolean repairDiaryInfoCheck;
     private BigDecimal timeToAuthoriseRepair1;
     private BigDecimal timeToOffHire1;
     private BigDecimal timeToAuthoriseRepair2;
@@ -229,6 +231,22 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private BigDecimal totalAllowableDays6;
       
     public BreBand() {
+    }
+
+    public boolean isTotalLossDiaryInfoCheck() {
+        return totalLossDiaryInfoCheck;
+    }
+
+    public void setTotalLossDiaryInfoCheck(boolean totalLossDiaryInfoCheck) {
+        this.totalLossDiaryInfoCheck = totalLossDiaryInfoCheck;
+    }
+
+    public boolean isRepairDiaryInfoCheck() {
+        return repairDiaryInfoCheck;
+    }
+
+    public void setRepairDiaryInfoCheck(boolean repairDiaryInfoCheck) {
+        this.repairDiaryInfoCheck = repairDiaryInfoCheck;
     }
 
     public boolean isTotalLossOwnRoadworthyCheck() {
