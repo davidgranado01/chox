@@ -3122,423 +3122,423 @@
 <s:if test="impecuniosRuleEnabled">
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="impecuniousCheck" value="impecuniousCheck" /></div>
-                            <label class="chox-form-check-label">Pecunious Claimant Check</label>
+                            <label class="chox-form-check-label">097: Pecunious Claimant Check</label>
                             <div class="chox-form-check-description">Check to ensure the CHO is not claiming credit hire or repair where the claimant is considered pecunious.</div>
                         </div>
 </s:if>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasAllowedVehicleClass" value="hasAllowedVehicleClass" /></div>
-                            <label class="chox-form-check-label">Like for like vehicle class hire provision Check</label>
+                            <label class="chox-form-check-label">001: Like for like vehicle class hire provision Check</label>
                             <div class="chox-form-check-description">Check to ensure that the replacement hire vehicle is a like for like match with the non-fault driver's vehicle.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike6To8" value="vehicleClassHireProvisionLikeForLike6To8" /></div>
-                            <label class="chox-form-check-label">Like For Like Prestige Vehicle Class Hire Provision 6-8 Year Check</label>
+                            <label class="chox-form-check-label">045: Like For Like Prestige Vehicle Class Hire Provision 6-8 Year Check</label>
                             <div class="chox-form-check-description">Any Prestige vehicle class where the age of the CHOs customer's vehicle is over 6 years old and under 8 years old, the replacement vehicle class should be one vehicle class less than the CHO's customer's vehicle class.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike6To8SP" value="vehicleClassHireProvisionLikeForLike6To8SP" /></div>
-                            <label class="chox-form-check-label">Like For Like Sports Performance Vehicle Class Hire Provision 6-8 Year Check</label>
+                            <label class="chox-form-check-label">084: Like For Like Sports Performance Vehicle Class Hire Provision 6-8 Year Check</label>
                             <div class="chox-form-check-description">Any Sports Performance vehicle class where the age of the CHOs customer's vehicle is over 6 years old and under 8 years old, the replacement vehicle class should be one vehicle class less than the CHO's customer's vehicle class.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike8To9" value="vehicleClassHireProvisionLikeForLike8To9" /></div>
-                            <label class="chox-form-check-label">Like For Like Prestige Vehicle Class Hire Provision 8-9 Year Check</label>
+                            <label class="chox-form-check-label">049: Like For Like Prestige Vehicle Class Hire Provision 8-9 Year Check</label>
                             <div class="chox-form-check-description">Any Prestige vehicle class where the age of the CHOs customer's vehicle is over 8 years old and under 9 years old, the replacement vehicle class should be two vehicle classes less than the CHO's customer's vehicle class.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLike8To9SP" value="vehicleClassHireProvisionLikeForLike8To9SP" /></div>
-                            <label class="chox-form-check-label">Like For Like Sports Performance Vehicle Class Hire Provision 8-9 Year Check</label>
+                            <label class="chox-form-check-label">085: Like For Like Sports Performance Vehicle Class Hire Provision 8-9 Year Check</label>
                             <div class="chox-form-check-description">Any Sports Performance vehicle class where the age of the CHOs customer's vehicle is over 8 years old and under 9 years old, the replacement vehicle class should be two vehicle classes less than the CHO's customer's vehicle class.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLikeOver9" value="vehicleClassHireProvisionLikeForLikeOver9" /></div>
-                            <label class="chox-form-check-label">Like For Like Prestige Vehicle Class Hire Provision Over 9 Year Check</label>
+                            <label class="chox-form-check-label">046: Like For Like Prestige Vehicle Class Hire Provision Over 9 Year Check</label>
                             <div class="chox-form-check-description">Any Prestige vehicle class where the age of the CHOs customer's vehicle is over 9 years old, the replacement vehicle class provided should be reviewed on an individual basis.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="vehicleClassHireProvisionLikeForLikeOver9SP" value="vehicleClassHireProvisionLikeForLikeOver9SP" /></div>
-                            <label class="chox-form-check-label">Like For Like Sports Performance Vehicle Class Hire Provision Over 9 Year Check</label>
+                            <label class="chox-form-check-label">086: Like For Like Sports Performance Vehicle Class Hire Provision Over 9 Year Check</label>
                             <div class="chox-form-check-description">Any Sports Performance vehicle class where the age of the CHOs customer's vehicle is over 9 years old, the replacement vehicle class provided should be reviewed on an individual basis.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCalculatedCorrectDailyRate" value="hasCalculatedCorrectDailyRate" /></div>
-                            <label class="chox-form-check-label">Vehicle class daily rate charge Check</label>
+                            <label class="chox-form-check-label">002: Vehicle class daily rate charge Check</label>
                             <div class="chox-form-check-description">Check against the allowed daily rate for the vehicle class of the replacement hire vehicle (according to the GTA or specific CHO agreement) and the daily rate billed by the CHO.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hireNetDoesNotExceedBandHireNetCeiling" value="hireNetDoesNotExceedBandHireNetCeiling" /></div>
-                            <label class="chox-form-check-label">Hire Net Ceiling Check</label>
+                            <label class="chox-form-check-label">040: Hire Net Ceiling Check</label>
                             <div class="chox-form-check-description">Check to ensure the Hire Net billed by the CHO does not exceed the CHO's specified Hire Net ceiling (this Hire Net ceiling is enforced regardless of vehicle class of replacement hire vehicle).</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hireNetDoesNotExceedVehicleClassHireNetCeiling" value="hireNetDoesNotExceedVehicleClassHireNetCeiling" /></div>
-                            <label class="chox-form-check-label">Vehicle Class Hire Net Ceiling Check</label>
+                            <label class="chox-form-check-label">003: Vehicle Class Hire Net Ceiling Check</label>
                             <div class="chox-form-check-description">Check to ensure the Hire Net billed by the CHO does not exceed the specified Hire Net ceiling for the customer vehicle’s vehicle class.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedBandRepairNetCeiling" value="repairNetDoesNotExceedBandRepairNetCeiling" /></div>
-                            <label class="chox-form-check-label">Repair Net Ceiling Check</label>
+                            <label class="chox-form-check-label">041: Repair Net Ceiling Check</label>
                             <div class="chox-form-check-description">Check to ensure the Repair Net billed by the CHO does not exceed the CHO's specified Repair Net ceiling (this Repair Net ceiling is enforced regardless of vehicle class of replacement hire vehicle).</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="storageRecoveryNetCeilingCheck" value="storageRecoveryNetCeilingCheck" /></div>
-                            <label class="chox-form-check-label">Storage Recovery Net Ceiling Check</label>
+                            <label class="chox-form-check-label">093: Storage Recovery Net Ceiling Check</label>
                             <div class="chox-form-check-description">Check to ensure the Storage Recovery Net billed by the CHO does not exceed the specified Storage Recovery Net ceiling.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedVehicleClassRepairNetCeiling" value="repairNetDoesNotExceedVehicleClassRepairNetCeiling" /></div>
-                            <label class="chox-form-check-label">Vehicle Class Repair Net Ceiling Check</label>
+                            <label class="chox-form-check-label">023: Vehicle Class Repair Net Ceiling Check</label>
                             <div class="chox-form-check-description">Check to ensure the Repair Net billed by the CHO does not exceed the specified Repair Net ceiling for the customer vehicle's vehicle class.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hireDayCountDoesNotExceedBandHireDayCeiling" value="hireDayCountDoesNotExceedBandHireDayCeiling" /></div>
-                            <label class="chox-form-check-label">Hire Day Ceiling Check</label>
+                            <label class="chox-form-check-label">004: Hire Day Ceiling Check</label>
                             <div class="chox-form-check-description">Check to ensure the number of hire days billed by the CHO does not exceed the CHO's specified hire days ceiling.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="actualHireDaysDoesNotExceedAllowableHireDays" value="actualHireDaysDoesNotExceedAllowableHireDays" /></div>
-                            <label class="chox-form-check-label">Repair Duration Rules</label>
+                            <label class="chox-form-check-label">006: Repair Duration Rules</label>
                             <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for a non Total Loss hire type, please review the series of 'Repair Duration Rules' further up this screen for details on the variables that contribute to the maximum number of days.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="actualHireDaysDoesNotExceedTotalLossInspection" value="actualHireDaysDoesNotExceedTotalLossInspection" /></div>
-                            <label class="chox-form-check-label">Total Loss Duration Rule</label>
+                            <label class="chox-form-check-label">007: Total Loss Duration Rule</label>
                             <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for a Total Loss hire type, please review the 'Total Loss Duration Rule' further up this screen for details on the variables that contribute to the maximum number of days.</div>
                         </div>
 
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="mobileVehicleTotalLossCheck" value="mobileVehicleTotalLossCheck" /></div>
-                            <label class="chox-form-check-label">Mobile Vehicle Total Loss Check</label>
+                            <label class="chox-form-check-label">070: Mobile Vehicle Total Loss Check</label>
                             <div class="chox-form-check-description">If the CHO's Customer's vehicle has been deemed driveable/usable/mobile and the claim has been flagged as a Total Loss the invoice will be flagged for review.</div>
                         </div>
 
 
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairGrossIsLessThanEstimatedTotalRepairAmount" value="repairGrossIsLessThanEstimatedTotalRepairAmount" /></div>
-                            <label class="chox-form-check-label">Engineer's Estimated Total Repair Amount Check</label>
+                            <label class="chox-form-check-label">008: Engineer's Estimated Total Repair Amount Check</label>
                             <div class="chox-form-check-description">Check the Engineer's estimated Total Repair Amount against the Repair Gross amount billed by the CHO. If the Repair Gross billed amount is higher than the Engineer's estimated amount then the invoice will be flagged.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="estimatedRepairDaysPlusBandDaysDoNotExceedHireDays" value="estimatedRepairDaysPlusBandDaysDoNotExceedHireDays" /></div>
-                            <label class="chox-form-check-label">Engineer's Estimated Repair Days Check</label>
+                            <label class="chox-form-check-label">020: Engineer's Estimated Repair Days Check</label>
                             <div class="chox-form-check-description">This checks the Engineer's estimated number of repair days (with the addition of several variables) against the number of hire days billed by the CHO, if the number of hire days billed is greater than the estimation then the invoice will be flagged. Please review the 'Engineer Estimation Rule' further up this screen for more information.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="labourCostBusinessRule" value="labourCostBusinessRule" /></div>
-                            <label class="chox-form-check-label">Labour Cost/Hours Check</label>
+                            <label class="chox-form-check-label">022: Labour Cost/Hours Check</label>
                             <div class="chox-form-check-description">This check looks at either the labour cost for the repair or the number of labour hours exerted by the repairer during the repair process.  Using the formula as detailed in the 'Labour Cost/hours' rule further up this screen, an acceptable/expected number of hire days based on the labour information provided is calculated.  This calculated number of days is compared against the number of hire days billed by the CHO, if the billed days are greater than the acceptable/expected number of hire days the invoice will be flagged.</div>
                         </div>
 
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalLabourCostBusinessRule" value="totalLabourCostBusinessRule" /></div>
-                            <label class="chox-form-check-label">Total Labour Cost Validation Check</label>
+                            <label class="chox-form-check-label">062: Total Labour Cost Validation Check</label>
                             <div class="chox-form-check-description">This check ensures that the CHO is not entering the Repair Gross as the Total Labour Cost.</div>
                         </div>
 
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDateOnThursday" value="repairBookedInDateOnThursday" /></div>
-                            <label class="chox-form-check-label">Thursday Repair Booked In Date Check For Mobile Vehicles</label>
+                            <label class="chox-form-check-label">075: Thursday Repair Booked In Date Check For Mobile Vehicles</label>
                             <div class="chox-form-check-description">If the repair has been booked into a garage on a Thursday and the Customer's vehicle is driveable/usable/mobile then the invoice will be flagged for review. Excludes commercial, private hire and taxi vehicles.</div>
                         </div>
 
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDateOnFriday" value="repairBookedInDateOnFriday" /></div>
-                            <label class="chox-form-check-label">Friday Repair Booked In Date Check For Mobile Vehicles</label>
+                            <label class="chox-form-check-label">026: Friday Repair Booked In Date Check For Mobile Vehicles</label>
                             <div class="chox-form-check-description">If the repair has been booked into a garage on a Friday and the Customer's vehicle is driveable/usable/mobile then the invoice will be flagged for review. Excludes commercial, private hire and taxi vehicles.</div>
                         </div>
 
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDateOnSaturday" value="repairBookedInDateOnSaturday" /></div>
-                            <label class="chox-form-check-label">Saturday Repair Booked In Date Check For Mobile Vehicles</label>
+                            <label class="chox-form-check-label">038: Saturday Repair Booked In Date Check For Mobile Vehicles</label>
                             <div class="chox-form-check-description">If the repair has been booked into a garage on a Saturday and the Customer's vehicle is driveable/usable/mobile then the invoice will be flagged for review. Excludes commercial, private hire and taxi vehicles.</div>
                         </div>
 
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairBookedInDateOnSunday" value="repairBookedInDateOnSunday" /></div>
-                            <label class="chox-form-check-label">Sunday Repair Booked In Date Check For Mobile Vehicles</label>
+                            <label class="chox-form-check-label">039: Sunday Repair Booked In Date Check For Mobile Vehicles</label>
                             <div class="chox-form-check-description">If the repair has been booked into a garage on a Sunday and the Customer's vehicle is driveable/usable/mobile then the invoice will be flagged for review. Excludes commercial, private hire and taxi vehicles.</div>
                         </div>
 
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="validateUniqueVehicleRegistrationNumber" value="validateUniqueVehicleRegistrationNumber" /></div>
-                            <label class="chox-form-check-label">CHO's Client's Vehicle Registration Duplication Check</label>
+                            <label class="chox-form-check-label">021: CHO's Client's Vehicle Registration Duplication Check</label>
                             <div class="chox-form-check-description">Check on CHO's Client's vehicle registration number, if a claim already exists in CHOX against the same vehicle registration the invoice will be flagged.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="flaggedForManualInvoiceReview" value="flaggedForManualInvoiceReview" /></div>
-                            <label class="chox-form-check-label">Invoiced Flagged For Manual Invoice Review</label>
+                            <label class="chox-form-check-label">027: Invoiced Flagged For Manual Invoice Review</label>
                             <div class="chox-form-check-description">If the claim has been manually flagged at the front of the claim cycle for review, the invoice will be flagged for review upon invoice upload.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectDiscountForNonDA" value="hasCorrectDiscountForNonDA" /></div>
-                            <label class="chox-form-check-label">CHO not participating in the Delegated Authority scheme discount Check</label>
+                            <label class="chox-form-check-label">015: CHO not participating in the Delegated Authority scheme discount Check</label>
                             <div class="chox-form-check-description">Check on CHOs not participating in the Delegated Authority scheme apply correct VAT discount off the Full Total Requested.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="handlingAmountAndDeductionBothEqualZeroForNonDA" value="handlingAmountAndDeductionBothEqualZeroForNonDA" /></div>
-                            <label class="chox-form-check-label">CHO not participating in the Delegated Authority scheme Claims Handling charge check</label>
+                            <label class="chox-form-check-label">016: CHO not participating in the Delegated Authority scheme Claims Handling charge check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO who is not participating in the Delegated Authority scheme is not trying to charge for Claims Handling services twice.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="claimHasZeroDiscountForDA" value="claimHasZeroDiscountForDA" /></div>
-                            <label class="chox-form-check-label">CHO participating in the Delegated Authority scheme discount Check</label>
+                            <label class="chox-form-check-label">017: CHO participating in the Delegated Authority scheme discount Check</label>
                             <div class="chox-form-check-description">Check on CHOs participating in the Delegated Authority scheme do not include a flat VAT discount off the Full Total Requested.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero" value="handlingInvoiceAmountAddedToDeductionForHandlingFeeEqualsZero" /></div>
-                            <label class="chox-form-check-label">CHO participating in the Delegated Authority scheme Claims Handling charge reconciliation Check</label>
+                            <label class="chox-form-check-label">018: CHO participating in the Delegated Authority scheme Claims Handling charge reconciliation Check</label>
                             <div class="chox-form-check-description">Check on CHOs participating in the Delegated Authority scheme deduct the correct amount off the hire invoice for Claims Handling services.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="numberOfHireDaysReconcile" value="numberOfHireDaysReconcile" /></div>
-                            <label class="chox-form-check-label">Hire days billed Reconciliation Check</label>
+                            <label class="chox-form-check-label">024: Hire days billed Reconciliation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the number of hire days billed matches the hire start and hire end data provided.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectHireVatCalculation" value="hasCorrectHireVatCalculation" /></div>
-                            <label class="chox-form-check-label">Hire VAT Calculation Check</label>
+                            <label class="chox-form-check-label">009: Hire VAT Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Hire Net.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hireVatLimitCheck" value="hireVatLimitCheck" /></div>
-                            <label class="chox-form-check-label">Hire VAT Limit Check</label>
+                            <label class="chox-form-check-label">052: Hire VAT Limit Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the current VAT rate for the Hire.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hireVatHireEndCheck" value="hireVatHireEndCheck" /></div>
-                            <label class="chox-form-check-label">Hire VAT Check Using Hire End Date</label>
+                            <label class="chox-form-check-label">058: Hire VAT Check Using Hire End Date</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the allowed VAT rate for the Hire based on the Hire End Date and in relation to the date of the VAT change.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hireVatInvoicedDateCheck" value="hireVatInvoicedDateCheck" /></div>
-                            <label class="chox-form-check-label">Hire VAT Check Using Invoiced Date</label>
+                            <label class="chox-form-check-label">059: Hire VAT Check Using Invoiced Date</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the allowed VAT rate for the Hire based on the Invoiced Date (date hire invoice raised on CHO's internal claim system) and in relation to the date of the VAT change.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectHireGrossCalculation" value="hasCorrectHireGrossCalculation" /></div>
-                            <label class="chox-form-check-label">Hire Gross Calculation Check</label>
+                            <label class="chox-form-check-label">005: Hire Gross Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Hire Gross amount.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasHireGrossSumCheck" value="hasHireGrossSumCheck" /></div>
-                            <label class="chox-form-check-label">Hire Gross Sum Check</label>
+                            <label class="chox-form-check-label">048: Hire Gross Sum Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is summing the Hire Net and Hire VAT amounts correctly.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectRepairVatCalculation" value="hasCorrectRepairVatCalculation" /></div>
-                            <label class="chox-form-check-label">Repair VAT Calculation Check</label>
+                            <label class="chox-form-check-label">010: Repair VAT Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Repair Net. </div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairVatLimitCheck" value="repairVatLimitCheck" /></div>
-                            <label class="chox-form-check-label">Repair VAT Limit Check</label>
+                            <label class="chox-form-check-label">053: Repair VAT Limit Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the current VAT rate for the Repair.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairVatCompletionDateCheck" value="repairVatCompletionDateCheck" /></div>
-                            <label class="chox-form-check-label">Repair VAT Check Using Repair Completion Date</label>
+                            <label class="chox-form-check-label">060: Repair VAT Check Using Repair Completion Date</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the allowed VAT rate for the Repair based on the Repair Completion Date and in relation to the date of the VAT change.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectRepairGrossCalculation" value="hasCorrectRepairGrossCalculation" /></div>
-                            <label class="chox-form-check-label">Repair Gross Calculation Check</label>
+                            <label class="chox-form-check-label">011: Repair Gross Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Repair Gross amount.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasRepairGrossSumCheck" value="hasRepairGrossSumCheck" /></div>
-                            <label class="chox-form-check-label">Repair Gross Sum Check</label>
+                            <label class="chox-form-check-label">047: Repair Gross Sum Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is summing the Repair Net and Repair VAT amounts correctly.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalLossVatCalculation" value="hasCorrectTotalLossVatCalculation" /></div>
-                            <label class="chox-form-check-label">Total Loss Fee VAT Calculation Check</label>
+                            <label class="chox-form-check-label">030: Total Loss Fee VAT Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Total Loss Fee Net.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalLossFeeVatLimitCheck" value="totalLossFeeVatLimitCheck" /></div>
-                            <label class="chox-form-check-label">Total Loss Fee VAT Limit Check</label>
+                            <label class="chox-form-check-label">054: Total Loss Fee VAT Limit Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO has not charged more than the current VAT rate for the Total Loss Fee.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalLossGrossCalculation" value="hasCorrectTotalLossGrossCalculation" /></div>
-                            <label class="chox-form-check-label">Total Loss Fee Gross Calculation Check</label>
+                            <label class="chox-form-check-label">043: Total Loss Fee Gross Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total Loss Fee Gross amount.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasTotalLossFeeGrossSumCheck" value="hasTotalLossFeeGrossSumCheck" /></div>
-                            <label class="chox-form-check-label">Total Loss Fee Gross Sum Check</label>
+                            <label class="chox-form-check-label">051: Total Loss Fee Gross Sum Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is summing the Total Loss Fee Net and Total Loss Fee VAT amounts correctly.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="engineerFeeVatLimitCheck" value="engineerFeeVatLimitCheck" /></div>
-                            <label class="chox-form-check-label">Engineer Fee VAT Limit Check</label>
+                            <label class="chox-form-check-label">057: Engineer Fee VAT Limit Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the current VAT rate for the Engineer Fee. </div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="storageRecoveryVatLimitCheck" value="storageRecoveryVatLimitCheck" /></div>
-                            <label class="chox-form-check-label">Storage Recovery VAT Limit Check</label>
+                            <label class="chox-form-check-label">074: Storage Recovery VAT Limit Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the current VAT rate for the Storage Recovery. </div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalNet" value="hasCorrectTotalNet" /></div>
-                            <label class="chox-form-check-label">Total Net Calculation Check</label>
+                            <label class="chox-form-check-label">012: Total Net Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total Net amount.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCorrectTotalVat" value="hasCorrectTotalVat" /></div>
-                            <label class="chox-form-check-label">Total VAT Calculation Check</label>
+                            <label class="chox-form-check-label">013: Total VAT Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO has applied the correct VAT charge against the Total Net.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalVatLimitCheck" value="totalVatLimitCheck" /></div>
-                            <label class="chox-form-check-label">Total VAT Limit Check</label>
+                            <label class="chox-form-check-label">055: Total VAT Limit Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO has not charged more than the current VAT rate for the Total.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasCalculatedTotalGrossEqualSuppliedTotalGross" value="hasCalculatedTotalGrossEqualSuppliedTotalGross" /></div>
-                            <label class="chox-form-check-label">Total Gross Calculation Check</label>
+                            <label class="chox-form-check-label">014: Total Gross Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total Gross amount.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasTotalGrossSumCheck" value="hasTotalGrossSumCheck" /></div>
-                            <label class="chox-form-check-label">Total Gross Sum Check</label>
+                            <label class="chox-form-check-label">050: Total Gross Sum Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is summing the Total Gross Net and Total Gross VAT amounts correctly.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hasSuppliedCorrectTotalToPay" value="hasSuppliedCorrectTotalToPay" /></div>
-                            <label class="chox-form-check-label">Total To Pay Calculation Check</label>
+                            <label class="chox-form-check-label">019: Total To Pay Calculation Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is charging the correct Total To Pay amount.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="automaticChargeCheck" value="automaticChargeCheck" /></div>
-                            <label class="chox-form-check-label">Automatic Charge Check Regardless Of HPI Lookup Result</label>
+                            <label class="chox-form-check-label">042: Automatic Charge Check Regardless Of HPI Lookup Result</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra, regardless of whether the HPI lookup identified the hire vehicle to be an automatic.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="automaticChargeCheckHpiLookup" value="automaticChargeCheckHpiLookup" /></div>
-                            <label class="chox-form-check-label">Automatic Charge Check With HPI Lookup</label>
+                            <label class="chox-form-check-label">063: Automatic Charge Check With HPI Lookup</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra and the HPI lookup did not identify the Hire Vehicle to be an automatic.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="additionalDriverChargeCheck" value="additionalDriverChargeCheck" /></div>
-                            <label class="chox-form-check-label">Additional Driver Charge Check</label>
+                            <label class="chox-form-check-label">028: Additional Driver Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="estateChargeCheck" value="estateChargeCheck" /></div>
-                            <label class="chox-form-check-label">Estate Charge Check Regardless Of HPI Lookup Result</label>
+                            <label class="chox-form-check-label">029: Estate Charge Check Regardless Of HPI Lookup Result</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra, regardless of whether the HPI lookup identified the hire vehicle to be an estate.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="estateChargeCheckHpi" value="estateChargeCheckHpi" /></div>
-                            <label class="chox-form-check-label">Estate Charge Check With HPI Lookup</label>
+                            <label class="chox-form-check-label">061: Estate Charge Check With HPI Lookup</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra and the HPI lookup did not identify the Hire Vehicle to be an estate.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="nonStandardRiskInsurancePremiumCheck" value="nonStandardRiskInsurancePremiumCheck" /></div>
-                            <label class="chox-form-check-label">Non Standard Risk Insurance Premium Check</label>
+                            <label class="chox-form-check-label">044: Non Standard Risk Insurance Premium Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging more than the specified limit/ceiling for this extra.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="miscellaneousChargeCheck" value="miscellaneousChargeCheck" /></div>
-                            <label class="chox-form-check-label">Miscellaneous Charge Check</label>
+                            <label class="chox-form-check-label">031: Miscellaneous Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="satelliteNavigationChargeCheck" value="satelliteNavigationChargeCheck" /></div>
-                            <label class="chox-form-check-label">Satellite Navigation Charge Check</label>
+                            <label class="chox-form-check-label">032: Satellite Navigation Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="babySeatChargeCheck" value="babySeatChargeCheck" /></div>
-                            <label class="chox-form-check-label">Baby Seat Charge Check</label>
+                            <label class="chox-form-check-label">033: Baby Seat Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="towBarsChargeCheck" value="towBarsChargeCheck" /></div>
-                            <label class="chox-form-check-label">Tow Bars Charge Check</label>
+                            <label class="chox-form-check-label">034: Tow Bars Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="roofRackChargeCheck" value="roofRackChargeCheck" /></div>
-                            <label class="chox-form-check-label">Roof Rack Charge Check</label>
+                            <label class="chox-form-check-label">035: Roof Rack Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="deliveryOrCollectionChargeCheck" value="deliveryOrCollectionChargeCheck" /></div>
-                            <label class="chox-form-check-label">Delivery / Collection Charge Check</label>
+                            <label class="chox-form-check-label">036: Delivery / Collection Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="dualControlChargeCheck" value="dualControlChargeCheck" /></div>
-                            <label class="chox-form-check-label">Dual Control Charge Check</label>
+                            <label class="chox-form-check-label">037: Dual Control Charge Check</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra</div>
                         </div>
                          <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="insurancePremiumTaxCheck" value="insurancePremiumTaxCheck" /></div>
-                            <label class="chox-form-check-label">Insurance Premium Tax Check</label>
+                            <label class="chox-form-check-label">069: Insurance Premium Tax Check</label>
                             <div class="chox-form-check-description">Check to ensure that the supplier is charging the correct fee for the Insurance Premium Tax or Non Standard Risk Insurance Premium Tax.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="vedChargeCheck" value="vedChargeCheck" /></div>
-                            <label class="chox-form-check-label">VED Charge Check</label>
+                            <label class="chox-form-check-label">098: VED Charge Check</label>
                             <div class="chox-form-check-description">Check to ensure that the VED Charge billed by the CHO does not exceed the specified VED Charge Ceiling.</div>
                         </div>
                        <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="dateRepairCommencedChkForNonMobileVehicle" value="dateRepairCommencedChkForNonMobileVehicle" /></div>
-                            <label class="chox-form-check-label">Date Repair Commenced Following Hire Start Check For Non-Mobile Vehicles</label>
+                            <label class="chox-form-check-label">064: Date Repair Commenced Following Hire Start Check For Non-Mobile Vehicles</label>
                             <div class="chox-form-check-description">This check looks at the maximum number of days the hire can commence prior to the date repairs commenced for un-driveable/non-usable/non-mobile vehicles.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="dateRepairBookInDateChkForMobileVehicle" value="dateRepairBookInDateChkForMobileVehicle" /></div>
-                            <label class="chox-form-check-label">Repair Book In Date Following Hire Start Check For Mobile Vehicles</label>
+                            <label class="chox-form-check-label">066: Repair Book In Date Following Hire Start Check For Mobile Vehicles</label>
                             <div class="chox-form-check-description">This check looks at the maximum number of days the hire can commence prior to the repair book in date for driveable/usable/mobile vehicles.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="dateRepairBookInDateChkForNonMobileVehicle" value="dateRepairBookInDateChkForNonMobileVehicle" /></div>
-                            <label class="chox-form-check-label">Repair Book In Date Following Hire Start Check For Non-Mobile Vehicles</label>
+                            <label class="chox-form-check-label">065: Repair Book In Date Following Hire Start Check For Non-Mobile Vehicles</label>
                             <div class="chox-form-check-description">This check looks at the maximum number of days the hire can commence prior to the repair book in date for un-driveable/non-usable/non-mobile vehicles.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hireTerminatedAfterRepairCompletionCheck" value="hireTerminatedAfterRepairCompletionCheck" /></div>
-                            <label class="chox-form-check-label">Hire Terminated 1 Day After Repairs Were Complete Check</label>
+                            <label class="chox-form-check-label">056: Hire Terminated 1 Day After Repairs Were Complete Check</label>
                             <div class="chox-form-check-description">
                                 Claim will be flagged for review if the hire was terminated more than 1 day after the repairs were completed.
                             </div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="correntAdminFee" value="correntAdminFee" /></div>
-                            <label class="chox-form-check-label">Correct Administration Fee Check</label>
+                            <label class="chox-form-check-label">025: Correct Administration Fee Check</label>
                             <div class="chox-form-check-description">Check to ensure that the correct administration fee is being charged based on the nature of the service provided, either management of the repair or hire only. Subscriber claims omitted.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="subscriberAdminFeeCheck" value="subscriberAdminFeeCheck" /></div>
-                            <label class="chox-form-check-label">Subscriber Administration Fee Check</label>
+                            <label class="chox-form-check-label">073: Subscriber Administration Fee Check</label>
                             <div class="chox-form-check-description">
                                 Check to ensure that the CHO are not billing an administration fee when the Subscriber rejection was accepted by the CHO. Also checks that the correct Admin Fee is being charged by the CHO for Subscriber claims (that have not been rejected) as per the 'Subscriber Admin Fee' tolerance detailed above.
                             </div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="fixedFeeAdminFeeCheck" value="fixedFeeAdminFeeCheck" /></div>
-                            <label class="chox-form-check-label">Fixed-Fee Administration Fee Check</label>
+                            <label class="chox-form-check-label">078: Fixed-Fee Administration Fee Check</label>
                             <div class="chox-form-check-description">
                                 Check to ensure that the correct Admin Fee is being charged by the CHO for Fixed Fee claims as per the ‘Fixed Fee Admin Fee’ tolerance detailed above.
                             </div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="supplierAdminstrationFee" value="supplierAdminstrationFee" /></div>
-                            <label class="chox-form-check-label">Correct Supplier Administration Fee Check</label>
+                            <label class="chox-form-check-label">067: Correct Supplier Administration Fee Check</label>
                             <div class="chox-form-check-description">Check to ensure that the correct administration fee is being charged by the supplier.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="autoRestoreOneDayRepairCheck" value="autoRestoreOneDayRepairCheck" /></div>
-                            <label class="chox-form-check-label">Repairer Fixed Hire Days Check</label>
+                            <label class="chox-form-check-label">068: Repairer Fixed Hire Days Check</label>
                             <div class="chox-form-check-description">Check on the number of hire days when the vehicle is driveable/usable/mobile, check should only allow the given fixed number of hire days for the specified repairer.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="subscriberCheckRejectedClaims" value="subscriberCheckRejectedClaims" /></div>
-                            <label class="chox-form-check-label">Subscriber Check For Rejected Claims</label>
+                            <label class="chox-form-check-label">071: Subscriber Check For Rejected Claims</label>
                             <div class="chox-form-check-description">
                                 Check to ensure that the CHO is not billing for hire days over the allowed amount.
                                 This rule is for Subscriber claims to ensure that Insurer rejections are recorded
@@ -3548,146 +3548,146 @@
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="subscriberAcquisitionFeeCheck" value="subscriberAcquisitionFeeCheck" /></div>
-                            <label class="chox-form-check-label">Subscriber No Acquisition Fee Check For Rejected Claims</label>
+                            <label class="chox-form-check-label">072: Subscriber No Acquisition Fee Check For Rejected Claims</label>
                             <div class="chox-form-check-description">
                                 Check to ensure that the CHO are not billing an Acquisition Fee when the Subscriber rejection was accepted by the CHO.
                             </div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="overlappingHireCheck" value="overlappingHireCheck" /></div>
-                            <label class="chox-form-check-label">Overlapping Hire Check</label>
+                            <label class="chox-form-check-label">076: Overlapping Hire Check</label>
                             <div class="chox-form-check-description">
                                 Check to ensure that the replacement hire vehicle was not on hire simultaneously across multiple claims.
                             </div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="maximumLabourRateCheck" value="maximumLabourRateCheck" /></div>
-                            <label class="chox-form-check-label">Maximum Labour Rate All Vehicles Check</label>
+                            <label class="chox-form-check-label">077: Maximum Labour Rate All Vehicles Check</label>
                             <div class="chox-form-check-description">
                                 Check to ensure that the CHO is not billing more than the maximum labour rate per hour for all vehicle types (standard, vans, prestige and special).
                             </div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="maximumLabourRateStandardCheck" value="maximumLabourRateStandardCheck" /></div>
-                            <label class="chox-form-check-label">Maximum Labour Rate Standard Vehicles & Vans Check</label>
+                            <label class="chox-form-check-label">087: Maximum Labour Rate Standard Vehicles & Vans Check</label>
                             <div class="chox-form-check-description">
                                 Check to ensure that the CHO is not charging more than the maximum labour rate per hour for standard vehicles and vans.
                             </div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="maximumLabourRatePrestigeCheck" value="maximumLabourRatePrestigeCheck" /></div>
-                            <label class="chox-form-check-label">Maximum Labour Rate Prestige & Special Vehicles Check</label>
+                            <label class="chox-form-check-label">088: Maximum Labour Rate Prestige & Special Vehicles Check</label>
                             <div class="chox-form-check-description">
                                 Check to ensure that the CHO is not charging more than the maximum labour rate per hour for prestige & special vehicles.
                             </div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="blankLabourRateCheck" value="blankLabourRateCheck" /></div>
-                            <label class="chox-form-check-label">Blank or NIL Labour Rate Check</label>
+                            <label class="chox-form-check-label">099: Blank or NIL Labour Rate Check</label>
                             <div class="chox-form-check-description">
                                 Check to ensure the invoice contains a valid labour rate. Invoice will fail if the labour rate is left blank or shows as £0.
                             </div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="hireNetDoesNotExceedProtocolVehicleClassHireNetCeiling" value="hireNetDoesNotExceedProtocolVehicleClassHireNetCeiling" /></div>
-                            <label class="chox-form-check-label">Protocol Vehicle Class Hire Net Ceiling Check</label>
+                            <label class="chox-form-check-label">079: Protocol Vehicle Class Hire Net Ceiling Check</label>
                             <div class="chox-form-check-description">Check to ensure that the Hire Net billed by the CHO does not exceed the agreed protocol cost for the specific customer vehicle class.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling" value="repairNetDoesNotExceedProtocolVehicleClassRepairNetCeiling" /></div>
-                            <label class="chox-form-check-label">Protocol Vehicle Class Repair Net Ceiling Check</label>
+                            <label class="chox-form-check-label">080: Protocol Vehicle Class Repair Net Ceiling Check</label>
                             <div class="chox-form-check-description">Check to ensure that the Repair Net billed by the CHO does not exceed the agreed protocol cost for the specific customer vehicle class.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="compoundAutomaticChargeCheckHpiLookup" value="compoundAutomaticChargeCheckHpiLookup" /></div>
-                            <label class="chox-form-check-label">Compound Vehicle Class Automatic Charge Check With HPI Lookup</label>
+                            <label class="chox-form-check-label">081: Compound Vehicle Class Automatic Charge Check With HPI Lookup</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra and the HPI lookup did not identify the Hire Vehicle to be an automatic.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="compoundEstateChargeCheckHpiLookup" value="compoundEstateChargeCheckHpiLookup" /></div>
-                            <label class="chox-form-check-label">Compound Vehicle Class Estate Charge Check With HPI Lookup</label>
+                            <label class="chox-form-check-label">082: Compound Vehicle Class Estate Charge Check With HPI Lookup</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra and the HPI lookup did not identify the Hire Vehicle to be an estate.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="compoundAutomaticEstateChargeCheckHpiLookup" value="compoundAutomaticEstateChargeCheckHpiLookup" /></div>
-                            <label class="chox-form-check-label">Compound Vehicle Class Automatic/Estate Charge Check With HPI Lookup</label>
+                            <label class="chox-form-check-label">083: Compound Vehicle Class Automatic/Estate Charge Check With HPI Lookup</label>
                             <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for these extras and the HPI lookup did not identify the Hire Vehicle to be an automatic and/or an estate.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="clientVatRegisteredCheck" value="clientVatRegisteredCheck" /></div>
-                            <label class="chox-form-check-label">CHO's Client VAT Registered Check</label>
+                            <label class="chox-form-check-label">089: CHO's Client VAT Registered Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is not charging for the hire, repair or storage recovery VAT when the CHO's customer is VAT registered.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="engineerNetFeeCheck" value="engineerNetFeeCheck" /></div>
-                            <label class="chox-form-check-label">Engineers Fee Net Check</label>
+                            <label class="chox-form-check-label">090: Engineers Fee Net Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the specified Maximum Engineers Fee Charge as detailed above.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalLossFeeNetCeilingCheck" value="totalLossFeeNetCeilingCheck" /></div>
-                            <label class="chox-form-check-label">Total Loss Fee Net Check</label>
+                            <label class="chox-form-check-label">091: Total Loss Fee Net Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO is not charging more than the specified Maximum Total Loss Fee Charge as detailed above.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalLossAndStorageFeeCheck" value="totalLossAndStorageFeeCheck" /></div>
-                            <label class="chox-form-check-label">Total Loss / Storage & Recovery Fee Net Check</label>
+                            <label class="chox-form-check-label">092: Total Loss / Storage & Recovery Fee Net Check</label>
                             <div class="chox-form-check-description">Flag a claim when the CHO is charging a Total Loss Fee and a Storage & Recovery Fee on the same invoice.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="ecdVsRepairCompletionDateCheck" value="ecdVsRepairCompletionDateCheck" /></div>
-                            <label class="chox-form-check-label">ECD vs Repair Completion Date Check</label>
+                            <label class="chox-form-check-label">094: ECD vs Repair Completion Date Check</label>
                             <div class="chox-form-check-description">Flag a claim when the latest ECD (last one added by the CHO) is older than the Repair Completion Date.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="fullTotalRequestedCeilingCheck" value="fullTotalRequestedCeilingCheck" /></div>
-                            <label class="chox-form-check-label">Full Total Requested Ceiling Check</label>
+                            <label class="chox-form-check-label">095: Full Total Requested Ceiling Check</label>
                             <div class="chox-form-check-description">Check to ensure the Full Total Requested billed by the CHO does not exceed the Maximum Full Total Requested Ceiling as detailed above.</div>
                         </div>
 <s:if test="copleyOfferEnabled">
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="copleyOfferMadeCheck" value="copleyOfferMadeCheck" /></div>
-                            <label class="chox-form-check-label">Copley Offer Made Check</label>
+                            <label class="chox-form-check-label">096: Copley Offer Made Check</label>
                             <div class="chox-form-check-description">Check to ensure the CHO is not claiming where a Copley offer has been made.</div>
                         </div>
 </s:if>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalLossOwnRoadworthyCheck" value="totalLossOwnRoadworthyCheck" /></div>
-                            <label class="chox-form-check-label">Total Loss Duration for Claims Where Claimants Own Insurer is Dealing and Vehicle is Deemed <i>Roadworthy</i> Check</label>
+                            <label class="chox-form-check-label">100: Total Loss Duration for Claims Where Claimants Own Insurer is Dealing and Vehicle is Deemed <i>Roadworthy</i> Check</label>
                             <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for Total Loss hire type where the own insurer is dealing and the vehicle is deemed roadworthy.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalLossOwnUnroadworthyCheck" value="totalLossOwnUnroadworthyCheck" /></div>
-                            <label class="chox-form-check-label">Total Loss Duration for Claims Where Claimants Own Insurer is Dealing and Vehicle is Deemed <i>Not Roadworthy</i> Check</label>
+                            <label class="chox-form-check-label">101: Total Loss Duration for Claims Where Claimants Own Insurer is Dealing and Vehicle is Deemed <i>Not Roadworthy</i> Check</label>
                             <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for Total Loss hire type where the own insurer is dealing and the vehicle is deemed NOT roadworthy.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalLossChoRoadworthyCheck" value="totalLossChoRoadworthyCheck" /></div>
-                            <label class="chox-form-check-label">Total Loss Duration for Claims Where CHO is Dealing and Sending PAV and Vehicle is Deemed <i>Roadworthy</i> Check</label>
+                            <label class="chox-form-check-label">102: Total Loss Duration for Claims Where CHO is Dealing and Sending PAV and Vehicle is Deemed <i>Roadworthy</i> Check</label>
                             <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for Total Loss hire type where the CHO is dealing and the vehicle is deemed roadworthy.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalLossChoUnroadworthyCheck" value="totalLossChoUnroadworthyCheck" /></div>
-                            <label class="chox-form-check-label">Total Loss Duration for Claims Where CHO is Dealing and Sending PAV and Vehicle is Deemed <i>Not Roadworthy</i> Check</label>
+                            <label class="chox-form-check-label">103: Total Loss Duration for Claims Where CHO is Dealing and Sending PAV and Vehicle is Deemed <i>Not Roadworthy</i> Check</label>
                             <div class="chox-form-check-description">his is the maximum number of days the CHO can bill for Total Loss hire type where the own insurer is dealing and the vehicle is deemed NOT roadworthy.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalLossChoAtFaultRoadworthyCheck" value="totalLossChoAtFaultRoadworthyCheck" /></div>
-                            <label class="chox-form-check-label">Total Loss Duration for Claims Where CHO is Dealing At-Fault Insurer is Sending PAV and Vehicle is Deemed <i>Roadworthy</i> Check</label>
+                            <label class="chox-form-check-label">104: Total Loss Duration for Claims Where CHO is Dealing At-Fault Insurer is Sending PAV and Vehicle is Deemed <i>Roadworthy</i> Check</label>
                             <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for Total Loss hire type where the at-fault insurer is dealing and the vehicle is deemed roadworthy.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalLossChoAtFaultUnroadworthyCheck" value="totalLossChoAtFaultUnroadworthyCheck" /></div>
-                            <label class="chox-form-check-label">Total Loss Duration for Claims Where CHO is Dealing At-Fault Insurer is Sending PAV and Vehicle is Deemed <i>Not Roadworthy</i> Check</label>
+                            <label class="chox-form-check-label">105: Total Loss Duration for Claims Where CHO is Dealing At-Fault Insurer is Sending PAV and Vehicle is Deemed <i>Not Roadworthy</i> Check</label>
                             <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for Total Loss hire type where the at-fault insurer is dealing and the vehicle is deemed NOT roadworthy.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalLossDiaryInfoCheck" value="totalLossDiaryInfoCheck" /></div>
-                            <label class="chox-form-check-label">Total Loss Diary Information Check</label>
+                            <label class="chox-form-check-label">106: Total Loss Diary Information Check</label>
                             <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for Total Loss hire type where the at-fault insurer is dealing and the vehicle is deemed NOT roadworthy.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="repairDiaryInfoCheck" value="repairDiaryInfoCheck" /></div>
-                            <label class="chox-form-check-label">Repair Diary Information Check</label>
+                            <label class="chox-form-check-label">107: Repair Diary Information Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO has provided the correct total loss diary information.</div>
                         </div>
                     </div>
