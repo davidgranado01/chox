@@ -125,7 +125,6 @@ public class ClaimHeaderReader extends BaseEntityReader {
         }
 
         NodeHelper.nodeValidate(sectionName, "first-contact", claimResult.getElement(), claimResult, getDataValidationParameter());
-        NodeHelper.nodeValidate(sectionName, "note", claimResult.getElement(), claimResult, getDataValidationParameter());
         NodeHelper.nodeValidate(sectionName, "managing-repair", claimResult.getElement(), claimResult, getDataValidationParameter());
         NodeHelper.nodeValidate(sectionName, "agreement-signed", claimResult.getElement(), claimResult, getDataValidationParameter());
         NodeHelper.nodeValidate(sectionName, "gta-notice", claimResult.getElement(), claimResult, getDataValidationParameter());
@@ -135,6 +134,7 @@ public class ClaimHeaderReader extends BaseEntityReader {
         }
 
         if (XmlHelper.isNotNull(XmlHelper.getNodeValue(claimResult.getElement(), "note"))) {
+            NodeHelper.nodeValidate(sectionName, "note", claimResult.getElement(), claimResult, getDataValidationParameter());
             claimResult.setNote(XmlHelper.getNodeValue(claimResult.getElement(), "note"));
         }
 
