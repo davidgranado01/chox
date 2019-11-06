@@ -206,30 +206,30 @@ public class BreBand extends Entity implements Serializable, FullAudit {
     private boolean totalLossDiaryInfoCheck;
     private boolean repairDiaryInfoCheck;
     private boolean upload414Check;
-    private BigDecimal timeToAuthoriseRepair1;
-    private BigDecimal timeToOffHire1;
-    private BigDecimal timeToAuthoriseRepair2;
-    private BigDecimal timeToOffHire2;
-    private BigDecimal timeToAuthoriseRepair3;
-    private BigDecimal timeToSubmittEngineersReport3;
-    private BigDecimal timeToOffHire3;
-    private BigDecimal totalAllowableDays3;
-    private BigDecimal timeToInstructEngineer4;
-    private BigDecimal timeToInspect4;
-    private BigDecimal timeToAuthoriseRepair4;
-    private BigDecimal timeToSubmittEngineersReport4;
-    private BigDecimal timeToOffHire4;
-    private BigDecimal totalAllowableDays4;
-    private BigDecimal timeToAuthoriseRepair5;
-    private BigDecimal timeToSubmittEngineersReport5;
-    private BigDecimal timeToOffHire5;
-    private BigDecimal totalAllowableDays5;
-    private BigDecimal timeToInstructEngineer6;
-    private BigDecimal timeToInspect6;
-    private BigDecimal timeToAuthoriseRepair6;
-    private BigDecimal timeToSubmittEngineersReport6;
-    private BigDecimal timeToOffHire6;
-    private BigDecimal totalAllowableDays6;
+    private int timeToAuthoriseRepair1 = 3;
+    private int timeToOffHire1 = 1;
+    private int timeToAuthoriseRepair2 = 10;
+    private int timeToOffHire2 = 5;
+    private int timeToAuthoriseRepair3 = 2;
+    private int timeToSubmittEngineersReport3 = 1;
+    private int timeToOffHire3 = 1;
+    private int totalAllowableDays3 = 4;
+    private int timeToInstructEngineer4 = 1;
+    private int timeToInspect4 = 2;
+    private int timeToAuthoriseRepair4 = 1;
+    private int timeToSubmittEngineersReport4 = 5;
+    private int timeToOffHire4 = 5;
+    private int totalAllowableDays4 = 14;
+    private int timeToAuthoriseRepair5 = 2;
+    private int timeToSubmittEngineersReport5 = 1;
+    private int timeToOffHire5 = 1;
+    private int totalAllowableDays5 = 4;
+    private int timeToInstructEngineer6 = 1;
+    private int timeToInspect6 = 2;
+    private int timeToAuthoriseRepair6 = 1;
+    private int timeToSubmittEngineersReport6 = 1;
+    private int timeToOffHire6 = 5;
+    private int totalAllowableDays6 = 10;
       
     public BreBand() {
     }
@@ -306,195 +306,195 @@ public class BreBand extends Entity implements Serializable, FullAudit {
         this.totalLossChoAtFaultUnroadworthyCheck = totalLossChoAtFaultUnroadworthyCheck;
     }
 
-    public BigDecimal getTimeToAuthoriseRepair1() {
+    public int getTimeToAuthoriseRepair1() {
         return timeToAuthoriseRepair1;
     }
 
-    public void setTimeToAuthoriseRepair1(BigDecimal timeToAuthoriseRepair1) {
+    public void setTimeToAuthoriseRepair1(int timeToAuthoriseRepair1) {
         this.timeToAuthoriseRepair1 = timeToAuthoriseRepair1;
     }
 
-    public BigDecimal getTimeToOffHire1() {
+    public int getTimeToOffHire1() {
         return timeToOffHire1;
     }
 
-    public void setTimeToOffHire1(BigDecimal timeToOffHire1) {
+    public void setTimeToOffHire1(int timeToOffHire1) {
         this.timeToOffHire1 = timeToOffHire1;
     }
 
-    public BigDecimal getTimeToAuthoriseRepair2() {
+    public int getTimeToAuthoriseRepair2() {
         return timeToAuthoriseRepair2;
     }
 
-    public void setTimeToAuthoriseRepair2(BigDecimal timeToAuthoriseRepair2) {
+    public void setTimeToAuthoriseRepair2(int timeToAuthoriseRepair2) {
         this.timeToAuthoriseRepair2 = timeToAuthoriseRepair2;
     }
 
-    public BigDecimal getTimeToOffHire2() {
+    public int getTimeToOffHire2() {
         return timeToOffHire2;
     }
 
-    public void setTimeToOffHire2(BigDecimal timeToOffHire2) {
+    public void setTimeToOffHire2(int timeToOffHire2) {
         this.timeToOffHire2 = timeToOffHire2;
     }
 
-    public BigDecimal getTimeToAuthoriseRepair3() {
+    public int getTimeToAuthoriseRepair3() {
         return timeToAuthoriseRepair3;
     }
 
-    public void setTimeToAuthoriseRepair3(BigDecimal timeToAuthoriseRepair3) {
+    public void setTimeToAuthoriseRepair3(int timeToAuthoriseRepair3) {
         this.timeToAuthoriseRepair3 = timeToAuthoriseRepair3;
     }
 
-    public BigDecimal getTimeToSubmittEngineersReport3() {
+    public int getTimeToSubmittEngineersReport3() {
         return timeToSubmittEngineersReport3;
     }
 
-    public void setTimeToSubmittEngineersReport3(BigDecimal timeToSubmittEngineersReport3) {
+    public void setTimeToSubmittEngineersReport3(int timeToSubmittEngineersReport3) {
         this.timeToSubmittEngineersReport3 = timeToSubmittEngineersReport3;
     }
 
-    public BigDecimal getTimeToOffHire3() {
+    public int getTimeToOffHire3() {
         return timeToOffHire3;
     }
 
-    public void setTimeToOffHire3(BigDecimal timeToOffHire3) {
+    public void setTimeToOffHire3(int timeToOffHire3) {
         this.timeToOffHire3 = timeToOffHire3;
     }
 
-    public BigDecimal getTotalAllowableDays3() {
+    public int getTotalAllowableDays3() {
         return totalAllowableDays3;
     }
 
-    public void setTotalAllowableDays3(BigDecimal totalAllowableDays3) {
+    public void setTotalAllowableDays3(int totalAllowableDays3) {
         this.totalAllowableDays3 = totalAllowableDays3;
     }
 
-    public BigDecimal getTimeToInstructEngineer4() {
+    public int getTimeToInstructEngineer4() {
         return timeToInstructEngineer4;
     }
 
-    public void setTimeToInstructEngineer4(BigDecimal timeToInstructEngineer4) {
+    public void setTimeToInstructEngineer4(int timeToInstructEngineer4) {
         this.timeToInstructEngineer4 = timeToInstructEngineer4;
     }
 
-    public BigDecimal getTimeToInspect4() {
+    public int getTimeToInspect4() {
         return timeToInspect4;
     }
 
-    public void setTimeToInspect4(BigDecimal timeToInspect4) {
+    public void setTimeToInspect4(int timeToInspect4) {
         this.timeToInspect4 = timeToInspect4;
     }
 
-    public BigDecimal getTimeToAuthoriseRepair4() {
+    public int getTimeToAuthoriseRepair4() {
         return timeToAuthoriseRepair4;
     }
 
-    public void setTimeToAuthoriseRepair4(BigDecimal timeToAuthoriseRepair4) {
+    public void setTimeToAuthoriseRepair4(int timeToAuthoriseRepair4) {
         this.timeToAuthoriseRepair4 = timeToAuthoriseRepair4;
     }
 
-    public BigDecimal getTimeToSubmittEngineersReport4() {
+    public int getTimeToSubmittEngineersReport4() {
         return timeToSubmittEngineersReport4;
     }
 
-    public void setTimeToSubmittEngineersReport4(BigDecimal timeToSubmittEngineersReport4) {
+    public void setTimeToSubmittEngineersReport4(int timeToSubmittEngineersReport4) {
         this.timeToSubmittEngineersReport4 = timeToSubmittEngineersReport4;
     }
 
-    public BigDecimal getTimeToOffHire4() {
+    public int getTimeToOffHire4() {
         return timeToOffHire4;
     }
 
-    public void setTimeToOffHire4(BigDecimal timeToOffHire4) {
+    public void setTimeToOffHire4(int timeToOffHire4) {
         this.timeToOffHire4 = timeToOffHire4;
     }
 
-    public BigDecimal getTotalAllowableDays4() {
+    public int getTotalAllowableDays4() {
         return totalAllowableDays4;
     }
 
-    public void setTotalAllowableDays4(BigDecimal totalAllowableDays4) {
+    public void setTotalAllowableDays4(int totalAllowableDays4) {
         this.totalAllowableDays4 = totalAllowableDays4;
     }
 
-    public BigDecimal getTimeToAuthoriseRepair5() {
+    public int getTimeToAuthoriseRepair5() {
         return timeToAuthoriseRepair5;
     }
 
-    public void setTimeToAuthoriseRepair5(BigDecimal timeToAuthoriseRepair5) {
+    public void setTimeToAuthoriseRepair5(int timeToAuthoriseRepair5) {
         this.timeToAuthoriseRepair5 = timeToAuthoriseRepair5;
     }
 
-    public BigDecimal getTimeToSubmittEngineersReport5() {
+    public int getTimeToSubmittEngineersReport5() {
         return timeToSubmittEngineersReport5;
     }
 
-    public void setTimeToSubmittEngineersReport5(BigDecimal timeToSubmittEngineersReport5) {
+    public void setTimeToSubmittEngineersReport5(int timeToSubmittEngineersReport5) {
         this.timeToSubmittEngineersReport5 = timeToSubmittEngineersReport5;
     }
 
-    public BigDecimal getTimeToOffHire5() {
+    public int getTimeToOffHire5() {
         return timeToOffHire5;
     }
 
-    public void setTimeToOffHire5(BigDecimal timeToOffHire5) {
+    public void setTimeToOffHire5(int timeToOffHire5) {
         this.timeToOffHire5 = timeToOffHire5;
     }
 
-    public BigDecimal getTotalAllowableDays5() {
+    public int getTotalAllowableDays5() {
         return totalAllowableDays5;
     }
 
-    public void setTotalAllowableDays5(BigDecimal totalAllowableDays5) {
+    public void setTotalAllowableDays5(int totalAllowableDays5) {
         this.totalAllowableDays5 = totalAllowableDays5;
     }
 
-    public BigDecimal getTimeToInstructEngineer6() {
+    public int getTimeToInstructEngineer6() {
         return timeToInstructEngineer6;
     }
 
-    public void setTimeToInstructEngineer6(BigDecimal timeToInstructEngineer6) {
+    public void setTimeToInstructEngineer6(int timeToInstructEngineer6) {
         this.timeToInstructEngineer6 = timeToInstructEngineer6;
     }
 
-    public BigDecimal getTimeToInspect6() {
+    public int getTimeToInspect6() {
         return timeToInspect6;
     }
 
-    public void setTimeToInspect6(BigDecimal timeToInspect6) {
+    public void setTimeToInspect6(int timeToInspect6) {
         this.timeToInspect6 = timeToInspect6;
     }
 
-    public BigDecimal getTimeToAuthoriseRepair6() {
+    public int getTimeToAuthoriseRepair6() {
         return timeToAuthoriseRepair6;
     }
 
-    public void setTimeToAuthoriseRepair6(BigDecimal timeToAuthoriseRepair6) {
+    public void setTimeToAuthoriseRepair6(int timeToAuthoriseRepair6) {
         this.timeToAuthoriseRepair6 = timeToAuthoriseRepair6;
     }
 
-    public BigDecimal getTimeToSubmittEngineersReport6() {
+    public int getTimeToSubmittEngineersReport6() {
         return timeToSubmittEngineersReport6;
     }
 
-    public void setTimeToSubmittEngineersReport6(BigDecimal timeToSubmittEngineersReport6) {
+    public void setTimeToSubmittEngineersReport6(int timeToSubmittEngineersReport6) {
         this.timeToSubmittEngineersReport6 = timeToSubmittEngineersReport6;
     }
 
-    public BigDecimal getTimeToOffHire6() {
+    public int getTimeToOffHire6() {
         return timeToOffHire6;
     }
 
-    public void setTimeToOffHire6(BigDecimal timeToOffHire6) {
+    public void setTimeToOffHire6(int timeToOffHire6) {
         this.timeToOffHire6 = timeToOffHire6;
     }
 
-    public BigDecimal getTotalAllowableDays6() {
+    public int getTotalAllowableDays6() {
         return totalAllowableDays6;
     }
 
-    public void setTotalAllowableDays6(BigDecimal totalAllowableDays6) {
+    public void setTotalAllowableDays6(int totalAllowableDays6) {
         this.totalAllowableDays6 = totalAllowableDays6;
     }
 
