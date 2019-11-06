@@ -81,7 +81,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
-        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Rule only applies when the claim is a total loss"));
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("Rule only applies when the claim is a Total Loss, Hire Start is on or after 1st July 2019, and Managing Repair information to support GTA 4.14 not provided."));
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_ESCALATED_TO_CH));
         assertFalse(rv.getIsVisibleToCHO());
 
@@ -152,9 +152,6 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
 
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
 
-        // BreBandCalcHelper cBand = BreBandCalcHelper.getInstance(claim.getBreBand());
-        // System.out.println("getTotalLossInspectionDays:"+cBand.getTotalLossInspectionDays());
-
         assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
 
@@ -178,9 +175,6 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
 
-        // BreBandCalcHelper cBand = BreBandCalcHelper.getInstance(claim.getBreBand());
-        // System.out.println("getTotalLossInspectionDays:"+cBand.getTotalLossInspectionDays());
-        
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
         assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The number of hire days billed by the CHO (10 days) exceeds the allowable days threshold (9 days) for total loss hires."));
 

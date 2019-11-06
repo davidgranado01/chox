@@ -30,10 +30,9 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType())
-                && !ClaimType.isFixedFee(claim.getClaimType())
-                && claim.getBreBand().isActualHireDaysDoesNotExceedTotalLossInspection()
-                && claim.getCustomer() != null && claim.getVehicleHire() != null && claim.getHireMonitoringDetail() != null) {
+        if (claim.getBreBand().isActualHireDaysDoesNotExceedTotalLossInspection() && !ClaimType.isCollaborationProtocol(claim.getClaimType())
+                && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+                && claim.getCustomer() != null && claim.getVehicleHire() != null) {
 
             Date firstJuly2019 = new Date();
             try {
@@ -43,7 +42,7 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
             }
             
             if (claim.getCustomer().getIsTotalLoss() && claim.getVehicleHire().getHireStart().after(firstJuly2019)
-                    && (claim.getHireMonitoringDetail().getEngineersReportSentDate() == null || claim.getHireMonitoringDetail().getWhoIsSendingPav() == null)) {
+                    && (claim.getHireMonitoringDetail() == null || claim.getHireMonitoringDetail().getEngineersReportSentDate() == null || claim.getHireMonitoringDetail().getWhoIsSendingPav() == null)) {
                 LOG.debug("Total loss claim - rule applies, hire days = ", claim.getVehicleHire().getDays());
                 CHOBandCalcHelper bandCalc = CHOBandCalcHelper.getInstance(claim.getBreBand());
                 boolean success = claim.getVehicleHire().getDays() <= bandCalc.getTotalLossInspectionDays();
@@ -56,7 +55,7 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
 
             } else {
                 res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-                narrative = "Rule only applies when the claim is a total loss";
+                narrative = "Rule only applies when the claim is a Total Loss, Hire Start is on or after 1st July 2019, and Managing Repair information to support GTA 4.14 not provided.";
             }
 
         } else {
