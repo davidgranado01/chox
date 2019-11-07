@@ -12,7 +12,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <poi.version>3.17</poi.version>
+        <poi.version>4.1.1</poi.version> <!-- was 3.17 -->
         <logback.version>1.2.3</logback.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -92,17 +92,6 @@
             <artifactId>poi</artifactId>
             <version>${poi.version}</version>
         </dependency>
-<!--        <dependency>
-            <groupId>net.sourceforge.jexcelapi</groupId>
-            <artifactId>jxl</artifactId>
-            <version>${jexcel.version}</version>
-        </dependency>-->
-<!--        <dependency>
-            <groupId>net.sf.jxls</groupId>
-            <artifactId>jxls-core</artifactId>
-            <version>${jxls.version}</version>
-            <type>jar</type>
-        </dependency>-->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
