@@ -14,6 +14,7 @@ public class TabAccessibility {
     public static final String TAB_TASKS = "Tasks";
     public static final String TAB_AUDIT_TRAIL = "AuditTrail";
     public static final String TAB_INVOICE_UNASSIGNED = "InvoiceUnassigned";
+    public static final String TAB_EVENT_LOG = "Event Log";
 
     private final short claimDetailTabAccessibility;
     private final short invoiceDetailTabAccessibility;

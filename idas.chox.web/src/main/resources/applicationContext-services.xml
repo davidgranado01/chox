@@ -329,6 +329,11 @@
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
 
+    <bean id="eventLogService" class="idas.chox.data.services.EventLogServiceImp" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
+
     <bean id="ipWhitelistService" class="idas.chox.data.services.IPWhitelistServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
