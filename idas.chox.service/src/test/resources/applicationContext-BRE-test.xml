@@ -132,6 +132,11 @@
                 <bean class="idas.chox.service.bre.rules.CopleyOfferMadeCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.ImpecuniousCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.VedChargeCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.BlankLabourRateCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.GtaAmendUploadCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.GtaAmendTotalLossOwnInsurerRoadworthy" scope="prototype">
+                    <property name="bankHolidayService" ref="bankHolidayService"/>
+                </bean>
             </list>
         </property>
     </bean>

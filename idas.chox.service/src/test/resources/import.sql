@@ -734,3 +734,4 @@ INSERT INTO accessibility(id, name, is_workgroup_check, is_ownership_check, chec
 
 INSERT INTO accessibility_item( id, accessibility_id, role, access_right) SELECT  1, id, 'ALL', 1 from accessibility;
 
+INSERT INTO bank_holidays(id, bank_holiday) VALUES (1,{ts '2019-12-02 00:00:00'});

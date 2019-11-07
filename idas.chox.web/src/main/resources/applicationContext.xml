@@ -19,6 +19,7 @@
                 <value>hbm/History.hbm.xml</value>
                 <value>hbm/WebUser.hbm.xml</value>
                 <value>hbm/WebUserRole.hbm.xml</value>
+                <value>hbm/BankHoliday.hbm.xml</value>
                 <value>hbm/BreBandOrganisation.hbm.xml</value>
                 <value>hbm/Chorganisation.hbm.xml</value>
                 <value>hbm/Claim.hbm.xml</value>
