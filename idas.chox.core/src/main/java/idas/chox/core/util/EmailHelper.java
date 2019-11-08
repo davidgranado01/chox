@@ -72,7 +72,7 @@ public class EmailHelper {
             LOG.warn("Error posting email with subject '{}': \n{}\n", subject, message, ex);
             throw ex;
         } catch (Exception ex) {
-            LOG.warn("Error posting email with subject '{}': \n{}\n", subject, message, ex);
+            LOG.warn("Exception posting email with subject '{}': \n{}\n", subject, message, ex);
             throw ex;
         }
     }
