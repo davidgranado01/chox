@@ -16,11 +16,11 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimType;
-import idas.chox.service.bre.rules.GtaAmendTotalLossOwnInsurerRoadworthy;
+import idas.chox.service.bre.rules.GtaAmendTotalLossOwnInsurerUnroadworthy;
 import idas.chox.test.BaseTest;
 
 
-public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
+public class Rule102GtaAmendTotalLossOwnInsurerUnroadworthy extends BaseTest {
 
     MockObjects testClaim = new MockObjects();
 
@@ -38,9 +38,11 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setChorganisation(testClaim.getTestChorganisation());
+        
         claim.setBreBand(testClaim.getTestBreBand());
-        claim.getBreBand().setTimeToAuthoriseRepair1(3);
-        claim.getBreBand().setTimeToOffHire1(1);
+        claim.getBreBand().setTimeToAuthoriseRepair2(3);
+        claim.getBreBand().setTimeToOffHire2(1);
+
         claim.setEngineerReport(testClaim.getTestEngineeringReport());
         claim.setCustomer(testClaim.getTestCustomerVehicleDamage());
         claim.setInvoice(testClaim.getTestExtras());
@@ -50,11 +52,11 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getCustomer().setVehicleClass(testClaim.getTestVehicleClass());
         
         claim.setClaimType(ClaimType.GTA);
-        claim.getBreBand().setTotalLossOwnRoadworthyCheck(true);
+        claim.getBreBand().setTotalLossOwnUnroadworthyCheck(true);
         claim.getVehicleHire().setHireStart(new Date());
         claim.getVehicleHire().setHireEnd(new Date());
         claim.getHireMonitoringDetail().setWhoIsSendingPav("Customers Own Insurer");
-        claim.getCustomer().setIsUsable(true);
+        claim.getCustomer().setIsUsable(false);
         claim.setManagingRepair(false);
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new Date());
         
@@ -64,8 +66,8 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
     @Test
     public void testSkipped_OnOffFlag() throws IOException {
         Claim claim = getTestClaim();
-        claim.getBreBand().setTotalLossOwnRoadworthyCheck(false);
-        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerRoadworthy().applyToClaim(claim);
+        claim.getBreBand().setTotalLossOwnUnroadworthyCheck(false);
+        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerUnroadworthy().applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
@@ -76,7 +78,7 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
     public void testSkipped_ClaimTypeSubscriber() throws IOException {
         Claim claim = getTestClaim();
         claim.setClaimType(ClaimType.SUBSCRIBER);
-        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerRoadworthy().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerUnroadworthy().applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
@@ -85,7 +87,7 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
     public void testSkipped_ClaimTypeFixedFee() throws IOException {
         Claim claim = getTestClaim();
         claim.setClaimType(ClaimType.FIXED_FEE);
-        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerRoadworthy().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerUnroadworthy().applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
@@ -94,7 +96,7 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
     public void testSkipped_ClaimTypeCollaboration() throws IOException {
         Claim claim = getTestClaim();
         claim.setClaimType(ClaimType.COLLABORATION_PROTOCOL);
-        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerRoadworthy().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerUnroadworthy().applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
@@ -105,18 +107,18 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
 
         claim.setManagingRepair(true);
         
-        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerRoadworthy().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerUnroadworthy().applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
 
     @Test
-    public void testSkipped_IsUsableFalse() throws IOException {
+    public void testSkipped_IsUsableTrue() throws IOException {
         Claim claim = getTestClaim();
 
-        claim.getCustomer().setIsUsable(false);
+        claim.getCustomer().setIsUsable(true);
         
-        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerRoadworthy().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerUnroadworthy().applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
@@ -127,12 +129,12 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
 
         claim.getHireMonitoringDetail().setWhoIsSendingPav("At Fault Insurer");
         
-        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerRoadworthy().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerUnroadworthy().applyToClaim(claim);
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
 
         claim.getHireMonitoringDetail().setWhoIsSendingPav("CHO");
         
-        rv = new GtaAmendTotalLossOwnInsurerRoadworthy().applyToClaim(claim);
+        rv = new GtaAmendTotalLossOwnInsurerUnroadworthy().applyToClaim(claim);
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
 
@@ -142,7 +144,7 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
 
         claim.getVehicleHire().setHireEnd(null);
         
-        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerRoadworthy().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerUnroadworthy().applyToClaim(claim);
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
 
@@ -153,7 +155,7 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
 
         claim.getVehicleHire().setHireStart(null);
         
-        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerRoadworthy().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerUnroadworthy().applyToClaim(claim);
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
 
@@ -163,7 +165,7 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-06-30"));
         
-        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerRoadworthy().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossOwnInsurerUnroadworthy().applyToClaim(claim);
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
 
@@ -175,7 +177,7 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-07"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
@@ -190,7 +192,7 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-06"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-07"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
@@ -205,7 +207,7 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-11"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
@@ -220,12 +222,12 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
         Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the claimants own insurer is dealing and the vehicle is roadworthy."));
+        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the claimants own insurer is dealing and the vehicle is not roadworthy."));
         Assert.assertFalse(rv.getIsVisibleToCHO());
     }
 
@@ -237,12 +239,12 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-06"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
         Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the claimants own insurer is dealing and the vehicle is roadworthy."));
+        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the claimants own insurer is dealing and the vehicle is not roadworthy."));
         Assert.assertFalse(rv.getIsVisibleToCHO());
     }
 
@@ -254,12 +256,12 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-07"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
         Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the claimants own insurer is dealing and the vehicle is roadworthy."));
+        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the claimants own insurer is dealing and the vehicle is not roadworthy."));
         Assert.assertFalse(rv.getIsVisibleToCHO());
     }
     
@@ -271,12 +273,12 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-12"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
         Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the claimants own insurer is dealing and the vehicle is roadworthy."));
+        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the claimants own insurer is dealing and the vehicle is not roadworthy."));
         Assert.assertFalse(rv.getIsVisibleToCHO());
     }
     
@@ -289,7 +291,7 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-09"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-12"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
@@ -311,7 +313,7 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-11"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
@@ -326,7 +328,7 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-07"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-07"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
@@ -341,7 +343,7 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-09")); //Saturday
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-12"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
@@ -356,12 +358,12 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
         Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the claimants own insurer is dealing and the vehicle is roadworthy."));
+        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the claimants own insurer is dealing and the vehicle is not roadworthy."));
         Assert.assertFalse(rv.getIsVisibleToCHO());
     }
     
@@ -373,12 +375,12 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-09")); //Saturday
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-13"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
         Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the claimants own insurer is dealing and the vehicle is roadworthy."));
+        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the claimants own insurer is dealing and the vehicle is not roadworthy."));
         Assert.assertFalse(rv.getIsVisibleToCHO());
     }
     
@@ -391,7 +393,7 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-12-05"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-12-06"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
@@ -406,7 +408,7 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-29"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-12-03"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
@@ -421,12 +423,12 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-12-06"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-12-07"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
         Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the claimants own insurer is dealing and the vehicle is roadworthy."));
+        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the claimants own insurer is dealing and the vehicle is not roadworthy."));
         Assert.assertFalse(rv.getIsVisibleToCHO());
     }
 
@@ -438,12 +440,12 @@ public class Rule101GtaAmendTotalLossOwnInsurerRoadworthy extends BaseTest {
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-29"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-12-04"));
 
-        GtaAmendTotalLossOwnInsurerRoadworthy rule = new GtaAmendTotalLossOwnInsurerRoadworthy();
+        GtaAmendTotalLossOwnInsurerUnroadworthy rule = new GtaAmendTotalLossOwnInsurerUnroadworthy();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
         Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the claimants own insurer is dealing and the vehicle is roadworthy."));
+        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the claimants own insurer is dealing and the vehicle is not roadworthy."));
         Assert.assertFalse(rv.getIsVisibleToCHO());
     }
 }
