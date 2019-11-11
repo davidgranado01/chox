@@ -64,8 +64,6 @@
             closeClaimReasonsStore.loadData(Ext.util.JSON.decode(closeClaimReasonsJsonString));
         }
 
-debugger;
-
         tabPanel1= new Ext.TabPanel({
             renderTo: 'tabContainer',
             width:1000,
