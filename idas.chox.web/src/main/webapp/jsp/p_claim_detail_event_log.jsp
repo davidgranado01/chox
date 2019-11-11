@@ -10,26 +10,22 @@ Ext.onReady(function () {
 
     // LOAD RECORDS
     eventLogsJsonReader = new Ext.data.JsonReader({
+        idProperty: 'id',
         totalProperty: 'totalCount',
         root: 'results',
         fields: [{
                 name: 'id'
-            },
-            {
+            }, {
                 name: 'createdBy'
-            },
-            {
+            }, {
                 name: 'createdDate',
                 type: 'date',
                 dateFormat: 'd/m/Y H:i'
-            },
-            {
+            }, {
                 name: 'activityName'
-            },
-            {
+            }, {
                 name: 'eventName'
-            },
-            {
+            }, {
                 name: 'claimStatus'
             }]
     });
@@ -39,7 +35,7 @@ Ext.onReady(function () {
         reader: eventLogsJsonReader
     });
 
-    eventLogsDataStore.setDefaultSort('createdDate', 'asc');
+    eventLogsDataStore.setDefaultSort('createdDate', 'desc');
     var dateRenderer = Ext.util.Format.dateRenderer('d/m/Y H:i');
 
     eventLogsGrid = new Ext.grid.GridPanel({
@@ -51,6 +47,7 @@ Ext.onReady(function () {
         renderTo: 'eventLogsGrid',
         enableHdMenu: false,
         layout: 'fit',
+        frame: true,
         columns: [{
                 header: "Created",
                 width: 260,
@@ -95,54 +92,46 @@ Ext.onReady(function () {
         height: 300
     });
 
-    debugger;
     loadEventLogs();
 });
 
 
 function eventLogOnClick(grid, rowIndex, columnIndex, e) {
     var eventLog = eventLogsGrid.getStore().getAt(rowIndex);
-    var fileId = eventLog.get("id");
+    var eventLogId = eventLog.get("id");
 
-    if (columnIndex === 2) {
-        var title = "Notes";
-        var msg = "<b>Created Date</b>: " + eventLog.get("createdDate");
-        msg += "<br/><b>Created By</b>: " + eventLog.get("createdBy");
-        msg += "<br/><b>Message";
+    // show the mask when loading data
+    eventLogsGrid.loadMask.show();
+    choxExtAjaxRequest({
+        url: '/prv/p/getEventLogAttributes.action',
+        callback : function(options,success,response) {
+            var attributes = Ext.util.JSON.decode(response.responseText);
+            var title = "Notes";
+            var msg = "<b>Created Date</b>: " + eventLog.get("createdDate");
+            msg += "<br/><b>Created By</b>: " + eventLog.get("createdBy");
+            msg += "<br/><b>Activity Name</b>: " + eventLog.get("activityName");
+            msg += "<br/><b>Event Name</b>: " + eventLog.get("eventName");
+            msg += "<br/><b>Claim Status</b>: " + eventLog.get("claimStatus");
+            msg += "<br/><b>Attributes</b></br/>";
 
-        if (eventLog.get("visibilityType") > 0) {
-            msg += " (Private Note)";
+            // hide the load mask of the event
+            eventLogsGrid.loadMask.hide();
+            propmtMsg(title, getFormatedMessage(msg, attributes));
+        },
+        params: {
+            eventLogId: eventLogId
         }
-        msg += "</b>: <br/>" + eventLog.get("eventLog");
-        propmtMsg(title, getFormatedMessage(msg));
-    } else if (columnIndex === 4 && eventLog.get("delete") !== "") {
-        deleteEventLog(fileId);
-    } else if (columnIndex === 3 && eventLog.get("reviewRequired") === "Required") {
-        acknowledgeEventLog(fileId);
-    }
+    });
 }
 
-function getFormatedMessage(msg) {
-    if (msg.length > 0) {
-        msg = msg.replace('An invoice amendment has been made to the following fields:', 'An invoice amendment has been made to the following fields:<br/>');
-        msg = msg.replace('Invoice Details:', '<b>Invoice Details: </b><br/>');
-        msg = msg.replace('Hire Vehicle Details:', '<b>Hire Vehicle Details: </b><br/>');
-        msg = msg.replace('Engineer Report:', '<b>Engineer Report: </b><br/>');
-        var messageList = msg.split('). ');
-        var messageHTML = "";
-        if (messageList.length > 0) {
-            for (var i = 0; i < messageList.length; i++) {
-                if ((i + 1) < messageList.length) {
-                    messageHTML += (messageList[i] + ')<br/>');
-                } else {
-                    messageHTML += (messageList[i]);
-                }
-            }
-            return messageHTML;
+function getFormatedMessage(msg, attributes) {
+    for (var key in attributes) {
+        if (attributes.hasOwnProperty(key)) {
+            msg += key + ": " + attributes[key] + '<br />'
         }
-    } else {
-        return "";
     }
+
+    return msg;
 }
 
 function loadEventLogs() {
@@ -151,9 +140,6 @@ function loadEventLogs() {
             claimId: <s:property value = "claimId" />
         }
     });
-    // setting notestabloaded = true, will enable notes tab grid panel to reload every time notes tab clicked.'
-    // notesTabLoaded flag is used to find this page is loaded from p_claim_detail.jsp page.
-    notesTabLoaded = true;
 }
 </script>
 
