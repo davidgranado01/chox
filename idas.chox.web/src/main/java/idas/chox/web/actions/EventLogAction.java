@@ -12,10 +12,22 @@ import org.springframework.security.access.annotation.Secured;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class EventLogAction extends ClaimModelAction<BaseActivityEvent> {
     private static final Logger LOG = LoggerFactory.getLogger(EventLogAction.class);
     private int eventLogId;
+
+    @Secured ({"ROLE_CHOX_ADMIN"})
+    public String getJsonData() {
+        return jsonData;
+    }
+
+    public void setJsonData(String jsonData) {
+        this.jsonData = jsonData;
+    }
+
+    private String jsonData;
     private String jsonArrayData;
     private EventLogServiceImp eventLogService;
 
@@ -57,6 +69,30 @@ public class EventLogAction extends ClaimModelAction<BaseActivityEvent> {
 
         setJsonArrayData("{\"totalCount\":" + eventLogs.size() + ",\"results\":" + jsonString + "}");
         return SUCCESS;
+    }
+
+    @Secured({"ROLE_CHOX_ADMIN"})
+    public String getEventLogAttributes() {
+        Map<String, String> attributes = eventLogService.getEventLogAttributesById(eventLogId);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(attributes);
+        } catch (JsonProcessingException ex) {
+            LOG.error("Error converting viewList list to json string.");
+        }
+
+        jsonData = jsonString;
+        return SUCCESS;
+    }
+
+    public int getEventLogId() {
+        return eventLogId;
+    }
+
+    public void setEventLogId(int eventLogId) {
+        this.eventLogId = eventLogId;
     }
 
     @Override

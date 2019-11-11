@@ -1456,6 +1456,9 @@
         <action name="getEventLogs" class="idas.chox.web.actions.EventLogAction" method="getEventLogs">
             <result name="success">/jsp/p_jsonArrayData.jsp</result>
         </action>
+        <action name="getEventLogAttributes" class="idas.chox.web.actions.EventLogAction" method="getEventLogAttributes">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
 
 
         <action name="getAuditTrailPage" class="idas.chox.web.actions.AuditTrailAction" method="doRenderActionPage">
