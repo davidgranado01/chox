@@ -82,8 +82,10 @@
                 {contentEl:'historyTab', title: 'BRE Results', disabled: historyDetailsDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getHistoryPage.action', params:{"claimId" : '<s:property value="id" />'}})},
                 {contentEl:'auditTrailTab', title: 'Claim Cycle', disabled: auditTrailDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getAuditTrailPage.action', params:{"claimId" : '<s:property value="id" />'}})},
                 {contentEl:'commentTab', id:'claimCommentPanelTabId', title: commentTabTitle, disabled: commentsDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getClaimDetailCommentPage.action', params:{"claimId" : '<s:property value="id" />'}}),listeners: {activate: doLoadComments}},
-                {contentEl:'taskTab', id:'claimTaskPanelTabId', title: taskTabTitle, disabled: tasksDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getClaimDetailTaskPage.action', params:{"claimId" : '<s:property value="id" />'}}),listeners: {activate: doLoadTasks}},
-                {contentEl:'eventLogTab', id:'eventLogPanelTabId', title: 'Event Log', disabled: !isChoxAdmin, autoLoad: choxUpdateEl({url:'/prv/p/getEventLogPage.action', params:{"claimId" : '<s:property value="id" />'}}),listeners: {activate: doLoadTasks}}
+                {contentEl:'taskTab', id:'claimTaskPanelTabId', title: taskTabTitle, disabled: tasksDisabled, autoLoad: choxUpdateEl({url:'/prv/p/getClaimDetailTaskPage.action', params:{"claimId" : '<s:property value="id" />'}}),listeners: {activate: doLoadTasks}}
+                 <s:if test="isChoxAdmin">
+                ,{contentEl:'eventLogTab', id:'eventLogPanelTabId', title: 'Event Log', disabled: !isChoxAdmin, autoLoad: choxUpdateEl({url:'/prv/p/getEventLogPage.action', params:{"claimId" : '<s:property value="id" />'}}),listeners: {activate: doLoadTasks}}
+                </s:if>
             ],
             listeners: { 
                 beforerender : updateTabs

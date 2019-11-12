@@ -49,7 +49,7 @@ Ext.onReady(function () {
         layout: 'fit',
         frame: true,
         columns: [{
-                header: "Created",
+                header: "Created Date",
                 width: 260,
                 dataIndex: 'createdDate',
                 sortable: true,
@@ -64,16 +64,16 @@ Ext.onReady(function () {
                 resizable: true
             },
             {
-                header: "Activity Name",
+                header: "Event Name",
                 width: 440,
-                dataIndex: 'activityName',
+                dataIndex: 'eventName',
                 sortable: true,
                 resizable: true
             },
             {
-                header: "Event Name",
+                header: "Activity Name",
                 width: 440,
-                dataIndex: 'eventName',
+                dataIndex: 'activityName',
                 sortable: true,
                 resizable: true
             },
