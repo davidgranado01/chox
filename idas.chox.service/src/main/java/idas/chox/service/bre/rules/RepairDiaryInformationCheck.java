@@ -52,7 +52,7 @@ public class RepairDiaryInformationCheck implements IBusinessRule {
                 || claim.getHireMonitoringDetail().getRepairCommencedDate() == null
                 || claim.getHireMonitoringDetail().getRepairCompletionDate() == null) {
                 success = false;
-                narrative = "Check to ensure that the CHO has provided the required repair diary information.";
+                narrative = "The CHO has not presented the diary information as required for hire involving a repair.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
