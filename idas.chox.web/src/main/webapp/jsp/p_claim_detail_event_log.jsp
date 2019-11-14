@@ -124,10 +124,18 @@ function eventLogOnClick(grid, rowIndex, columnIndex, e) {
     });
 }
 
+function escapeHtml(unsafe) {
+    return unsafe.replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+}
+
 function getFormatedMessage(msg, attributes) {
     for (var key in attributes) {
         if (attributes.hasOwnProperty(key)) {
-            msg += key + ": " + attributes[key] + '<br />'
+            msg += key + ": " + escapeHtml(attributes[key]) + '<br />'
         }
     }
 
