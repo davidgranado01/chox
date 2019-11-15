@@ -1,12 +1,12 @@
 package idas.chox.web.actions;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.support.AopUtils;
 import org.springframework.security.access.AccessDeniedException;
 
 import idas.chox.core.model.Customer;
@@ -24,6 +24,7 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     
     private static final Logger LOG = LoggerFactory.getLogger(HireMonitoringDetailAction.class);
     private List nonProvisionReasons;
+    private List sendingPAV;
     private LookupService lookupService;
     private NotificationService notificationService;
     private Boolean isTotalLossOriginal;
@@ -195,6 +196,18 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
         }
         
         return nonProvisionReasons;
+    }
+
+    public List getSendingPAV() {
+        if (sendingPAV == null) {
+            sendingPAV = new ArrayList();
+            sendingPAV.add("Customers Own Insurer");
+            sendingPAV.add("SendingPAV");
+            sendingPAV.add("CHO");
+            sendingPAV.add("At Fault Insurer");
+        }
+
+        return sendingPAV;
     }
     
 }

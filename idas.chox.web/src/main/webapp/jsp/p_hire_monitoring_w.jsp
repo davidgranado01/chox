@@ -449,8 +449,12 @@
             </s:else>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label2">Who Is Sending Pav If TL?</label>
-                <input type="text" id="whoIsSendingPavId" class="chox-ttxt" name="whoIsSendingPav" value="<s:property value="whoIsSendingPav" />"/>
+                <label class="chox-form-std-label3">Who Is Sending Pav If TL?</label>
+                <s:select name="whoIsSendingPav"
+                          list="sendingPAV"
+                          headerKey="" listKey=""
+                          headerValue="-- Please Select --"
+                          emptyOption="false" cssStyle="width:230px"></s:select>
             </div>
 
             <s:if test="totalLossOfferMadeLastModified!=null">
