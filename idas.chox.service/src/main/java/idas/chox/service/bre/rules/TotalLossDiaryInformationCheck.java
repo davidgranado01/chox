@@ -41,7 +41,7 @@ public class TotalLossDiaryInformationCheck implements IBusinessRule {
                 && !ClaimType.isCollaborationProtocol(claim.getClaimType())
                 && !ClaimType.isSubscriber(claim.getClaimType())
                 && !ClaimType.isFixedFee(claim.getClaimType())
-                && !claim.getHireMonitoringDetail().isIsTotalLostCheck()  ) {
+                && !claim.getHireMonitoringDetail().isIsTotalLostCheck() && claim.getBreBand().isTotalLossDiaryInfoCheck() ) {
 
             boolean success = true;
 
