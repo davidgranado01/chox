@@ -452,7 +452,7 @@
                 <label class="chox-form-std-label3">Who Is Sending Pav If TL?</label>
                 <s:select name="whoIsSendingPav"
                           list="sendingPAV"
-                          headerKey="" listKey=""
+                          headerKey="-1"
                           headerValue="-- Please Select --"
                           emptyOption="false" cssStyle="width:230px"></s:select>
             </div>
