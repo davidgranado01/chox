@@ -36,11 +36,9 @@ public class RepairDiaryInformationCheck implements IBusinessRule {
         res.setClaimType(claim.getClaimType());
 
         //Specify when rule applies
-        if (    ClaimType.isGTA(claim.getClaimType())
-                && !ClaimType.isCollaborationProtocol(claim.getClaimType())
-                && !ClaimType.isSubscriber(claim.getClaimType())
-                && !ClaimType.isFixedFee(claim.getClaimType())
-                && claim.getHireMonitoringDetail().isIsTotalLostCheck()  ) {
+        if (    claim.getBreBand().isRepairDiaryInfoCheck()
+                && ClaimType.isGTA(claim.getClaimType())
+                && !claim.getHireMonitoringDetail().isIsTotalLostCheck()  ) {
 
             boolean success = true;
 
