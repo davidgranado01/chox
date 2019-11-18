@@ -178,6 +178,18 @@ public class Rule107TotalLossDiaryInformationCheck extends BaseTest {
     }
 
     @Test
+    public void testFailed_CHO_DateTotalLossChequeReceived_Missing() throws IOException, ParseException {
+
+        Claim claim = getTestClaim(ClaimType.GTA);
+        claim.getHireMonitoringDetail().setTotalLossOfferCheckReceivedDate(null);
+
+        TotalLossDiaryInformationCheck rule = new TotalLossDiaryInformationCheck();
+        RuleEvaluation rv = rule.applyToClaim(claim);
+
+        Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
+    }
+
+    @Test
     public void testSkipped_BRETotalLossDiaryInfoCheck_Disabled() throws IOException {
         Claim claim = getTestClaim(ClaimType.GTA);
         claim.getBreBand().setTotalLossDiaryInfoCheck(false);
