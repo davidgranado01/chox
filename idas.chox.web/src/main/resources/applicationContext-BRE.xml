@@ -140,6 +140,7 @@
                     <property name="bankHolidayService" ref="bankHolidayService"/>
                 </bean>
                 <bean class="idas.chox.service.bre.rules.RepairDiaryInformationCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.TotalLossDiaryInformationCheck" scope="prototype"></bean>
             </list>
         </property>
     </bean>
