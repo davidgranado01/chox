@@ -35,7 +35,6 @@ public class RepairDiaryInformationCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        if (claim.getBreBand().isRepairDiaryInfoCheck()) {
             //Specify when rule applies
             if (    claim.getBreBand().isRepairDiaryInfoCheck()
                     && ClaimType.isGTA(claim.getClaimType())
@@ -62,7 +61,7 @@ public class RepairDiaryInformationCheck implements IBusinessRule {
                 res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
             }
-        }
+
         return res;
     }
 
