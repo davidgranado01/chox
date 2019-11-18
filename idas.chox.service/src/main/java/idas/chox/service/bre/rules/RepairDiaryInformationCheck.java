@@ -35,23 +35,24 @@ public class RepairDiaryInformationCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-            //Specify when rule applies
-            if (    claim.getBreBand().isRepairDiaryInfoCheck()
-                    && ClaimType.isGTA(claim.getClaimType())
-                    && !claim.getHireMonitoringDetail().isIsTotalLostCheck()  ) {
 
-                boolean success = true;
+        //Specify when rule applies
+        if (    claim.getBreBand().isRepairDiaryInfoCheck()
+                && ( ClaimType.isGTA(claim.getClaimType()) || ClaimType.isInsurerUpload(claim.getClaimType()) )
+                && !claim.getHireMonitoringDetail().isIsTotalLostCheck()  ) {
 
-                //Specify when rule fails
-                if (   claim.getHireMonitoringDetail().getInspectionBookedDate() == null
-                    || claim.getHireMonitoringDetail().getInspectionDate() == null
-                    || claim.getHireMonitoringDetail().getRepairBookInDate() == null
-                    || claim.getHireMonitoringDetail().getRepairAuthorisedDate() == null
-                    || claim.getHireMonitoringDetail().getRepairCommencedDate() == null
-                    || claim.getHireMonitoringDetail().getRepairCompletionDate() == null) {
-                    success = false;
-                    narrative = "The CHO has not presented the diary information as required for hire involving a repair.";
-                }
+            boolean success = true;
+
+            //Specify when rule fails
+            if (   claim.getHireMonitoringDetail().getInspectionBookedDate() == null
+                || claim.getHireMonitoringDetail().getInspectionDate() == null
+                || claim.getHireMonitoringDetail().getRepairBookInDate() == null
+                || claim.getHireMonitoringDetail().getRepairAuthorisedDate() == null
+                || claim.getHireMonitoringDetail().getRepairCommencedDate() == null
+                || claim.getHireMonitoringDetail().getRepairCompletionDate() == null) {
+                success = false;
+                narrative = "The CHO has not presented the diary information as required for hire involving a repair.";
+            }
 
                     res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 

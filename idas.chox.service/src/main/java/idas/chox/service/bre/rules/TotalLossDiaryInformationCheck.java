@@ -36,11 +36,11 @@ public class TotalLossDiaryInformationCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        if (claim.getBreBand().isTotalLossDiaryInfoCheck()) {
 
             //Specify when rule applies
-            if ( ClaimType.isGTA(claim.getClaimType())
-                    && claim.getHireMonitoringDetail().isIsTotalLostCheck()  ) {
+            if (    claim.getBreBand().isTotalLossDiaryInfoCheck()
+                    && ( ClaimType.isGTA(claim.getClaimType()) || ClaimType.isInsurerUpload(claim.getClaimType()) )
+                    && claim.getHireMonitoringDetail().isIsTotalLostCheck()) {
 
                 boolean success = true;
 
@@ -65,7 +65,6 @@ public class TotalLossDiaryInformationCheck implements IBusinessRule {
                 res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
             }
-        }
         return res;
     }
 
