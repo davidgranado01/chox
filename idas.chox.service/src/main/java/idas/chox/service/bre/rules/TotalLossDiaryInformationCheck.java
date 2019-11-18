@@ -45,14 +45,14 @@ public class TotalLossDiaryInformationCheck implements IBusinessRule {
                 boolean success = true;
 
                 //Specify when rule fails
-                if (claim.getHireMonitoringDetail().getInspectionBookedDate() == null
-                        || claim.getHireMonitoringDetail().getInspectionDate() == null
-                        || claim.getHireMonitoringDetail().getRepairAuthorisedDate() == null
-                        || claim.getHireMonitoringDetail().getEngineersReportSentDate() == null
-                        || claim.getHireMonitoringDetail().getTotalLossOfferMadeDate() == null
-                        || claim.getHireMonitoringDetail().getTotalLossOfferAcceptedDate() == null
-                        || claim.getHireMonitoringDetail().getTotalLossOfferCheckIssuedDate() == null
-                        || claim.getHireMonitoringDetail().getTotalLossOfferCheckReceivedDate() == null) {
+                if (   claim.getHireMonitoringDetail().getInspectionBookedDate() == null
+                    || claim.getHireMonitoringDetail().getInspectionDate() == null
+                    || claim.getHireMonitoringDetail().getRepairAuthorisedDate() == null
+                    || claim.getHireMonitoringDetail().getEngineersReportSentDate() == null
+                    || claim.getHireMonitoringDetail().getTotalLossOfferMadeDate() == null
+                    || claim.getHireMonitoringDetail().getTotalLossOfferAcceptedDate() == null
+                    || claim.getHireMonitoringDetail().getTotalLossOfferCheckIssuedDate() == null
+                    || claim.getHireMonitoringDetail().getTotalLossOfferCheckReceivedDate() == null) {
                     success = false;
                     narrative = "The CHO has not presented the diary information as required for hire involving a total loss.";
                 }

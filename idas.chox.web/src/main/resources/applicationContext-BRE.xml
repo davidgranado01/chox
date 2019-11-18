@@ -88,8 +88,6 @@
                 <bean class="idas.chox.service.bre.rules.InsurancePremiumTaxCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.SupplementaryInvoiceCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.MobileVehicleTotalLossCheck" scope="prototype"></bean>
-                <bean class="idas.chox.service.bre.rules.TotalLossDiaryInformationCheck" scope="prototype"></bean>
-                <bean class="idas.chox.service.bre.rules.RepairDiaryInformationCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.SubscriberCheckRejectedClaims" scope="prototype">
                     <property name="claimService" ref="claimService"/>                    
                 </bean>
@@ -142,6 +140,7 @@
                     <property name="bankHolidayService" ref="bankHolidayService"/>
                 </bean>
                 <bean class="idas.chox.service.bre.rules.RepairDiaryInformationCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.TotalLossDiaryInformationCheck" scope="prototype"></bean>
             </list>
         </property>
     </bean>
