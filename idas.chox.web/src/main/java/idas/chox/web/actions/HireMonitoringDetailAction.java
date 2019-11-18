@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Date;
 
+import idas.chox.core.model.LookupItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -201,9 +202,9 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
     public List getSendingPAV() {
         if (sendingPAV == null) {
             sendingPAV = new ArrayList();
-            sendingPAV.add("Customers Own Insurer");
-            sendingPAV.add("CHO");
-            sendingPAV.add("At Fault Insurer");
+            sendingPAV.add(new LookupItem("Customers Own Insurer", "Customers Own Insurer"));
+            sendingPAV.add(new LookupItem("CHO", "CHO"));
+            sendingPAV.add(new LookupItem("At Fault Insurer", "At Fault Insurer"));
         }
 
         return sendingPAV;
