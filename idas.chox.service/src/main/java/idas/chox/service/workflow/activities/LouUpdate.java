@@ -43,6 +43,8 @@ public class LouUpdate extends BaseActivity {
     private Boolean insurerManagingRepair;
     private Boolean vatRegistered;
     private boolean updateInsurer;
+    private Date engineersReportSentDate;
+    private String whoIsSendingPAVifTL;
     
     public void setNotificationService(NotificationService notificationService) {
         this.notificationService = notificationService;
@@ -226,6 +228,22 @@ public class LouUpdate extends BaseActivity {
         this.updateInsurer = updateInsurer;
     }
 
+    public Date getEngineersReportSentDate() {
+        return engineersReportSentDate;
+    }
+
+    public void setEngineersReportSentDate(Date engineersReportSentDate) {
+        this.engineersReportSentDate = engineersReportSentDate;
+    }
+
+    public String getWhoIsSendingPAVifTL() {
+        return whoIsSendingPAVifTL;
+    }
+
+    public void setWhoIsSendingPAVifTL(String whoIsSendingPAVifTL) {
+        this.whoIsSendingPAVifTL = whoIsSendingPAVifTL;
+    }
+
     @Override
     protected void validate(Claim claim) throws Exception {
         super.validate(claim);
@@ -362,7 +380,16 @@ public class LouUpdate extends BaseActivity {
             hmd.setClientVatRegistered(vatRegistered);
             hmd.setClientVatRegisteredLastModified(new Date());
         }
-       
+
+        if (whoIsSendingPAVifTL != null && !whoIsSendingPAVifTL.equals(hmd.getWhoIsSendingPav())) {
+            hmd.setWhoIsSendingPav(whoIsSendingPAVifTL);
+        }
+
+        if (engineersReportSentDate != null && (hmd.getEngineersReportSentDate() == null ||
+                engineersReportSentDate.compareTo(hmd.getEngineersReportSentDate()) != 0)) {
+            hmd.setEngineersReportSentDate(engineersReportSentDate);
+            hmd.setEngineersReportSentLastModified(new Date());
+        }
     }
 
     @Override

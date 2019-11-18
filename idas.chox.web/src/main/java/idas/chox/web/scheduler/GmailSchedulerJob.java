@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.quartz.DisallowConcurrentExecution;
 import org.springframework.orm.hibernate5.SessionHolder;
 import org.springframework.security.access.AccessDeniedException;
@@ -27,7 +26,6 @@ import idas.chox.core.services.GmailSchedulerJobService;
 import idas.chox.core.util.GmailUtils;
 import idas.chox.core.workflow.ScheduleActivity;
 import idas.chox.service.workflow.ScheduleActivityFactory;
-import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 /**
  *
@@ -46,7 +44,6 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
     private Session session;
     private SessionFactory sessionFactory;
     private ScheduleActivityFactory scheduleActivityFactory;
-    private Transaction hibernateTransaction;
 
     public void setScheduleActivityFactory(ScheduleActivityFactory scheduleActivityFactory) {
         this.scheduleActivityFactory = scheduleActivityFactory;
@@ -194,7 +191,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
 
                     /*
                      * Process message depending upon type (job_name)
-                     * The following types are not email jobs: 
+                     * The following types are not email jobs:
                      *   DB_REFERENCE_UPDATE, KEOGHS, CLAIM_MATCHING
                      *   TOTALLOSS_CHASE_TASK, PAID_INVOICES
                      */
@@ -203,8 +200,8 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
                     LOG.info("Processing scheduler activity '{}'", activity.getClass().toGenericString());
                     boolean processed = activity.process(emailContent, attachments, from, fullsubject);
                     LOG.debug("Done processing scheduler activity '{}'", activity.getClass().toGenericString());
-                    session.flush();
-                    LOG.debug("Session flushed.");
+//                    session.flush();
+//                    LOG.debug("Session flushed.");
 
                     // Mark message as read, remove from inbox and add correct label for processed message
                     // Note all emails with a prefix (i.e. not production) are given the label 'test-emails'
@@ -251,29 +248,9 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
             LOG.debug("Session created.");
         }
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
-
-        if (!TransactionSynchronizationManager.isActualTransactionActive()) {
-            try {
-                hibernateTransaction = session.beginTransaction();
-                LOG.debug("Hibernate Transaction started: {}", hibernateTransaction);
-            } catch (HibernateException ex) {
-                LOG.error("Exception thrown starting hibernate transaction: {}\n", ex.getMessage(), ex);
-            }
-        } else {
-            LOG.debug("Transaction already active: {}", TransactionSynchronizationManager.getCurrentTransactionName());
-        }
     }
 
     private void releaseHibernateSessionConditionally() {
-        if (hibernateTransaction != null && hibernateTransaction.getStatus() == TransactionStatus.ACTIVE) {
-            hibernateTransaction.commit();
-            LOG.debug("Hibernate Transaction committed: {}", hibernateTransaction);
-        } else if (hibernateTransaction != null) {
-            LOG.debug("Hibernate Transaction status={}, ", hibernateTransaction.getStatus());
-        } else {
-            LOG.debug("Hibernate Transaction is null");
-        }
-
         if (session != null) {
             TransactionSynchronizationManager.unbindResource(sessionFactory);
             session.clear();
