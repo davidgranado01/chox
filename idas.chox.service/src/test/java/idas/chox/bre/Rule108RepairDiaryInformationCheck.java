@@ -32,13 +32,13 @@ public class Rule108RepairDiaryInformationCheck extends BaseTest {
     public static void tearDownClass() throws Exception {
     }
 
-    private Claim getTestClaim() {
+    private Claim getTestClaim( ClaimType type) {
         Claim claim = new Claim();
 
         claim.setInsurer(testClaim.getTestInsurer());
         claim.setChorganisation(testClaim.getTestChorganisation());
         claim.setHireMonitoringDetail(testClaim.getTestHireMonitoringDetail());
-        claim.setClaimType(ClaimType.GTA);
+        claim.setClaimType(type);
 
         //All required HireMonitoring required fields set up
         claim.getHireMonitoringDetail().setInspectionBookedDate(new Date());
@@ -55,10 +55,11 @@ public class Rule108RepairDiaryInformationCheck extends BaseTest {
         return claim;
     }
 
-    @Test
-    public void testPassed_Simple() throws IOException, ParseException {
 
-        Claim claim = getTestClaim();
+    @Test
+    public void testPassed_CHO_Simple() throws IOException, ParseException {
+
+        Claim claim = getTestClaim(ClaimType.GTA);
         claim.getHireMonitoringDetail().setRepairCompletionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-07"));
         RepairDiaryInformationCheck rule = new RepairDiaryInformationCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
@@ -67,9 +68,32 @@ public class Rule108RepairDiaryInformationCheck extends BaseTest {
     }
 
     @Test
-    public void testFailed_InspectionBookedDate_Missing() throws IOException, ParseException {
+    public void testPassed_Insurer_Simple() throws IOException, ParseException {
 
-        Claim claim = getTestClaim();
+        Claim claim = getTestClaim(ClaimType.INSURER_INVOICE);
+        claim.getHireMonitoringDetail().setRepairCompletionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-07"));
+        RepairDiaryInformationCheck rule = new RepairDiaryInformationCheck();
+        RuleEvaluation rv = rule.applyToClaim(claim);
+
+        Assert.assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
+    }
+
+    @Test
+    public void testFailed_CHO_InspectionBookedDate_Missing() throws IOException, ParseException {
+
+        Claim claim = getTestClaim(ClaimType.GTA);
+        claim.getHireMonitoringDetail().setInspectionBookedDate(null);
+
+        RepairDiaryInformationCheck rule = new RepairDiaryInformationCheck();
+        RuleEvaluation rv = rule.applyToClaim(claim);
+
+        Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
+    }
+
+    @Test
+    public void testFailed_Insurer_InspectionBookedDate_Missing() throws IOException, ParseException {
+
+        Claim claim = getTestClaim(ClaimType.INSURER_UPLOAD);
         claim.getHireMonitoringDetail().setInspectionBookedDate(null);
 
         RepairDiaryInformationCheck rule = new RepairDiaryInformationCheck();
@@ -81,7 +105,7 @@ public class Rule108RepairDiaryInformationCheck extends BaseTest {
     @Test
     public void testFailed_RepairBookInDate_Missing() throws IOException, ParseException {
 
-        Claim claim = getTestClaim();
+        Claim claim = getTestClaim(ClaimType.GTA);
         claim.getHireMonitoringDetail().setRepairBookInDate(null);
 
         RepairDiaryInformationCheck rule = new RepairDiaryInformationCheck();
@@ -93,7 +117,7 @@ public class Rule108RepairDiaryInformationCheck extends BaseTest {
     @Test
     public void testFailed_RepairRepairAuthorisedDate_Missing() throws IOException, ParseException {
 
-        Claim claim = getTestClaim();
+        Claim claim = getTestClaim(ClaimType.GTA);
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(null);
 
         RepairDiaryInformationCheck rule = new RepairDiaryInformationCheck();
@@ -105,7 +129,7 @@ public class Rule108RepairDiaryInformationCheck extends BaseTest {
     @Test
     public void testFailed_RepairCommencedDate_Missing() throws IOException, ParseException {
 
-        Claim claim = getTestClaim();
+        Claim claim = getTestClaim(ClaimType.GTA);
         claim.getHireMonitoringDetail().setRepairCommencedDate(null);
 
 
@@ -118,7 +142,7 @@ public class Rule108RepairDiaryInformationCheck extends BaseTest {
     @Test
     public void testFailed_RepairCompletionDate_Missing() throws IOException, ParseException {
 
-        Claim claim = getTestClaim();
+        Claim claim = getTestClaim(ClaimType.GTA);
         claim.getHireMonitoringDetail().setRepairCompletionDate(null);
 
         RepairDiaryInformationCheck rule = new RepairDiaryInformationCheck();
@@ -129,7 +153,7 @@ public class Rule108RepairDiaryInformationCheck extends BaseTest {
 
     @Test
     public void testSkipped_BRERepairDiaryInfoCheck_Disabled() throws IOException {
-        Claim claim = getTestClaim();
+        Claim claim = getTestClaim(ClaimType.GTA);
         claim.getBreBand().setRepairDiaryInfoCheck(false);
         RepairDiaryInformationCheck rule = new RepairDiaryInformationCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
@@ -139,8 +163,7 @@ public class Rule108RepairDiaryInformationCheck extends BaseTest {
 
     @Test
     public void testSkipped_claimType_not_GTA() throws IOException {
-        Claim claim = getTestClaim();
-        claim.setClaimType(ClaimType.FIXED_FEE);
+        Claim claim = getTestClaim(ClaimType.FIXED_FEE);
         RepairDiaryInformationCheck rule = new RepairDiaryInformationCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
 
@@ -148,14 +171,23 @@ public class Rule108RepairDiaryInformationCheck extends BaseTest {
     }
 
     @Test
-    public void testSkipped_isTotalLossYes() throws IOException {
-        Claim claim = getTestClaim();
+    public void testSkipped_cho_isTotalLossYes() throws IOException {
+        Claim claim = getTestClaim(ClaimType.GTA);
         claim.getHireMonitoringDetail().setIsTotalLostCheck(true);
         RepairDiaryInformationCheck rule = new RepairDiaryInformationCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
+    @Test
+    public void testSkipped_insurer_isTotalLossYes() throws IOException {
+        Claim claim = getTestClaim(ClaimType.INSURER_UPLOAD);
+        claim.getHireMonitoringDetail().setIsTotalLostCheck(true);
+        RepairDiaryInformationCheck rule = new RepairDiaryInformationCheck();
+        RuleEvaluation rv = rule.applyToClaim(claim);
+        Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
+    }
+
 
 
 }
