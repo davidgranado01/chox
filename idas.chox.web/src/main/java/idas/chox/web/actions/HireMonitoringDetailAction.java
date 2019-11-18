@@ -202,7 +202,6 @@ public class HireMonitoringDetailAction extends ClaimModelAction<HireMonitoringD
         if (sendingPAV == null) {
             sendingPAV = new ArrayList();
             sendingPAV.add("Customers Own Insurer");
-            sendingPAV.add("SendingPAV");
             sendingPAV.add("CHO");
             sendingPAV.add("At Fault Insurer");
         }
