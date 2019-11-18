@@ -140,6 +140,7 @@
                 <bean class="idas.chox.service.bre.rules.GtaAmendTotalLossOwnInsurerUnroadworthy" scope="prototype">
                     <property name="bankHolidayService" ref="bankHolidayService"/>
                 </bean>
+                <bean class="idas.chox.service.bre.rules.RepairDiaryInformationCheck" scope="prototype"></bean>
             </list>
         </property>
     </bean>
