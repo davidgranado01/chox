@@ -35,7 +35,6 @@ public class RepairDiaryInformationCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-
         //Specify when rule applies
         if (    claim.getBreBand().isRepairDiaryInfoCheck()
                 && ( ClaimType.isGTA(claim.getClaimType()) || ClaimType.isInsurerUpload(claim.getClaimType()) )
@@ -54,14 +53,14 @@ public class RepairDiaryInformationCheck implements IBusinessRule {
                 narrative = "The CHO has not presented the diary information as required for hire involving a repair.";
             }
 
-                    res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
+            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
-            } else {
+        } else {
 
-                narrative = "";
-                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
+            narrative = "";
+            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
-            }
+        }
 
         return res;
     }
