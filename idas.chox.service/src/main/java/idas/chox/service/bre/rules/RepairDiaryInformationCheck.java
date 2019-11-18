@@ -35,35 +35,38 @@ public class RepairDiaryInformationCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        //Specify when rule applies
-        if (    ClaimType.isGTA(claim.getClaimType())
-                && !ClaimType.isCollaborationProtocol(claim.getClaimType())
-                && !ClaimType.isSubscriber(claim.getClaimType())
-                && !ClaimType.isFixedFee(claim.getClaimType())
-                && claim.getHireMonitoringDetail().isIsTotalLostCheck()  ) {
+        if (claim.getBreBand().isRepairDiaryInfoCheck()) {
 
-            boolean success = true;
 
-            //Specify when rule fails
-            if (   claim.getHireMonitoringDetail().getInspectionBookedDate() == null
-                || claim.getHireMonitoringDetail().getInspectionDate() == null
-                || claim.getHireMonitoringDetail().getRepairBookInDate() == null
-                || claim.getHireMonitoringDetail().getRepairAuthorisedDate() == null
-                || claim.getHireMonitoringDetail().getRepairCommencedDate() == null
-                || claim.getHireMonitoringDetail().getRepairCompletionDate() == null) {
-                success = false;
-                narrative = "The CHO has not presented the diary information as required for hire involving a repair.";
+            //Specify when rule applies
+            if (ClaimType.isGTA(claim.getClaimType())
+                    && !ClaimType.isCollaborationProtocol(claim.getClaimType())
+                    && !ClaimType.isSubscriber(claim.getClaimType())
+                    && !ClaimType.isFixedFee(claim.getClaimType())
+                    && claim.getHireMonitoringDetail().isIsTotalLostCheck()) {
+
+                boolean success = true;
+
+                //Specify when rule fails
+                if (claim.getHireMonitoringDetail().getInspectionBookedDate() == null
+                        || claim.getHireMonitoringDetail().getInspectionDate() == null
+                        || claim.getHireMonitoringDetail().getRepairBookInDate() == null
+                        || claim.getHireMonitoringDetail().getRepairAuthorisedDate() == null
+                        || claim.getHireMonitoringDetail().getRepairCommencedDate() == null
+                        || claim.getHireMonitoringDetail().getRepairCompletionDate() == null) {
+                    success = false;
+                    narrative = "The CHO has not presented the diary information as required for hire involving a repair.";
+                }
+
+                res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
+
+            } else {
+
+                narrative = "";
+                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
+
             }
-
-            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
-
-        } else {
-
-            narrative = "";
-            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-
         }
-
         return res;
     }
 

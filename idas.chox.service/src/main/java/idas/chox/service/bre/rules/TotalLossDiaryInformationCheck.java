@@ -36,37 +36,39 @@ public class TotalLossDiaryInformationCheck implements IBusinessRule {
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        //Specify when rule applies
-        if (    ClaimType.isGTA(claim.getClaimType())
-                && !ClaimType.isCollaborationProtocol(claim.getClaimType())
-                && !ClaimType.isSubscriber(claim.getClaimType())
-                && !ClaimType.isFixedFee(claim.getClaimType())
-                && !claim.getHireMonitoringDetail().isIsTotalLostCheck() && claim.getBreBand().isTotalLossDiaryInfoCheck() ) {
+        if (claim.getBreBand().isTotalLossDiaryInfoCheck()) {
 
-            boolean success = true;
+            //Specify when rule applies
+            if (ClaimType.isGTA(claim.getClaimType())
+                    && !ClaimType.isCollaborationProtocol(claim.getClaimType())
+                    && !ClaimType.isSubscriber(claim.getClaimType())
+                    && !ClaimType.isFixedFee(claim.getClaimType())
+                    && claim.getHireMonitoringDetail().isIsTotalLostCheck()) {
 
-            //Specify when rule fails
-            if (   claim.getHireMonitoringDetail().getInspectionBookedDate() == null
-                || claim.getHireMonitoringDetail().getInspectionDate() == null
-                || claim.getHireMonitoringDetail().getRepairAuthorisedDate() == null
-                || claim.getHireMonitoringDetail().getEngineersReportSentDate() == null
-                || claim.getHireMonitoringDetail().getTotalLossOfferMadeDate() == null
-                || claim.getHireMonitoringDetail().getTotalLossOfferAcceptedDate() == null
-                || claim.getHireMonitoringDetail().getTotalLossOfferCheckIssuedDate() == null
-                || claim.getHireMonitoringDetail().getTotalLossOfferCheckReceivedDate() == null) {
-                success = false;
-                narrative = "The CHO has not presented the diary information as required for hire involving a total loss.";
+                boolean success = true;
+
+                //Specify when rule fails
+                if (claim.getHireMonitoringDetail().getInspectionBookedDate() == null
+                        || claim.getHireMonitoringDetail().getInspectionDate() == null
+                        || claim.getHireMonitoringDetail().getRepairAuthorisedDate() == null
+                        || claim.getHireMonitoringDetail().getEngineersReportSentDate() == null
+                        || claim.getHireMonitoringDetail().getTotalLossOfferMadeDate() == null
+                        || claim.getHireMonitoringDetail().getTotalLossOfferAcceptedDate() == null
+                        || claim.getHireMonitoringDetail().getTotalLossOfferCheckIssuedDate() == null
+                        || claim.getHireMonitoringDetail().getTotalLossOfferCheckReceivedDate() == null) {
+                    success = false;
+                    narrative = "The CHO has not presented the diary information as required for hire involving a total loss.";
+                }
+
+                res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
+
+            } else {
+
+                narrative = "";
+                res.setResult(RuleEvaluationResult.RULE_SKIPPED);
+
             }
-
-            res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
-
-        } else {
-
-            narrative = "";
-            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-
         }
-
         return res;
     }
 
