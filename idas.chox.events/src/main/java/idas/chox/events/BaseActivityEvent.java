@@ -685,6 +685,12 @@ public class BaseActivityEvent extends Entity implements Serializable {
                 addAttribute("hireMonitoringIsTotalLoss", hireMonitoringDetail.getIsTotalLossDesc());
                 addAttribute("hireMonitoringIsRepairOnly", String.valueOf(hireMonitoringDetail.isIsRepairOnlyCheck()));
                 addAttribute("hireMonitoringIsClientVatRegistered", hireMonitoringDetail.getClientVatRegisteredDesc());
+                if (hireMonitoringDetail.getEngineersReportSentDate()!= null) {
+                    addAttribute("hireMonitoringEngineersReportSentDate", DateHelper.getLocalDateFormat().format(hireMonitoringDetail.getEngineersReportSentDate()));
+                } else {
+                    addAttribute("hireMonitoringEngineersReportSentDate", null);
+                }
+                addAttribute("hireMonitoringWhoIsSendingPAVIfTL", hireMonitoringDetail.getWhoIsSendingPav());
             } else {
                 addAttribute("hireMonitoringRepairerName", null);
                 addAttribute("hireMonitoringRepairBookedInDate", null);
@@ -704,6 +710,8 @@ public class BaseActivityEvent extends Entity implements Serializable {
                 addAttribute("hireMonitoringIsTotalLoss", null);
                 addAttribute("hireMonitoringIsRepairOnly", null);
                 addAttribute("hireMonitoringIsClientVatRegistered", null);
+                addAttribute("hireMonitoringEngineersReportSentDate", null);
+                addAttribute("hireMonitoringWhoIsSendingPAVIfTL", null);
             }
             addClaimHireVehicleAttributes(claim);
         } catch (Exception ex) {
