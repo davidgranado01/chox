@@ -199,12 +199,14 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
                      *   TOTALLOSS_CHASE_TASK, PAID_INVOICES
                      */
                     ScheduleActivity activity = scheduleActivityFactory.getActivity(job.getJobName());
-                    handleHibernateTransactionIntricacies();
+                    handleHibernateTransactionIntricacies(false);
                     LOG.info("Processing scheduler activity '{}'", activity.getClass().toGenericString());
                     boolean processed = activity.process(emailContent, attachments, from, fullsubject);
                     LOG.debug("Done processing scheduler activity '{}'", activity.getClass().toGenericString());
-                    session.flush();
-                    LOG.debug("Session flushed.");
+                    if (TransactionSynchronizationManager.isActualTransactionActive()) {
+                        session.flush();
+                        LOG.debug("Session flushed.");
+                    }
 
                     // Mark message as read, remove from inbox and add correct label for processed message
                     // Note all emails with a prefix (i.e. not production) are given the label 'test-emails'
@@ -242,7 +244,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
         }
     }
 
-    private void handleHibernateTransactionIntricacies() {
+    private void handleHibernateTransactionIntricacies(boolean startTransaction) {
         try {
             session = sessionFactory.getCurrentSession();
         } catch (HibernateException ex) {
@@ -252,7 +254,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
         }
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
 
-        if (!TransactionSynchronizationManager.isActualTransactionActive()) {
+        if (startTransaction && !TransactionSynchronizationManager.isActualTransactionActive()) {
             try {
                 hibernateTransaction = session.beginTransaction();
                 LOG.debug("Hibernate Transaction started: {}", hibernateTransaction);
