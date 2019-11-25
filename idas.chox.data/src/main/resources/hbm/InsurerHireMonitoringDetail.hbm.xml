@@ -19,6 +19,7 @@
     <property column="total_loss_offer_accepted" name="totalLossOfferAcceptedDate"/>
     <property column="total_loss_check_issued" name="totalLossOfferCheckIssuedDate"/>
     <property column="total_loss_check_received" name="totalLossOfferCheckReceivedDate"/>
+    <property column="engineers_report_sent" name="engineersReportSentDate"/>
     <property column="labour_rate" name="labourRate"/>
     <property column="labour_hour" name="labourHour"/>
     <property column="labour_cost" name="labourCost"/>
