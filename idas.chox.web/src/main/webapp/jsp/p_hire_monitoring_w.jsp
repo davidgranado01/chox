@@ -435,6 +435,15 @@
                 </div>
             </s:else>
 
+            <div class="chox-form-item">
+                <label class="chox-form-std-label3">Who Is Sending PAV If TL?</label>
+                <s:select name="whoIsSendingPav"
+                          list="sendingPAV"
+                          headerKey="-1"
+                          headerValue="-- Please Select --"
+                          emptyOption="false" cssStyle="width:230px"></s:select>
+            </div>
+
             <s:if test="engineersReportSentLastModified!=null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">Date Engineers Report Sent </label>
@@ -447,15 +456,6 @@
                     <span id="engineersReportSentPH"></span>
                 </div>
             </s:else>
-
-            <div class="chox-form-item">
-                <label class="chox-form-std-label3">Who Is Sending Pav If TL?</label>
-                <s:select name="whoIsSendingPav"
-                          list="sendingPAV"
-                          headerKey="-1"
-                          headerValue="-- Please Select --"
-                          emptyOption="false" cssStyle="width:230px"></s:select>
-            </div>
 
             <s:if test="totalLossOfferMadeLastModified!=null">
                 <div class="chox-form-item">

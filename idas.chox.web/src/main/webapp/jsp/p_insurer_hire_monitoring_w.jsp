@@ -77,6 +77,18 @@
             renderTo: 'insurerRepairCompletionDatePH'
         });
         
+        var engineersReportSentDatePicker = new Ext.form.DateField({
+            name: 'engineersReportSentDate',
+            id: 'engineersReportSentDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="engineersReportSentDate" />',
+            renderTo: 'insurerEngineersReportSentDatePH'
+        });
+        
         var totalLossOfferMadeDatePicker = new Ext.form.DateField({
             name: 'totalLossOfferMadeDate',
             id: 'insurerTotalLossOfferMadeDateId',
@@ -146,6 +158,7 @@
                 totalLossOfferAcceptedDate:{dateITA:true},
                 totalLossOfferCheckIssuedDate:{dateITA:true},
                 totalLossOfferCheckReceivedDate:{dateITA:true},
+                engineersReportSentDate:{dateITA:true},
                 labourRate :{number:true, min : 0}, //,max: 100000
                 labourHour :{number:true, min : 0}, //,max: 100000
                 labourCost :{number:true, min : 0}, //,max: 100000
@@ -162,6 +175,7 @@
                 totalLossOfferAcceptedDate: {dateITA:"Invalid date format for 'Date Total Loss Offer Accepted'"},
                 totalLossOfferCheckIssuedDate: {dateITA:"Invalid date format for 'Date Total Loss Cheque Issued'"},
                 totalLossOfferCheckReceivedDate: {dateITA:"Invalid date format for 'Date Total Loss Cheque Received'"},
+                engineersReportSentDate: {dateITA:"Invalid date format for 'Date Engineers Report Sent'"},
                 labourRate :{number:"You must supply a numeric value for 'Labour Rate'", min : "Labour Rate must not be negative."},
                 labourHour :{number:"You must supply a numeric value for 'Labour Hours'", min : "Labour Hours must not be negative."},
                 labourCost :{number:"You must supply a numeric value for 'Total Labour Cost'", min : "Labour Cost must not be negative."},
@@ -229,7 +243,7 @@
             </div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label2">Date Repair Authorised</label>
+                <label class="chox-form-std-label2">Date Repair Authorised or TL Identified</label>
                 <span id="insurerRepairAuthorisedDatePH"></span>
             </div>
 
@@ -246,6 +260,11 @@
             <div class="chox-form-item">
                 <label class="chox-form-std-label2">Repair Completion Date</label>
                 <span id="insurerRepairCompletionDatePH"></span>
+            </div>
+            
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Engineers Report Sent</label>
+                <span id="insurerEngineersReportSentDatePH"></span>
             </div>
 
             <div class="chox-form-item">
