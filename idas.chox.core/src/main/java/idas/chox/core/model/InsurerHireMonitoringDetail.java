@@ -18,6 +18,7 @@ public class InsurerHireMonitoringDetail extends Entity implements Serializable 
     private Date totalLossOfferAcceptedDate;
     private Date totalLossOfferCheckIssuedDate;
     private Date totalLossOfferCheckReceivedDate;
+    private Date engineersReportSentDate;
 
     private BigDecimal labourRate;
     private BigDecimal labourHour;
@@ -34,6 +35,14 @@ public class InsurerHireMonitoringDetail extends Entity implements Serializable 
 
     public void setClaim(Claim claim) {
         this.claim = claim;
+    }
+
+    public Date getEngineersReportSentDate() {
+        return engineersReportSentDate;
+    }
+
+    public void setEngineersReportSentDate(Date engineersReportSentDate) {
+        this.engineersReportSentDate = engineersReportSentDate;
     }
 
     /**

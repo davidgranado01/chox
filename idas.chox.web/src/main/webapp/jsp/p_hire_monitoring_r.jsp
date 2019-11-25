@@ -282,10 +282,9 @@
             </s:else>
 
             <tr>
-                <td><label class="std-label-ro">Who Is Sending Pav If TL?</label></td>
+                <td><label class="std-label-ro">Who Is Sending PAV If TL?</label></td>
                 <td>&nbsp;</td>
-                <td><label id="hireMonitoringWhoIsSendingPavId" class="std-data-ro"><s:property
-                        value="whoIsSendingPav"/></label></td>
+                <td><label id="hireMonitoringWhoIsSendingPavId" class="std-data-ro"><s:property value="whoIsSendingPav"/></label></td>
             </tr>
 
             <s:if test="engineersReportSentLastModified!=null">
