@@ -1,0 +1,17 @@
+claimTemplate.xls
+template_BillingChoReport.xls
+
+template_BillingInsurerReport.xls
+
+
+
+
+
+[11:27] Dowson, John [UK]
+    Deng, Zhikun [UK] I've updated that template and pushed. I did the following:
+   - removed the test for an empty list - not needed
+   - removed the loop
+   - added comment on cell A1 to set size
+   - added comment on cell A12 to loop
+   - corrected totals (due to lines moving)
+(1 liked)
