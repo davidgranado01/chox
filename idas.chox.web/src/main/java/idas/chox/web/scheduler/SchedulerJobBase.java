@@ -132,8 +132,12 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     public void setSchedulerJobService(SchedulerJobService schedulerJobService) {
         this.schedulerJobService = schedulerJobService;
     }
-  
+
     public void handleHibernateTransactionIntricacies() {
+        handleHibernateTransactionIntricacies(false );
+
+    }
+    public void handleHibernateTransactionIntricacies( boolean startTransaction ) {
         try {
             session = sessionFactory.getCurrentSession();
         } catch (HibernateException ex) {
@@ -141,16 +145,19 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
             session = sessionFactory.openSession();
         }
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
-        if (!TransactionSynchronizationManager.isActualTransactionActive()) {
+        if (startTransaction && !TransactionSynchronizationManager.isActualTransactionActive()) {
             try {
                 hibernateTransaction = session.beginTransaction();
-                LOG.debug("Hibernate Transaction started: {}", hibernateTransaction);
+                LOG.debug("Hibernate Transaction started: status={}", hibernateTransaction.getStatus());
             } catch (HibernateException ex) {
                 LOG.error("Exception thrown starting hibernate transaction: {}\n", ex.getMessage(), ex);
             }
-        } else {
+        } else if (TransactionSynchronizationManager.isActualTransactionActive()) {
             LOG.debug("Transaction already active: {}", TransactionSynchronizationManager.getCurrentTransactionName());
+        } else {
+            LOG.debug("No transaction active");
         }
+
     }
 
     public void releaseHibernateSessionConditionally() {
@@ -159,8 +166,11 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
             LOG.debug("Hibernate Transaction committed: {}", hibernateTransaction);
         } else if (hibernateTransaction != null) {
             LOG.debug("Hibernate Transaction status={}, ", hibernateTransaction.getStatus());
+        } else if (TransactionSynchronizationManager.isActualTransactionActive()) {
+            LOG.debug("Hibernate Transaction is null but there is an active transaction - commiting");
+            session.getTransaction().commit();
         } else {
-            LOG.debug("Hibernate Transaction is null");
+            LOG.debug("Hibernate Transaction is null and no transaction active");
         }
 
         if (session != null) {
