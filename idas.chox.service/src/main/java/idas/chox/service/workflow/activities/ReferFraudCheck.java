@@ -2,10 +2,14 @@ package idas.chox.service.workflow.activities;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Properties;
 import javax.mail.MessagingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.Claim;
@@ -63,8 +67,7 @@ public class ReferFraudCheck extends BaseActivity {
         String[] bccReceivers = keoghsBccReceiver != null ? keoghsBccReceiver.split(",") : null;
         LOG.debug("sending mails to receivers {} and bccreceivers {} ", receivers, bccReceivers);
         try {
-            
- //               GmailUtils.sendMessage(keoghsReceiver, keoghsBccReceiver, subject, emailMessage);
+            //               GmailUtils.sendMessage(keoghsReceiver, keoghsBccReceiver, subject, emailMessage);
             EmailHelper emailHelper = new EmailHelper(smtpEmailUser);
             if (bccReceivers != null && bccReceivers.length > 0) {
                 emailHelper.postMail(subject, emailMessage, receivers, bccReceivers);
