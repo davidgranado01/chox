@@ -1,19 +1,20 @@
 package idas.chox.core.util;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Properties;
-
-
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
+
+import javax.mail.Transport;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.IOException;
+import java.util.Properties;
 
 public class EmailHelper {
     private static final Logger LOG = LoggerFactory.getLogger(EmailHelper.class);
@@ -41,11 +42,15 @@ public class EmailHelper {
         
         try {
             Resource resource = new ClassPathResource("/application.properties");
-            Properties props = PropertiesLoaderUtils.loadProperties(resource);
+            Properties propsFile = PropertiesLoaderUtils.loadProperties(resource);
 
-            String port = props.getProperty("mail.smtp.port");
-            String smtpPassword = props.getProperty("smtpEmailPassword");
+            String host = propsFile.getProperty("smtpHost");
+            String port = propsFile.getProperty("smtpPort");
+            String smtpPassword = propsFile.getProperty("smtpEmailPassword");
 
+            Properties props = new Properties();
+            props.put("mail.smtp.host", host);
+            props.put("mail.smtp.port", port);
             props.put("mail.smtp.auth", "true");
             props.put("mail.smtp.socketFactory.port",port);
             props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
