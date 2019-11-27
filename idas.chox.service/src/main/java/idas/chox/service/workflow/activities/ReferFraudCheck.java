@@ -2,14 +2,11 @@ package idas.chox.service.workflow.activities;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Properties;
 import javax.mail.MessagingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
+
 import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.Claim;
