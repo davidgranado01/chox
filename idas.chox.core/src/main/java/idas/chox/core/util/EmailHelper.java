@@ -1,17 +1,19 @@
 package idas.chox.core.util;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
+
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 public class EmailHelper {
     private static final Logger LOG = LoggerFactory.getLogger(EmailHelper.class);
@@ -23,11 +25,11 @@ public class EmailHelper {
         this.smtpEmailUser = smtpEmailUser;
     }
     
-    public void postMail(String subject, String message, String[] recipients) throws MessagingException, UnsupportedEncodingException {
+    public void postMail(String subject, String message, String[] recipients) throws MessagingException, IOException {
         postMail(subject, message, recipients, new String[]{});
     }
     
-    public void postMail(String subject, String message, String[] recipients, String[] bccRecipients) throws MessagingException, UnsupportedEncodingException {
+    public void postMail(String subject, String message, String[] recipients, String[] bccRecipients) throws MessagingException, IOException {
 
         if (recipients == null) {
             LOG.debug("No recipients - not sending email.");
@@ -38,10 +40,23 @@ public class EmailHelper {
         }
         
         try {
-            Properties props = new Properties();
-            props.put("mail.smtp.host", "localhost");
+            Resource resource = new ClassPathResource("/application.properties");
+            Properties props = PropertiesLoaderUtils.loadProperties(resource);
 
-            Session session = Session.getInstance(props);
+            String port = props.getProperty("mail.smtp.port");
+            String smtpPassword = props.getProperty("smtpEmailPassword");
+
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.socketFactory.port",port);
+            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+
+            Session session = Session.getInstance(props,
+                    new javax.mail.Authenticator() {
+                        @Override
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(smtpEmailUser, smtpPassword);
+                        }
+                    });
 
             Message msg = new MimeMessage(session);
             InternetAddress addressFrom = new InternetAddress(smtpEmailUser);
@@ -68,7 +83,7 @@ public class EmailHelper {
             msg.setContent(message, "text/plain");
             Transport.send(msg);
 
-        } catch (UnsupportedEncodingException | MessagingException ex) {
+        } catch (IOException| MessagingException ex) {
             LOG.warn("Error posting email with subject '{}': \n{}\n", subject, message, ex);
             throw ex;
         } catch (Exception ex) {
