@@ -9,6 +9,7 @@ import java.util.*;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 
@@ -72,7 +73,7 @@ public class XlsFileParser {
                     if (myCell.getColumnIndex() == cellNumber) {
                         cellStoreVector.add(myCell);
                         cellNumber++;
-                        if (myCell.getCellType() != Cell.CELL_TYPE_BLANK) {
+                        if (myCell.getCellType() != CellType.BLANK) {
                             isDataExistsForThisRow = true;
                         }
                     } else { // add null value to the omitted cells before the current cell.
@@ -81,7 +82,7 @@ public class XlsFileParser {
                         }
                        cellStoreVector.add(myCell);
                        cellNumber++;
-                        if (myCell.getCellType() != Cell.CELL_TYPE_BLANK) {
+                        if (myCell.getCellType() != CellType.BLANK) {
                             isDataExistsForThisRow = true;
                         }
                     }
@@ -123,7 +124,7 @@ public class XlsFileParser {
             List<String> cellStringList = new ArrayList<>();
             for (int j = 0; j < cellStoreList.size(); j++) {
                 HSSFCell myCell = (HSSFCell) cellStoreList.get(j);
-                if (myCell != null && myCell.getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(myCell)
+                if (myCell != null && myCell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(myCell)
                         && !isTime(myCell)) {
                     Date date = HSSFDateUtil.getJavaDate(myCell.getNumericCellValue());
                     // Does the date have a time component - check the date format
@@ -133,7 +134,7 @@ public class XlsFileParser {
                         LOG.debug("Date has a time component: {} : {}", new SimpleDateFormat("HH:mm:ss").format(date), myCell.getCellStyle().getDataFormatString());
                         cellStringList.add(DateHelper.getLocalDateTimeFormat().format(date));
                     }
-                } else if (myCell != null && myCell.getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(myCell)
+                } else if (myCell != null && myCell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(myCell)
                         && isTime(myCell)) { 
                     Date date = HSSFDateUtil.getJavaDate(myCell.getNumericCellValue());
                     if (myCell.getCellStyle().getDataFormatString().equals("h:mm")) {
@@ -142,7 +143,7 @@ public class XlsFileParser {
                         cellStringList.add((new SimpleDateFormat("HH:mm:ss")).format(date));
                     }
                 } else if (myCell != null) {
-                    myCell.setCellType(Cell.CELL_TYPE_STRING);
+                    myCell.setCellType(CellType.STRING);
                     cellStringList.add(myCell.getStringCellValue().trim());
                 } else {
                     cellStringList.add("");

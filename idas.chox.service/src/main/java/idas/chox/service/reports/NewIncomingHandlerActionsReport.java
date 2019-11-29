@@ -570,10 +570,18 @@ public class NewIncomingHandlerActionsReport implements Report {
     public String getReportTemplateFileName() {
 //        return "template_NewIncomingHandlerWorkgroupAndOwnerActionsReport.xls";
         WebUser user = ((WebUser) externalParameter.get("CurrentUser"));
-        if (user.getInsurer().isWorkgroupEnable()) {
-            return "template_NewIncomingHandlerWorkgroupAndOwnerActionsReport.xls";
+        if (isInsurerInvoiceUploadEnabled) {
+            if (user.getInsurer().isWorkgroupEnable()) {
+                return "template_NewIncomingHandlerWorkgroupAndOwnerActionsReport.xls";
+            } else {
+                return "template_NewIncomingHandlerOwnerOnlyActionsReport.xls";
+            }
         } else {
-            return "template_NewIncomingHandlerOwnerOnlyActionsReport.xls";
+            if (user.getInsurer().isWorkgroupEnable()) {
+                return "template_NewIncomingHandlerWorkgroupAndOwnerActionsReport_InsurerInvoiceUploadDisabled.xls";
+            } else {
+                return "template_NewIncomingHandlerOwnerOnlyActionsReport_InsurerInvoiceUploadDisabled.xls";
+            }
         }
     }
 
