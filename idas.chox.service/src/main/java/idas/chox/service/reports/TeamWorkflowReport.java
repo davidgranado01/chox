@@ -498,7 +498,11 @@ public class TeamWorkflowReport implements Report {
 
     @Override
     public String getReportTemplateFileName() {
-        return "template_SiteTeamWorkflowReport.xls";
+        if (isInsurerInvoiceUploadEnabled) {
+            return "template_SiteTeamWorkflowReport.xls";
+        } else {
+            return "template_SiteTeamWorkflowReport_InsurerInvoiceUploadDisabled.xls";
+        }
     }
 
     @Override
