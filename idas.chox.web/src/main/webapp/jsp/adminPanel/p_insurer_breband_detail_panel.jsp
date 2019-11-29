@@ -3673,7 +3673,7 @@
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalLossChoUnroadworthyCheck" value="totalLossChoUnroadworthyCheck" /></div>
                             <label class="chox-form-check-label">104: Total Loss Duration for Claims Where CHO is Dealing and Sending PAV and Vehicle is Deemed <i>Not Roadworthy</i> Check</label>
-                            <div class="chox-form-check-description">his is the maximum number of days the CHO can bill for Total Loss hire type where the own insurer is dealing and the vehicle is deemed NOT roadworthy.</div>
+                            <div class="chox-form-check-description">This is the maximum number of days the CHO can bill for Total Loss hire type where the own insurer is dealing and the vehicle is deemed NOT roadworthy.</div>
                         </div>
                         <div class="chox-form-checkboxitem">
                             <div class="chox-form-checkbox"><s:checkbox name="totalLossChoAtFaultRoadworthyCheck" value="totalLossChoAtFaultRoadworthyCheck" /></div>
