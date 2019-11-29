@@ -9,7 +9,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -18,13 +17,11 @@ import java.util.concurrent.Future;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.sf.jxls.exception.ParsePropertyException;
-import net.sf.jxls.transformer.XLSTransformer;
-
 import org.apache.commons.text.StringEscapeUtils;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.struts2.ServletActionContext;
+
+import org.jxls.common.Context;
+import org.jxls.util.JxlsHelper;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
@@ -53,7 +50,7 @@ import idas.chox.web.viewdata.TaskViewData;
  * @author John
  */
 public class TasksAction extends BaseAction {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(TasksAction.class);
     private static final int MAX_EXPORT_SIZE = 65535;
     private TaskService taskService;
@@ -90,11 +87,11 @@ public class TasksAction extends BaseAction {
     private boolean tooManyRows;
     private String paymentMethod;
     private Date paymentDate;
-    
+
     public String getSort() {
         return sort;
     }
-    
+
     public void setSort(String sort) {
         if (sort != null && sort.equals("createdBy")) {
             this.sort = "raisedBy";
@@ -102,47 +99,47 @@ public class TasksAction extends BaseAction {
             this.sort = sort;
         }
     }
-    
+
     public String getDir() {
         return dir;
     }
-    
+
     public void setDir(String dir) {
         this.dir = dir;
     }
-    
+
     public int getLimit() {
         return limit;
     }
-    
+
     public void setLimit(int limit) {
         this.limit = limit;
     }
-    
+
     public int getStart() {
         return start;
     }
-    
+
     public void setStart(int start) {
         this.start = start;
     }
-    
+
     public void setSelectedTaskId(int selectedTaskId) {
         this.selectedTaskId = selectedTaskId;
     }
-    
+
     public void setHideCompleted(boolean hideCompleted) {
         this.hideCompleted = hideCompleted;
     }
-    
+
     public void setShowAssignedTasksOnly(boolean showAssignedTasksOnly) {
         this.showAssignedTasksOnly = showAssignedTasksOnly;
     }
-    
+
     public void setChoReference(String choReference) {
         this.choReference = StringEscapeUtils.unescapeHtml4(Jsoup.clean(choReference, Whitelist.none()));
     }
-    
+
     public void setDueDate(Date dueDate) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(dueDate);
@@ -151,36 +148,36 @@ public class TasksAction extends BaseAction {
         cal.add(Calendar.SECOND, 59);
         this.dueDate = cal.getTime();
     }
-    
+
     public void setTaskDescription(String taskDescription) {
         this.taskDescription = taskDescription;
     }
-    
+
     public void setTaskType(String taskType) {
         this.taskType = taskType;
     }
-    
+
     public void setVisibility(int visibility) {
         this.visibility = visibility;
     }
-    
+
     public void setVisibilityRole(String visibilityRole) {
         this.visibilityRole = visibilityRole;
     }
-    
+
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
-    
+
     public void setPaymentDate(Date paymentDate) {
         this.paymentDate = paymentDate;
     }
-    
+
     @Override
     public String execute() throws Exception {
         return SUCCESS;
     }
-    
+
     public String getJsonArrayData() {
         String jsonString;
         if (jObject != null) {
@@ -190,14 +187,14 @@ public class TasksAction extends BaseAction {
         }
         return jsonString;
     }
-    
+
     public String getSortedTasks() {
         boolean showInsurerRole = false;
-        
+
         if (getIsInsurer() || getIsChoxAdmin()) {
             showInsurerRole = true;
         }
-        
+
         List<TaskViewData> viewData = new ArrayList<>();
         LOG.debug("Calling taskService to get all tasks");
         if (hideCompleted) {
@@ -209,11 +206,11 @@ public class TasksAction extends BaseAction {
             tasks = searchResult.getResult();
             totalCount = searchResult.getTotalCount();
         }
-        
+
         for (Task c : tasks) {
             viewData.add(new TaskViewData(c, showInsurerRole));
         }
-        
+
         LOG.debug("total task size is {}", totalCount);
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = null;
@@ -226,14 +223,14 @@ public class TasksAction extends BaseAction {
         }
         return SUCCESS;
     }
-    
+
     public String getSortedVisibleTasks() {
         boolean showInsurerRole = false;
-        
+
         if (getIsInsurer() || getIsChoxAdmin()) {
             showInsurerRole = true;
         }
-        
+
         List<TaskViewData> viewData = new ArrayList<>();
         LOG.debug("Calling taskService to get all visible tasks");
         if (hideCompleted) {
@@ -259,14 +256,14 @@ public class TasksAction extends BaseAction {
                 totalCount = searchResult.getTotalCount();
             }
         }
-        
+
         for (Task c : tasks) {
             if (c.getRaisedBy() != null) {
                 c.setCreatedBy(c.getRaisedBy());
             }
             viewData.add(new TaskViewData(c, showInsurerRole));
         }
-        
+
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = null;
         try {
@@ -277,17 +274,17 @@ public class TasksAction extends BaseAction {
         }
         return SUCCESS;
     }
-    
+
     public String getVisibleTaskCount() {
         boolean showInsurerRole = false;
-        
+
         tasks = null;
         jObject = null;
-        
+
         if (getIsInsurer() || getIsChoxAdmin()) {
             showInsurerRole = true;
         }
-        
+
         List<TaskViewData> viewData = new ArrayList<>();
         LOG.debug("Calling taskService to get visible task counts");
         if (hideCompleted) {
@@ -305,14 +302,14 @@ public class TasksAction extends BaseAction {
         }
         return SUCCESS;
     }
-    
+
     public String getTasksByClaim() {
         boolean showInsurerRole = false;
-        
+
         if (getIsInsurer() || getIsChoxAdmin()) {
             showInsurerRole = true;
         }
-        
+
         List<TaskViewData> viewData = new ArrayList<>();
         if (hideCompleted) {
             LOG.debug("Calling taskService to get incomplete tasks by claim");
@@ -321,14 +318,14 @@ public class TasksAction extends BaseAction {
             LOG.debug("Calling taskService to get all tasks by claim");
             tasks = taskService.getAllTasksByClaim(claimId);
         }
-        
+
         for (Task c : tasks) {
             if (c.getRaisedBy() != null) {
                 c.setCreatedBy(c.getRaisedBy());
             }
             viewData.add(new TaskViewData(c, showInsurerRole));
         }
-        
+
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = null;
         try {
@@ -339,14 +336,14 @@ public class TasksAction extends BaseAction {
         }
         return SUCCESS;
     }
-    
+
     public String getVisibleTasksByClaim() {
         boolean showInsurerRole = false;
-        
+
         if (getIsInsurer() || getIsChoxAdmin()) {
             showInsurerRole = true;
         }
-        
+
         List<TaskViewData> viewData = new ArrayList<>();
         if (hideCompleted) {
             LOG.debug("Calling taskService to get incomplete tasks by claim");
@@ -355,7 +352,7 @@ public class TasksAction extends BaseAction {
             LOG.debug("Calling taskService to get all tasks by claim");
             tasks = taskService.getAllTasksByClaim(getAuthenticatedUser().getId(), claimId);
         }
-        
+
         totalCount = 0;
         for (Task c : tasks) {
             if (c.getRaisedBy() != null) {
@@ -366,9 +363,9 @@ public class TasksAction extends BaseAction {
                     || (getAuthenticatedUser().isAnInsurer() && !c.getComplete() && !c.getInsurer())) {
                 totalCount++;
             }
-            
+
         }
-        
+
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = null;
         try {
@@ -379,7 +376,7 @@ public class TasksAction extends BaseAction {
         }
         return SUCCESS;
     }
-    
+
     @Secured({"ROLE_INS", "ROLE_CHO"})
     public String createNewTask() {
         if (taskType == null || dueDate == null || taskDescription == null) {
@@ -403,7 +400,7 @@ public class TasksAction extends BaseAction {
         task.setVisibility(visibility);
         task.setVisibilityRole(visibilityRole);
         task.setInsurer(this.getIsInsurer());
-        
+
         LOG.debug("Creating new task with description='{}', dueDate='{}'", taskDescription, dueDate);
         LOG.debug("taskType='{}', visibility='{}'", taskType, visibility);
         try {
@@ -431,10 +428,10 @@ public class TasksAction extends BaseAction {
             LOG.debug("Error creating new task: {}", ex.getMessage());
             getActionResponse().AssignMessageResult(String.format("Error creating new task: %s", ex.getMessage()));
         }
-        
+
         return SUCCESS;
     }
-    
+
     public boolean isClaimHashed() {
         if (claimId > 0) {// Must be in Claim Detail task panel
             LOG.debug("Getting claim with id: {}", claimId);
@@ -443,7 +440,7 @@ public class TasksAction extends BaseAction {
         }
         return false;
     }
-    
+
     public boolean isRemovedTasks() {
         if (claimId > 0) {// Must be in Claim Detail task panel
             LOG.debug("Getting claim with id: {}", claimId);
@@ -452,7 +449,7 @@ public class TasksAction extends BaseAction {
         }
         return false;
     }
-    
+
     public String markTaskAsComplete() {
         try {
             taskService.markTaskAsComplete(getAuthenticatedUser().getId(), selectedTaskId);
@@ -460,29 +457,29 @@ public class TasksAction extends BaseAction {
         } catch (Exception ex) {
             getActionResponse().AssignMessageResult(String.format("Error marking task as completed: %s", ex.getMessage()));
         }
-        
+
         return SUCCESS;
     }
-    
+
     public void setTaskService(TaskService taskService) {
         this.taskService = taskService;
     }
-    
+
     public void setClaimService(ClaimService claimService) {
         this.claimService = claimService;
     }
-    
+
     public void setClaimId(int claimId) {
         this.claimId = claimId;
     }
-    
+
     public int getClaimId() {
         return claimId;
     }
-    
+
     public String exportTask() {
         String result;
-        
+
         if (isDirectDownload()) {
             LOG.debug("Request to direct download report file ");
             try {
@@ -495,7 +492,7 @@ public class TasksAction extends BaseAction {
                 }
             }
         }
-        
+
         synchronized (getSessionLock()) {
             Map<String, Object> session = getSession();
             if (session.containsKey("reportFileLocation") && session.get("reportFileLocation") != null) {
@@ -515,12 +512,12 @@ public class TasksAction extends BaseAction {
                 result = ERROR;
             }
         }
-        
+
         return result;
     }
-    
+
     public String doTaskExportToExcel() throws IOException {
-        
+
         synchronized (getSessionLock()) {
             Map<String, Object> session = getSession();
             session.put("isExportFinished", false);
@@ -530,7 +527,7 @@ public class TasksAction extends BaseAction {
             session.put("reportFileLocation", null);
             session.put("exceptionThrown", false);
         }
-        
+
         String rtnStr = SUCCESS;
         try {
             if (getSession() != null) {
@@ -543,7 +540,7 @@ public class TasksAction extends BaseAction {
                     } else {
                         searchResult = taskService.getIncompleteTasks(0, MAX_EXPORT_SIZE, sort, dir);
                     }
-                    
+
                 } else {
                     if (this.getIsCHO()) {
                         searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, 0, MAX_EXPORT_SIZE, sort, dir, showAssignedTasksOnly);
@@ -557,12 +554,12 @@ public class TasksAction extends BaseAction {
                     tasks = searchResult.getResult();
                     totalCount = searchResult.getTotalCount();
                 }
-                
+
                 if (totalCount > 0) {
-                    
+
                     LOG.debug("Total No of tasks : '{}'", totalCount);
                     if (totalCount <= MAX_EXPORT_SIZE) {
-                        
+
                         try {
                             if (generateExcel(tasks)) {
                                 rtnStr = SUCCESS;
@@ -581,7 +578,7 @@ public class TasksAction extends BaseAction {
                     }
                 }
             }
-            
+
         } catch (Exception ex) {
             synchronized (getSessionLock()) {
                 getSession().put("exceptionThrown", true);
@@ -590,18 +587,18 @@ public class TasksAction extends BaseAction {
         }
         return rtnStr;
     }
-    
+
     private boolean generateExcel(List<Task> tasks) throws Exception {
         boolean cancelled = false;
-        
+
         LOG.info("Exporting to excel with {} tasks.", tasks.size());
-        
+
         List<ExcelTask> excelTasks = new ArrayList<>();
-        
+
         for (Task task : tasks) {
-            
+
             ExcelTask excelTask = new ExcelTask();
-            
+
             excelTask.setTaskDueDate(task.getDueDate());
             excelTask.setTaskType(task.getType());
             excelTask.setTaskDescription(task.getDescription());
@@ -609,27 +606,27 @@ public class TasksAction extends BaseAction {
             excelTask.setTaskCreatedBy(task.getCreatedBy().getDisplayName());
             excelTask.setTaskComplete(task.getComplete() ? "Yes" : "No");
             if (task.getClaim() != null) {
-                
+
                 excelTask.setSupplierReference(task.getClaim().getChoReference());
                 excelTask.setTaskCurrentClaimStatus(task.getClaim().getStatus());
-                
+
                 if (task.getClaim().getClaimOwner() != null) {
                     excelTask.setTaskOwner(task.getClaim().getClaimOwner().getDisplayName());
                 }
                 if (task.getClaim().getSupplierClaimOwner() != null) {
                     excelTask.setChoTaskOwner(task.getClaim().getSupplierClaimOwner().getDisplayName());
                 }
-                
+
                 if (task.getClaim().getWorkgroup() != null) {
                     excelTask.setTaskWrokgroup(task.getClaim().getWorkgroup().getName());
                 }
-                
+
                 AuditTrail audit = auditTrailService.getAuditTrailByTaskCreatedDate(task.getClaim().getId(), task.getCreatedDate());
                 if (audit != null) {
                     excelTask.setTaskStatusOfClaimWhenTaskCreated(audit.getNewStatus());
                 }
             }
-            
+
             if (task.getCreatedBy().isCHO()) {
                 excelTask.setTaskCreatedByOrg(task.getCreatedBy().getChorganisation().getName());
             } else if (task.getCreatedBy().isAnInsurer()) {
@@ -637,13 +634,13 @@ public class TasksAction extends BaseAction {
             } else {
                 excelTask.setTaskCreatedByOrg("System");
             }
-            
+
             if (task.getVisibilityRole() != null) {
                 excelTask.setTaskRoleAssignedTo(webUserUserRoleService.getWebUserRole(task.getVisibilityRole()).getDescription());
             }
-            
+
             excelTasks.add(excelTask);
-            
+
             synchronized (getSessionLock()) {
                 if (isExportTaskOperationCancelled()) {
                     getSession().put("numberOfTasksProcessed", null);
@@ -653,10 +650,7 @@ public class TasksAction extends BaseAction {
                 }
             }
         }
-        
-        final Map excelMap = new HashMap();
-        excelMap.put("excelTasks", excelTasks);
-        
+
         final String templateFilePath = getReportTemplatePath("taskExportTemplate.xls");
         final File reportFile = File.createTempFile("task_export_excel_report", ".xls");
         reportFile.deleteOnExit();
@@ -666,25 +660,24 @@ public class TasksAction extends BaseAction {
             @Override
             public void run() {
                 try {
-                    XLSTransformer transformer = new XLSTransformer();
                     // 'Owner of Claim Task Assigned To' and ‘Role Assigned To’ columns do not apply to the CHO user. Please look at bug#2546.
                     if (isCho) {
-                        transformer.setColumnsToHide(new short[]{(short) 7, (short) 8, (short) 9});
+//                        transformer.setColumnsToHide(new short[]{(short) 7, (short) 8, (short) 9});
                     } else {
-                        transformer.setColumnsToHide(new short[]{(short) 10});
+//                        transformer.setColumnsToHide(new short[]{(short) 10});
                     }
                     LOG.debug("XLS transform operation called with seperate thread {}", Thread.currentThread().getId());
-                    Workbook workbook;
                     try (InputStream is = new FileInputStream(templateFilePath)) {
-                        workbook = transformer.transformXLS(is, excelMap);
+                        try (OutputStream os = new FileOutputStream(reportFile)) {
+                            Context context = new Context();
+                            context.putVar("excelTasks", excelTasks);
+                            JxlsHelper.getInstance().processTemplate(is, os, context);
+                            os.flush();
+                            LOG.debug("file writing operation finished {}", Thread.currentThread().getId());
+                        }
                     }
                     LOG.debug("Workbook created - writing to file '{}'...", reportFile.getAbsolutePath());
-                    try (OutputStream os = new FileOutputStream(reportFile)) {
-                        workbook.write(os);
-                        os.flush();
-                        LOG.debug("file writing operation finished {}", Thread.currentThread().getId());
-                    }
-                } catch (IOException | ParsePropertyException | InvalidFormatException ex) {
+                } catch (IOException ex) {
                     LOG.error("Exception thrown transforming report:", ex);
                     LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
                     synchronized (getSessionLock()) {
@@ -693,19 +686,19 @@ public class TasksAction extends BaseAction {
                 }
             }
         };
-        
+
         ExecutorService executor = (ExecutorService) ServletActionContext.getServletContext().getAttribute("CHOX_EXECUTOR");
-        
+
         synchronized (getSessionLock()) {
             getSession().put("writingToFile", true);
         }
         Future<?> future = executor.submit(r);
-        
+
         try {
             while (!isExportTaskOperationCancelled() && !future.isDone()) {
                 Thread.sleep(100);
             }
-            
+
             if (isExportTaskOperationCancelled()) {
                 cancelled = true;
                 LOG.debug("writing to file operation cancelled. in thread {}", Thread.currentThread().getId());
@@ -717,7 +710,7 @@ public class TasksAction extends BaseAction {
                 getSession().put("exceptionThrown", true);
             }
         }
-        
+
         synchronized (getSessionLock()) {
             if (!cancelled && getSession().get("exceptionThrown") != null) {
                 Map<String, Object> session = getSession();
@@ -730,10 +723,10 @@ public class TasksAction extends BaseAction {
                 throw new Exception("Error Generating Report.");
             }
         }
-        
+
         return true;
     }
-    
+
     public String cancelTaskExportOperation() {
         synchronized (getSessionLock()) {
             Map<String, Object> session = getSession();
@@ -746,7 +739,7 @@ public class TasksAction extends BaseAction {
         }
         return SUCCESS;
     }
-    
+
     public String getExportedTasksCount() {
         synchronized (getSessionLock()) {
             Map<String, Object> session = getSession();
@@ -783,101 +776,101 @@ public class TasksAction extends BaseAction {
         }
         return SUCCESS;
     }
-    
+
     public String getJsonData() {
         return String.format("{exportedTaskCount:%s,isExportProcessFinished:%s,exportCancelled:%s,writingToFile:%s,exceptionThrown:%s,tooManyRows:%s}", exportedTaskCount, exportFinished, exportCanceled, writingToFile, exceptionThrown, tooManyRows);
     }
-    
+
     public void setExportedTaskCount(int exportedTaskCount) {
         this.exportedTaskCount = exportedTaskCount;
     }
-    
+
     public boolean isExportFinished() {
         return exportFinished;
     }
-    
+
     public void setExportFinished(boolean exportFinished) {
         this.exportFinished = exportFinished;
     }
-    
+
     public boolean isExportCanceled() {
         return exportCanceled;
     }
-    
+
     public void setExportCanceled(boolean exportCanceled) {
         this.exportCanceled = exportCanceled;
     }
-    
+
     public boolean isExceptionThrown() {
         return exceptionThrown;
     }
-    
+
     public void setExceptionThrown(boolean exceptionThrown) {
         this.exceptionThrown = exceptionThrown;
     }
-    
+
     public boolean isTooManyRows() {
         return tooManyRows;
     }
-    
+
     public void setTooManyRows(boolean tooManyRows) {
         this.tooManyRows = tooManyRows;
     }
-    
+
     public boolean isDirectDownload() {
         return directDownload;
     }
-    
+
     public void setDirectDownload(boolean directDownload) {
         this.directDownload = directDownload;
     }
-    
+
     public InputStream getExcelStream() {
         return excelStream;
     }
-    
+
     public void setExcelStream(InputStream excelStream) {
         this.excelStream = excelStream;
     }
-    
+
     public boolean isExceptionOccured() {
         return exceptionThrown;
     }
-    
+
     public void setExceptionOccured(boolean exceptionOccured) {
         this.exceptionThrown = exceptionOccured;
     }
-    
+
     public boolean isWritingToFile() {
         return writingToFile;
     }
-    
+
     public void setWritingToFile(boolean writingToFile) {
         this.writingToFile = writingToFile;
     }
-    
+
     public void setWebUserUserRoleService(WebUserUserRoleService webUserUserRoleService) {
         this.webUserUserRoleService = webUserUserRoleService;
     }
-    
+
     public void setAuditTrailService(AuditTrailService auditTrailService) {
         this.auditTrailService = auditTrailService;
     }
-    
+
     public InputStream getReportStream() {
         return reportStream;
     }
-    
+
     public void setReportStream(InputStream reportStream) {
         this.reportStream = reportStream;
     }
-    
+
     private String getReportTemplatePath(String reportTemplateName) {
         String reportDefinationFilePath = ServletActionContext.getServletContext().getRealPath(new StringBuilder().append("/WEB-INF/classes/reports/").append(reportTemplateName).toString());
-        
+
         return reportDefinationFilePath;
     }
-    
+
     private boolean isExportTaskOperationCancelled() {
         synchronized (getSessionLock()) {
             return (Boolean) getSession().get("cancelExportOperation");

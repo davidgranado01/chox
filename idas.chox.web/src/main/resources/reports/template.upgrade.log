@@ -1,0 +1,50 @@
+claimTemplate.xls
+template_BillingChoReport.xls
+
+template_BillingInsurerReport.xls
+
+reports/template_ClaimFileReport.xls
+
+reports/claimTemplateInsurer.xls                                        ** partial (1st worksheet)
+reports/claimTemplateInsurerHireMon.xls                                 ** partial (1st worksheet)
+
+
+// not checked/tested
+reports/taskExportTemplate.xls
+reports/template_AdminWeeklyOverviewReport.xls
+reports/template_AverageSettlementAmountReport.xls
+
+reports/template_BreInvoiceApprovalDisputeReport.xls
+reports/template_ClaimRejectedReport.xls
+reports/template_ClaimStatusWorkflowReport.xls                          ** loop nest loop in lines cell
+reports/template_ClaimStatusWorkflowReportByWorkgroupbreakdown.xls      **
+reports/template_HandlerPerformanceReport.xls                           **
+reports/template_InvoiceReport.xls
+reports/template_InvoiceSavingSummaryReport.xls
+reports/template_InvoiceStatusReport.xls                                *v vertical loop
+reports/template_InvoiceSummaryReport.xls
+reports/template_NewIncomingHandlerOwnerOnlyActionsReport.xls           **
+reports/template_NewIncomingHandlerWorkgroupAndOwnerActionsReport.xls   **
+reports/template_OwnerBreInvoiceReport.xls                              *** triple loop
+reports/template_OwnerPerformanceReport.xls                             **
+reports/template_OwnerWorkflowReport.xls                                **
+reports/template_PaymentReport.xls                                      **
+reports/template_SiteTeamBreInvoiceReport.xls                           **
+reports/template_SiteTeamPerformanceReport.xls                          **
+reports/template_SiteTeamWorkflowReport.xls                             **
+reports/template_SummaryReport.xls                                      **vv*
+reports/template_WorkgroupOwnerBreInvoiceReport.xls                     *** bottom
+reports/template_WorkgroupOwnerPerformanceReport.xls                    **
+reports/template_WorkgroupOwnerWorkflowReport.xls                       **
+reports/uploadedClaimDetailsTemplate.xls                                *
+
+
+
+[11:27] Dowson, John [UK]
+    Deng, Zhikun [UK] I've updated that template and pushed. I did the following:
+   - removed the test for an empty list - not needed
+   - removed the loop
+   - added comment on cell A1 to set size
+   - added comment on cell A12 to loop
+   - corrected totals (due to lines moving)
+(1 liked)
