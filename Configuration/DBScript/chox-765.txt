@@ -1,0 +1,11 @@
+--
+-- CHOX-765: Correction for duplicate user names
+--
+begin;
+UPDATE web_user set user_name=user_name||'-2' where  id in (1922,4086,2189,4126,4269,6657,3235,4320,4787,5703,3530)
+   and user_name in ('a31048','aaron.cody','anna.molloy','chris.wylde','e13977','gagney','jco@carpenters-law.co.uk','laura.ferguson','leigh.broomhead','thomas.beech','laura.dransfield')
+   and user_name not like '%-2';
+UPDATE web_user set user_name=user_name||'-3' where  id=3236 and user_name ='jco@carpenters-law.co.uk';
+
+CREATE UNIQUE INDEX web_user_usename_ux ON web_user(user_name);
+commit;
