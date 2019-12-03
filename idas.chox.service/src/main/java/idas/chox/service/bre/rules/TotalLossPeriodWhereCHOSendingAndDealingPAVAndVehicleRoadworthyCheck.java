@@ -26,7 +26,7 @@ public class TotalLossPeriodWhereCHOSendingAndDealingPAVAndVehicleRoadworthyChec
     public RuleEvaluation applyToClaim(Claim claim) {
 
         RuleEvaluation res = new RuleEvaluation();
-        res.setIsVisibleToCHO(true);    //CONFIRM??
+        res.setIsVisibleToCHO(false);
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
