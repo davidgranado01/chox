@@ -88,8 +88,13 @@ public class AttachmentUpload extends BaseScheduleActivity {
                 if (attachment.getName().length() < 9 || !attachment.getName().toLowerCase().startsWith("ren_")) {
                     statusString.append("Ignoring Invalid attachment: ").append(attachment.getName());
                 } else {
-                    referenceNumber = attachment.getName().substring(4, attachment.getName().length() - 4);
-                    claim = validateClaimReferenceNumber(referenceNumber, statusString);
+                    int indexOfDot = attachment.getName().lastIndexOf(".");
+                    if (indexOfDot > 4) { // check there is a dot, and dot should come behind "ren_"
+                        referenceNumber = attachment.getName().substring(4, indexOfDot);
+                        claim = validateClaimReferenceNumber(referenceNumber, statusString);
+                    } else {
+                        statusString.append("Ignoring Invalid attachment: ").append(attachment.getName());
+                    }
                 }
                 /* Check Claim Status */
                 if (claim != null && (ClaimStatus.CLAIM_CLOSED.equals(claim.getStatus())
