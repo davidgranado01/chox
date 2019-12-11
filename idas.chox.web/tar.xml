@@ -1,0 +1,16 @@
+<assembly>
+    <id>tar</id>
+    <formats>
+        <format>tgz</format>
+    </formats>
+    <fileSets>
+        <fileSet>
+            <directory>target/chox-app</directory>
+            <outputDirectory>/</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>target/idas.chox.web</directory>
+            <outputDirectory>/tomcat/ROOT</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>
