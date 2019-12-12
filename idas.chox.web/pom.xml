@@ -318,6 +318,7 @@
                             <descriptors>
                                 <descriptor>tar.xml</descriptor>
                             </descriptors>
+                            <tarLongFileMode>posix</tarLongFileMode>
                             <finalName>chox-app.${chox-app.version}</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
