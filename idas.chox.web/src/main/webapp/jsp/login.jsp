@@ -72,6 +72,24 @@
 Unauthorised use of this system will constitute a breach of Audatex (UK) Limited policy and<br/>
 prosecution under pertinent legislation will apply. This system uses cookies, signing into this system will<br/>
 be taken as consent to use cookies, for details on how cookies are used see ‘Terms of Service’ above.<br/>
-This system has been penetration certified by Digital Assurance. View certificate <a  href="javascript:openFile('<%= request.getContextPath()%>/download/CHOXCertificate.pdf');">here</a>.</div>
+This system has been penetration certified by Digital Assurance. View certificate <a  href="javascript:openFile('<%= request.getContextPath()%>/download/CHOXCertificate.pdf');">here</a>.
+<br/><br/>
+               By using the Audatex product you understand and acknowledge that you will not enter any Personal Data, the term being<br/>
+               as defined under Regulation (EU) 2016/679 (or any superseding legislation in the UK from time to time) ("GDPR"),<br/>
+               including but not limited to the types and categories of Personal Data listed, defined,<br/>
+               or referenced to in Articles 8 - 10 of the GDPR (collectively "High Risk Personal Data"),<br/>
+               into any of the free text fields, nor will you incorporate any Personal Data or High Risk Personal Data<br/>
+               into any of the images or attachments that you might upload into the Audatex system from time to time.
+<br/><br/>
+               The entering of Personal Data into free text fields or the incorporation of Personal Data<br/>
+               into images or attachments would result in the breach of your contract and/or agreement with us<br/>
+               and/or the breach of relevant data protection laws and subject you to legal liability.<br/>
+               For more information, please refer to the agreement that you have with us and relevant<br/>
+               data protection legislations or contact our Service Desk at [servicedesk@audatex.co.uk].
+<br/><br/>
+               We process your personal data in accordance with our privacy policy.
+<br/><br/>
+               By using our service you agree that you have read and understood our privacy policy set out on our website.
+</div>
    </body>
 </html>
