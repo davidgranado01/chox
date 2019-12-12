@@ -57,7 +57,7 @@ public class Rule108RepairDiaryInformationCheck extends BaseTest {
 
 
     @Test
-    public void testPassed_CHO_Simple() throws IOException, ParseException {
+    public void testPassed_CHO_GTA() throws IOException, ParseException {
 
         Claim claim = getTestClaim(ClaimType.GTA);
         claim.getHireMonitoringDetail().setRepairCompletionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-07"));
@@ -68,7 +68,7 @@ public class Rule108RepairDiaryInformationCheck extends BaseTest {
     }
 
     @Test
-    public void testPassed_Insurer_Simple() throws IOException, ParseException {
+    public void testPassed_Insurer_INSURER_INVOICE() throws IOException, ParseException {
 
         Claim claim = getTestClaim(ClaimType.INSURER_INVOICE);
         claim.getHireMonitoringDetail().setRepairCompletionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-07"));
@@ -77,6 +77,19 @@ public class Rule108RepairDiaryInformationCheck extends BaseTest {
 
         Assert.assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
     }
+
+    @Test
+    public void testPassed_CHO_TPI() throws IOException, ParseException {
+
+        Claim claim = getTestClaim(ClaimType.TPI);
+        claim.getHireMonitoringDetail().setRepairCompletionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-07"));
+        RepairDiaryInformationCheck rule = new RepairDiaryInformationCheck();
+        RuleEvaluation rv = rule.applyToClaim(claim);
+
+        Assert.assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
+    }
+
+
 
     @Test
     public void testFailed_CHO_InspectionBookedDate_Missing() throws IOException, ParseException {
@@ -162,8 +175,26 @@ public class Rule108RepairDiaryInformationCheck extends BaseTest {
     }
 
     @Test
-    public void testSkipped_claimType_not_GTA() throws IOException {
+    public void testSkipped_claimType_FixedFee_notGTA() throws IOException {
         Claim claim = getTestClaim(ClaimType.FIXED_FEE);
+        RepairDiaryInformationCheck rule = new RepairDiaryInformationCheck();
+        RuleEvaluation rv = rule.applyToClaim(claim);
+
+        Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
+    }
+
+    @Test
+    public void testSkipped_claimType_Subscriber_notGTA() throws IOException {
+        Claim claim = getTestClaim(ClaimType.SUBSCRIBER);
+        RepairDiaryInformationCheck rule = new RepairDiaryInformationCheck();
+        RuleEvaluation rv = rule.applyToClaim(claim);
+
+        Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
+    }
+
+    @Test
+    public void testSkipped_claimType_Collaboration_notGTA() throws IOException {
+        Claim claim = getTestClaim(ClaimType.COLLABORATION_PROTOCOL);
         RepairDiaryInformationCheck rule = new RepairDiaryInformationCheck();
         RuleEvaluation rv = rule.applyToClaim(claim);
 

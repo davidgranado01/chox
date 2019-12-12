@@ -139,10 +139,19 @@ public enum ClaimType {
         }
     }
 
+
     public static boolean isGTA(ClaimType claimType) {
         return claimType == ClaimType.GTA
                 || claimType == ClaimType.GTA_ORIGINAL_INVOICE
                 || claimType == ClaimType.GTA_SUPPLEMENTARY_INVOICE;
+    }
+
+
+    public static boolean isGTA_WideDef(ClaimType claimType) {
+        return     !ClaimType.isCollaborationProtocol(claimType)
+                && !ClaimType.isSubscriber(claimType)
+                && !ClaimType.isFixedFee(claimType)
+                ;
     }
 
     public static boolean isTPI(ClaimType claimType) {
