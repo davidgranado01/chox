@@ -3,14 +3,15 @@
     <formats>
         <format>tgz</format>
     </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
     <fileSets>
         <fileSet>
             <directory>target/chox-app</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory>./</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>target/idas.chox.web</directory>
-            <outputDirectory>/tomcat/ROOT</outputDirectory>
+            <outputDirectory>./tomcat/ROOT</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>
