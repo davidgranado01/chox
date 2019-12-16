@@ -434,6 +434,8 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
             Integer indexOfIsTotalLostCheckLastModified = null;
             Integer indexOfRepairCompletionDate = null;
             Integer indexOfRepairCompletionDateLastModified = null;
+            Integer indexOfEngineersReportSentDate = null;
+            Integer indexOfEngineersReportSentLastModified = null;
             Integer indexOfTotalLossOfferMadeDate = null;
             Integer indexOfTotalLossOfferMadeLastModified = null;
             Integer indexOfTotalLossOfferAcceptedDate = null;
@@ -502,6 +504,23 @@ public class DBInterceptor extends EmptyInterceptor implements BeanFactoryAware 
                         if (indexOfTotalLossOfferAcceptedDate != null) {
                             currentState[i] = DateHelper.getCurrentDateTime();
                         }   
+                        break;
+                    case "engineersReportSentDate":{
+                        Date newStatus = (Date) currentState[i];
+                        Date oldStatus = (Date) previousState[i];
+                        if ((newStatus != null && oldStatus != null && !newStatus.equals(oldStatus)) || (newStatus != null && oldStatus == null) || (newStatus == null && oldStatus != null)) {
+                            indexOfEngineersReportSentDate = i;
+                            if (indexOfEngineersReportSentLastModified != null) {
+                                currentState[indexOfEngineersReportSentLastModified] = DateHelper.getCurrentDateTime();
+                            }
+                        }
+                        break;
+                    }
+                    case "engineersReportSentLastModified":
+                        indexOfEngineersReportSentLastModified = i;
+                        if (indexOfEngineersReportSentDate != null) {
+                            currentState[i] = DateHelper.getCurrentDateTime();
+                        }
                         break;
                     case "totalLossOfferMadeDate":{
                         Date newStatus = (Date) currentState[i];
