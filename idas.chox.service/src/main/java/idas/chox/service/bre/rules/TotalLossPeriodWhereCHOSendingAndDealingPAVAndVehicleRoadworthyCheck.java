@@ -38,11 +38,13 @@ public class TotalLossPeriodWhereCHOSendingAndDealingPAVAndVehicleRoadworthyChec
             ; // Not reached
         }
 
-        if (claim.getBreBand().isTotalLossChoRoadworthyCheck()
+        if (claim.getBreBand().isTotalLossChoRoadworthyCheck() && !ClaimType.isCollaborationProtocol(claim.getClaimType())
+                && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
                 && claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null && claim.getVehicleHire().getHireStart().after(firstJuly2019)
                 && claim.isManagingRepair()
                 && claim.getHireMonitoringDetail() != null && claim.getHireMonitoringDetail().getWhoIsSendingPav().equals("CHO")
-                && claim.getCustomer() != null && claim.getCustomer().getIsUsable() != null && claim.getCustomer().getIsUsable()) {
+                && claim.getCustomer() != null && claim.getCustomer().getIsUsable() != null && claim.getCustomer().getIsUsable()
+                && allDatesPresent(claim) == true) {
 
 
             boolean success = true;
@@ -87,6 +89,14 @@ public class TotalLossPeriodWhereCHOSendingAndDealingPAVAndVehicleRoadworthyChec
 
         return res;
 
+    }
+
+    private boolean allDatesPresent(Claim claim){
+        if (claim.getVehicleHire().getHireStart()!= null && claim.getHireMonitoringDetail().getRepairAuthorisedDate() != null
+                && claim.getHireMonitoringDetail().getEngineersReportSentDate() != null && claim.getVehicleHire().getHireEnd() != null){
+            return true;
+        }
+        return false;
     }
 
     @Override
