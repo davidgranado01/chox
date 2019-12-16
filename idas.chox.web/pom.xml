@@ -287,17 +287,17 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>default-war</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>war</goal>
-                        </goals>
-                    </execution>
-                    <execution>
                         <id>war-exploded</id>
                         <phase>package</phase>
                         <goals>
                             <goal>exploded</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-war</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>war</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -318,7 +318,6 @@
                             <descriptors>
                                 <descriptor>tar.xml</descriptor>
                             </descriptors>
-                            <tarLongFileMode>posix</tarLongFileMode>
                             <finalName>chox-app.${chox-app.version}</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
