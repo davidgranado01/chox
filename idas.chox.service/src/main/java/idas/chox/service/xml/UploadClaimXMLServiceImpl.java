@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -359,7 +360,44 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                             || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
                             || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)
                             || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION))) {
-                    Comment comment = Comment.newComment(0, !ClaimType.isInsurerUpload(claim.getClaimType()), claimResult.getNote(), true);
+
+                    // logic mainly from: $chox/idas.chox.service/src/main/java/idas/chox/service/workflow/activities/AddNote.java
+                    boolean reviewRequired = !ClaimType.isInsurerUpload(claim.getClaimType());
+                    Comment comment = Comment.newComment(0, reviewRequired, claimResult.getNote(), true);
+
+                    // Determine if an external task can be created on the claim
+                    boolean canCreateTask = false;
+                    if (getCurrentUser().isAnInsurer() && claim.getChorganisation().isTaskManagementEnable()) {
+                        canCreateTask = true;
+                    } else if (getCurrentUser().isCHO() && claim.getInsurer().isTaskManagementEnable()) {
+                        canCreateTask = true;
+                    }
+
+                    if (reviewRequired && canCreateTask) {
+                        // Create task for comment review required
+                        Task task = new Task();
+                        comment.setTask(task);
+                        task.setClaim(claim);
+                        String commentDescription;
+                        if (getCurrentUser().isAnInsurer()) {
+                            commentDescription = "The Insurer has added a note that requires review. Please go to the notes section of this claim to review.";
+                            task.setInsurer(Boolean.TRUE);
+                        } else {
+                            commentDescription = "The CHO has added a note that requires review. Please go to the notes section of this claim to review.";
+                            task.setInsurer(Boolean.FALSE);
+                        }
+                        task.setDescription(commentDescription);
+                        task.setDueDate(new Date());
+                        task.setRaisedBy(getCurrentUser());
+                        task.setType("Note Review Required");
+                        task.setVisibility(3); // External
+                        try {
+                            taskService.createNewTask(task);
+                        } catch (Exception ex) {
+                            LOG.warn("Error creating 'Note Review Required' task on claim with id={}: {}", claim.getId(), ex.getMessage());
+                        }
+                    }
+
                     claim.addComment(comment);
                 }
 
