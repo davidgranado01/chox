@@ -141,10 +141,10 @@
                 </bean>
                 <bean class="idas.chox.service.bre.rules.RepairDiaryInformationCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.TotalLossDiaryInformationCheck" scope="prototype"></bean>
-                <bean class="idas.chox.service.bre.rules.TotalLossPeriodWhereCHOSendingAndDealingPAVAndVehicleNotRoadworthyCheck" scope="prototype"></bean>
-                <bean class="idas.chox.service.bre.rules.TotalLossPeriodWhereCHOSendingAndDealingPAVAndVehicleRoadworthyCheck" scope="prototype"></bean>
-                <bean class="idas.chox.service.bre.rules.TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleNotRoadworthyCheck" scope="prototype"></bean>
-                <bean class="idas.chox.service.bre.rules.TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.GtaAmendTotalLossCHOUnroadworthyCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.GtaAmendTotalLossCHORoadworthyCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.GtaAmendTotalLossCHOAtFaultInsurerRoadworthyCheck" scope="prototype"></bean>
             </list>
         </property>
     </bean>

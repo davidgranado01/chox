@@ -436,14 +436,14 @@
             </s:else>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label3">Who Is Sending PAV If TL?</label>
+                <label class="chox-form-std-label3">Who Is Sending Pav If TL?</label>
                 <s:select name="whoIsSendingPav"
                           list="sendingPAV"
-                          headerKey="-1"
+                          headerKey="" listKey="text"
+                          listValue="value"
                           headerValue="-- Please Select --"
                           emptyOption="false" cssStyle="width:230px"></s:select>
             </div>
-
             <s:if test="engineersReportSentLastModified!=null">
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">Date Engineers Report Sent </label>

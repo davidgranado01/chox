@@ -13,7 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleNotRoadworthyCheck implements IBusinessRule {
+public class GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck implements IBusinessRule {
 
     BankHolidayService bankHolidayService;
     private String narrative = "";
@@ -38,8 +38,7 @@ public class TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleNot
             ; // Not reached
         }
 
-        if (claim.getBreBand().isTotalLossChoAtFaultUnroadworthyCheck() && !ClaimType.isCollaborationProtocol(claim.getClaimType())
-                && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+        if (claim.getBreBand().isTotalLossChoAtFaultUnroadworthyCheck() && ClaimType.isGTA_WideDef(claim.getClaimType())
                 && claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null && claim.getVehicleHire().getHireStart().after(firstJuly2019)
                 && claim.isManagingRepair()
                 && claim.getHireMonitoringDetail() != null && claim.getHireMonitoringDetail().getWhoIsSendingPav().equals("At Fault Insurer")

@@ -13,7 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck implements IBusinessRule {
+public class GtaAmendTotalLossCHORoadworthyCheck implements IBusinessRule {
 
     BankHolidayService bankHolidayService;
     private String narrative = "";
@@ -38,18 +38,17 @@ public class TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoa
             ; // Not reached
         }
 
-        if (claim.getBreBand().isTotalLossChoAtFaultRoadworthyCheck() && !ClaimType.isCollaborationProtocol(claim.getClaimType())
-                && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+        if (claim.getBreBand().isTotalLossChoRoadworthyCheck() && ClaimType.isGTA_WideDef(claim.getClaimType())
                 && claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null && claim.getVehicleHire().getHireStart().after(firstJuly2019)
                 && claim.isManagingRepair()
-                && claim.getHireMonitoringDetail() != null && claim.getHireMonitoringDetail().getWhoIsSendingPav().equals("At Fault Insurer")
+                && claim.getHireMonitoringDetail() != null && claim.getHireMonitoringDetail().getWhoIsSendingPav().equals("CHO")
                 && claim.getCustomer() != null && claim.getCustomer().getIsUsable() != null && claim.getCustomer().getIsUsable()
                 && allDatesPresent(claim) == true) {
 
 
             boolean success = true;
 
-            // Calculate The number of working days between Hire Start Date and Date Repair Authorised/TL Identified
+            // Calculate The number of working days between hire start date and ‘Date Repair Authorised/TL Identified’
             int noDays1 = DateHelper.getNumberOfWorkingDaysBetween(claim.getVehicleHire().getHireStart(), claim.getHireMonitoringDetail().getRepairAuthorisedDate());
             int noHolidays = bankHolidayService.getNoHolidaysBetween(claim.getVehicleHire().getHireStart(), claim.getHireMonitoringDetail().getRepairAuthorisedDate());
             noDays1 -= noHolidays;
@@ -59,7 +58,7 @@ public class TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoa
             noHolidays = bankHolidayService.getNoHolidaysBetween(claim.getHireMonitoringDetail().getRepairAuthorisedDate(), claim.getHireMonitoringDetail().getEngineersReportSentDate());
             noDays2 -= noHolidays;
 
-            // Calculate The number of working days between the Date Repair Authorised/TL Identified’ and Hire End Date
+            // Calculate The number of working days between the Date Repair Authorised/TL Identified’ and Hire-end date
             int noDays3 = DateHelper.getNumberOfWorkingDaysBetween(claim.getHireMonitoringDetail().getRepairAuthorisedDate(), claim.getVehicleHire().getHireEnd());
             noHolidays = bankHolidayService.getNoHolidaysBetween(claim.getHireMonitoringDetail().getRepairAuthorisedDate(), claim.getVehicleHire().getHireEnd());
             noDays3 -= noHolidays;
@@ -69,13 +68,12 @@ public class TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoa
             noHolidays = bankHolidayService.getNoHolidaysBetween(claim.getVehicleHire().getHireStart(), claim.getVehicleHire().getHireEnd());
             noDays4 -= noHolidays;
 
-
-            if (noDays1 > claim.getBreBand().getTimeToAuthoriseRepair5()
-                    || noDays2 > claim.getBreBand().getTimeToSubmittEngineersReport5()
-                    || noDays3 > claim.getBreBand().getTimeToOffHire5()
-                    || noDays4 > claim.getBreBand().getTotalAllowableDays5()) {
+            if (noDays1 > claim.getBreBand().getTimeToAuthoriseRepair3()
+                    || noDays2 > claim.getBreBand().getTimeToSubmittEngineersReport3()
+                    || noDays3 > claim.getBreBand().getTimeToOffHire3()
+                    || noDays4 > claim.getBreBand().getTotalAllowableDays3()) {
                 success = false;
-                narrative = "The hire period for a total loss exceeds the number of days allowed where the at-fault insurer is sending PAV and the vehicle is roadworthy.";
+                narrative = "The hire period for a total loss exceeds the number of days allowed where the CHO is sending PAV and the vehicle is roadworthy.";
             }
 
             res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
@@ -107,7 +105,7 @@ public class TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoa
 
     @Override
     public String getRuleId() {
-        return "105";
+        return "103";
     }
 
     @Override

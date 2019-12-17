@@ -5,7 +5,7 @@ import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimType;
-import idas.chox.service.bre.rules.TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck;
+import idas.chox.service.bre.rules.GtaAmendTotalLossCHORoadworthyCheck;
 import idas.chox.test.BaseTest;
 import junit.framework.Assert;
 import org.junit.AfterClass;
@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck extends BaseTest {
+public class Rule103GtaAmendTotalLossCHORoadworthyCheck extends BaseTest {
 
     MockObjects testClaim = new MockObjects();
 
@@ -46,20 +46,20 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
         claim.getCustomer().setVehicleClass(testClaim.getTestVehicleClass());
         
         claim.setClaimType(ClaimType.GTA);
-        claim.getBreBand().setTotalLossChoAtFaultRoadworthyCheck(true);
+        claim.getBreBand().setTotalLossChoRoadworthyCheck(true);
         claim.getVehicleHire().setHireStart(new Date());
         claim.getVehicleHire().setHireEnd(new Date());
-        claim.getHireMonitoringDetail().setWhoIsSendingPav("At Fault Insurer");
+        claim.getHireMonitoringDetail().setWhoIsSendingPav("CHO");
         claim.getCustomer().setIsUsable(true);
         claim.setManagingRepair(true);
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new Date());
 
         setDefaultDates(claim);
 
-        claim.getBreBand().setTimeToAuthoriseRepair5(10);
-        claim.getBreBand().setTimeToSubmittEngineersReport5(10);
-        claim.getBreBand().setTimeToOffHire5(10);
-        claim.getBreBand().setTotalAllowableDays5(10);
+        claim.getBreBand().setTimeToAuthoriseRepair3(10);
+        claim.getBreBand().setTimeToSubmittEngineersReport3(10);
+        claim.getBreBand().setTimeToOffHire3(10);
+        claim.getBreBand().setTotalAllowableDays3(10);
 
         return claim;
     }
@@ -79,8 +79,8 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
     @Test
     public void testSkipped_OnOffFlag() throws IOException {
         Claim claim = getTestClaim();
-        claim.getBreBand().setTotalLossChoAtFaultRoadworthyCheck(false);
-        RuleEvaluation rv = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck().applyToClaim(claim);
+        claim.getBreBand().setTotalLossChoRoadworthyCheck(false);
+        RuleEvaluation rv = new GtaAmendTotalLossCHORoadworthyCheck().applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
         Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
@@ -91,7 +91,7 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
     public void testSkipped_ClaimTypeSubscriber() throws IOException {
         Claim claim = getTestClaim();
         claim.setClaimType(ClaimType.SUBSCRIBER);
-        RuleEvaluation rv = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossCHORoadworthyCheck().applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
@@ -100,7 +100,7 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
     public void testSkipped_ClaimTypeFixedFee() throws IOException {
         Claim claim = getTestClaim();
         claim.setClaimType(ClaimType.FIXED_FEE);
-        RuleEvaluation rv = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossCHORoadworthyCheck().applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
@@ -109,7 +109,7 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
     public void testSkipped_ClaimTypeCollaboration() throws IOException {
         Claim claim = getTestClaim();
         claim.setClaimType(ClaimType.COLLABORATION_PROTOCOL);
-        RuleEvaluation rv = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossCHORoadworthyCheck().applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
@@ -120,7 +120,7 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
 
         claim.setManagingRepair(false);
         
-        RuleEvaluation rv = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossCHORoadworthyCheck().applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
@@ -131,7 +131,7 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
 
         claim.getCustomer().setIsUsable(false);
         
-        RuleEvaluation rv = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossCHORoadworthyCheck().applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
@@ -140,14 +140,14 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
     public void testSkipped_WhoIsSendingPav() throws IOException {
         Claim claim = getTestClaim();
 
-        claim.getHireMonitoringDetail().setWhoIsSendingPav("CHO");
+        claim.getHireMonitoringDetail().setWhoIsSendingPav("At Fault Insurer");
         
-        RuleEvaluation rv = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossCHORoadworthyCheck().applyToClaim(claim);
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
 
         claim.getHireMonitoringDetail().setWhoIsSendingPav("Customers Own Insurer");
         
-        rv = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck().applyToClaim(claim);
+        rv = new GtaAmendTotalLossCHORoadworthyCheck().applyToClaim(claim);
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
 
@@ -157,7 +157,7 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
 
         claim.getVehicleHire().setHireEnd(null);
         
-        RuleEvaluation rv = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossCHORoadworthyCheck().applyToClaim(claim);
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
 
@@ -167,7 +167,7 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
 
         claim.getVehicleHire().setHireStart(null);
         
-        RuleEvaluation rv = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossCHORoadworthyCheck().applyToClaim(claim);
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
 
@@ -177,7 +177,7 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
 
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(null);
 
-        RuleEvaluation rv = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossCHORoadworthyCheck().applyToClaim(claim);
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
 
@@ -187,7 +187,7 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
 
         claim.getHireMonitoringDetail().setEngineersReportSentDate(null);
 
-        RuleEvaluation rv = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossCHORoadworthyCheck().applyToClaim(claim);
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
 
@@ -197,7 +197,7 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-06-30"));
         
-        RuleEvaluation rv = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck().applyToClaim(claim);
+        RuleEvaluation rv = new GtaAmendTotalLossCHORoadworthyCheck().applyToClaim(claim);
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
 
@@ -210,7 +210,7 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
         claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-03"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-06"));
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
@@ -221,17 +221,17 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
     public void testPassed_OverWeekend1() throws IOException, ParseException {
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTimeToAuthoriseRepair5(1);
-        claim.getBreBand().setTimeToSubmittEngineersReport5(1);
-        claim.getBreBand().setTimeToOffHire5(1);
-        claim.getBreBand().setTotalAllowableDays5(1);
+        claim.getBreBand().setTimeToAuthoriseRepair3(1);
+        claim.getBreBand().setTimeToSubmittEngineersReport3(1);
+        claim.getBreBand().setTimeToOffHire3(1);
+        claim.getBreBand().setTotalAllowableDays3(1);
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-01"));                            //Friday
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-02"));        //Saturday
         claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-03"));     //Sunday
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));                              //Monday
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
         
@@ -242,17 +242,17 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
     public void testPassed_OverWeekend2() throws IOException, ParseException {
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTimeToAuthoriseRepair5(3);
-        claim.getBreBand().setTimeToSubmittEngineersReport5(3);
-        claim.getBreBand().setTimeToOffHire5(3);
-        claim.getBreBand().setTotalAllowableDays5(3);
+        claim.getBreBand().setTimeToAuthoriseRepair3(3);
+        claim.getBreBand().setTimeToSubmittEngineersReport3(3);
+        claim.getBreBand().setTimeToOffHire3(3);
+        claim.getBreBand().setTotalAllowableDays3(3);
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-06"));                            //Wednesday
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-07"));        //Thursday
         claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-08"));     //Friday
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-11"));                              //Sunday
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
@@ -264,14 +264,14 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
         //3 working days between Hire Start and Hire End. All conditions met
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTotalAllowableDays5(3);  //Sets Hire Star to Hire End allowed days so that it is within the limit
+        claim.getBreBand().setTotalAllowableDays3(3);  //Sets Hire Star to Hire End allowed days so that it is within the limit
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));                            //Monday
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
         claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-07"));                              //Thursday
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
@@ -284,7 +284,7 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
         //4 working days between Hire Start and Hire End. Rest of the conditions are met
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTotalAllowableDays5(3);  //Sets Hire Star to Hire End allowed days so that it exceeds the limit
+        claim.getBreBand().setTotalAllowableDays3(3);  //Sets Hire Star to Hire End allowed days so that it exceeds the limit
 
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));                            //Monday
@@ -292,12 +292,12 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
         claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));                              //Friday
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the at-fault insurer is sending PAV and the vehicle is roadworthy."));
+        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the CHO is sending PAV and the vehicle is roadworthy."));
         Assert.assertFalse(rv.getIsVisibleToCHO());
     }
 
@@ -306,14 +306,14 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
         //3 working days between Date Repair Authorised to Date Engineers Report sent. All conditions are met
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTimeToSubmittEngineersReport5(3); //Set Date Repair Authorised to Date Engineers Report sent so that it is within the limit
+        claim.getBreBand().setTimeToSubmittEngineersReport3(3); //Set Date Repair Authorised to Date Engineers Report sent so that it is within the limit
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));                            //Monday
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
         claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-06"));     //Tuesday
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
@@ -326,19 +326,19 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
         //4 working days between Date Repair Authorised to Date Engineers Report sent. Rest of the conditions are met
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTimeToSubmittEngineersReport5(3); //Set Date Repair Authorised to Date Engineers Report sent so that it exceeds the limit
+        claim.getBreBand().setTimeToSubmittEngineersReport3(3); //Set Date Repair Authorised to Date Engineers Report sent so that it exceeds the limit
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));                            //Monday
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
         claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));     //Friday
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the at-fault insurer is sending PAV and the vehicle is roadworthy."));
+        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the CHO is sending PAV and the vehicle is roadworthy."));
         Assert.assertFalse(rv.getIsVisibleToCHO());
     }
 
@@ -347,14 +347,14 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
         //3 working days between Start Date to Date Repair Authorised. All Conditions are met
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTimeToAuthoriseRepair5(3); //Set Hire Start to Date Repair Authorised so that it is within the limit
+        claim.getBreBand().setTimeToAuthoriseRepair3(3); //Set Hire Start to Date Repair Authorised so that it is within the limit
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));                            //Monday
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-05"));        //Tuesday
         claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
@@ -367,19 +367,19 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
         //4 working days between Start Date to Date Repair Authorised. Rest of the conditions are met
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTimeToAuthoriseRepair5(3); //Set Hire Start to Date Repair Authorised so that it exceeds the limit
+        claim.getBreBand().setTimeToAuthoriseRepair3(3); //Set Hire Start to Date Repair Authorised so that it exceeds the limit
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));                            //Monday
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));        //Friday
         claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the at-fault insurer is sending PAV and the vehicle is roadworthy."));
+        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the CHO is sending PAV and the vehicle is roadworthy."));
         Assert.assertFalse(rv.getIsVisibleToCHO());
     }
 
@@ -388,14 +388,14 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
         //3 working days between Date Repair Authorised to Hire End. All conditions are met
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTimeToOffHire5(3); //Set Date Repair Authorised to Hire End so that it is within the limit
+        claim.getBreBand().setTimeToOffHire3(3); //Set Date Repair Authorised to Hire End so that it is within the limit
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));        //Monday
         claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-07"));                              //Thursday
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
@@ -408,19 +408,19 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
         //4 working days between Date Repair Authorised to Hire End. Rest of the conditions are met
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTimeToOffHire5(3); //Set Date Repair Authorised to Hire End so that it exceeds the limit
+        claim.getBreBand().setTimeToOffHire3(3); //Set Date Repair Authorised to Hire End so that it exceeds the limit
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));        //Monday
         claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));                              //Friday
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the at-fault insurer is sending PAV and the vehicle is roadworthy."));
+        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the CHO is sending PAV and the vehicle is roadworthy."));
         Assert.assertFalse(rv.getIsVisibleToCHO());
     }
 
@@ -428,22 +428,22 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
     public void testFailed_OverWeekend1() throws IOException, ParseException {
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTimeToAuthoriseRepair5(1);
-        claim.getBreBand().setTimeToSubmittEngineersReport5(1);
-        claim.getBreBand().setTimeToOffHire5(1);
-        claim.getBreBand().setTotalAllowableDays5(1);
+        claim.getBreBand().setTimeToAuthoriseRepair3(1);
+        claim.getBreBand().setTimeToSubmittEngineersReport3(1);
+        claim.getBreBand().setTimeToOffHire3(1);
+        claim.getBreBand().setTotalAllowableDays3(1);
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));                            //Friday
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-09"));        //Saturday
         claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-10"));     //Sunday
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-12"));                              //Tuesday
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the at-fault insurer is sending PAV and the vehicle is roadworthy."));
+        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the CHO is sending PAV and the vehicle is roadworthy."));
         Assert.assertFalse(rv.getIsVisibleToCHO());
     }
 
@@ -451,22 +451,22 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
     public void testFailed_OverWeekend2() throws IOException, ParseException {
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTimeToAuthoriseRepair5(3);
-        claim.getBreBand().setTimeToSubmittEngineersReport5(3);
-        claim.getBreBand().setTimeToOffHire5(3);
-        claim.getBreBand().setTotalAllowableDays5(3);
+        claim.getBreBand().setTimeToAuthoriseRepair3(3);
+        claim.getBreBand().setTimeToSubmittEngineersReport3(3);
+        claim.getBreBand().setTimeToOffHire3(3);
+        claim.getBreBand().setTotalAllowableDays3(3);
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));                            //Friday
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-09"));        //Saturday
         claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-10"));     //Sunday
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-14"));                              //Thursday
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the at-fault insurer is sending PAV and the vehicle is roadworthy."));
+        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the CHO is sending PAV and the vehicle is roadworthy."));
         Assert.assertFalse(rv.getIsVisibleToCHO());
     }
 
@@ -475,16 +475,16 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
         // NB/ Bank Holiday on 02/12/2019 (from import script)
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTimeToAuthoriseRepair5(3);
-        claim.getBreBand().setTimeToSubmittEngineersReport5(3);
-        claim.getBreBand().setTimeToOffHire5(3);
-        claim.getBreBand().setTotalAllowableDays5(3);
+        claim.getBreBand().setTimeToAuthoriseRepair3(3);
+        claim.getBreBand().setTimeToSubmittEngineersReport3(3);
+        claim.getBreBand().setTimeToOffHire3(3);
+        claim.getBreBand().setTotalAllowableDays3(3);
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-30"));
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-12-03"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-12-06"));
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
@@ -496,15 +496,15 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
         // NB/ Bank Holiday on 02/12/2019 (from import script)
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTimeToAuthoriseRepair5(3);
-        claim.getBreBand().setTimeToSubmittEngineersReport5(3);
-        claim.getBreBand().setTimeToOffHire5(3);
-        claim.getBreBand().setTotalAllowableDays5(3);
+        claim.getBreBand().setTimeToAuthoriseRepair3(3);
+        claim.getBreBand().setTimeToSubmittEngineersReport3(3);
+        claim.getBreBand().setTimeToOffHire3(3);
+        claim.getBreBand().setTotalAllowableDays3(3);
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-29"));
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-12-03"));
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
@@ -516,21 +516,21 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
         // NB/ Bank Holiday on 02/12/2019 (from import script)
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTimeToAuthoriseRepair5(3);
-        claim.getBreBand().setTimeToSubmittEngineersReport5(3);
-        claim.getBreBand().setTimeToOffHire5(3);
-        claim.getBreBand().setTotalAllowableDays5(3);
+        claim.getBreBand().setTimeToAuthoriseRepair3(3);
+        claim.getBreBand().setTimeToSubmittEngineersReport3(3);
+        claim.getBreBand().setTimeToOffHire3(3);
+        claim.getBreBand().setTotalAllowableDays3(3);
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-29"));
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-12-06"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-12-08"));
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the at-fault insurer is sending PAV and the vehicle is roadworthy."));
+        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the CHO is sending PAV and the vehicle is roadworthy."));
         Assert.assertFalse(rv.getIsVisibleToCHO());
     }
 
@@ -539,21 +539,21 @@ public class Rule105TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVeh
         // NB/ Bank Holiday on 02/12/2019 (from import script)
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTimeToAuthoriseRepair5(3);
-        claim.getBreBand().setTimeToSubmittEngineersReport5(3);
-        claim.getBreBand().setTimeToOffHire5(3);
-        claim.getBreBand().setTotalAllowableDays5(3);
+        claim.getBreBand().setTimeToAuthoriseRepair3(3);
+        claim.getBreBand().setTimeToSubmittEngineersReport3(3);
+        claim.getBreBand().setTimeToOffHire3(3);
+        claim.getBreBand().setTotalAllowableDays3(3);
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-26"));
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-29"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-12-05"));
 
-        TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck rule = new TotalLossPeriodWhereCHODealingAtFaultInsurerSendingPAVAndVehicleRoadworthyCheck();
+        GtaAmendTotalLossCHORoadworthyCheck rule = new GtaAmendTotalLossCHORoadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
 
         Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
-        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the at-fault insurer is sending PAV and the vehicle is roadworthy."));
+        Assert.assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The hire period for a total loss exceeds the number of days allowed where the CHO is sending PAV and the vehicle is roadworthy."));
         Assert.assertFalse(rv.getIsVisibleToCHO());
     }
 }

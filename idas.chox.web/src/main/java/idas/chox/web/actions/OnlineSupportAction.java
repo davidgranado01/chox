@@ -85,8 +85,8 @@ public class OnlineSupportAction extends BaseAction {
             String onlineSupportDefaultEmail = props.getProperty("onlineSupportDefaultEmail");
             String smtpEmailUser = props.getProperty("smtpEmailUser");
             String[] recipients = {onlineSupportDefaultEmail};
- 
- 
+
+
             EmailHelper emailHelper = new EmailHelper(smtpEmailUser);
             String emailMessage = doConstructEmailMessage(iSubject, iSupplierReference, iMessage, iEmail, iPhone);
             emailHelper.postMail(iSubject, emailMessage, recipients);

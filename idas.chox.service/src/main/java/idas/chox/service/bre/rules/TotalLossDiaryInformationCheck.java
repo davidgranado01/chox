@@ -39,7 +39,7 @@ public class TotalLossDiaryInformationCheck implements IBusinessRule {
 
             //Specify when rule applies
             if (    claim.getBreBand().isTotalLossDiaryInfoCheck()
-                    && ( ClaimType.isGTA(claim.getClaimType()) || ClaimType.isInsurerUpload(claim.getClaimType()) )
+                    && ( ClaimType.isGTA_WideDef(claim.getClaimType()) || ClaimType.isInsurerUpload(claim.getClaimType()) )
                     && claim.getHireMonitoringDetail().isIsTotalLostCheck()) {
 
                 boolean success = true;

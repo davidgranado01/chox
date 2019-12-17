@@ -86,7 +86,9 @@ public class UpdateLou extends BaseScheduleActivity {
                             && ((cells.size() > 19 && cells.get(19).trim().isEmpty()) || cells.size() <= 19)
                             && ((cells.size() > 20 && cells.get(20).trim().isEmpty()) || cells.size() <= 20)
                             && ((cells.size() > 21 && cells.get(21).trim().isEmpty()) || cells.size() <= 21)
-                            && ((cells.size() > 22 && cells.get(22).trim().isEmpty()) || cells.size() <= 22)) {
+                            && ((cells.size() > 22 && cells.get(22).trim().isEmpty()) || cells.size() <= 22)
+                            && ((cells.size() > 23 && cells.get(23).trim().isEmpty()) || cells.size() <= 23)
+                            && ((cells.size() > 24 && cells.get(24).trim().isEmpty()) || cells.size() <= 24)) {
                         LOG.debug("Ignoring empty row no. {}.", row);
                         continue;
                     }
@@ -291,6 +293,34 @@ public class UpdateLou extends BaseScheduleActivity {
                         ((LouUpdate) activity).setUpdateInsurer(updateInsurer);
                     }
 
+                    if (cells.size() > 23 && !cells.get(23).isEmpty()) {
+                        String whoIsSendingPAVifTL = cells.get(23).trim().toLowerCase();
+                        // "Customers Own Insurer", "CHO" or "At Fault Insurer"
+                        final String customersOwnInsurer = "Customers Own Insurer";
+                        final String cho = "CHO";
+                        final String atFaultInsurer = "At Fault Insurer";
+                        if (customersOwnInsurer.toLowerCase().equals(whoIsSendingPAVifTL)) {
+                            ((LouUpdate) activity).setWhoIsSendingPAVifTL(customersOwnInsurer);
+                            update = true;
+                        } else if (cho.toLowerCase().equals(whoIsSendingPAVifTL)) {
+                            ((LouUpdate) activity).setWhoIsSendingPAVifTL(cho);
+                            update = true;
+                        } else if (atFaultInsurer.toLowerCase().equals(whoIsSendingPAVifTL)) {
+                            ((LouUpdate) activity).setWhoIsSendingPAVifTL(atFaultInsurer);
+                            update = true;
+                        } else {
+                            statusString.append(" The 'Who is sending PAV if TL?' is not recognised.");
+                        }
+                    }
+
+                    if (cells.size() > 24 && !cells.get(24).isEmpty()) {
+                        Date engineersReportSentDate = validateDate(cells.get(24).trim(), statusString, "Date Engineers Report Sent");
+                        if (engineersReportSentDate != null) {
+                            ((LouUpdate) activity).setEngineersReportSentDate(engineersReportSentDate);
+                            update = true;
+                        }
+                    }
+
                     // Check Repair Completion Date is after the booked-in date
                     if (repairDatesUpdated) {
                         Date bookedIn = null;
@@ -342,13 +372,13 @@ public class UpdateLou extends BaseScheduleActivity {
                     }
 
                     /* update the result message into column 24 for each row.*/
-                    for (int i = cells.size(); i < 23; i++) {
+                    for (int i = cells.size(); i < 25; i++) {
                         cells.add("dummy column");
                     }
-                    if (cells.size() == 23) {
+                    if (cells.size() == 25) {
                         cells.add(statusString.toString());
                     } else {
-                        cells.set(23, statusString.toString());
+                        cells.set(25, statusString.toString());
                     }
                 }
             }
@@ -371,13 +401,13 @@ public class UpdateLou extends BaseScheduleActivity {
             emailMsg.append("-----------------------------------------------------------------------------------------------\n");
             Set<Integer> rowNumbers = xlsDataMap.keySet();
 
-            rowNumbers.stream().filter((row) -> (row != 0)).map((row) -> xlsDataMap.get(row)).filter((cells) -> (cells.size() >= 24)).map((cells) -> {
+            rowNumbers.stream().filter((row) -> (row != 0)).map((row) -> xlsDataMap.get(row)).filter((cells) -> (cells.size() >= 26)).map((cells) -> {
                 // We expect at least twenty four columns
                 emailMsg.append(String.format("%-22s", cells.get(0).trim()));
                 return cells;
             }).map((cells) -> {
                 emailMsg.append("\t\t");
-                emailMsg.append(cells.get(23).trim());
+                emailMsg.append(cells.get(25).trim());
                 return cells;
             }).forEachOrdered((_item) -> {
                 emailMsg.append("\n");

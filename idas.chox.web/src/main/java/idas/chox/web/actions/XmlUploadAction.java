@@ -14,9 +14,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.sf.jxls.exception.ParsePropertyException;
-import net.sf.jxls.transformer.XLSTransformer;
-
 import org.apache.commons.text.StringEscapeUtils;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -25,7 +22,6 @@ import org.jsoup.safety.Whitelist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
-
 
 import idas.chox.core.model.Bordereau;
 import idas.chox.core.model.BordereauWithoutFile;
@@ -38,6 +34,9 @@ import idas.chox.core.services.UploadedXMLClaimsDetailService;
 import idas.chox.core.util.FileHelper;
 import idas.chox.web.viewdata.BordereauViewData;
 import idas.chox.web.viewdata.UploadedClaimDetailViewData;
+import org.jxls.common.Context;
+import org.jxls.transform.Transformer;
+import org.jxls.util.JxlsHelper;
 
 /**
  *
@@ -170,7 +169,6 @@ public class XmlUploadAction extends BaseAction {
         this.service = service;
     }
 
-
     public boolean isUploadFlag() {
         uploadFlag = false;
         if (getIsCHO()) {
@@ -182,7 +180,6 @@ public class XmlUploadAction extends BaseAction {
         return uploadFlag;
     }
 
-    
     public String getJsonArrayData() {
         if (jObject != null) {
             return "{totalCount:" + totalCount + ",results:" + jObject + "}";
@@ -201,7 +198,6 @@ public class XmlUploadAction extends BaseAction {
     }
 
     public String uploadNewClaimsFile() {
-
 
         if (this.uploadedFile == null || this.uploadedFileFileName == null) {
             this.getActionResponse().AddError("No File Uploaded");
@@ -270,25 +266,24 @@ public class XmlUploadAction extends BaseAction {
 
 //    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public String processUploadedXmlFile() {
-            LOG.info("Process bordereau request for file with id={}", bordereauId);
-            if (getSession().get("claimsDetails") != null) {
-                this.getActionResponse().AddError("Please wait until the previous Bordereau processing request has completed.");
-                return ERROR;
+        LOG.info("Process bordereau request for file with id={}", bordereauId);
+        if (getSession().get("claimsDetails") != null) {
+            this.getActionResponse().AddError("Please wait until the previous Bordereau processing request has completed.");
+            return ERROR;
+        }
+        if (this.service.processFile(bordereauId, getSession())) {
+            this.getActionResponse().AssignMessageResult(this.service.getSuccessMessage());
+            synchronized (getSessionLock()) {
+                getSession().put("claimsDetails", null);
             }
-            if (this.service.processFile(bordereauId, getSession())) {
-                this.getActionResponse().AssignMessageResult(this.service.getSuccessMessage());
-                synchronized (getSessionLock()) {
-                    getSession().put("claimsDetails", null);
-                }
-                return SUCCESS;
-            } else {
-                this.getActionResponse().AddError(this.service.getErrorMessage());
-                synchronized (getSessionLock()) {
-                    getSession().put("claimsDetails", null);
-                }
-                return ERROR;
+            return SUCCESS;
+        } else {
+            this.getActionResponse().AddError(this.service.getErrorMessage());
+            synchronized (getSessionLock()) {
+                getSession().put("claimsDetails", null);
             }
-
+            return ERROR;
+        }
 
     }
 
@@ -304,35 +299,35 @@ public class XmlUploadAction extends BaseAction {
                 bordereauOrgId = bordereau.getCreatedBy().getChorganisation().getId();
             }
             if (userOrgId == bordereauOrgId) {
-                    List<UploadedXMLClaimsDetail> claimsDetails = null;
-                    if (bordereau.isProcessed()) {
-                        claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
-                        LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
-                    } else {
-                        LOG.debug("Synchronizing on session");
-                        synchronized (getSessionLock()) {
-                            if (getSession().containsKey("claimsDetails") && getSession().get("claimsDetails") != null) {
-                                claimsDetails = (List<UploadedXMLClaimsDetail>) getSession().get("claimsDetails");
-                            }
+                List<UploadedXMLClaimsDetail> claimsDetails = null;
+                if (bordereau.isProcessed()) {
+                    claimsDetails = uploadedXMLClaimsDetailService.getUploadedXMLClaimsDetailByBordereauId(bordereauId);
+                    LOG.debug("getting claimDetails from databse total size is: {}", claimsDetails.size());
+                } else {
+                    LOG.debug("Synchronizing on session");
+                    synchronized (getSessionLock()) {
+                        if (getSession().containsKey("claimsDetails") && getSession().get("claimsDetails") != null) {
+                            claimsDetails = (List<UploadedXMLClaimsDetail>) getSession().get("claimsDetails");
                         }
-                        if (claimsDetails == null) { // Should not happen!
-                            claimsDetails = new CopyOnWriteArrayList<>();
-                            LOG.warn("No claimsDetails in session - empty list created.");
-                        }
-                        LOG.debug("Finished synchronizing on session");
                     }
-                    for (UploadedXMLClaimsDetail claimDetailViewData : claimsDetails) {
-                        claimsDetailsViewData.add(new UploadedClaimDetailViewData(claimDetailViewData));
+                    if (claimsDetails == null) { // Should not happen!
+                        claimsDetails = new CopyOnWriteArrayList<>();
+                        LOG.warn("No claimsDetails in session - empty list created.");
                     }
-                    ObjectMapper mapper = new ObjectMapper();
-                    try {
-                        jObject = mapper.writeValueAsString(claimsDetailsViewData);
-                    } catch (JsonProcessingException ex) {
-                        LOG.error("Error converting claimsDetailsViewData to json string.");
-                        jObject = null;
-                    }
-                    totalCount = this.claimsDetailsViewData.size();
-                    return SUCCESS;
+                    LOG.debug("Finished synchronizing on session");
+                }
+                for (UploadedXMLClaimsDetail claimDetailViewData : claimsDetails) {
+                    claimsDetailsViewData.add(new UploadedClaimDetailViewData(claimDetailViewData));
+                }
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    jObject = mapper.writeValueAsString(claimsDetailsViewData);
+                } catch (JsonProcessingException ex) {
+                    LOG.error("Error converting claimsDetailsViewData to json string.");
+                    jObject = null;
+                }
+                totalCount = this.claimsDetailsViewData.size();
+                return SUCCESS;
             } else {
                 LOG.error("User trying to access bordereau of different org : file name='{}', user name='{}', user org='{}', bordereau org='{}'",
                         new Object[]{bordereau.getFileName(), getAuthenticatedUser().getUserName(), userOrgId, bordereauOrgId});
@@ -356,9 +351,9 @@ public class XmlUploadAction extends BaseAction {
                 userOrgId = getAuthenticatedUser().getChorganisation().getId();
                 bordereauOrgId = bordereau.getCreatedBy().getChorganisation().getId();
             }
-            
+
             if (userOrgId.equals(bordereauOrgId)) {
-                if (bordereau.isProcessed()||bordereau.isBeingProcessed()) {
+                if (bordereau.isProcessed() || bordereau.isBeingProcessed()) {
                     this.getActionResponse().AddError("Sorry - a processed file cannot be deleted.");
                     return ERROR;
                 } else {
@@ -382,18 +377,17 @@ public class XmlUploadAction extends BaseAction {
     }
 
     public String generateExcelReport() throws IOException {
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream();InputStream templateIS = new ClassPathResource("/reports/uploadedClaimDetailsTemplate.xls").getInputStream()) {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream(); InputStream templateIS = new ClassPathResource("/reports/uploadedClaimDetailsTemplate.xls").getInputStream()) {
             byte[] b;
-//            InputStream templateIS = new ClassPathResource("/reports/uploadedClaimDetailsTemplate.xls").getInputStream();
-//            ByteArrayOutputStream out = new ByteArrayOutputStream();
             if (bordereauId > 0 /*session.get("uploadedClaimsDetails") != null */) {
                 if (getUploadedClaimsDetails().equals(SUCCESS)) {
                     List<UploadedClaimDetailViewData> listOfUploadedClaimsDetail = claimsDetailsViewData; //(List<UploadedClaimDetailViewData>) session.get("uploadedClaimsDetails");
-                    Map excelMap = new HashMap();
-                    excelMap.put("uploadedClaims", listOfUploadedClaimsDetail);
-                    XLSTransformer transformer = new XLSTransformer();
-                    transformer.transformXLS(templateIS, excelMap).write(out);
-                    excelMap.clear();
+
+                    Context context = new Context();
+                    context.putVar("uploadedClaims", listOfUploadedClaimsDetail);
+                    JxlsHelper.getInstance().processTemplate(templateIS, out, context);
+                    LOG.info("Report written to stream");
+
                     b = out.toByteArray();
                     excelStream = new ByteArrayInputStream(b);
                     return SUCCESS;
@@ -407,7 +401,7 @@ public class XmlUploadAction extends BaseAction {
                 setErrorMessage("No record have been selected.");
                 return ERROR;
             }
-        } catch (IOException | ParsePropertyException | InvalidFormatException ex) {
+        } catch (IOException ex) {
             LOG.error("Error Generating Report : ", ex);
             setErrorMessage("Error Generating Report. Please report to chox support.");
             return ERROR;
