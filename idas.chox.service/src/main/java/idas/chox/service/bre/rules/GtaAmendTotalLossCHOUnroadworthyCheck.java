@@ -44,7 +44,7 @@ public class GtaAmendTotalLossCHOUnroadworthyCheck implements IBusinessRule {
         if (claim.getBreBand().isTotalLossChoUnroadworthyCheck() && ClaimType.isGTA_WideDef(claim.getClaimType())
                 && claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null && claim.getVehicleHire().getHireStart().after(firstJuly2019)
                 && claim.isManagingRepair()
-                && claim.getHireMonitoringDetail() != null && claim.getHireMonitoringDetail().getWhoIsSendingPav().equals("CHO")
+                && claim.getHireMonitoringDetail() != null && claim.getHireMonitoringDetail().getWhoIsSendingPav() != null && claim.getHireMonitoringDetail().getWhoIsSendingPav().equals("CHO")
                 && claim.getCustomer() != null && claim.getCustomer().getIsUsable() != null && !claim.getCustomer().getIsUsable()
                 && allDatesPresent(claim) == true) {
 

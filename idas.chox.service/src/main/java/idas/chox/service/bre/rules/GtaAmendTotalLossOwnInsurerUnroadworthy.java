@@ -40,7 +40,7 @@ public class GtaAmendTotalLossOwnInsurerUnroadworthy implements IBusinessRule {
         if (claim.getBreBand().isTotalLossOwnUnroadworthyCheck() && !ClaimType.isCollaborationProtocol(claim.getClaimType())
                 && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
                 && claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null && claim.getVehicleHire().getHireStart().after(firstJuly2019)
-                && claim.getHireMonitoringDetail() != null && claim.getHireMonitoringDetail().getWhoIsSendingPav().equals("Customers Own Insurer")
+                && claim.getHireMonitoringDetail() != null && claim.getHireMonitoringDetail().getWhoIsSendingPav() != null  && claim.getHireMonitoringDetail().getWhoIsSendingPav().equals("Customers Own Insurer")
                 && claim.getCustomer() != null && claim.getCustomer().getIsUsable() != null && !claim.getCustomer().getIsUsable()
                 && !claim.isManagingRepair() && claim.getHireMonitoringDetail() != null
                 && claim.getHireMonitoringDetail().getRepairAuthorisedDate() != null && claim.getVehicleHire().getHireEnd() != null) {

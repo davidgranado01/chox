@@ -41,7 +41,7 @@ public class GtaAmendTotalLossCHOAtFaultInsurerRoadworthyCheck implements IBusin
         if (claim.getBreBand().isTotalLossChoAtFaultRoadworthyCheck() && ClaimType.isGTA_WideDef(claim.getClaimType())
                 && claim.getVehicleHire() != null && claim.getVehicleHire().getHireStart() != null && claim.getVehicleHire().getHireStart().after(firstJuly2019)
                 && claim.isManagingRepair()
-                && claim.getHireMonitoringDetail() != null && claim.getHireMonitoringDetail().getWhoIsSendingPav().equals("At Fault Insurer")
+                && claim.getHireMonitoringDetail() != null && claim.getHireMonitoringDetail().getWhoIsSendingPav() != null  && claim.getHireMonitoringDetail().getWhoIsSendingPav().equals("At Fault Insurer")
                 && claim.getCustomer() != null && claim.getCustomer().getIsUsable() != null && claim.getCustomer().getIsUsable()
                 && allDatesPresent(claim) == true) {
 
