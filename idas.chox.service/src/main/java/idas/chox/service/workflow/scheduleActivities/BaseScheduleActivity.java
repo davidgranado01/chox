@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -82,6 +83,23 @@ public abstract class BaseScheduleActivity implements ScheduleActivity {
             }
         }
         return claim;
+    }
+
+    protected List<Claim> validateClaimReferenceNumber(String referenceNumber, String claimNumber,  StringBuilder statusString) {
+
+        List<Claim> claims = null;
+        if (!regexExpressionChecker(REG_ALPHANUMERIC, referenceNumber)) {
+            statusString.append(" No Claim Reference Provided.");
+        } else {
+            ((SecureDataService)claimService).setSecurityInfoProvider(((SecureDataService)claimService).getSecurityInfoProvider());
+            claims = claimService.getClaimByCHOReferenceAndClaimNumber(referenceNumber, claimNumber);
+
+            if (claims == null) {
+                LOG.debug("No Such Claim Reference {}", referenceNumber);
+                statusString.append(" No Such Claim Reference.");
+            }
+        }
+        return claims;
     }
 
     

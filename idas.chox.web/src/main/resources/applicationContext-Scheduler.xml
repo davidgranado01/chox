@@ -30,13 +30,23 @@
         <property name="claimService" ref="claimService" />
         <property name="xlsFileParser" ref="xlsFileParser" />
         <property name="activityFactory" ref="activityFactory" />
-        <property name="vehicleClassService" ref="vehicleClassService" />
+        <property name="attachmentService" ref="attachmentService" />
     </bean>
 
     <bean id="updateLou" class="idas.chox.service.workflow.scheduleActivities.UpdateLou" scope="prototype">
         <property name="claimService" ref="claimService" />
         <property name="xlsFileParser" ref="xlsFileParser" />
         <property name="activityFactory" ref="activityFactory" />
+    </bean>
+
+    <bean id="reassignClaim" class="idas.chox.service.workflow.scheduleActivities.ClaimReassignment" scope="prototype">
+        <property name="claimService" ref="claimService" />
+        <property name="xlsFileParser" ref="xlsFileParser" />
+        <property name="attachmentService" ref="attachmentService" />
+        <property name="activityFactory" ref="activityFactory" />
+        <property name="userService" ref="userService" />
+        <property name="workgroupService" ref="workgroupService" />
+        <property name="workflowContext" ref="workflowContext"/>
     </bean>
 
     <bean id="penaltyUpdate" class="idas.chox.service.workflow.scheduleActivities.PenaltyUpdate" scope="prototype">
@@ -427,7 +437,7 @@
     <!-- Cron Trigger -->
     <bean id="gmailJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="gmailJobDetail" /> 
-        <property name="cronExpression" value="0 0/15 7-20 ? * 1-7" /> 
+        <property name="cronExpression" value="0 0/1 7-20 ? * 1-7" />
     </bean>
     <bean id="cronRefDbUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="referenceUpdateDbJobDetail" /> 
