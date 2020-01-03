@@ -251,11 +251,6 @@ public class Rule106GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck extends 
     public void testPassed_HireStartJulyFirst() throws IOException, ParseException {
         Claim claim = getTestClaim();
 
-        claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-01"));
-        claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-03"));
-        claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-03"));
-        claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-06"));
-
         GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck rule = new GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck();
         rule.setBankHolidayService(bankHolidayService);
         RuleEvaluation rv = rule.applyToClaim(claim);
@@ -275,6 +270,7 @@ public class Rule106GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck extends 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-01"));                            //Friday
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-02"));        //Saturday
         claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-03"));     //Sunday
+        claim.getHireMonitoringDetail().setInspectionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-03"));              //Sunday
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));                              //Monday
 
         GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck rule = new GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck();
@@ -296,6 +292,7 @@ public class Rule106GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck extends 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-06"));                            //Wednesday
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-07"));        //Thursday
         claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-08"));     //Friday
+        claim.getHireMonitoringDetail().setInspectionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-08"));              //Friday
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-11"));                              //Sunday
 
         GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck rule = new GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck();
@@ -575,19 +572,19 @@ public class Rule106GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck extends 
     }
 
     @Test
-    public void testFailed_testPassed_RepairAuthorisedToEngineersReportSent() throws IOException, ParseException {
-        //4 working days between Repair Authorised Date and Engineers Report Sent Date. Rest of the conditions are met
+    public void testFailed_DateEngineersReportSentToInspectedDate() throws IOException, ParseException {
+        //4 working days between Date Engineers Report Sent and Inspected Date. Rest of the conditions are met
 
         Claim claim = getTestClaim();
-        claim.getBreBand().setTimeToSubmittEngineersReport6(3);  //Sets Repair Authorised Date to Engineers Report Sent Date days so that it exceeds the limit
+        claim.getBreBand().setTimeToSubmittEngineersReport6(3);  //Sets Date Engineers Report Sent to Inspected Date days so that it exceeds the limit
 
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
         claim.getIncident().setDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
+        claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));                 //Monday
         claim.getHireMonitoringDetail().setInspectionBookedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
-        claim.getHireMonitoringDetail().setInspectionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
-        claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));                    //Monday
-        claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));                 //Friday
+        claim.getHireMonitoringDetail().setInspectionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));                          //Friday
+        claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
         claim.getHireMonitoringDetail().setTotalLossOfferCheckReceivedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
 

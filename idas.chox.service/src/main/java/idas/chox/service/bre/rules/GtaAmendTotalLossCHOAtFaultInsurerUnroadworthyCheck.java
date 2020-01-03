@@ -63,9 +63,9 @@ public class GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck implements IBus
             noHolidays = bankHolidayService.getNoHolidaysBetween(claim.getVehicleHire().getHireStart(), claim.getHireMonitoringDetail().getRepairAuthorisedDate());
             noDays3 -= noHolidays;
 
-            // Calculate The number of working days between the Date Repair Authorised/TL Identified Date and Date Engineers Report Sent
-            int noDays4 = DateHelper.getNumberOfWorkingDaysBetween(claim.getHireMonitoringDetail().getRepairAuthorisedDate(), claim.getHireMonitoringDetail().getEngineersReportSentDate());
-            noHolidays = bankHolidayService.getNoHolidaysBetween(claim.getHireMonitoringDetail().getRepairAuthorisedDate(), claim.getHireMonitoringDetail().getEngineersReportSentDate());
+            // Calculate The number of working days between the Date Engineers Report Sent and Inspected Date
+            int noDays4 = DateHelper.getNumberOfWorkingDaysBetween(claim.getHireMonitoringDetail().getEngineersReportSentDate(), claim.getHireMonitoringDetail().getInspectionDate());
+            noHolidays = bankHolidayService.getNoHolidaysBetween(claim.getHireMonitoringDetail().getEngineersReportSentDate(), claim.getHireMonitoringDetail().getInspectionDate());
             noDays4 -= noHolidays;
 
             // Calculate The number of working days between the Date Total Loss Cheque Received and Date Off-Hired
