@@ -548,8 +548,8 @@ public class Rule106GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck extends 
     }
 
     @Test
-    public void testPassed_RepairAuthorisedToEngineersReportSent() throws IOException, ParseException {
-        //3 working days between Repair Authorised Date and Engineers Report Sent Date. All conditions met
+    public void testPassed_DateEngineersReportSentToInspectedDate() throws IOException, ParseException {
+        //3 working days between Date Engineers Report Sent and Inspected Date. All conditions met
 
         Claim claim = getTestClaim();
         claim.getBreBand().setTimeToSubmittEngineersReport6(7);  //Sets Repair Authorised Date to Engineers Report Sent Date days so that it is within the limit
@@ -558,8 +558,9 @@ public class Rule106GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck extends 
         claim.getIncident().setDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
         claim.getHireMonitoringDetail().setInspectionBookedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
         claim.getHireMonitoringDetail().setInspectionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
-        claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));                    //Monday
-        claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-07"));                 //Thursday
+        claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
+        claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));                 //Monday
+        claim.getHireMonitoringDetail().setInspectionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-07"));                          //Thursday
         claim.getHireMonitoringDetail().setTotalLossOfferCheckReceivedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
 
