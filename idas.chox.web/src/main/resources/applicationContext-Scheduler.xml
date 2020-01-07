@@ -437,7 +437,7 @@
     <!-- Cron Trigger -->
     <bean id="gmailJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="gmailJobDetail" /> 
-        <property name="cronExpression" value="0 0/1 7-20 ? * 1-7" />
+        <property name="cronExpression" value="0 0/15 7-20 ? * 1-7" />
     </bean>
     <bean id="cronRefDbUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="referenceUpdateDbJobDetail" /> 
