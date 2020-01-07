@@ -94,12 +94,10 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
             // Claim configuration
             claimOwnershipEnabled = loggedInUserInsurer.isClaimOwnershipEnable();
-
             claimWorkgroupEnabled = loggedInUserInsurer.isEnableManualInvoiceWorkgroups();
 
             // Invoice configuration
             invoiceOwnershipEnabled = loggedInUserInsurer.isEnableManualInvoiceOwnership();
-
             invoiceWorkgroupEnabled = loggedInUserInsurer.isEnableManualInvoiceWorkgroups();
 
         } else {
@@ -180,19 +178,15 @@ public class ClaimReassignment extends BaseScheduleActivity {
                                             status.append("Failed: ").append(ex.getMessage());
                                             LOG.warn("Exception occurred when reassigning owner via email scheduler job: {}", ex.getMessage());
                                         }
-
                                     }
-
                                 });
 
                             } else {
                                 status.append("Failed: Claim not found");
                             }
-
                         }
-
                     } else {
-                        status.append("Failed: Claim Reference not found");
+                        status.append("Failed: CHO Reference not found");
                     }
 
                 } else {
