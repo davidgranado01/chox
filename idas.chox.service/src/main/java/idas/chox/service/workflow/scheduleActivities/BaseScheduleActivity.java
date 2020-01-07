@@ -85,6 +85,13 @@ public abstract class BaseScheduleActivity implements ScheduleActivity {
         return claim;
     }
 
+    /**
+     * Return a list of claims matching a given reference number and claim number
+     * @param referenceNumber  a valid claim supplier reference
+     * @param claimNumber  a valid insurer claim number
+     * @param statusString  aggregating error messages
+     * @return list of claims
+     */
     protected List<Claim> validateClaimReferenceNumber(String referenceNumber, String claimNumber,  StringBuilder statusString) {
 
         List<Claim> claims = null;
@@ -95,7 +102,7 @@ public abstract class BaseScheduleActivity implements ScheduleActivity {
             claims = claimService.getClaimByCHOReferenceAndClaimNumber(referenceNumber, claimNumber);
 
             if (claims == null) {
-                LOG.debug("No Such Claim Reference {}", referenceNumber);
+                LOG.debug("No Such Claim Supplier Reference {} with Claim Number {}", referenceNumber, claimNumber);
                 statusString.append(" No Such Claim Reference.");
             }
         }
