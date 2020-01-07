@@ -186,7 +186,7 @@ public class ClaimReassignment extends BaseScheduleActivity {
                             }
                         }
                     } else {
-                        status.append("Failed: CHO Reference not found");
+                        status.append("Failed: Claim Reference not found");
                     }
 
                 } else {
