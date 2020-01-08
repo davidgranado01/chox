@@ -47,6 +47,7 @@
         <property name="userService" ref="userService" />
         <property name="workgroupService" ref="workgroupService" />
         <property name="workflowContext" ref="workflowContext"/>
+        <property name="insurerService" ref="insurerService" />
     </bean>
 
     <bean id="penaltyUpdate" class="idas.chox.service.workflow.scheduleActivities.PenaltyUpdate" scope="prototype">
