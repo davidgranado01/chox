@@ -8,12 +8,13 @@ import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.service.workflow.activities.AssignOwner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.nio.file.AccessDeniedException;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
-import static idas.chox.core.model.ClaimType.INSURER_CLAIM;
 import static idas.chox.core.model.ClaimType.INSURER_INVOICE;
 
 public class ClaimReassignment extends BaseScheduleActivity {
@@ -21,22 +22,26 @@ public class ClaimReassignment extends BaseScheduleActivity {
     private static final Logger LOG = LoggerFactory.getLogger(ClaimReassignment.class);
     private AttachmentService attachmentService;
     private AttachmentTypeService attachmentTypeService;
-    private Map<Integer, List<String>> xlsDataMap;
     private ActivityFactory activityFactory;
     private XlsFileParser xlsFileParser;
     private UserService userService;
     private WorkgroupService workgroupService;
+    private InsurerService insurerService;
 
-    public static final String NEW_LINE = "\n";
-    public static final int CELL_SIZE_WITHOUT_WORKGROUP_AND_STATUS = 4;
-    public static final int CELL_SIZE_WITH_WORKGROUP_AND_STATUS = 5;
-    public static final int ERROR_INDEX_WITHOUT_WORKGROUP_AND_STATUS = 3;
-    public static final int ERROR_INDEX_WITH_WORKGROUP_AND_STATUS = 4;
-    public static final String CELL_TEMPLATE = "%s\t\t%22s";
     public static final int CLAIM_HEADER_ROW = 0;
     public static final int CLAIM_NUMBER_INDEX = 0;
     public static final int CHO_REFERENCE_INDEX = 1;
     public static final int NEW_WORKGROUP_INDEX = 2;
+
+    public static final String NEW_LINE = "\n";
+    public static final String CELL_TEMPLATE = "%s\t\t%22s\t\t%22s";
+
+    public static final int CELL_SIZE_WITHOUT_WORKGROUP_AND_STATUS = 4;
+    public static final int CELL_SIZE_WITH_WORKGROUP_AND_STATUS = 5;
+    public static final int ERROR_INDEX_WITHOUT_WORKGROUP_AND_STATUS = 3;
+    public static final int ERROR_INDEX_WITH_WORKGROUP_AND_STATUS = 4;
+    private static final int NEW_OWNER_WITHOUT_WORKGROUP_SIZE = 3;
+    private static final int NEW_OWNER_WITH_WORKGROUP_SIZE = 4;
     public static final int NEW_OWNER_WITHOUT_WORKGROUP_INDEX = 2;
     public static final int NEW_OWNER_WITH_WORKGROUP_INDEX = 3;
 
@@ -45,10 +50,8 @@ public class ClaimReassignment extends BaseScheduleActivity {
     private boolean invoiceOwnershipEnabled;
     private boolean invoiceWorkgroupEnabled;
 
-    @Autowired
-    protected InsurerService insurerService;
+    private Map<Integer, List<String>> xlsDataMap;
     private Insurer loggedInUserInsurer;
-
 
     public void setXlsFileParser(XlsFileParser xlsFileParser) {
         this.xlsFileParser = xlsFileParser;
@@ -74,6 +77,10 @@ public class ClaimReassignment extends BaseScheduleActivity {
         this.workgroupService = workgroupService;
     }
 
+    public void setInsurerService(InsurerService insurerService) {
+        this.insurerService = insurerService;
+    }
+
     @Override
     public boolean process(String body, List<EmailAttachment> attachments, String from, String subject) throws Exception {
 
@@ -82,29 +89,36 @@ public class ClaimReassignment extends BaseScheduleActivity {
         // Get the security provider
         SecurityInfoProvider securityInfoProvider = getWorkflowContext().getSecurityInfoProvider();
 
-        // Get the current user
-        WebUser loggedInUser = securityInfoProvider.getCurrentUser();
+        Optional<WebUser> webUserOptional = Optional.ofNullable(securityInfoProvider.getCurrentUser());
 
-        boolean insurerPresent = loggedInUser.isAnInsurer();
+        if (webUserOptional.isPresent()) {
 
-        if (insurerPresent) {
+            // Get the current user
+            WebUser loggedInUser = webUserOptional.get();
 
-            // Get the current insurer
-            loggedInUserInsurer = loggedInUser.getInsurer();
+            boolean insurerPresent = loggedInUser.isAnInsurer();
 
-            // Claim configuration
-            claimOwnershipEnabled = loggedInUserInsurer.isClaimOwnershipEnable();
-            claimWorkgroupEnabled = loggedInUserInsurer.isEnableManualInvoiceWorkgroups();
+            if (insurerPresent) {
 
-            // Invoice configuration
-            invoiceOwnershipEnabled = loggedInUserInsurer.isEnableManualInvoiceOwnership();
-            invoiceWorkgroupEnabled = loggedInUserInsurer.isEnableManualInvoiceWorkgroups();
+                // Get the current insurer
+                loggedInUserInsurer = loggedInUser.getInsurer();
 
+                // Invoice configuration
+                invoiceOwnershipEnabled = loggedInUserInsurer.isEnableManualInvoiceOwnership();
+                invoiceWorkgroupEnabled = loggedInUserInsurer.isEnableManualInvoiceWorkgroups();
+
+                // Claim configuration
+                claimOwnershipEnabled = loggedInUserInsurer.isClaimOwnershipEnable();
+                claimWorkgroupEnabled = loggedInUserInsurer.isEnableManualInvoiceWorkgroups();
+
+            } else {
+                status.append("Failed: Claim does not belong to an insurer");
+            }
         } else {
-            status.append("Failed: Claim does not belong to an insurer");
-            return true;
+            status.append("Failed: Logged in user not found");
         }
 
+        //If there is an xls attachment present then attempt to process it
         attachments.stream().filter(attachment -> attachment.getName().toLowerCase().endsWith("xls")).forEach(attachment -> {
 
             xlsDataMap = xlsFileParser.processExcelFile(attachment.getContent());
@@ -152,7 +166,7 @@ public class ClaimReassignment extends BaseScheduleActivity {
                                             setNewWorkgroupId(status, cells, loggedInUserInsurer, activity);
                                         }
 
-                                    } else if (claim.getClaimType() == INSURER_CLAIM) {
+                                    } else {
                                         if (claimOwnershipEnabled) {
                                             setNewOwnerId(status, cells, activity);
                                         }
@@ -161,8 +175,6 @@ public class ClaimReassignment extends BaseScheduleActivity {
                                             setNewWorkgroupId(status, cells, loggedInUserInsurer, activity);
                                         }
 
-                                    } else {
-                                        status.append("Failed: Invalid claim type");
                                     }
 
                                     // If validation passed, process AssignOwner activity
@@ -269,13 +281,11 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
     public Optional<String> getNewOwner(List<String> cells) {
         Optional<String> claimNumberOptional = Optional.empty();
-        String claimNumber = "";
-        if (cells.size() == 3) {
-            claimNumber = cells.get(NEW_OWNER_WITHOUT_WORKGROUP_INDEX).trim();
-        } else if (cells.size() == 4) {
-            claimNumber = cells.get(NEW_OWNER_WITH_WORKGROUP_INDEX).trim();
-        }
-        if (!claimNumber.isEmpty()) {
+        if (cells.size() == NEW_OWNER_WITHOUT_WORKGROUP_SIZE) {
+            String claimNumber = cells.get(NEW_OWNER_WITHOUT_WORKGROUP_INDEX).trim();
+            claimNumberOptional = Optional.of(claimNumber);
+        } else if (cells.size() == NEW_OWNER_WITH_WORKGROUP_SIZE) {
+            String claimNumber = cells.get(NEW_OWNER_WITH_WORKGROUP_INDEX).trim();
             claimNumberOptional = Optional.of(claimNumber);
         }
         return claimNumberOptional;
@@ -310,7 +320,7 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
         if (optionalXmlData.isPresent()) {
 
-            emailMsg.append(String.format(CELL_TEMPLATE, "ReferenceNumber", "Message"));
+            emailMsg.append(String.format(CELL_TEMPLATE, "Claim Number", "Supplier Reference", "Message"));
             emailMsg.append(NEW_LINE);
             emailMsg.append("-----------------------------------------------------------------------------------------------");
             emailMsg.append(NEW_LINE);
@@ -320,9 +330,9 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
                 // Get the status message
                 if (cells.size() == CELL_SIZE_WITHOUT_WORKGROUP_AND_STATUS) {
-                    emailMsg.append(String.format(CELL_TEMPLATE, cells.get(CLAIM_NUMBER_INDEX).trim(), cells.get(ERROR_INDEX_WITHOUT_WORKGROUP_AND_STATUS).trim()));
+                    emailMsg.append(String.format(CELL_TEMPLATE, cells.get(CLAIM_NUMBER_INDEX).trim(), cells.get(CHO_REFERENCE_INDEX).trim(), cells.get(ERROR_INDEX_WITHOUT_WORKGROUP_AND_STATUS).trim()));
                 } else if (cells.size() == CELL_SIZE_WITH_WORKGROUP_AND_STATUS) {
-                    emailMsg.append(String.format(CELL_TEMPLATE, cells.get(CLAIM_NUMBER_INDEX).trim(), cells.get(ERROR_INDEX_WITH_WORKGROUP_AND_STATUS).trim()));
+                    emailMsg.append(String.format(CELL_TEMPLATE, cells.get(CLAIM_NUMBER_INDEX).trim(), cells.get(CHO_REFERENCE_INDEX).trim(), cells.get(ERROR_INDEX_WITH_WORKGROUP_AND_STATUS).trim()));
                 }
 
                 // Append new line
