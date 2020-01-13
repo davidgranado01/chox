@@ -1,12 +1,10 @@
 --
--- VUL-3117 (CHOX): adding new set of ERAC special rates for RSA, Motability and tesco
+-- VUL-3117 (CHOX): adding new set of ERAC special rates for RSA, Motability,tesco,ers
 -- Some values are set as follow :
--- version is set to 4, which is an arbitrary new value
--- age is set up to 99.99 arbitrarily
+-- version is set to 0, as an arbitrary new value 
+-- age is set up to 99.00 as this field is not relevantfor those updates
 -- created_by and last_modified_by are set up to 999
 -- created_date and last_modified_date are set up to now
--- ERAC id is set up to 1007, which is the value in the chorganisation table
-
 
 DO $$ 
 DECLARE var_ver integer := 0;
