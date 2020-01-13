@@ -1,5 +1,5 @@
 --
--- VUL-3227 (CHOX): adding new set of ERAC special rates for RSA, Motability and tesco
+-- VUL-3117 (CHOX): adding new set of ERAC special rates for RSA, Motability and tesco
 -- Some values are set as follow :
 -- version is set to 4, which is an arbitrary new value
 -- age is set up to 99.99 arbitrarily
