@@ -5,14 +5,14 @@
 -- age is set up to 99.99 arbitrarily
 -- created_by and last_modified_by are set up to 999
 -- created_date and last_modified_date are set up to now
---
+-- ERAC id is set up to 1007, which is the value in the chorganisation table
 
 
 DO $$ 
-DECLARE var_ver integer := 4;
+DECLARE var_ver integer := 0;
 DECLARE var_date_rsa date := '01/10/2019';
 DECLARE var_date_motability date := '01/10/2019';
-DECLARE var_date_tesco date := '23/01/2019';
+DECLARE var_date_tesco date := '23/01/2020';
 DECLARE var_date_ers date := '16/11/2019';
 DECLARE var_erac integer;  --1007
 DECLARE var_rsa integer; --3
@@ -489,3672 +489,3658 @@ SELECT id from vehicle_class where name = 'SP9' INTO var_SP9;
 SELECT id from vehicle_class where name = 'SP9A' INTO var_SP9A;
 SELECT id from vehicle_class where name = 'SP9EST' INTO var_SP9EST;
 SELECT id from vehicle_class where name = 'SP9ESTA' INTO var_SP9ESTA;
-
 -- end generated
 
---RAISE NOTICE 'erac %', var_erac;
---RAISE NOTICE 'ers %', var_ers;
---RAISE NOTICE 'f1esta %', var_f1esta;
-
-
---INSERT INTO vehicle_class_price_special_rate ( 
---	   version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
---	   created_by, created_date, last_modified_by, last_modified_date, age )
---VALUES ( var_ver, var_f1esta, var_ers, var_erac, 53.49, var_date_ers, 999, now(), 999, now(), 99.99 );
-
 -- generated from data source
-
--- ers rates
--- rates
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP1, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP1, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP1, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP1, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP1A, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP1A, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP1A, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP1A, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP1EST, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP1EST, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP1EST, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP1EST, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP1ESTA, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP1ESTA, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP1ESTA, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP1ESTA, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP2, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP2, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP2, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP2, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP2A, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP2A, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP2A, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP2A, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP2EST, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP2EST, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP2EST, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP2EST, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP2ESTA, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP2ESTA, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP2ESTA, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP2ESTA, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP3, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP3, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP3, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP3, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP3A, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP3A, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP3A, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP3A, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP3EST, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP3EST, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP3EST, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP3EST, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP3ESTA, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP3ESTA, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP3ESTA, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_CP3ESTA, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F1, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F1, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F1, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F1, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F1A, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F1A, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F1A, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F1A, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F1EST, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F1EST, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F1EST, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F1EST, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F1ESTA, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F1ESTA, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F1ESTA, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F1ESTA, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F2, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F2, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F2, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F2, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F2A, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F2A, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F2A, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F2A, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F2EST, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F2EST, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F2EST, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F2EST, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F2ESTA, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F2ESTA, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F2ESTA, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F2ESTA, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F3, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F3, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F3, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F3, var_ers, var_erac, 67.20, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F3A, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F3A, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F3A, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F3A, var_ers, var_erac, 70.32, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F3EST, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F3EST, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F3EST, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F3EST, var_ers, var_erac, 67.20, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F3ESTA, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F3ESTA, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F3ESTA, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F3ESTA, var_ers, var_erac, 70.32, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F4, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F4, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F4, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F4, var_ers, var_erac, 67.20, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F4A, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F4A, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F4A, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F4A, var_ers, var_erac, 70.32, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F4EST, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F4EST, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F4EST, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F4EST, var_ers, var_erac, 67.20, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F4ESTA, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F4ESTA, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F4ESTA, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F4ESTA, var_ers, var_erac, 70.32, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F5, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F5, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F5, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F5, var_ers, var_erac, 67.20, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F5A, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F5A, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F5A, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F5A, var_ers, var_erac, 70.32, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F5EST, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F5EST, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F5EST, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F5EST, var_ers, var_erac, 67.20, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F5ESTA, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F5ESTA, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F5ESTA, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F5ESTA, var_ers, var_erac, 70.32, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F6, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F6, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F6, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F6, var_ers, var_erac, 88.01, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F6A, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F6A, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F6A, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F6A, var_ers, var_erac, 91.13, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F6EST, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F6EST, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F6EST, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F6EST, var_ers, var_erac, 88.01, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F6ESTA, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F6ESTA, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F6ESTA, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F6ESTA, var_ers, var_erac, 91.13, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F7, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F7, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F7, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F7, var_ers, var_erac, 88.01, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F7A, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F7A, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F7A, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F7A, var_ers, var_erac, 91.13, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F7EST, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F7EST, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F7EST, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F7EST, var_ers, var_erac, 88.01, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F7ESTA, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F7ESTA, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F7ESTA, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F7ESTA, var_ers, var_erac, 91.13, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F8, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F8, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F8, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F8, var_ers, var_erac, 88.01, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F8A, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F8A, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F8A, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F8A, var_ers, var_erac, 91.13, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F8EST, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F8EST, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F8EST, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F8EST, var_ers, var_erac, 88.01, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F8ESTA, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F8ESTA, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F8ESTA, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F8ESTA, var_ers, var_erac, 91.13, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F9, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F9, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F9, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F9, var_ers, var_erac, 88.01, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F9A, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F9A, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F9A, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F9A, var_ers, var_erac, 91.13, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F9EST, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F9EST, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F9EST, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F9EST, var_ers, var_erac, 88.01, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F9ESTA, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F9ESTA, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F9ESTA, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_F9ESTA, var_ers, var_erac, 91.13, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M, var_tesco, var_erac, 33.47, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M1, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M1, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M1, var_tesco, var_erac, 33.47, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M1, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M1A, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M1A, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M1A, var_tesco, var_erac, 38.12, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M1A, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M1EST, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M1EST, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M1EST, var_tesco, var_erac, 33.47, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M1EST, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M1ESTA, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M1ESTA, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M1ESTA, var_tesco, var_erac, 38.12, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M1ESTA, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M2, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M2, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M2, var_tesco, var_erac, 33.47, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M2, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M2A, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M2A, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M2A, var_tesco, var_erac, 38.12, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M2A, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M2EST, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M2EST, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M2EST, var_tesco, var_erac, 33.47, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M2EST, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M2ESTA, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M2ESTA, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M2ESTA, var_tesco, var_erac, 38.12, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M2ESTA, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M3, var_rsa, var_erac, 42.42, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M3, var_motability, var_erac, 42.42, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M3, var_tesco, var_erac, 42.4, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M3, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M3A, var_rsa, var_erac, 47.72, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M3A, var_motability, var_erac, 47.72, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M3A, var_tesco, var_erac, 47.05, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M3A, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M3EST, var_rsa, var_erac, 42.42, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M3EST, var_motability, var_erac, 42.42, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M3EST, var_tesco, var_erac, 42.4, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M3EST, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M3ESTA, var_rsa, var_erac, 47.72, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M3ESTA, var_motability, var_erac, 47.72, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M3ESTA, var_tesco, var_erac, 47.05, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M3ESTA, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M4, var_rsa, var_erac, 42.42, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M4, var_motability, var_erac, 42.42, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M4, var_tesco, var_erac, 42.4, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M4, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M4A, var_rsa, var_erac, 47.72, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M4A, var_motability, var_erac, 47.72, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M4A, var_tesco, var_erac, 47.05, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M4A, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M4EST, var_rsa, var_erac, 42.42, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M4EST, var_motability, var_erac, 42.42, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M4EST, var_tesco, var_erac, 42.4, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M4EST, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M4ESTA, var_rsa, var_erac, 47.72, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M4ESTA, var_motability, var_erac, 47.72, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M4ESTA, var_tesco, var_erac, 47.05, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M4ESTA, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M5, var_rsa, var_erac, 42.42, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M5, var_motability, var_erac, 42.42, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M5, var_tesco, var_erac, 42.4, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M5, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M5A, var_rsa, var_erac, 47.72, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M5A, var_motability, var_erac, 47.72, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M5A, var_tesco, var_erac, 47.05, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M5A, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M5EST, var_rsa, var_erac, 42.42, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M5EST, var_motability, var_erac, 42.42, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M5EST, var_tesco, var_erac, 42.4, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M5EST, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M5ESTA, var_rsa, var_erac, 47.72, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M5ESTA, var_motability, var_erac, 47.72, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M5ESTA, var_tesco, var_erac, 47.05, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M5ESTA, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M6, var_rsa, var_erac, 42.42, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M6, var_motability, var_erac, 42.42, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M6, var_tesco, var_erac, 42.4, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M6, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M6A, var_rsa, var_erac, 47.72, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M6A, var_motability, var_erac, 47.72, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M6A, var_tesco, var_erac, 47.05, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M6A, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M6EST, var_rsa, var_erac, 42.42, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M6EST, var_motability, var_erac, 42.42, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M6EST, var_tesco, var_erac, 42.4, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M6EST, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M6ESTA, var_rsa, var_erac, 47.72, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M6ESTA, var_motability, var_erac, 47.72, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M6ESTA, var_tesco, var_erac, 47.05, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_M6ESTA, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_MA, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_MA, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_MA, var_tesco, var_erac, 33.47, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_MA, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_MEST, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_MEST, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_MEST, var_tesco, var_erac, 33.47, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_MEST, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_MESTA, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_MESTA, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_MESTA, var_tesco, var_erac, 33.47, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_MESTA, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P1, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P1, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P1, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P1, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P10, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P10, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P10, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P10, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P10A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P10A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P10A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P10A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P10EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P10EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P10EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P10EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P10ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P10ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P10ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P10ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P11, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P11, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P11, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P11, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P11A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P11A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P11A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P11A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P11EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P11EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P11EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P11EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P11ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P11ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P11ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P11ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P12, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P12, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P12, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P12, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P12A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P12A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P12A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P12A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P12EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P12EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P12EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P12EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P12ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P12ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P12ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P12ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P13, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P13, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P13, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P13, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P13A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P13A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P13A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P13A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P13EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P13EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P13EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P13EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P13ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P13ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P13ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P13ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P1A, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P1A, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P1A, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P1A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P1EST, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P1EST, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P1EST, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P1EST, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P1ESTA, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P1ESTA, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P1ESTA, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P1ESTA, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P2, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P2, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P2, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P2, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P2A, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P2A, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P2A, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P2A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P2EST, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P2EST, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P2EST, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P2EST, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P2ESTA, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P2ESTA, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P2ESTA, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P2ESTA, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P3, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P3, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P3, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P3, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P3A, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P3A, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P3A, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P3A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P3EST, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P3EST, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P3EST, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P3EST, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P3ESTA, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P3ESTA, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P3ESTA, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P3ESTA, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P4, var_rsa, var_erac, 63.63, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P4, var_motability, var_erac, 63.63, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P4, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P4, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P4A, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P4A, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P4A, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P4A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P4EST, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P4EST, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P4EST, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P4EST, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P4ESTA, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P4ESTA, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P4ESTA, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P4ESTA, var_ers, var_erac, 62.41, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P5, var_rsa, var_erac, 63.63, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P5, var_motability, var_erac, 63.63, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P5, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P5, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P5A, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P5A, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P5A, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P5A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P5EST, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P5EST, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P5EST, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P5EST, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P5ESTA, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P5ESTA, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P5ESTA, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P5ESTA, var_ers, var_erac, 62.41, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P6, var_rsa, var_erac, 74.24, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P6, var_motability, var_erac, 74.24, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P6, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P6, var_ers, var_erac, 70.22, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P6A, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P6A, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P6A, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P6A, var_ers, var_erac, 73.34, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P6EST, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P6EST, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P6EST, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P6EST, var_ers, var_erac, 73.34, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P6ESTA, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P6ESTA, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P6ESTA, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P6ESTA, var_ers, var_erac, 76.46, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P7, var_rsa, var_erac, 74.24, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P7, var_motability, var_erac, 74.24, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P7, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P7, var_ers, var_erac, 70.22, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P7A, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P7A, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P7A, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P7A, var_ers, var_erac, 73.34, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P7EST, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P7EST, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P7EST, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P7EST, var_ers, var_erac, 73.34, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P7ESTA, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P7ESTA, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P7ESTA, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P7ESTA, var_ers, var_erac, 76.46, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P8, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P8, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P8, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P8, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P8A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P8A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P8A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P8A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P8EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P8EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P8EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P8EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P8ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P8ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P8ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P8ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P9, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P9, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P9, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P9, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P9A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P9A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P9A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P9A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P9EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P9EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P9EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P9EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P9ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P9ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P9ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_P9ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV1, var_rsa, var_erac, 21.2, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV1, var_motability, var_erac, 21.2, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV1, var_tesco, var_erac, 16.34, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV1, var_ers, var_erac, 19.76, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV1A, var_rsa, var_erac, 21.2, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV1A, var_motability, var_erac, 21.2, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV1A, var_tesco, var_erac, 16.34, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV1A, var_ers, var_erac, 22.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV1EST, var_rsa, var_erac, 21.2, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV1EST, var_motability, var_erac, 21.2, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV1EST, var_tesco, var_erac, 16.34, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV1EST, var_ers, var_erac, 19.76, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV1ESTA, var_rsa, var_erac, 21.2, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV1ESTA, var_motability, var_erac, 21.2, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV1ESTA, var_tesco, var_erac, 16.34, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV1ESTA, var_ers, var_erac, 22.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV2, var_rsa, var_erac, 26.5, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV2, var_motability, var_erac, 26.5, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV2, var_tesco, var_erac, 23.42, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV2, var_ers, var_erac, 22.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV2A, var_rsa, var_erac, 26.5, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV2A, var_motability, var_erac, 26.5, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV2A, var_tesco, var_erac, 23.42, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV2A, var_ers, var_erac, 26.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV2EST, var_rsa, var_erac, 26.5, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV2EST, var_motability, var_erac, 26.5, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV2EST, var_tesco, var_erac, 23.42, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV2EST, var_ers, var_erac, 22.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV2ESTA, var_rsa, var_erac, 26.5, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV2ESTA, var_motability, var_erac, 26.5, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV2ESTA, var_tesco, var_erac, 23.42, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV2ESTA, var_ers, var_erac, 26.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV3, var_rsa, var_erac, 37.11, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV3, var_motability, var_erac, 37.11, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV3, var_tesco, var_erac, 29.6, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV3, var_ers, var_erac, 28.08, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV3A, var_rsa, var_erac, 37.11, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV3A, var_motability, var_erac, 37.11, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV3A, var_tesco, var_erac, 29.6, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV3A, var_ers, var_erac, 31.20, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV3EST, var_rsa, var_erac, 37.11, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV3EST, var_motability, var_erac, 37.11, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV3EST, var_tesco, var_erac, 29.6, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV3EST, var_ers, var_erac, 28.08, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV3ESTA, var_rsa, var_erac, 37.11, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV3ESTA, var_motability, var_erac, 37.11, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV3ESTA, var_tesco, var_erac, 29.6, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV3ESTA, var_ers, var_erac, 31.20, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV4, var_rsa, var_erac, 37.11, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV4, var_motability, var_erac, 37.11, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV4, var_tesco, var_erac, 29.6, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV4, var_ers, var_erac, 28.08, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV4A, var_rsa, var_erac, 37.11, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV4A, var_motability, var_erac, 37.11, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV4A, var_tesco, var_erac, 29.6, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV4A, var_ers, var_erac, 31.20, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV4EST, var_rsa, var_erac, 37.11, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV4EST, var_motability, var_erac, 37.11, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV4EST, var_tesco, var_erac, 29.6, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV4EST, var_ers, var_erac, 28.08, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV4ESTA, var_rsa, var_erac, 37.11, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV4ESTA, var_motability, var_erac, 37.11, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV4ESTA, var_tesco, var_erac, 29.6, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV4ESTA, var_ers, var_erac, 31.20, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV5, var_rsa, var_erac, 40.82, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV5, var_motability, var_erac, 40.82, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV5, var_tesco, var_erac, 36.11, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV5, var_ers, var_erac, 40.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV5A, var_rsa, var_erac, 40.82, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV5A, var_motability, var_erac, 40.82, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV5A, var_tesco, var_erac, 36.11, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV5A, var_ers, var_erac, 43.41, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV5EST, var_rsa, var_erac, 40.82, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV5EST, var_motability, var_erac, 40.82, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV5EST, var_tesco, var_erac, 36.11, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV5EST, var_ers, var_erac, 40.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV5ESTA, var_rsa, var_erac, 40.82, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV5ESTA, var_motability, var_erac, 40.82, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV5ESTA, var_tesco, var_erac, 36.11, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV5ESTA, var_ers, var_erac, 43.41, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV6, var_rsa, var_erac, 40.82, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV6, var_motability, var_erac, 40.82, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV6, var_tesco, var_erac, 36.11, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV6, var_ers, var_erac, 40.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV6A, var_rsa, var_erac, 40.82, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV6A, var_motability, var_erac, 40.82, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV6A, var_tesco, var_erac, 36.11, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV6A, var_ers, var_erac, 43.41, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV6EST, var_rsa, var_erac, 40.82, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV6EST, var_motability, var_erac, 40.82, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV6EST, var_tesco, var_erac, 36.11, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV6EST, var_ers, var_erac, 40.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV6ESTA, var_rsa, var_erac, 40.82, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV6ESTA, var_motability, var_erac, 40.82, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV6ESTA, var_tesco, var_erac, 36.11, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_PV6ESTA, var_ers, var_erac, 43.41, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S1, var_rsa, var_erac, 14.85, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S1, var_motability, var_erac, 14.85, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S1, var_tesco, var_erac, 13.21, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S1, var_ers, var_erac, 13.52, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S1A, var_rsa, var_erac, 20.16, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S1A, var_motability, var_erac, 20.16, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S1A, var_tesco, var_erac, 13.21, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S1A, var_ers, var_erac, 16.64, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S2, var_rsa, var_erac, 15.91, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S2, var_motability, var_erac, 15.91, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S2, var_tesco, var_erac, 14.57, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S2, var_ers, var_erac, 14.35, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S2A, var_rsa, var_erac, 21.22, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S2A, var_motability, var_erac, 21.22, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S2A, var_tesco, var_erac, 18.99, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S2A, var_ers, var_erac, 17.47, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S3, var_rsa, var_erac, 19.35, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S3, var_motability, var_erac, 19.35, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S3, var_tesco, var_erac, 16.34, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S3, var_ers, var_erac, 17.68, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S3A, var_rsa, var_erac, 24.66, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S3A, var_motability, var_erac, 24.66, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S3A, var_tesco, var_erac, 20.76, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S3A, var_ers, var_erac, 20.80, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S3EST, var_rsa, var_erac, 24.66, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S3EST, var_motability, var_erac, 24.66, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S3EST, var_tesco, var_erac, 16.34, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S3EST, var_ers, var_erac, 20.80, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S3ESTA, var_rsa, var_erac, 24.66, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S3ESTA, var_motability, var_erac, 24.66, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S3ESTA, var_tesco, var_erac, 20.76, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S3ESTA, var_ers, var_erac, 23.92, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S4, var_rsa, var_erac, 20.68, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S4, var_motability, var_erac, 20.68, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S4, var_tesco, var_erac, 18.83, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S4, var_ers, var_erac, 19.17, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S4A, var_rsa, var_erac, 25.99, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S4A, var_motability, var_erac, 25.99, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S4A, var_tesco, var_erac, 22.31, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S4A, var_ers, var_erac, 22.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S4EST, var_rsa, var_erac, 25.99, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S4EST, var_motability, var_erac, 25.99, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S4EST, var_tesco, var_erac, 22.31, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S4EST, var_ers, var_erac, 22.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S4ESTA, var_rsa, var_erac, 25.99, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S4ESTA, var_motability, var_erac, 25.99, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S4ESTA, var_tesco, var_erac, 22.31, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S4ESTA, var_ers, var_erac, 25.41, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S5, var_rsa, var_erac, 23.87, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S5, var_motability, var_erac, 23.87, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S5, var_tesco, var_erac, 21.86, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S5, var_ers, var_erac, 24.46, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S5A, var_rsa, var_erac, 29.17, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S5A, var_motability, var_erac, 29.17, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S5A, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S5A, var_ers, var_erac, 27.58, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S5EST, var_rsa, var_erac, 29.17, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S5EST, var_motability, var_erac, 29.17, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S5EST, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S5EST, var_ers, var_erac, 27.58, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S5ESTA, var_rsa, var_erac, 29.17, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S5ESTA, var_motability, var_erac, 29.17, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S5ESTA, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S5ESTA, var_ers, var_erac, 30.70, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S6, var_rsa, var_erac, 27.56, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S6, var_motability, var_erac, 27.56, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S6, var_tesco, var_erac, 26.42, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S6, var_ers, var_erac, 27.04, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S6A, var_rsa, var_erac, 32.87, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S6A, var_motability, var_erac, 32.87, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S6A, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S6A, var_ers, var_erac, 30.16, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S6EST, var_rsa, var_erac, 32.87, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S6EST, var_motability, var_erac, 32.87, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S6EST, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S6EST, var_ers, var_erac, 30.16, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S6ESTA, var_rsa, var_erac, 32.87, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S6ESTA, var_motability, var_erac, 32.87, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S6ESTA, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S6ESTA, var_ers, var_erac, 33.28, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S7, var_rsa, var_erac, 27.56, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S7, var_motability, var_erac, 27.56, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S7, var_tesco, var_erac, 26.42, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S7, var_ers, var_erac, 27.04, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S7A, var_rsa, var_erac, 32.87, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S7A, var_motability, var_erac, 32.87, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S7A, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S7A, var_ers, var_erac, 30.16, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S7EST, var_rsa, var_erac, 32.87, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S7EST, var_motability, var_erac, 32.87, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S7EST, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S7EST, var_ers, var_erac, 30.16, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S7ESTA, var_rsa, var_erac, 32.87, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S7ESTA, var_motability, var_erac, 32.87, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S7ESTA, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_S7ESTA, var_ers, var_erac, 33.28, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP1, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP1, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP1, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP1, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP10, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP10, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP10, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP10, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP10A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP10A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP10A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP10A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP10EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP10EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP10EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP10EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP10ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP10ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP10ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP10ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP11, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP11, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP11, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP11, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP11A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP11A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP11A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP11A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP11EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP11EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP11EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP11EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP11ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP11ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP11ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP11ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP12, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP12, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP12, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP12, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP12A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP12A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP12A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP12A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP12EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP12EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP12EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP12EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP12ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP12ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP12ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP12ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP13, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP13, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP13, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP13, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP13A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP13A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP13A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP13A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP13EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP13EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP13EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP13EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP13ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP13ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP13ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP13ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP1A, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP1A, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP1A, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP1A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP1EST, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP1EST, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP1EST, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP1EST, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP1ESTA, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP1ESTA, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP1ESTA, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP1ESTA, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP2, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP2, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP2, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP2, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP2A, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP2A, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP2A, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP2A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP2EST, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP2EST, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP2EST, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP2EST, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP2ESTA, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP2ESTA, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP2ESTA, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP2ESTA, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP3, var_rsa, var_erac, 63.63, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP3, var_motability, var_erac, 63.63, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP3, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP3, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP3A, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP3A, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP3A, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP3A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP3EST, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP3EST, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP3EST, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP3EST, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP3ESTA, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP3ESTA, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP3ESTA, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP3ESTA, var_ers, var_erac, 62.41, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP4, var_rsa, var_erac, 63.63, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP4, var_motability, var_erac, 63.63, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP4, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP4, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP4A, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP4A, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP4A, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP4A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP4EST, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP4EST, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP4EST, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP4EST, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP4ESTA, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP4ESTA, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP4ESTA, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP4ESTA, var_ers, var_erac, 62.41, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP5, var_rsa, var_erac, 74.24, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP5, var_motability, var_erac, 74.24, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP5, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP5, var_ers, var_erac, 70.22, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP5A, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP5A, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP5A, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP5A, var_ers, var_erac, 73.34, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP5EST, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP5EST, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP5EST, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP5EST, var_ers, var_erac, 73.34, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP5ESTA, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP5ESTA, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP5ESTA, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP5ESTA, var_ers, var_erac, 76.46, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP6, var_rsa, var_erac, 74.24, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP6, var_motability, var_erac, 74.24, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP6, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP6, var_ers, var_erac, 70.22, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP6A, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP6A, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP6A, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP6A, var_ers, var_erac, 73.34, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP6EST, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP6EST, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP6EST, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP6EST, var_ers, var_erac, 73.34, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP6ESTA, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP6ESTA, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP6ESTA, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP6ESTA, var_ers, var_erac, 76.46, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP7, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP7, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP7, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP7, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP7A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP7A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP7A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP7A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP7EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP7EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP7EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP7EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP7ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP7ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP7ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP7ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP8, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP8, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP8, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP8, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP8A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP8A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP8A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP8A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP8EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP8EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP8EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP8EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP8ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP8ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP8ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP8ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP9, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP9, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP9, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP9, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP9A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP9A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP9A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP9A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP9EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP9EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP9EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP9EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP9ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP9ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP9ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.99 );
-
-INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date,
-created_by, created_date, last_modified_by, last_modified_date, age )
-VALUES ( var_ver, var_SP9ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.99 );
-
-
+-- erac rates
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP1, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP1 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP1, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP1 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP1, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP1 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP1, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP1 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP1A, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP1A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP1A, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP1A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP1A, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP1A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP1A, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP1A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP1EST, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP1EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP1EST, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP1EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP1EST, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP1EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP1EST, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP1EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP1ESTA, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP1ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP1ESTA, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP1ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP1ESTA, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP1ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP1ESTA, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP1ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP2, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP2 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP2, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP2 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP2, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP2 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP2, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP2 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP2A, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP2A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP2A, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP2A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP2A, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP2A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP2A, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP2A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP2EST, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP2EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP2EST, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP2EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP2EST, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP2EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP2EST, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP2EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP2ESTA, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP2ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP2ESTA, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP2ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP2ESTA, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP2ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP2ESTA, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP2ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP3, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP3 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP3, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP3 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP3, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP3 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP3, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP3 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP3A, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP3A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP3A, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP3A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP3A, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP3A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP3A, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP3A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP3EST, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP3EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP3EST, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP3EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP3EST, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP3EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP3EST, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP3EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP3ESTA, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP3ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_CP3ESTA, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP3ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP3ESTA, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP3ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_CP3ESTA, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_CP3ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F1, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F1 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F1, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F1 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F1, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F1 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F1, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F1 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F1A, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F1A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F1A, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F1A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F1A, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F1A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F1A, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F1A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F1EST, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F1EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F1EST, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F1EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F1EST, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F1EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F1EST, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F1EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F1ESTA, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F1ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F1ESTA, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F1ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F1ESTA, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F1ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F1ESTA, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F1ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F2, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F2 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F2, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F2 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F2, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F2 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F2, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F2 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F2A, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F2A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F2A, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F2A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F2A, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F2A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F2A, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F2A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F2EST, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F2EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F2EST, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F2EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F2EST, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F2EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F2EST, var_ers, var_erac, 53.48, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F2EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F2ESTA, var_rsa, var_erac, 48.78, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F2ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F2ESTA, var_motability, var_erac, 48.78, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F2ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F2ESTA, var_tesco, var_erac, 58.58, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F2ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F2ESTA, var_ers, var_erac, 56.60, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F2ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F3, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F3 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F3, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F3 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F3, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F3 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F3, var_ers, var_erac, 67.20, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F3 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F3A, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F3A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F3A, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F3A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F3A, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F3A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F3A, var_ers, var_erac, 70.32, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F3A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F3EST, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F3EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F3EST, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F3EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F3EST, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F3EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F3EST, var_ers, var_erac, 67.20, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F3EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F3ESTA, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F3ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F3ESTA, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F3ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F3ESTA, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F3ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F3ESTA, var_ers, var_erac, 70.32, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F3ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F4, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F4 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F4, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F4 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F4, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F4 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F4, var_ers, var_erac, 67.20, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F4 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F4A, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F4A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F4A, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F4A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F4A, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F4A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F4A, var_ers, var_erac, 70.32, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F4A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F4EST, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F4EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F4EST, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F4EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F4EST, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F4EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F4EST, var_ers, var_erac, 67.20, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F4EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F4ESTA, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F4ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F4ESTA, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F4ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F4ESTA, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F4ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F4ESTA, var_ers, var_erac, 70.32, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F4ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F5, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F5 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F5, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F5 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F5, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F5 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F5, var_ers, var_erac, 67.20, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F5 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F5A, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F5A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F5A, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F5A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F5A, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F5A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F5A, var_ers, var_erac, 70.32, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F5A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F5EST, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F5EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F5EST, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F5EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F5EST, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F5EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F5EST, var_ers, var_erac, 67.20, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F5EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F5ESTA, var_rsa, var_erac, 59.39, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F5ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F5ESTA, var_motability, var_erac, 59.39, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F5ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F5ESTA, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F5ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F5ESTA, var_ers, var_erac, 70.32, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F5ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F6, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F6 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F6, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F6 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F6, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F6 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F6, var_ers, var_erac, 88.01, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F6 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F6A, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F6A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F6A, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F6A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F6A, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F6A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F6A, var_ers, var_erac, 91.13, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F6A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F6EST, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F6EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F6EST, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F6EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F6EST, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F6EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F6EST, var_ers, var_erac, 88.01, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F6EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F6ESTA, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F6ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F6ESTA, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F6ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F6ESTA, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F6ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F6ESTA, var_ers, var_erac, 91.13, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F6ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F7, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F7 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F7, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F7 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F7, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F7 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F7, var_ers, var_erac, 88.01, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F7 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F7A, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F7A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F7A, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F7A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F7A, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F7A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F7A, var_ers, var_erac, 91.13, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F7A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F7EST, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F7EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F7EST, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F7EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F7EST, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F7EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F7EST, var_ers, var_erac, 88.01, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F7EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F7ESTA, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F7ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F7ESTA, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F7ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F7ESTA, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F7ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F7ESTA, var_ers, var_erac, 91.13, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F7ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F8, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F8 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F8, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F8 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F8, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F8 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F8, var_ers, var_erac, 88.01, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F8 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F8A, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F8A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F8A, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F8A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F8A, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F8A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F8A, var_ers, var_erac, 91.13, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F8A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F8EST, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F8EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F8EST, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F8EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F8EST, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F8EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F8EST, var_ers, var_erac, 88.01, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F8EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F8ESTA, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F8ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F8ESTA, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F8ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F8ESTA, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F8ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F8ESTA, var_ers, var_erac, 91.13, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F8ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F9, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F9 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F9, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F9 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F9, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F9 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F9, var_ers, var_erac, 88.01, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F9 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F9A, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F9A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F9A, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F9A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F9A, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F9A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F9A, var_ers, var_erac, 91.13, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F9A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F9EST, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F9EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F9EST, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F9EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F9EST, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F9EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F9EST, var_ers, var_erac, 88.01, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F9EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F9ESTA, var_rsa, var_erac, 95.46, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F9ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_F9ESTA, var_motability, var_erac, 95.46, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F9ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F9ESTA, var_tesco, var_erac, 83.69, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F9ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_F9ESTA, var_ers, var_erac, 91.13, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_F9ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M, var_tesco, var_erac, 33.47, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M1, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M1 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M1, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M1 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M1, var_tesco, var_erac, 33.47, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M1 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M1, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M1 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M1A, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M1A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M1A, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M1A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M1A, var_tesco, var_erac, 38.12, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M1A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M1A, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M1A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M1EST, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M1EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M1EST, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M1EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M1EST, var_tesco, var_erac, 33.47, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M1EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M1EST, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M1EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M1ESTA, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M1ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M1ESTA, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M1ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M1ESTA, var_tesco, var_erac, 38.12, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M1ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M1ESTA, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M1ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M2, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M2 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M2, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M2 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M2, var_tesco, var_erac, 33.47, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M2 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M2, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M2 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M2A, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M2A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M2A, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M2A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M2A, var_tesco, var_erac, 38.12, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M2A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M2A, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M2A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M2EST, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M2EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M2EST, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M2EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M2EST, var_tesco, var_erac, 33.47, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M2EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M2EST, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M2EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M2ESTA, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M2ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M2ESTA, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M2ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M2ESTA, var_tesco, var_erac, 38.12, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M2ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M2ESTA, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M2ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M3, var_rsa, var_erac, 42.42, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M3 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M3, var_motability, var_erac, 42.42, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M3 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M3, var_tesco, var_erac, 42.4, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M3 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M3, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M3 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M3A, var_rsa, var_erac, 47.72, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M3A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M3A, var_motability, var_erac, 47.72, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M3A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M3A, var_tesco, var_erac, 47.05, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M3A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M3A, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M3A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M3EST, var_rsa, var_erac, 42.42, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M3EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M3EST, var_motability, var_erac, 42.42, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M3EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M3EST, var_tesco, var_erac, 42.4, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M3EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M3EST, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M3EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M3ESTA, var_rsa, var_erac, 47.72, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M3ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M3ESTA, var_motability, var_erac, 47.72, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M3ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M3ESTA, var_tesco, var_erac, 47.05, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M3ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M3ESTA, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M3ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M4, var_rsa, var_erac, 42.42, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M4 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M4, var_motability, var_erac, 42.42, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M4 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M4, var_tesco, var_erac, 42.4, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M4 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M4, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M4 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M4A, var_rsa, var_erac, 47.72, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M4A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M4A, var_motability, var_erac, 47.72, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M4A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M4A, var_tesco, var_erac, 47.05, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M4A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M4A, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M4A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M4EST, var_rsa, var_erac, 42.42, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M4EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M4EST, var_motability, var_erac, 42.42, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M4EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M4EST, var_tesco, var_erac, 42.4, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M4EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M4EST, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M4EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M4ESTA, var_rsa, var_erac, 47.72, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M4ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M4ESTA, var_motability, var_erac, 47.72, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M4ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M4ESTA, var_tesco, var_erac, 47.05, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M4ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M4ESTA, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M4ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M5, var_rsa, var_erac, 42.42, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M5 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M5, var_motability, var_erac, 42.42, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M5 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M5, var_tesco, var_erac, 42.4, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M5 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M5, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M5 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M5A, var_rsa, var_erac, 47.72, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M5A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M5A, var_motability, var_erac, 47.72, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M5A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M5A, var_tesco, var_erac, 47.05, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M5A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M5A, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M5A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M5EST, var_rsa, var_erac, 42.42, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M5EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M5EST, var_motability, var_erac, 42.42, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M5EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M5EST, var_tesco, var_erac, 42.4, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M5EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M5EST, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M5EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M5ESTA, var_rsa, var_erac, 47.72, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M5ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M5ESTA, var_motability, var_erac, 47.72, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M5ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M5ESTA, var_tesco, var_erac, 47.05, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M5ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M5ESTA, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M5ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M6, var_rsa, var_erac, 42.42, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M6 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M6, var_motability, var_erac, 42.42, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M6 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M6, var_tesco, var_erac, 42.4, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M6 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M6, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M6 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M6A, var_rsa, var_erac, 47.72, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M6A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M6A, var_motability, var_erac, 47.72, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M6A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M6A, var_tesco, var_erac, 47.05, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M6A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M6A, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M6A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M6EST, var_rsa, var_erac, 42.42, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M6EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M6EST, var_motability, var_erac, 42.42, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M6EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M6EST, var_tesco, var_erac, 42.4, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M6EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M6EST, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M6EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M6ESTA, var_rsa, var_erac, 47.72, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M6ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_M6ESTA, var_motability, var_erac, 47.72, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M6ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M6ESTA, var_tesco, var_erac, 47.05, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M6ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_M6ESTA, var_ers, var_erac, 43.69, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_M6ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_MA, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_MA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_MA, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_MA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_MA, var_tesco, var_erac, 33.47, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_MA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_MA, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_MA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_MEST, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_MEST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_MEST, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_MEST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_MEST, var_tesco, var_erac, 33.47, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_MEST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_MEST, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_MEST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_MESTA, var_rsa, var_erac, 29.68, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_MESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_MESTA, var_motability, var_erac, 29.68, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_MESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_MESTA, var_tesco, var_erac, 33.47, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_MESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_MESTA, var_ers, var_erac, 40.57, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_MESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P1, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P1 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P1, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P1 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P1, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P1 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P1, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P1 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P10, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P10 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P10, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P10 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P10, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P10 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P10, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P10 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P10A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P10A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P10A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P10A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P10A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P10A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P10A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P10A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P10EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P10EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P10EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P10EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P10EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P10EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P10EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P10EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P10ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P10ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P10ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P10ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P10ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P10ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P10ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P10ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P11, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P11 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P11, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P11 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P11, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P11 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P11, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P11 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P11A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P11A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P11A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P11A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P11A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P11A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P11A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P11A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P11EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P11EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P11EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P11EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P11EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P11EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P11EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P11EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P11ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P11ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P11ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P11ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P11ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P11ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P11ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P11ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P12, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P12 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P12, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P12 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P12, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P12 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P12, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P12 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P12A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P12A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P12A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P12A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P12A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P12A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P12A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P12A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P12EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P12EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P12EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P12EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P12EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P12EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P12EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P12EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P12ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P12ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P12ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P12ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P12ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P12ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P12ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P12ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P13, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P13 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P13, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P13 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P13, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P13 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P13, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P13 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P13A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P13A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P13A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P13A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P13A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P13A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P13A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P13A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P13EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P13EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P13EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P13EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P13EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P13EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P13EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P13EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P13ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P13ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P13ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P13ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P13ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P13ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P13ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P13ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P1A, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P1A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P1A, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P1A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P1A, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P1A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P1A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P1A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P1EST, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P1EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P1EST, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P1EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P1EST, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P1EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P1EST, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P1EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P1ESTA, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P1ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P1ESTA, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P1ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P1ESTA, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P1ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P1ESTA, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P1ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P2, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P2 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P2, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P2 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P2, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P2 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P2, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P2 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P2A, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P2A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P2A, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P2A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P2A, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P2A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P2A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P2A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P2EST, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P2EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P2EST, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P2EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P2EST, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P2EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P2EST, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P2EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P2ESTA, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P2ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P2ESTA, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P2ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P2ESTA, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P2ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P2ESTA, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P2ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P3, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P3 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P3, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P3 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P3, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P3 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P3, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P3 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P3A, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P3A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P3A, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P3A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P3A, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P3A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P3A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P3A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P3EST, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P3EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P3EST, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P3EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P3EST, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P3EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P3EST, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P3EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P3ESTA, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P3ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P3ESTA, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P3ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P3ESTA, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P3ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P3ESTA, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P3ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P4, var_rsa, var_erac, 63.63, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P4 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P4, var_motability, var_erac, 63.63, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P4 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P4, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P4 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P4, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P4 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P4A, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P4A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P4A, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P4A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P4A, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P4A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P4A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P4A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P4EST, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P4EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P4EST, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P4EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P4EST, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P4EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P4EST, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P4EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P4ESTA, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P4ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P4ESTA, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P4ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P4ESTA, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P4ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P4ESTA, var_ers, var_erac, 62.41, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P4ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P5, var_rsa, var_erac, 63.63, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P5 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P5, var_motability, var_erac, 63.63, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P5 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P5, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P5 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P5, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P5 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P5A, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P5A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P5A, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P5A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P5A, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P5A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P5A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P5A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P5EST, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P5EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P5EST, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P5EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P5EST, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P5EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P5EST, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P5EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P5ESTA, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P5ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P5ESTA, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P5ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P5ESTA, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P5ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P5ESTA, var_ers, var_erac, 62.41, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P5ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P6, var_rsa, var_erac, 74.24, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P6 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P6, var_motability, var_erac, 74.24, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P6 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P6, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P6 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P6, var_ers, var_erac, 70.22, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P6 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P6A, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P6A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P6A, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P6A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P6A, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P6A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P6A, var_ers, var_erac, 73.34, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P6A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P6EST, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P6EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P6EST, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P6EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P6EST, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P6EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P6EST, var_ers, var_erac, 73.34, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P6EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P6ESTA, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P6ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P6ESTA, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P6ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P6ESTA, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P6ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P6ESTA, var_ers, var_erac, 76.46, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P6ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P7, var_rsa, var_erac, 74.24, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P7 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P7, var_motability, var_erac, 74.24, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P7 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P7, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P7 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P7, var_ers, var_erac, 70.22, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P7 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P7A, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P7A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P7A, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P7A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P7A, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P7A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P7A, var_ers, var_erac, 73.34, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P7A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P7EST, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P7EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P7EST, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P7EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P7EST, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P7EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P7EST, var_ers, var_erac, 73.34, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P7EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P7ESTA, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P7ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P7ESTA, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P7ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P7ESTA, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P7ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P7ESTA, var_ers, var_erac, 76.46, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P7ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P8, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P8 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P8, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P8 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P8, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P8 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P8, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P8 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P8A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P8A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P8A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P8A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P8A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P8A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P8A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P8A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P8EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P8EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P8EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P8EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P8EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P8EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P8EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P8EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P8ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P8ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P8ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P8ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P8ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P8ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P8ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P8ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P9, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P9 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P9, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P9 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P9, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P9 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P9, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P9 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P9A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P9A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P9A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P9A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P9A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P9A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P9A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P9A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P9EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P9EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P9EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P9EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P9EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P9EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P9EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P9EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P9ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P9ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_P9ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P9ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P9ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P9ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_P9ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_P9ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV1, var_rsa, var_erac, 21.2, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV1 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV1, var_motability, var_erac, 21.2, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV1 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV1, var_tesco, var_erac, 16.34, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV1 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV1, var_ers, var_erac, 19.76, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV1 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV1A, var_rsa, var_erac, 21.2, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV1A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV1A, var_motability, var_erac, 21.2, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV1A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV1A, var_tesco, var_erac, 16.34, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV1A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV1A, var_ers, var_erac, 22.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV1A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV1EST, var_rsa, var_erac, 21.2, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV1EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV1EST, var_motability, var_erac, 21.2, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV1EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV1EST, var_tesco, var_erac, 16.34, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV1EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV1EST, var_ers, var_erac, 19.76, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV1EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV1ESTA, var_rsa, var_erac, 21.2, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV1ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV1ESTA, var_motability, var_erac, 21.2, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV1ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV1ESTA, var_tesco, var_erac, 16.34, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV1ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV1ESTA, var_ers, var_erac, 22.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV1ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV2, var_rsa, var_erac, 26.5, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV2 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV2, var_motability, var_erac, 26.5, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV2 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV2, var_tesco, var_erac, 23.42, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV2 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV2, var_ers, var_erac, 22.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV2 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV2A, var_rsa, var_erac, 26.5, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV2A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV2A, var_motability, var_erac, 26.5, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV2A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV2A, var_tesco, var_erac, 23.42, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV2A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV2A, var_ers, var_erac, 26.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV2A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV2EST, var_rsa, var_erac, 26.5, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV2EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV2EST, var_motability, var_erac, 26.5, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV2EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV2EST, var_tesco, var_erac, 23.42, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV2EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV2EST, var_ers, var_erac, 22.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV2EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV2ESTA, var_rsa, var_erac, 26.5, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV2ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV2ESTA, var_motability, var_erac, 26.5, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV2ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV2ESTA, var_tesco, var_erac, 23.42, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV2ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV2ESTA, var_ers, var_erac, 26.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV2ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV3, var_rsa, var_erac, 37.11, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV3 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV3, var_motability, var_erac, 37.11, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV3 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV3, var_tesco, var_erac, 29.6, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV3 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV3, var_ers, var_erac, 28.08, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV3 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV3A, var_rsa, var_erac, 37.11, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV3A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV3A, var_motability, var_erac, 37.11, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV3A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV3A, var_tesco, var_erac, 29.6, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV3A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV3A, var_ers, var_erac, 31.20, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV3A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV3EST, var_rsa, var_erac, 37.11, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV3EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV3EST, var_motability, var_erac, 37.11, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV3EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV3EST, var_tesco, var_erac, 29.6, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV3EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV3EST, var_ers, var_erac, 28.08, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV3EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV3ESTA, var_rsa, var_erac, 37.11, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV3ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV3ESTA, var_motability, var_erac, 37.11, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV3ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV3ESTA, var_tesco, var_erac, 29.6, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV3ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV3ESTA, var_ers, var_erac, 31.20, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV3ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV4, var_rsa, var_erac, 37.11, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV4 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV4, var_motability, var_erac, 37.11, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV4 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV4, var_tesco, var_erac, 29.6, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV4 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV4, var_ers, var_erac, 28.08, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV4 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV4A, var_rsa, var_erac, 37.11, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV4A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV4A, var_motability, var_erac, 37.11, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV4A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV4A, var_tesco, var_erac, 29.6, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV4A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV4A, var_ers, var_erac, 31.20, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV4A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV4EST, var_rsa, var_erac, 37.11, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV4EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV4EST, var_motability, var_erac, 37.11, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV4EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV4EST, var_tesco, var_erac, 29.6, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV4EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV4EST, var_ers, var_erac, 28.08, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV4EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV4ESTA, var_rsa, var_erac, 37.11, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV4ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV4ESTA, var_motability, var_erac, 37.11, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV4ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV4ESTA, var_tesco, var_erac, 29.6, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV4ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV4ESTA, var_ers, var_erac, 31.20, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV4ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV5, var_rsa, var_erac, 40.82, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV5 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV5, var_motability, var_erac, 40.82, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV5 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV5, var_tesco, var_erac, 36.11, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV5 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV5, var_ers, var_erac, 40.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV5 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV5A, var_rsa, var_erac, 40.82, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV5A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV5A, var_motability, var_erac, 40.82, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV5A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV5A, var_tesco, var_erac, 36.11, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV5A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV5A, var_ers, var_erac, 43.41, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV5A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV5EST, var_rsa, var_erac, 40.82, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV5EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV5EST, var_motability, var_erac, 40.82, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV5EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV5EST, var_tesco, var_erac, 36.11, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV5EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV5EST, var_ers, var_erac, 40.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV5EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV5ESTA, var_rsa, var_erac, 40.82, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV5ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV5ESTA, var_motability, var_erac, 40.82, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV5ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV5ESTA, var_tesco, var_erac, 36.11, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV5ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV5ESTA, var_ers, var_erac, 43.41, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV5ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV6, var_rsa, var_erac, 40.82, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV6 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV6, var_motability, var_erac, 40.82, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV6 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV6, var_tesco, var_erac, 36.11, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV6 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV6, var_ers, var_erac, 40.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV6 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV6A, var_rsa, var_erac, 40.82, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV6A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV6A, var_motability, var_erac, 40.82, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV6A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV6A, var_tesco, var_erac, 36.11, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV6A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV6A, var_ers, var_erac, 43.41, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV6A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV6EST, var_rsa, var_erac, 40.82, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV6EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV6EST, var_motability, var_erac, 40.82, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV6EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV6EST, var_tesco, var_erac, 36.11, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV6EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV6EST, var_ers, var_erac, 40.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV6EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV6ESTA, var_rsa, var_erac, 40.82, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV6ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_PV6ESTA, var_motability, var_erac, 40.82, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV6ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV6ESTA, var_tesco, var_erac, 36.11, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV6ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_PV6ESTA, var_ers, var_erac, 43.41, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_PV6ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S1, var_rsa, var_erac, 14.85, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S1 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S1, var_motability, var_erac, 14.85, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S1 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S1, var_tesco, var_erac, 13.21, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S1 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S1, var_ers, var_erac, 13.52, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S1 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S1A, var_rsa, var_erac, 20.16, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S1A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S1A, var_motability, var_erac, 20.16, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S1A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S1A, var_tesco, var_erac, 13.21, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S1A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S1A, var_ers, var_erac, 16.64, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S1A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S2, var_rsa, var_erac, 15.91, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S2 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S2, var_motability, var_erac, 15.91, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S2 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S2, var_tesco, var_erac, 14.57, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S2 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S2, var_ers, var_erac, 14.35, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S2 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S2A, var_rsa, var_erac, 21.22, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S2A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S2A, var_motability, var_erac, 21.22, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S2A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S2A, var_tesco, var_erac, 18.99, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S2A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S2A, var_ers, var_erac, 17.47, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S2A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S3, var_rsa, var_erac, 19.35, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S3 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S3, var_motability, var_erac, 19.35, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S3 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S3, var_tesco, var_erac, 16.34, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S3 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S3, var_ers, var_erac, 17.68, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S3 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S3A, var_rsa, var_erac, 24.66, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S3A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S3A, var_motability, var_erac, 24.66, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S3A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S3A, var_tesco, var_erac, 20.76, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S3A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S3A, var_ers, var_erac, 20.80, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S3A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S3EST, var_rsa, var_erac, 24.66, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S3EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S3EST, var_motability, var_erac, 24.66, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S3EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S3EST, var_tesco, var_erac, 16.34, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S3EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S3EST, var_ers, var_erac, 20.80, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S3EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S3ESTA, var_rsa, var_erac, 24.66, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S3ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S3ESTA, var_motability, var_erac, 24.66, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S3ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S3ESTA, var_tesco, var_erac, 20.76, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S3ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S3ESTA, var_ers, var_erac, 23.92, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S3ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S4, var_rsa, var_erac, 20.68, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S4 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S4, var_motability, var_erac, 20.68, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S4 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S4, var_tesco, var_erac, 18.83, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S4 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S4, var_ers, var_erac, 19.17, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S4 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S4A, var_rsa, var_erac, 25.99, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S4A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S4A, var_motability, var_erac, 25.99, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S4A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S4A, var_tesco, var_erac, 22.31, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S4A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S4A, var_ers, var_erac, 22.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S4A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S4EST, var_rsa, var_erac, 25.99, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S4EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S4EST, var_motability, var_erac, 25.99, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S4EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S4EST, var_tesco, var_erac, 22.31, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S4EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S4EST, var_ers, var_erac, 22.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S4EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S4ESTA, var_rsa, var_erac, 25.99, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S4ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S4ESTA, var_motability, var_erac, 25.99, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S4ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S4ESTA, var_tesco, var_erac, 22.31, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S4ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S4ESTA, var_ers, var_erac, 25.41, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S4ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S5, var_rsa, var_erac, 23.87, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S5 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S5, var_motability, var_erac, 23.87, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S5 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S5, var_tesco, var_erac, 21.86, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S5 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S5, var_ers, var_erac, 24.46, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S5 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S5A, var_rsa, var_erac, 29.17, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S5A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S5A, var_motability, var_erac, 29.17, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S5A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S5A, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S5A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S5A, var_ers, var_erac, 27.58, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S5A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S5EST, var_rsa, var_erac, 29.17, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S5EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S5EST, var_motability, var_erac, 29.17, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S5EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S5EST, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S5EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S5EST, var_ers, var_erac, 27.58, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S5EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S5ESTA, var_rsa, var_erac, 29.17, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S5ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S5ESTA, var_motability, var_erac, 29.17, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S5ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S5ESTA, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S5ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S5ESTA, var_ers, var_erac, 30.70, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S5ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S6, var_rsa, var_erac, 27.56, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S6 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S6, var_motability, var_erac, 27.56, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S6 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S6, var_tesco, var_erac, 26.42, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S6 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S6, var_ers, var_erac, 27.04, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S6 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S6A, var_rsa, var_erac, 32.87, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S6A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S6A, var_motability, var_erac, 32.87, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S6A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S6A, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S6A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S6A, var_ers, var_erac, 30.16, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S6A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S6EST, var_rsa, var_erac, 32.87, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S6EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S6EST, var_motability, var_erac, 32.87, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S6EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S6EST, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S6EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S6EST, var_ers, var_erac, 30.16, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S6EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S6ESTA, var_rsa, var_erac, 32.87, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S6ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S6ESTA, var_motability, var_erac, 32.87, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S6ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S6ESTA, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S6ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S6ESTA, var_ers, var_erac, 33.28, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S6ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S7, var_rsa, var_erac, 27.56, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S7 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S7, var_motability, var_erac, 27.56, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S7 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S7, var_tesco, var_erac, 26.42, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S7 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S7, var_ers, var_erac, 27.04, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S7 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S7A, var_rsa, var_erac, 32.87, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S7A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S7A, var_motability, var_erac, 32.87, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S7A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S7A, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S7A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S7A, var_ers, var_erac, 30.16, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S7A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S7EST, var_rsa, var_erac, 32.87, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S7EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S7EST, var_motability, var_erac, 32.87, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S7EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S7EST, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S7EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S7EST, var_ers, var_erac, 30.16, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S7EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S7ESTA, var_rsa, var_erac, 32.87, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S7ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_S7ESTA, var_motability, var_erac, 32.87, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S7ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S7ESTA, var_tesco, var_erac, 30.03, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S7ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_S7ESTA, var_ers, var_erac, 33.28, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_S7ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP1, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP1 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP1, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP1 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP1, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP1 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP1, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP1 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP10, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP10 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP10, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP10 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP10, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP10 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP10, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP10 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP10A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP10A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP10A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP10A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP10A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP10A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP10A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP10A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP10EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP10EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP10EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP10EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP10EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP10EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP10EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP10EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP10ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP10ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP10ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP10ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP10ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP10ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP10ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP10ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP11, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP11 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP11, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP11 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP11, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP11 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP11, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP11 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP11A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP11A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP11A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP11A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP11A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP11A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP11A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP11A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP11EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP11EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP11EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP11EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP11EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP11EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP11EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP11EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP11ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP11ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP11ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP11ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP11ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP11ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP11ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP11ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP12, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP12 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP12, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP12 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP12, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP12 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP12, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP12 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP12A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP12A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP12A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP12A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP12A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP12A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP12A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP12A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP12EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP12EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP12EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP12EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP12EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP12EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP12EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP12EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP12ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP12ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP12ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP12ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP12ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP12ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP12ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP12ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP13, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP13 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP13, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP13 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP13, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP13 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP13, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP13 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP13A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP13A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP13A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP13A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP13A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP13A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP13A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP13A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP13EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP13EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP13EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP13EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP13EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP13EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP13EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP13EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP13ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP13ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP13ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP13ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP13ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP13ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP13ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP13ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP1A, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP1A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP1A, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP1A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP1A, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP1A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP1A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP1A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP1EST, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP1EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP1EST, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP1EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP1EST, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP1EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP1EST, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP1EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP1ESTA, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP1ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP1ESTA, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP1ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP1ESTA, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP1ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP1ESTA, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP1ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP2, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP2 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP2, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP2 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP2, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP2 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP2, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP2 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP2A, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP2A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP2A, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP2A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP2A, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP2A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP2A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP2A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP2EST, var_rsa, var_erac, 54.09, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP2EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP2EST, var_motability, var_erac, 54.09, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP2EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP2EST, var_tesco, var_erac, 34.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP2EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP2EST, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP2EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP2ESTA, var_rsa, var_erac, 58.6, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP2ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP2ESTA, var_motability, var_erac, 58.6, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP2ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP2ESTA, var_tesco, var_erac, 37.53, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP2ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP2ESTA, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP2ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP3, var_rsa, var_erac, 63.63, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP3 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP3, var_motability, var_erac, 63.63, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP3 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP3, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP3 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP3, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP3 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP3A, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP3A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP3A, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP3A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP3A, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP3A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP3A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP3A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP3EST, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP3EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP3EST, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP3EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP3EST, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP3EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP3EST, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP3EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP3ESTA, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP3ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP3ESTA, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP3ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP3ESTA, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP3ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP3ESTA, var_ers, var_erac, 62.41, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP3ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP4, var_rsa, var_erac, 63.63, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP4 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP4, var_motability, var_erac, 63.63, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP4 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP4, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP4 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP4, var_ers, var_erac, 56.17, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP4 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP4A, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP4A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP4A, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP4A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP4A, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP4A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP4A, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP4A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP4EST, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP4EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP4EST, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP4EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP4EST, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP4EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP4EST, var_ers, var_erac, 59.29, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP4EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP4ESTA, var_rsa, var_erac, 68.94, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP4ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP4ESTA, var_motability, var_erac, 68.94, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP4ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP4ESTA, var_tesco, var_erac, 55.62, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP4ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP4ESTA, var_ers, var_erac, 62.41, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP4ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP5, var_rsa, var_erac, 74.24, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP5 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP5, var_motability, var_erac, 74.24, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP5 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP5, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP5 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP5, var_ers, var_erac, 70.22, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP5 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP5A, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP5A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP5A, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP5A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP5A, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP5A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP5A, var_ers, var_erac, 73.34, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP5A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP5EST, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP5EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP5EST, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP5EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP5EST, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP5EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP5EST, var_ers, var_erac, 73.34, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP5EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP5ESTA, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP5ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP5ESTA, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP5ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP5ESTA, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP5ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP5ESTA, var_ers, var_erac, 76.46, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP5ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP6, var_rsa, var_erac, 74.24, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP6 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP6, var_motability, var_erac, 74.24, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP6 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP6, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP6 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP6, var_ers, var_erac, 70.22, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP6 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP6A, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP6A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP6A, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP6A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP6A, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP6A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP6A, var_ers, var_erac, 73.34, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP6A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP6EST, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP6EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP6EST, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP6EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP6EST, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP6EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP6EST, var_ers, var_erac, 73.34, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP6EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP6ESTA, var_rsa, var_erac, 79.55, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP6ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP6ESTA, var_motability, var_erac, 79.55, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP6ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP6ESTA, var_tesco, var_erac, 66.95, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP6ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP6ESTA, var_ers, var_erac, 76.46, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP6ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP7, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP7 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP7, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP7 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP7, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP7 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP7, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP7 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP7A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP7A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP7A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP7A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP7A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP7A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP7A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP7A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP7EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP7EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP7EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP7EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP7EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP7EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP7EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP7EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP7ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP7ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP7ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP7ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP7ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP7ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP7ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP7ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP8, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP8 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP8, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP8 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP8, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP8 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP8, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP8 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP8A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP8A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP8A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP8A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP8A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP8A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP8A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP8A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP8EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP8EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP8EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP8EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP8EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP8EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP8EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP8EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP8ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP8ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP8ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP8ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP8ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP8ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP8ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP8ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP9, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP9 AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP9, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP9 AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP9, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP9 AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP9, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP9 AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP9A, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP9A AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP9A, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP9A AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP9A, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP9A AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP9A, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP9A AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP9EST, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP9EST AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP9EST, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP9EST AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP9EST, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP9EST AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP9EST, var_ers, var_erac, 93.88, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP9EST AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP9ESTA, var_rsa, var_erac, 106.07, var_date_rsa, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP9ESTA AND vehicle_class_price_special_rate.insurer_id=var_rsa AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_rsa);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age )
+SELECT var_ver, var_SP9ESTA, var_motability, var_erac, 106.07, var_date_motability, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP9ESTA AND vehicle_class_price_special_rate.insurer_id=var_motability AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_motability);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP9ESTA, var_tesco, var_erac, 96.29, var_date_tesco, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP9ESTA AND vehicle_class_price_special_rate.insurer_id=var_tesco AND vehicle_class_price_special_rate.chorganisation_id=var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_tesco);
+
+INSERT INTO vehicle_class_price_special_rate (version, vehicle_class_id, insurer_id, chorganisation_id, price, start_date, created_by, created_date, last_modified_by, last_modified_date, age)
+SELECT var_ver, var_SP9ESTA, var_ers, var_erac, 97.00, var_date_ers, 999, now(), 999, now(), 99.00
+WHERE  NOT EXISTS (SELECT id FROM vehicle_class_price_special_rate WHERE vehicle_class_price_special_rate.vehicle_class_id=var_SP9ESTA AND vehicle_class_price_special_rate.insurer_id = var_ers AND vehicle_class_price_special_rate.chorganisation_id = var_erac AND vehicle_class_price_special_rate.start_date  >= var_date_ers);
 
 
 --end generated
