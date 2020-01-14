@@ -38,12 +38,16 @@ public class RepairDiaryInformationCheck implements IBusinessRule {
         //Specify when rule applies
         if (    claim.getBreBand().isRepairDiaryInfoCheck()
                 && ( ClaimType.isGTA_WideDef(claim.getClaimType()) || ClaimType.isInsurerUpload(claim.getClaimType()) )
-                && !claim.getHireMonitoringDetail().isIsTotalLostCheck()  ) {
+                && (claim.getHireMonitoringDetail() == null  || !claim.getHireMonitoringDetail().isIsTotalLostCheck())  ) {
 
             boolean success = true;
 
             //Specify when rule fails
-            if (   claim.getHireMonitoringDetail().getInspectionBookedDate() == null
+            if (claim.getHireMonitoringDetail() == null) {
+                success = false;
+                narrative = "The CHO has not presented the diary information as required for hire involving a repair.";
+            }
+            else if (   claim.getHireMonitoringDetail().getInspectionBookedDate() == null
                 || claim.getHireMonitoringDetail().getInspectionDate() == null
                 || claim.getHireMonitoringDetail().getRepairBookInDate() == null
                 || claim.getHireMonitoringDetail().getRepairAuthorisedDate() == null
