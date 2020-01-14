@@ -8,8 +8,8 @@ import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.service.workflow.activities.AssignOwner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,30 +20,30 @@ import static idas.chox.core.model.ClaimType.INSURER_INVOICE;
 public class ClaimReassignment extends BaseScheduleActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimReassignment.class);
-    private AttachmentService attachmentService;
-    private AttachmentTypeService attachmentTypeService;
-    private ActivityFactory activityFactory;
-    private XlsFileParser xlsFileParser;
+
     private UserService userService;
     private WorkgroupService workgroupService;
-    private InsurerService insurerService;
+    private ActivityFactory activityFactory;
+    private XlsFileParser xlsFileParser;
 
     public static final int CLAIM_HEADER_ROW = 0;
     public static final int CLAIM_NUMBER_INDEX = 0;
     public static final int CHO_REFERENCE_INDEX = 1;
     public static final int NEW_WORKGROUP_INDEX = 2;
+    public static final int NEW_OWNER_WITHOUT_WORKGROUP_INDEX = 2;
+    public static final int NEW_OWNER_WITH_WORKGROUP_INDEX = 3;
 
+    public static final String ASSIGN_OWNER_NAME = "assignOwner";
     public static final String NEW_LINE = "\n";
     public static final String CELL_TEMPLATE = "%s\t\t%22s\t\t%22s";
 
     public static final int CELL_SIZE_WITHOUT_WORKGROUP_AND_STATUS = 4;
     public static final int CELL_SIZE_WITH_WORKGROUP_AND_STATUS = 5;
-    public static final int ERROR_INDEX_WITHOUT_WORKGROUP_AND_STATUS = 3;
-    public static final int ERROR_INDEX_WITH_WORKGROUP_AND_STATUS = 4;
+    public static final int STATUS_INDEX_WITHOUT_WORKGROUP_AND_STATUS = 3;
+    public static final int STATUS_INDEX_WITH_WORKGROUP_AND_STATUS = 4;
+
     private static final int NEW_OWNER_WITHOUT_WORKGROUP_SIZE = 3;
     private static final int NEW_OWNER_WITH_WORKGROUP_SIZE = 4;
-    public static final int NEW_OWNER_WITHOUT_WORKGROUP_INDEX = 2;
-    public static final int NEW_OWNER_WITH_WORKGROUP_INDEX = 3;
 
     private boolean claimOwnershipEnabled;
     private boolean claimWorkgroupEnabled;
@@ -61,24 +61,12 @@ public class ClaimReassignment extends BaseScheduleActivity {
         this.activityFactory = activityFactory;
     }
 
-    public void setAttachmentService(AttachmentService attachmentService) {
-        this.attachmentService = attachmentService;
-    }
-
-    public void setAttachmentTypeService(AttachmentTypeService attachmentTypeService) {
-        this.attachmentTypeService = attachmentTypeService;
-    }
-
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
     public void setWorkgroupService(WorkgroupService workgroupService) {
         this.workgroupService = workgroupService;
-    }
-
-    public void setInsurerService(InsurerService insurerService) {
-        this.insurerService = insurerService;
     }
 
     @Override
@@ -98,7 +86,9 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
             boolean insurerPresent = loggedInUser.isAnInsurer();
 
-            if (insurerPresent) {
+            boolean choxAdminPresent = loggedInUser.isCHOXAdmin();
+
+            if (insurerPresent || choxAdminPresent) {
 
                 // Get the current insurer
                 loggedInUserInsurer = loggedInUser.getInsurer();
@@ -109,50 +99,57 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
                 // Claim configuration
                 claimOwnershipEnabled = loggedInUserInsurer.isClaimOwnershipEnable();
-                claimWorkgroupEnabled = loggedInUserInsurer.isEnableManualInvoiceWorkgroups();
+                claimWorkgroupEnabled = loggedInUserInsurer.isWorkgroupEnable();
 
             } else {
-                status.append("Failed: Claim does not belong to an insurer");
+                status.append("Failed: Logged in user is not an insurer");
+                LOG.warn("Logged in user is not an insurer");
             }
+
         } else {
             status.append("Failed: Logged in user not found");
+            LOG.warn("Logged in user not found");
         }
 
-        //If there is an xls attachment present then attempt to process it
-        attachments.stream().filter(attachment -> attachment.getName().toLowerCase().endsWith("xls")).forEach(attachment -> {
+        // Find the xls claim attachment
+        Optional<Map<Integer, List<String>>> xlsDataMapOptional = attachments.stream()
+                .filter(attachment -> attachment.getName().toLowerCase().endsWith("xls"))
+                .map(attachment -> xlsFileParser.processExcelFile(attachment.getContent())).findFirst();
 
-            xlsDataMap = xlsFileParser.processExcelFile(attachment.getContent());
+        // Is there a xls claim attachment present
+        if (xlsDataMapOptional.isPresent()) {
+
+            xlsDataMap = xlsDataMapOptional.get();
 
             Set<Integer> rowNumbers = xlsDataMap.keySet();
 
-            // Skip the headers
+            // Skip the claim headers
             rowNumbers.stream().filter(rowNumber -> (rowNumber != CLAIM_HEADER_ROW))
-                    // Get all cells in each
-                    .map(xlsDataMap::get).forEach(cells -> {
+                    // Get all cells in each row
+                    .map(xlsDataMap::get)
+                    // Remove any rows which have cells which are completely empty
+                    .filter(cells -> cells.stream().noneMatch(String::isEmpty)).forEach(cells -> {
 
-                // Get all the mandatory fields
-                Optional<String> claimNumberOptional = getClaimNumber(cells);
-                Optional<String> choReferenceOptional = getChoReference(cells);
+                // If the validation passes then process the claim
+                if (isStatusEmpty(status)) {
 
-                // Reset status
-                status.setLength(0);
+                    // Get all the mandatory fields
+                    Optional<String> claimNumberOptional = getClaimNumber(cells);
+                    Optional<String> choReferenceOptional = getChoReference(cells);
 
-                AssignOwner activity = (AssignOwner) activityFactory.getActivity("assignOwner");
+                    AssignOwner activity = (AssignOwner) activityFactory.getActivity(ASSIGN_OWNER_NAME);
 
-                if (claimNumberOptional.isPresent()) {
+                    if (claimNumberOptional.isPresent()) {
 
-                    if (choReferenceOptional.isPresent()) {
+                        if (choReferenceOptional.isPresent()) {
 
-                        String claimNumber = claimNumberOptional.get();
-                        String choReference = choReferenceOptional.get();
+                            String claimNumber = claimNumberOptional.get();
+                            String choReference = choReferenceOptional.get();
 
-                        // Find the claims that will be reassigned
-                        Optional<List<Claim>> optionalClaim = Optional.ofNullable(validateClaimReferenceNumber(choReference, claimNumber, status));
+                            // Find the claims that will be reassigned.
+                            List<Claim> claims = validateClaimReferenceNumber(choReference, claimNumber, status);
 
-                        if (optionalClaim.isPresent()) {
-
-                            List<Claim> claims = optionalClaim.get();
-
+                            // A list will always be returned
                             if (claims.size() > 0) {
 
                                 claims.forEach(claim -> {
@@ -163,7 +160,8 @@ public class ClaimReassignment extends BaseScheduleActivity {
                                         }
 
                                         if (invoiceWorkgroupEnabled) {
-                                            setNewWorkgroupId(status, cells, loggedInUserInsurer, activity);
+                                            int loggedInsurerId = loggedInUserInsurer.getId();
+                                            setNewWorkgroupId(status, cells, loggedInsurerId, activity);
                                         }
 
                                     } else {
@@ -172,69 +170,84 @@ public class ClaimReassignment extends BaseScheduleActivity {
                                         }
 
                                         if (claimWorkgroupEnabled) {
-                                            setNewWorkgroupId(status, cells, loggedInUserInsurer, activity);
+                                            int loggedInsurerId = loggedInUserInsurer.getId();
+                                            setNewWorkgroupId(status, cells, loggedInsurerId, activity);
                                         }
 
                                     }
 
-                                    // If validation passed, process AssignOwner activity
-                                    if (status.toString().isEmpty()) {
+                                    // If the validation passed then reassign the claim
+                                    if (isStatusEmpty(status)) {
 
                                         try {
                                             activity.process(claim);
                                             status.append("Success: Updated.");
                                         } catch (AccessDeniedException ex) {
-                                            status.append("Failed: No Access to AssignOwner Activity (Invalid Claim Status '").append(claim.getStatus()).append("')");
+                                            status.append("Failed: Cannot complete assignment for claim '" + claim.getClaimType().name() + "' in status '" + claim.getStatus() + "'");
                                             LOG.warn("AccessDenied Exception thrown when reassigning owner via email scheduler job");
                                         } catch (Exception ex) {
                                             status.append("Failed: ").append(ex.getMessage());
                                             LOG.warn("Exception occurred when reassigning owner via email scheduler job: {}", ex.getMessage());
                                         }
                                     }
+
                                 });
 
                             } else {
                                 status.append("Failed: Claim not found");
+                                LOG.warn("Claim not found");
                             }
-                        }
-                    } else {
-                        status.append("Failed: Claim Reference not found");
-                    }
 
-                } else {
-                    status.append("Failed: Claim Number not found");
+                        } else {
+                            status.append("Failed: Claim Reference not found");
+                            LOG.warn("Claim Reference not found");
+                        }
+
+                    } else {
+                        status.append("Failed: Claim Number not found");
+                        LOG.warn("Claim Number not found");
+                    }
                 }
 
+                // Add status to the next available cell in the current row
                 cells.add(status.toString());
 
             });
-
-        });
+        }
 
         return true;
     }
 
-    private void setNewWorkgroupId(StringBuilder status, List<String> cells, Insurer loggedInUserInsurer, AssignOwner activity) {
+    private boolean isStatusEmpty(StringBuilder status) {
+        return status.length() == 0;
+    }
+
+    private void setNewWorkgroupId(StringBuilder status, List<String> cells, int loggedInsurerId, AssignOwner activity) {
 
         Optional<String> newWorkgroupOptional = getNewWorkgroup(cells);
 
         if (newWorkgroupOptional.isPresent()) {
             String newWorkgroupName = newWorkgroupOptional.get();
             // Find the new workgroup
-            int loggedInsurerId = loggedInUserInsurer.getId();
             Optional<Workgroup> optionalNewWorkgroup = Optional.ofNullable(workgroupService.getWorkgroupByName(loggedInsurerId, newWorkgroupName));
 
             if (optionalNewWorkgroup.isPresent()) {
                 Workgroup newWorkgroup = optionalNewWorkgroup.get();
-                Integer newWorkgroupId = newWorkgroup.getId();
-                activity.setWorkgroupId(newWorkgroupId);
+                boolean workgroupActive = newWorkgroup.isStatus();
+                if (workgroupActive) {
+                    Integer newWorkgroupId = newWorkgroup.getId();
+                    activity.setWorkgroupId(newWorkgroupId);
+                } else {
+                    status.append("Failed: Workgroup is inactive");
+                    LOG.warn("Workgroup is inactive");
+                }
             } else {
                 status.append("Failed: Workgroup not found");
-                LOG.warn("Web user not found");
+                LOG.warn("Workgroup not found");
             }
         } else {
             status.append("Failed: New Workgroup was not provided");
-            LOG.warn("Web user not found");
+            LOG.warn("New Workgroup was not provided");
         }
     }
 
@@ -257,7 +270,7 @@ public class ClaimReassignment extends BaseScheduleActivity {
             }
         } else {
             status.append("Failed: New Owner Username was not provided");
-            LOG.warn("Web user not found");
+            LOG.warn("New Owner Username was not provided");
         }
     }
 
@@ -330,9 +343,9 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
                 // Get the status message
                 if (cells.size() == CELL_SIZE_WITHOUT_WORKGROUP_AND_STATUS) {
-                    emailMsg.append(String.format(CELL_TEMPLATE, cells.get(CLAIM_NUMBER_INDEX).trim(), cells.get(CHO_REFERENCE_INDEX).trim(), cells.get(ERROR_INDEX_WITHOUT_WORKGROUP_AND_STATUS).trim()));
+                    emailMsg.append(String.format(CELL_TEMPLATE, cells.get(CLAIM_NUMBER_INDEX).trim(), cells.get(CHO_REFERENCE_INDEX).trim(), cells.get(STATUS_INDEX_WITHOUT_WORKGROUP_AND_STATUS).trim()));
                 } else if (cells.size() == CELL_SIZE_WITH_WORKGROUP_AND_STATUS) {
-                    emailMsg.append(String.format(CELL_TEMPLATE, cells.get(CLAIM_NUMBER_INDEX).trim(), cells.get(CHO_REFERENCE_INDEX).trim(), cells.get(ERROR_INDEX_WITH_WORKGROUP_AND_STATUS).trim()));
+                    emailMsg.append(String.format(CELL_TEMPLATE, cells.get(CLAIM_NUMBER_INDEX).trim(), cells.get(CHO_REFERENCE_INDEX).trim(), cells.get(STATUS_INDEX_WITH_WORKGROUP_AND_STATUS).trim()));
                 }
 
                 // Append new line
