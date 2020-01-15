@@ -43,11 +43,9 @@
         <property name="claimService" ref="claimService" />
         <property name="xlsFileParser" ref="xlsFileParser" />
         <property name="activityFactory" ref="activityFactory" />
-        <property name="attachmentService" ref="attachmentService" />
         <property name="userService" ref="userService" />
         <property name="workgroupService" ref="workgroupService" />
         <property name="workflowContext" ref="workflowContext"/>
-        <property name="insurerService" ref="insurerService" />
     </bean>
 
     <bean id="penaltyUpdate" class="idas.chox.service.workflow.scheduleActivities.PenaltyUpdate" scope="prototype">
@@ -462,7 +460,7 @@
     </bean>
     <bean id="cronPaidInvoicesDbTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="paidInvoicesDbJobDetail" /> 
-        <property name="cronExpression" value="0 4 7-19 ? * 1-7" /> 
+        <property name="cronExpression" value="0 4 7-19 ? * 1-7" />
     </bean>
     <bean id="cronImsChaseTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="imsChaseDbJobDetail" />
