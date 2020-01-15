@@ -318,7 +318,7 @@
                             <descriptors>
                                 <descriptor>tar.xml</descriptor>
                             </descriptors>
-                            <finalName>chox-app.${chox-app.version}</finalName>
+                            <finalName>chox-app.${version.number}</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                     </execution>
