@@ -366,12 +366,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     Comment comment = Comment.newComment(0, reviewRequired, claimResult.getNote(), true);
 
                     // Determine if an external task can be created on the claim
-                    boolean canCreateTask = false;
-                    if (getCurrentUser().isAnInsurer() && claim.getChorganisation().isTaskManagementEnable()) {
-                        canCreateTask = true;
-                    } else if (getCurrentUser().isCHO() && claim.getInsurer().isTaskManagementEnable()) {
-                        canCreateTask = true;
-                    }
+                    boolean canCreateTask = getCurrentUser().isCHO() && claim.getInsurer().isTaskManagementEnable();
 
                     if (reviewRequired && canCreateTask) {
                         // Create task for comment review required
