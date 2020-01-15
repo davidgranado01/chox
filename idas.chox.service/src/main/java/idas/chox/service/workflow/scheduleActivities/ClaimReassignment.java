@@ -102,7 +102,7 @@ public class ClaimReassignment extends BaseScheduleActivity {
                 claimWorkgroupEnabled = loggedInUserInsurer.isWorkgroupEnable();
 
             } else {
-                status.append("Failed: Logged in user is not an insurer");
+                status.append("Failed: Logged in user is not an insurer or CHOX admin");
                 LOG.warn("Logged in user is not an insurer");
             }
 
@@ -113,7 +113,9 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
         // Find the xls claim attachment
         Optional<Map<Integer, List<String>>> xlsDataMapOptional = attachments.stream()
+                // Is there a xls attachment
                 .filter(attachment -> attachment.getName().toLowerCase().endsWith("xls"))
+                // Get the first xls attachment available
                 .map(attachment -> xlsFileParser.processExcelFile(attachment.getContent())).findFirst();
 
         // Is there a xls claim attachment present
@@ -121,17 +123,20 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
             xlsDataMap = xlsDataMapOptional.get();
 
-            Set<Integer> rowNumbers = xlsDataMap.keySet();
+            // If the validation passes then process the claim
+            if (isStatusEmpty(status)) {
 
-            // Skip the claim headers
-            rowNumbers.stream().filter(rowNumber -> (rowNumber != CLAIM_HEADER_ROW))
-                    // Get all cells in each row
-                    .map(xlsDataMap::get)
-                    // Remove any rows which have cells which are completely empty
-                    .filter(cells -> cells.stream().noneMatch(String::isEmpty)).forEach(cells -> {
+                Set<Integer> rowNumbers = xlsDataMap.keySet();
 
-                // If the validation passes then process the claim
-                if (isStatusEmpty(status)) {
+                // Skip the claim headers
+                rowNumbers.stream().filter(rowNumber -> (rowNumber != CLAIM_HEADER_ROW))
+                        // Get all cells in each row
+                        .map(xlsDataMap::get)
+                        // Remove any rows which have cells which are completely empty
+                        .filter(cells -> cells.stream().noneMatch(String::isEmpty)).forEach(cells -> {
+
+                    //reset status for each claim
+                    status.setLength(0);
 
                     // Get all the mandatory fields
                     Optional<String> claimNumberOptional = getClaimNumber(cells);
@@ -207,12 +212,15 @@ public class ClaimReassignment extends BaseScheduleActivity {
                         status.append("Failed: Claim Number not found");
                         LOG.warn("Claim Number not found");
                     }
-                }
 
-                // Add status to the next available cell in the current row
-                cells.add(status.toString());
+                    // Add status to the next available cell in the current row
+                    cells.add(status.toString());
 
-            });
+                });
+            }
+
+        } else {
+            throw new Exception("A configuration error has occurred: " + status.toString());
         }
 
         return true;
