@@ -21,6 +21,9 @@
         <cglib.version>3.2.5</cglib.version> <!-- was 3.1 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
+
+        <timestamp>${maven.build.timestamp}</timestamp>
+        <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
     </properties>
 
     <build>
@@ -329,6 +332,11 @@
             <resource>
                 <filtering>false</filtering>
                 <directory>${basedir}/src/main/resources</directory>
+            </resource>
+
+            <resource>
+                <directory>${basedir}/src/main/resources-filtered</directory>
+                <filtering>true</filtering>
             </resource>
         </resources>
     </build>

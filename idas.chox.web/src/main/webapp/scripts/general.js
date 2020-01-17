@@ -299,5 +299,14 @@ function extractNumber(obj, decimalPlaces, allowNegative)
     obj.value = temp;
     return true;
 }
-    
 
+function buildTimestamp() {
+    if (window.console) {
+        choxExtAjaxRequest({
+            url: '/prv/p/buildTimestamp.action',
+            callback : function(options,success,response) {
+                console.log(response.responseText);
+            }
+        });
+    }
+}
