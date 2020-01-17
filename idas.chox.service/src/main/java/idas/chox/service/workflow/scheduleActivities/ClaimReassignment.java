@@ -31,7 +31,7 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
     public static final int CLAIM_HEADER_ROW = 0;
     public static final int CLAIM_NUMBER_INDEX = 0;
-    public static final int CHO_REFERENCE_INDEX = 1;
+    public static final int SUPPLIER_REFERENCE_INDEX = 1;
     public static final int NEW_WORKGROUP_INDEX = 2;
     public static final int NEW_OWNER_WITHOUT_WORKGROUP_INDEX = 2;
     public static final int NEW_OWNER_WITH_WORKGROUP_INDEX = 3;
@@ -55,7 +55,7 @@ public class ClaimReassignment extends BaseScheduleActivity {
     private boolean invoiceWorkgroupEnabled;
 
     private Map<Integer, List<String>> xlsDataMap;
-    private Insurer loggedInUserInsurer;
+    private Insurer insurer;
     private boolean choxAdminPresent;
 
     public void setXlsFileParser(XlsFileParser xlsFileParser) {
@@ -98,9 +98,9 @@ public class ClaimReassignment extends BaseScheduleActivity {
                 if (insurerPresent) {
 
                     // Get the current insurer
-                    loggedInUserInsurer = loggedInUser.getInsurer();
+                    insurer = loggedInUser.getInsurer();
 
-                    updateJobOptions(loggedInUserInsurer);
+                    updateJobOptions(insurer);
 
                 } else {
                     throw new Exception("A configuration error has occurred: Logged in user is not an insurer or chox admin");
@@ -134,7 +134,7 @@ public class ClaimReassignment extends BaseScheduleActivity {
                     // Get all cells in each row
                     .map(xlsDataMap::get)
                     // Remove any rows which have cells which are completely empty
-                    .filter(cells -> cells.stream().noneMatch(String::isEmpty)).forEach(cells -> {
+                    .filter(cells -> !cells.stream().allMatch(String::isEmpty)).forEach(cells -> {
 
                 //reset status for each claim
                 status.setLength(0);
@@ -146,14 +146,14 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
                     String claimNumber = claimNumberOptional.get();
 
-                    Optional<String> choReferenceOptional = getChoReference(cells);
+                    Optional<String> supplierReferenceOptional = getSupplierReference(cells);
 
-                    if (choReferenceOptional.isPresent()) {
+                    if (supplierReferenceOptional.isPresent()) {
 
-                        String choReference = choReferenceOptional.get();
+                        String supplierReference = supplierReferenceOptional.get();
 
                         // Find the claims that will be reassigned.
-                        List<Claim> claims = validateClaimReferenceNumber(choReference, claimNumber, status);
+                        List<Claim> claims = validateClaimReferenceNumber(supplierReference, claimNumber, status);
 
                         // A list will always be returned
                         if (claims.size() > 0) {
@@ -163,9 +163,9 @@ public class ClaimReassignment extends BaseScheduleActivity {
                                 if (choxAdminPresent) {
 
                                     // Get the claim insurer
-                                    Insurer claimInsurer = claim.getInsurer();
+                                    insurer = claim.getInsurer();
 
-                                    updateJobOptions(claimInsurer);
+                                    updateJobOptions(insurer);
 
                                 }
 
@@ -177,7 +177,7 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
                                     if (invoiceWorkgroupEnabled) {
 
-                                        int loggedInsurerId = loggedInUserInsurer.getId();
+                                        int loggedInsurerId = insurer.getId();
 
                                         Optional<String> claimStatusOptional = Optional.ofNullable(claim.getStatus());
 
@@ -201,7 +201,7 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
                                     if (claimWorkgroupEnabled) {
 
-                                        int loggedInsurerId = loggedInUserInsurer.getId();
+                                        int loggedInsurerId = insurer.getId();
 
                                         Optional<String> claimStatusOptional = Optional.ofNullable(claim.getStatus());
 
@@ -255,8 +255,8 @@ public class ClaimReassignment extends BaseScheduleActivity {
                         }
 
                     } else {
-                        status.append("Failed: Claim Reference not found");
-                        LOG.warn("Claim Reference not found");
+                        status.append("Failed: Supplier Reference not found");
+                        LOG.warn("Supplier Reference not found");
                     }
 
                 } else {
@@ -355,9 +355,9 @@ public class ClaimReassignment extends BaseScheduleActivity {
         return claimNumberOptional;
     }
 
-    public Optional<String> getChoReference(List<String> cells) {
+    public Optional<String> getSupplierReference(List<String> cells) {
         Optional<String> claimNumberOptional = Optional.empty();
-        String claimNumber = cells.get(CHO_REFERENCE_INDEX).trim();
+        String claimNumber = cells.get(SUPPLIER_REFERENCE_INDEX).trim();
         if (!claimNumber.isEmpty()) {
             claimNumberOptional = Optional.of(claimNumber);
         }
@@ -415,9 +415,9 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
                 // Get the status message
                 if (cells.size() == CELL_SIZE_WITHOUT_WORKGROUP_AND_STATUS) {
-                    emailMsg.append(String.format(CELL_TEMPLATE, cells.get(CLAIM_NUMBER_INDEX).trim(), cells.get(CHO_REFERENCE_INDEX).trim(), cells.get(STATUS_INDEX_WITHOUT_WORKGROUP_AND_STATUS).trim()));
+                    emailMsg.append(String.format(CELL_TEMPLATE, cells.get(CLAIM_NUMBER_INDEX).trim(), cells.get(SUPPLIER_REFERENCE_INDEX).trim(), cells.get(STATUS_INDEX_WITHOUT_WORKGROUP_AND_STATUS).trim()));
                 } else if (cells.size() == CELL_SIZE_WITH_WORKGROUP_AND_STATUS) {
-                    emailMsg.append(String.format(CELL_TEMPLATE, cells.get(CLAIM_NUMBER_INDEX).trim(), cells.get(CHO_REFERENCE_INDEX).trim(), cells.get(STATUS_INDEX_WITH_WORKGROUP_AND_STATUS).trim()));
+                    emailMsg.append(String.format(CELL_TEMPLATE, cells.get(CLAIM_NUMBER_INDEX).trim(), cells.get(SUPPLIER_REFERENCE_INDEX).trim(), cells.get(STATUS_INDEX_WITH_WORKGROUP_AND_STATUS).trim()));
                 }
 
                 // Append new line
