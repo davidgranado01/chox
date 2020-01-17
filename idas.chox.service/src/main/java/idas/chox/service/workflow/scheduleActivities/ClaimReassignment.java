@@ -4,8 +4,10 @@ import idas.chox.core.model.*;
 import idas.chox.core.security.SecurityInfoProvider;
 import idas.chox.core.services.*;
 import idas.chox.core.util.DateHelper;
+import idas.chox.core.workflow.Activity;
 import idas.chox.service.workflow.ActivityFactory;
 import idas.chox.service.workflow.activities.AssignOwner;
+import idas.chox.service.workflow.activities.AssignWorkgroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -20,6 +22,7 @@ import static idas.chox.core.model.ClaimType.INSURER_INVOICE;
 public class ClaimReassignment extends BaseScheduleActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimReassignment.class);
+    public static final String CLAIM_UNACKNOWLEDGED_UNROUTED_STATUS = "ClaimUnacknowledgedUnrouted";
 
     private UserService userService;
     private WorkgroupService workgroupService;
@@ -34,6 +37,7 @@ public class ClaimReassignment extends BaseScheduleActivity {
     public static final int NEW_OWNER_WITH_WORKGROUP_INDEX = 3;
 
     public static final String ASSIGN_OWNER_NAME = "assignOwner";
+    public static final String ASSIGN_WORKGROUP_NAME = "assignWorkgroup";
     public static final String NEW_LINE = "\n";
     public static final String CELL_TEMPLATE = "%s\t\t%22s\t\t%22s";
 
@@ -52,6 +56,7 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
     private Map<Integer, List<String>> xlsDataMap;
     private Insurer loggedInUserInsurer;
+    private boolean choxAdminPresent;
 
     public void setXlsFileParser(XlsFileParser xlsFileParser) {
         this.xlsFileParser = xlsFileParser;
@@ -84,36 +89,31 @@ public class ClaimReassignment extends BaseScheduleActivity {
             // Get the current user
             WebUser loggedInUser = webUserOptional.get();
 
-            boolean insurerPresent = loggedInUser.isAnInsurer();
+            choxAdminPresent = loggedInUser.isCHOXAdmin();
 
-            boolean choxAdminPresent = loggedInUser.isCHOXAdmin();
+            if (!choxAdminPresent) {
 
-            if (insurerPresent || choxAdminPresent) {
+                boolean insurerPresent = loggedInUser.isAnInsurer();
 
-                // Get the current insurer
-                loggedInUserInsurer = loggedInUser.getInsurer();
+                if (insurerPresent) {
 
-                // Invoice configuration
-                invoiceOwnershipEnabled = loggedInUserInsurer.isEnableManualInvoiceOwnership();
-                invoiceWorkgroupEnabled = loggedInUserInsurer.isEnableManualInvoiceWorkgroups();
+                    // Get the current insurer
+                    loggedInUserInsurer = loggedInUser.getInsurer();
 
-                // Claim configuration
-                claimOwnershipEnabled = loggedInUserInsurer.isClaimOwnershipEnable();
-                claimWorkgroupEnabled = loggedInUserInsurer.isWorkgroupEnable();
+                    updateJobOptions(loggedInUserInsurer);
 
-            } else {
-                status.append("Failed: Logged in user is not an insurer or CHOX admin");
-                LOG.warn("Logged in user is not an insurer");
+                } else {
+                    throw new Exception("A configuration error has occurred: Logged in user is not an insurer or chox admin");
+                }
             }
 
         } else {
-            status.append("Failed: Logged in user not found");
-            LOG.warn("Logged in user not found");
+            throw new Exception("A configuration error has occurred: Logged in user not found");
         }
 
         // Find the xls claim attachment
         Optional<Map<Integer, List<String>>> xlsDataMapOptional = attachments.stream()
-                // Is there a xls attachment
+                // We only want xls attachments
                 .filter(attachment -> attachment.getName().toLowerCase().endsWith("xls"))
                 // Get the first xls attachment available
                 .map(attachment -> xlsFileParser.processExcelFile(attachment.getContent())).findFirst();
@@ -123,114 +123,172 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
             xlsDataMap = xlsDataMapOptional.get();
 
-            // If the validation passes then process the claim
-            if (isStatusEmpty(status)) {
+            Set<Integer> rowNumbers = xlsDataMap.keySet();
 
-                Set<Integer> rowNumbers = xlsDataMap.keySet();
+            AssignOwner assignOwner = (AssignOwner) activityFactory.getActivity(ASSIGN_OWNER_NAME);
 
-                // Skip the claim headers
-                rowNumbers.stream().filter(rowNumber -> (rowNumber != CLAIM_HEADER_ROW))
-                        // Get all cells in each row
-                        .map(xlsDataMap::get)
-                        // Remove any rows which have cells which are completely empty
-                        .filter(cells -> cells.stream().noneMatch(String::isEmpty)).forEach(cells -> {
+            AssignWorkgroup assignWorkgroup = (AssignWorkgroup) activityFactory.getActivity(ASSIGN_WORKGROUP_NAME);
 
-                    //reset status for each claim
-                    status.setLength(0);
+            // Skip the claim headers
+            rowNumbers.stream().filter(rowNumber -> (rowNumber != CLAIM_HEADER_ROW))
+                    // Get all cells in each row
+                    .map(xlsDataMap::get)
+                    // Remove any rows which have cells which are completely empty
+                    .filter(cells -> cells.stream().noneMatch(String::isEmpty)).forEach(cells -> {
 
-                    // Get all the mandatory fields
-                    Optional<String> claimNumberOptional = getClaimNumber(cells);
+                //reset status for each claim
+                status.setLength(0);
+
+                // Get all the mandatory fields
+                Optional<String> claimNumberOptional = getClaimNumber(cells);
+
+                if (claimNumberOptional.isPresent()) {
+
+                    String claimNumber = claimNumberOptional.get();
+
                     Optional<String> choReferenceOptional = getChoReference(cells);
 
-                    AssignOwner activity = (AssignOwner) activityFactory.getActivity(ASSIGN_OWNER_NAME);
+                    if (choReferenceOptional.isPresent()) {
 
-                    if (claimNumberOptional.isPresent()) {
+                        String choReference = choReferenceOptional.get();
 
-                        if (choReferenceOptional.isPresent()) {
+                        // Find the claims that will be reassigned.
+                        List<Claim> claims = validateClaimReferenceNumber(choReference, claimNumber, status);
 
-                            String claimNumber = claimNumberOptional.get();
-                            String choReference = choReferenceOptional.get();
+                        // A list will always be returned
+                        if (claims.size() > 0) {
 
-                            // Find the claims that will be reassigned.
-                            List<Claim> claims = validateClaimReferenceNumber(choReference, claimNumber, status);
+                            claims.forEach(claim -> {
 
-                            // A list will always be returned
-                            if (claims.size() > 0) {
+                                if (choxAdminPresent) {
 
-                                claims.forEach(claim -> {
+                                    // Get the claim insurer
+                                    Insurer claimInsurer = claim.getInsurer();
 
-                                    if (claim.getClaimType() == INSURER_INVOICE) {
-                                        if (invoiceOwnershipEnabled) {
-                                            setNewOwnerId(status, cells, activity);
-                                        }
+                                    updateJobOptions(claimInsurer);
 
-                                        if (invoiceWorkgroupEnabled) {
-                                            int loggedInsurerId = loggedInUserInsurer.getId();
-                                            setNewWorkgroupId(status, cells, loggedInsurerId, activity);
-                                        }
+                                }
 
-                                    } else {
-                                        if (claimOwnershipEnabled) {
-                                            setNewOwnerId(status, cells, activity);
-                                        }
+                                if (claim.getClaimType() == INSURER_INVOICE) {
 
-                                        if (claimWorkgroupEnabled) {
-                                            int loggedInsurerId = loggedInUserInsurer.getId();
-                                            setNewWorkgroupId(status, cells, loggedInsurerId, activity);
-                                        }
-
+                                    if (invoiceOwnershipEnabled) {
+                                        setNewOwnerId(status, cells, assignOwner);
                                     }
 
-                                    // If the validation passed then reassign the claim
-                                    if (isStatusEmpty(status)) {
+                                    if (invoiceWorkgroupEnabled) {
 
-                                        try {
-                                            activity.process(claim);
-                                            status.append("Success: Updated.");
-                                        } catch (AccessDeniedException ex) {
-                                            status.append("Failed: Cannot complete assignment for claim '" + claim.getClaimType().name() + "' in status '" + claim.getStatus() + "'");
-                                            LOG.warn("AccessDenied Exception thrown when reassigning owner via email scheduler job");
-                                        } catch (Exception ex) {
-                                            status.append("Failed: ").append(ex.getMessage());
-                                            LOG.warn("Exception occurred when reassigning owner via email scheduler job: {}", ex.getMessage());
+                                        int loggedInsurerId = loggedInUserInsurer.getId();
+
+                                        Optional<String> claimStatusOptional = Optional.ofNullable(claim.getStatus());
+
+                                        if (claimStatusOptional.isPresent()) {
+
+                                            String claimStatus = claim.getStatus();
+
+                                            if (claimStatus.equals(CLAIM_UNACKNOWLEDGED_UNROUTED_STATUS)) {
+                                                setNewWorkgroupId(status, cells, loggedInsurerId, assignWorkgroup);
+                                            }
                                         }
+
+                                        setNewWorkgroupId(status, cells, loggedInsurerId, assignOwner);
                                     }
 
-                                });
+                                } else {
 
-                            } else {
-                                status.append("Failed: Claim not found");
-                                LOG.warn("Claim not found");
-                            }
+                                    if (claimOwnershipEnabled) {
+                                        setNewOwnerId(status, cells, assignOwner);
+                                    }
+
+                                    if (claimWorkgroupEnabled) {
+
+                                        int loggedInsurerId = loggedInUserInsurer.getId();
+
+                                        Optional<String> claimStatusOptional = Optional.ofNullable(claim.getStatus());
+
+                                        if (claimStatusOptional.isPresent()) {
+
+                                            String claimStatus = claim.getStatus();
+
+                                            if (claimStatus.equals(CLAIM_UNACKNOWLEDGED_UNROUTED_STATUS)) {
+                                                setNewWorkgroupId(status, cells, loggedInsurerId, assignWorkgroup);
+                                            }
+                                        }
+
+                                        setNewWorkgroupId(status, cells, loggedInsurerId, assignOwner);
+                                    }
+
+                                }
+
+                                // If the validation passed then reassign the claim
+                                if (isStatusEmpty(status)) {
+
+                                    try {
+
+                                        Optional<String> claimStatusOptional = Optional.ofNullable(claim.getStatus());
+
+                                        if (claimStatusOptional.isPresent()) {
+
+                                            String claimStatus = claim.getStatus();
+
+                                            if (claimStatus.equals(CLAIM_UNACKNOWLEDGED_UNROUTED_STATUS)) {
+                                                assignWorkgroup.process(claim);
+                                            }
+                                        }
+
+                                        assignOwner.process(claim);
+                                        status.append("Success: Updated");
+                                    } catch (AccessDeniedException ex) {
+                                        status.append("Failed: Cannot complete assignment for claim '").append(claim.getClaimType().name()).append("' in status '").append(claim.getStatus()).append("'");
+                                        LOG.warn("AccessDenied Exception thrown when reassigning owner via email scheduler job");
+                                    } catch (Exception ex) {
+                                        status.append("Failed: ").append(ex.getMessage());
+                                        LOG.warn("Exception occurred when reassigning owner via email scheduler job: {}", ex.getMessage());
+                                    }
+
+                                }
+
+                            });
 
                         } else {
-                            status.append("Failed: Claim Reference not found");
-                            LOG.warn("Claim Reference not found");
+                            status.append("Failed: Claim not found");
+                            LOG.warn("Claim not found");
                         }
 
                     } else {
-                        status.append("Failed: Claim Number not found");
-                        LOG.warn("Claim Number not found");
+                        status.append("Failed: Claim Reference not found");
+                        LOG.warn("Claim Reference not found");
                     }
 
-                    // Add status to the next available cell in the current row
-                    cells.add(status.toString());
+                } else {
+                    status.append("Failed: Claim Number not found");
+                    LOG.warn("Claim Number not found");
+                }
 
-                });
-            }
+                // Add status to the next available cell in the current row
+                cells.add(status.toString());
 
-        } else {
-            throw new Exception("A configuration error has occurred: " + status.toString());
+            });
+
         }
 
         return true;
+    }
+
+    private void updateJobOptions(Insurer insurer) {
+        // Invoice configuration
+        invoiceOwnershipEnabled = insurer.isEnableManualInvoiceOwnership();
+        invoiceWorkgroupEnabled = insurer.isEnableManualInvoiceWorkgroups();
+
+        // Claim configuration
+        claimOwnershipEnabled = insurer.isClaimOwnershipEnable();
+        claimWorkgroupEnabled = insurer.isWorkgroupEnable();
     }
 
     private boolean isStatusEmpty(StringBuilder status) {
         return status.length() == 0;
     }
 
-    private void setNewWorkgroupId(StringBuilder status, List<String> cells, int loggedInsurerId, AssignOwner activity) {
+    private void setNewWorkgroupId(StringBuilder status, List<String> cells, int loggedInsurerId, Activity activity) {
 
         Optional<String> newWorkgroupOptional = getNewWorkgroup(cells);
 
@@ -244,7 +302,13 @@ public class ClaimReassignment extends BaseScheduleActivity {
                 boolean workgroupActive = newWorkgroup.isStatus();
                 if (workgroupActive) {
                     Integer newWorkgroupId = newWorkgroup.getId();
-                    activity.setWorkgroupId(newWorkgroupId);
+                    if (activity instanceof AssignWorkgroup) {
+                        AssignWorkgroup assignWorkgroup = (AssignWorkgroup) activity;
+                        assignWorkgroup.setWorkgroupId(newWorkgroupId);
+                    } else if (activity instanceof AssignOwner) {
+                        AssignOwner assignOwner = (AssignOwner) activity;
+                        assignOwner.setWorkgroupId(newWorkgroupId);
+                    }
                 } else {
                     status.append("Failed: Workgroup is inactive");
                     LOG.warn("Workgroup is inactive");
