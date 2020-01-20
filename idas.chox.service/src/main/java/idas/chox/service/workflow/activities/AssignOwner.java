@@ -75,8 +75,16 @@ public class AssignOwner extends BaseActivity {
             if (claimOwner.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
                 throw new AccessDeniedException("The selected Claim Owner does not belong to the Insurer of the claim.");
             }
-        }
 
+            //check user belongs to workgroup, if any
+            if (workgroupsEnabled && workgroup != null){
+                if (! isUserInWorkgroup(workgroup.getId(), claimOwnerId) ){
+                    LOG.error("Web user {} does not belong to workgroup={}", workgroup.getId(), claimOwnerId);
+                    throw new AccessDeniedException("The selected Claim Owner does not belong to the Insurer of the claim.");
+                }
+            }
+
+        }
     }
 
     @Override

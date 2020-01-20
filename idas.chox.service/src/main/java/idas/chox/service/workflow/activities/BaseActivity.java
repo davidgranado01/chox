@@ -185,6 +185,10 @@ public abstract class BaseActivity implements Activity {
         }
     }
 
+    protected boolean isUserInWorkgroup(Integer workgroupId,Integer userId ){
+        return userWorkgroupService.isUserWorkgroupExist(workgroupId, userId);
+    }
+
     protected void afterProcess(Claim claim) throws Exception {
         LOG.debug("Saving Claim '{}' with status {}", claim.getChoReference(), claim.getStatus());
         getDataService().save(claim);
