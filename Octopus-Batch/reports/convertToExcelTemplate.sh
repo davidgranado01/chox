@@ -58,7 +58,7 @@ then
 fi
 
 BCC_RECIPIENTS=MichaelPaul.Kemp@valexa.com,Robert.Hon@audatex.co.uk
-RECIPIENTS=John.Dowson@valexa.com
+RECIPIENTS=DL-UKBR-Audatex-penguin-reporting@audatex.co.uk
 
 REPORT_DIR=$1
 PROCESSED_DIR=$2

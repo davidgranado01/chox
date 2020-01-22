@@ -248,7 +248,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
         <property name="emailOnBreBandCreation" value="false"/>
-        <property name="emailReceivers" value="john.dowson@valexa.com"/>
+        <property name="emailReceivers" value="DL-UKBR-Audatex-penguin-reporting@audatex.co.uk"/>
         <!--property name="hostName" value="${HOSTNAME}"/-->
     </bean>
 

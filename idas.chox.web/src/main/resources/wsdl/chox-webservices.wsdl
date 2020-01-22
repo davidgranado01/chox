@@ -11,7 +11,7 @@
         Service: CHOX UploadService
         Version: 1.7.0
         Owner: Audatex
-        Contact: John.Dowson@valexa.com
+        Contact: Isabelle.Lecoeuche@audatex.co.uk
     </wsdl:documentation>
 
     <wsdl:types>
