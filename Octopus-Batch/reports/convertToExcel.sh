@@ -224,7 +224,7 @@ function getEmailReceivers {
 	        ACTIVE=1
 	        EMAIL_RECEIVERS=alane@keoghs.co.uk,lkearsley@keoghs.co.uk;;
         *)
-            EMAIL_RECEIVERS=john.dowson@valexa.com;;
+            EMAIL_RECEIVERS=DL-UKBR-Audatex-penguin-reporting@audatex.co.uk;;
     esac
 
 }
@@ -238,7 +238,7 @@ then
 fi
 
 #BCC_RECIPIENTS=Elliot.Roberts@Valexa.com
-#BCC_RECIPIENTS=John.Dowson@Valexa.com
+#BCC_RECIPIENTS=Isabelle.Lecoeuche@audatex.co.uk
 #BCC_RECIPIENTS=John.Strawhorne@Valexa.com
 BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk
 
