@@ -39,12 +39,19 @@ public class AssignOwner extends BaseActivity {
         if (claim.getClaimType() == ClaimType.INSURER_INVOICE) {
             workgroupsEnabled = claim.getInsurer().isEnableManualInvoiceWorkgroups();
             ownershipEnabled = claim.getInsurer().isEnableManualInvoiceOwnership();
-            if (!workgroupsEnabled && claim.getWorkgroup() != null && oasWorkgroupId > 0) {
-                workgroupsEnabled = true;
-            }
         } else {
             workgroupsEnabled = claim.getInsurer().isWorkgroupEnable();
             ownershipEnabled = claim.getInsurer().isClaimOwnershipEnable();
+        }
+
+        if (!workgroupsEnabled && !ownershipEnabled)  {
+            throw new Exception("Both workgroup and ownership are disabled.");
+        }
+
+        // moved out of the first 'if' of this method to maintain backward compatibility
+        if (claim.getClaimType() == ClaimType.INSURER_INVOICE &&
+                !workgroupsEnabled && claim.getWorkgroup() != null && oasWorkgroupId > 0) {
+            workgroupsEnabled = true;
         }
 
         if (workgroupsEnabled && oasWorkgroupId <= 0) {
