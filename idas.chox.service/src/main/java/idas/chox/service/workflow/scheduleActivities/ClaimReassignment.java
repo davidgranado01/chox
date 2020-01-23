@@ -25,6 +25,7 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
     private UserService userService;
     private WorkgroupService workgroupService;
+    private BreBandService breBandService;
     private ActivityFactory activityFactory;
     private XlsFileParser xlsFileParser;
 
@@ -72,6 +73,14 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
     public void setWorkgroupService(WorkgroupService workgroupService) {
         this.workgroupService = workgroupService;
+    }
+
+    public BreBandService getBreBandService() {
+        return breBandService;
+    }
+
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
     }
 
     @Override
@@ -244,6 +253,13 @@ public class ClaimReassignment extends BaseScheduleActivity {
                                             if (claimStatus.equals(CLAIM_UNACKNOWLEDGED_UNROUTED_STATUS)) {
                                                 assignWorkgroup.process(claim);
                                             }
+                                        }
+
+                                        Optional<BreBand> claimBreBandOptional = Optional.ofNullable(claim.getBreBand());
+
+                                        if (claimBreBandOptional.isEmpty()) {
+                                            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                                            claim.setBreBand(choBand);
                                         }
 
                                         assignOwner.process(claim);
