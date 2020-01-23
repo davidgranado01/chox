@@ -224,7 +224,7 @@ function getEmailReceivers {
 	        ACTIVE=1
 	        EMAIL_RECEIVERS=alane@keoghs.co.uk,lkearsley@keoghs.co.uk;;
         *)
-            EMAIL_RECEIVERS=DL-UKBR-Audatex-penguin-reporting@audatex.co.uk;;
+            EMAIL_RECEIVERS=DL-UKBR-Audatex-penguin-reporting@audatex.com;;
     esac
 
 }
