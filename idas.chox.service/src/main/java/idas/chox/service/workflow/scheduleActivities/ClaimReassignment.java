@@ -237,7 +237,7 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
                                         Integer newClaimOwnerId = assignOwner.getClaimOwnerId();
 
-                                        Integer newWorkgroupId = assignOwner.getWorkgroup().getId();
+                                        Integer newWorkgroupId = assignOwner.getOasWorkgroupId();
 
                                         if (currentWorkgroupId.equals(newWorkgroupId) && currentClaimOwnerId.equals(newClaimOwnerId)) {
 
