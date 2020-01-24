@@ -187,6 +187,7 @@
 	<property name="active" value="${scheduler.email.active}"/>	
         <property name="serverConfig" ref="serverConfig"/>
         <property name="gmailUtils" ref="gmailUtils" />
+        <property name="userService" ref="userService" />
     </bean>
 	
     <!--  Stored Procedure call: addMissingEcdTask -->
