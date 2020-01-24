@@ -219,6 +219,15 @@ public class Rule108RepairDiaryInformationCheck extends BaseTest {
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
 
+    @Test
+    public void testFailed_NoHireMonitoring(){
+        Claim claim = getTestClaim(ClaimType.GTA);
+        claim.setHireMonitoringDetail(null);
+        RepairDiaryInformationCheck rule = new RepairDiaryInformationCheck();
+        RuleEvaluation rv = rule.applyToClaim(claim);
+
+        Assert.assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
+    }
 
 
 }
