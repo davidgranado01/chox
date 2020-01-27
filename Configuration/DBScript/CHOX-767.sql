@@ -11,8 +11,8 @@ DELETE FROM  gmail_scheduler_job WHERE email_subject = 'DLG Reassign Claim';
 INSERT INTO gmail_scheduler_job (login_username, login_password, job_name, email_subject, authorised_user,
                                  bcc_receiver, processed_label, error_message_receiver, active, reply_to_sender,
                                  version, created_by, created_date, last_modified_by, last_modified_date)
-VALUES ('admin@dlg.com', 'C0mpliance', 'reassignClaim', 'DLG Reassign Claim', 'lisa.thomas@directlinegroup.co.uk',
-        'isabelle.lecoeuche@audatex.co.uk,zhikun.deng@audatex.co.uk', 'Processed Reassign Claim', 'isabelle.lecoeuche@audatex.co.uk,zhikun.deng@audatex.co.uk', 't', 't', 1, 999,
+VALUES ('admin@dlg.com', 'C0mpliance', 'reassignClaim', 'DLG Reassign Claim', 'lisa.thomas@directlinegroup.co.uk,Steven.Talbot@directlinegroup.co.uk,Tam.bedford@directlinegroup.co.uk',
+        'DL-UKBR-Audatex-penguin-reporting@audatex.com', 'Processed Reassign Claim', 'DL-UKBR-Audatex-penguin-reporting@audatex.com', 't', 't', 1, 999,
         now(), 999, now());
 
 
@@ -21,7 +21,7 @@ INSERT INTO gmail_scheduler_job (login_username, login_password, job_name, email
                                  bcc_receiver, processed_label, error_message_receiver, active, reply_to_sender,
                                  version, created_by, created_date, last_modified_by, last_modified_date)
 VALUES ('admin@lv.com', 'C0mpliance', 'reassignClaim', 'LV Reassign Claim', 'andrew.seedhouse@lv.com',
-        'isabelle.lecoeuche@audatex.co.uk,zhikun.deng@audatex.co.uk', 'Processed Reassign Claim', 'isabelle.lecoeuche@audatex.co.uk,zhikun.deng@audatex.co.uk', 't', 't', 1, 999,
+        'DL-UKBR-Audatex-penguin-reporting@audatex.com', 'Processed Reassign Claim', 'DL-UKBR-Audatex-penguin-reporting@audatex.com', 't', 't', 1, 999,
         now(), 999, now());
 
 DELETE FROM  gmail_scheduler_job WHERE email_subject = 'QBE Reassign Claim';
@@ -29,7 +29,7 @@ INSERT INTO gmail_scheduler_job (login_username, login_password, job_name, email
                                  bcc_receiver, processed_label, error_message_receiver, active, reply_to_sender,
                                  version, created_by, created_date, last_modified_by, last_modified_date)
 VALUES ('admin@qbe.com', 'C0mpliance', 'reassignClaim', 'QBE Reassign Claim', 'jacqueline.britton@uk.qbe.com',
-        'isabelle.lecoeuche@audatex.co.uk,zhikun.deng@audatex.co.uk', 'Processed Reassign Claim', 'isabelle.lecoeuche@audatex.co.uk,zhikun.deng@audatex.co.uk', 't', 't', 1, 999,
+        'DL-UKBR-Audatex-penguin-reporting@audatex.com', 'Processed Reassign Claim', 'DL-UKBR-Audatex-penguin-reporting@audatex.com', 't', 't', 1, 999,
         now(), 999, now());
 
 DELETE FROM  gmail_scheduler_job WHERE email_subject = 'RSA Reassign Claim';
@@ -37,7 +37,7 @@ INSERT INTO gmail_scheduler_job (login_username, login_password, job_name, email
                                  bcc_receiver, processed_label, error_message_receiver, active, reply_to_sender,
                                  version, created_by, created_date, last_modified_by, last_modified_date)
 VALUES ('admin@rsa.com', 'C0mpliance', 'reassignClaim', 'RSA Reassign Claim', 'stacie.warrington@uk.rsagroup.com',
-        'isabelle.lecoeuche@audatex.co.uk,zhikun.deng@audatex.co.uk', 'Processed Reassign Claim', 'isabelle.lecoeuche@audatex.co.uk,zhikun.deng@audatex.co.uk', 't', 't', 1, 999,
+        'DL-UKBR-Audatex-penguin-reporting@audatex.com', 'Processed Reassign Claim', 'DL-UKBR-Audatex-penguin-reporting@audatex.com', 't', 't', 1, 999,
         now(), 999, now());
 
 DELETE FROM  gmail_scheduler_job WHERE email_subject = 'Motability Reassign Claim';
@@ -45,7 +45,7 @@ INSERT INTO gmail_scheduler_job (login_username, login_password, job_name, email
                                  bcc_receiver, processed_label, error_message_receiver, active, reply_to_sender,
                                  version, created_by, created_date, last_modified_by, last_modified_date)
 VALUES ('admin@motability.com', 'C0mpliance', 'reassignClaim', 'Motability Reassign Claim', 'lewis.jardine@uk.rsagroup.co.uk',
-        'isabelle.lecoeuche@audatex.co.uk,zhikun.deng@audatex.co.uk', 'Processed Reassign Claim', 'isabelle.lecoeuche@audatex.co.uk,zhikun.deng@audatex.co.uk', 't', 't', 1, 999,
+        'DL-UKBR-Audatex-penguin-reporting@audatex.com', 'Processed Reassign Claim', 'DL-UKBR-Audatex-penguin-reporting@audatex.com', 't', 't', 1, 999,
         now(), 999, now());
 
 DELETE FROM  gmail_scheduler_job WHERE email_subject = 'ERS Reassign Claim';
@@ -53,7 +53,7 @@ INSERT INTO gmail_scheduler_job (login_username, login_password, job_name, email
                                  bcc_receiver, processed_label, error_message_receiver, active, reply_to_sender,
                                  version, created_by, created_date, last_modified_by, last_modified_date)
 VALUES ('admin@equity.com', 'C0mpliance', 'reassignClaim', 'ERS Reassign Claim', 'jon.lee@equitygroup.co.uk',
-        'isabelle.lecoeuche@audatex.co.uk,zhikun.deng@audatex.co.uk', 'Processed Reassign Claim', 'isabelle.lecoeuche@audatex.co.uk,zhikun.deng@audatex.co.uk', 't', 't', 1, 999,
+        'DL-UKBR-Audatex-penguin-reporting@audatex.com', 'Processed Reassign Claim', 'DL-UKBR-Audatex-penguin-reporting@audatex.com', 't', 't', 1, 999,
         now(), 999, now());
 
 DELETE FROM  gmail_scheduler_job WHERE email_subject = 'Tesco UW Reassign Claim';
@@ -61,13 +61,13 @@ INSERT INTO gmail_scheduler_job (login_username, login_password, job_name, email
                                  bcc_receiver, processed_label, error_message_receiver, active, reply_to_sender,
                                  version, created_by, created_date, last_modified_by, last_modified_date)
 VALUES ('admin@tesco.com', 'C0mpliance', 'reassignClaim', 'Tesco UW Reassign Claim', 'david.crown@tescobank.com',
-        'isabelle.lecoeuche@audatex.co.uk,zhikun.deng@audatex.co.uk', 'Processed Reassign Claim', 'isabelle.lecoeuche@audatex.co.uk,zhikun.deng@audatex.co.uk', 't', 't', 1, 999,
+        'DL-UKBR-Audatex-penguin-reporting@audatex.com', 'Processed Reassign Claim', 'DL-UKBR-Audatex-penguin-reporting@audatex.com', 't', 't', 1, 999,
         now(), 999, now());
 
 DELETE FROM  gmail_scheduler_job WHERE email_subject = 'Admin Reassign Claim';
 INSERT INTO gmail_scheduler_job (login_username, login_password, job_name, email_subject, authorised_user,
                                  bcc_receiver, processed_label, error_message_receiver, active, reply_to_sender,
                                  version, created_by, created_date, last_modified_by, last_modified_date)
-VALUES ('admin@chox.com', 'C0mpliance', 'reassignClaim', 'Admin Reassign Claim', 'support@valexa.com',
-        'isabelle.lecoeuche@audatex.co.uk,zhikun.deng@audatex.co.uk', 'Processed Reassign Claim', 'isabelle.lecoeuche@audatex.co.uk,zhikun.deng@audatex.co.uk', 't', 't', 1, 999,
+VALUES ('admin@chox.com', 'C0mpliance', 'reassignClaim', 'Admin Reassign Claim', 'support@valexa.com,MichaelPaul.Kemp@audatex.co.uk',
+        'DL-UKBR-Audatex-penguin-reporting@audatex.com', 'Processed Reassign Claim', 'DL-UKBR-Audatex-penguin-reporting@audatex.com', 't', 't', 1, 999,
         now(), 999, now());
