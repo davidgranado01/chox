@@ -231,36 +231,21 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
                                     try {
 
-                                        Integer currentWorkgroupId = claim.getWorkgroup().getId();
+                                        String claimStatus = claim.getStatus();
 
-                                        Integer currentClaimOwnerId = claim.getClaimOwner().getId();
-
-                                        Integer newClaimOwnerId = assignOwner.getClaimOwnerId();
-
-                                        Integer newWorkgroupId = assignOwner.getOasWorkgroupId();
-
-                                        if (currentWorkgroupId.equals(newWorkgroupId) && currentClaimOwnerId.equals(newClaimOwnerId)) {
-
-                                            status.append("Success: Nothing to update");
-
-                                        } else {
-
-                                            String claimStatus = claim.getStatus();
-
-                                            if (claimStatus.equals(CLAIM_UNACKNOWLEDGED_UNROUTED_STATUS)) {
-                                                assignWorkgroup.process(claim);
-                                            }
-
-                                            Optional<BreBand> claimBreBandOptional = Optional.ofNullable(claim.getBreBand());
-
-                                            if (claimBreBandOptional.isEmpty()) {
-                                                BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
-                                                claim.setBreBand(choBand);
-                                            }
-
-                                            assignOwner.process(claim);
-                                            status.append("Success: Updated");
+                                        if (claimStatus.equals(CLAIM_UNACKNOWLEDGED_UNROUTED_STATUS)) {
+                                            assignWorkgroup.process(claim);
                                         }
+
+                                        Optional<BreBand> claimBreBandOptional = Optional.ofNullable(claim.getBreBand());
+
+                                        if (claimBreBandOptional.isEmpty()) {
+                                            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                                            claim.setBreBand(choBand);
+                                        }
+
+                                        assignOwner.process(claim);
+                                        status.append("Success: Updated");
 
                                     } catch (AccessDeniedException ex) {
                                         status.append("Failed: Cannot complete assignment for claim '").append(claim.getClaimType().name()).append("' in status '").append(claim.getStatus()).append("'");
