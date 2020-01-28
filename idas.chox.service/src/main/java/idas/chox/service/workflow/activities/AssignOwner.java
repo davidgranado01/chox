@@ -73,7 +73,6 @@ public class AssignOwner extends BaseActivity {
                 Integer currentClaimOwnerId = webUser.getId();
 
                 if (currentWorkgroupId.equals(oasWorkgroupId) && currentClaimOwnerId.equals(claimOwnerId)) {
-                    LOG.error("Nothing to update. The claim is already assigned to workgroup={} and claimOwner={}", oasWorkgroupId, claimOwnerId);
                     throw new Exception("Nothing to update");
                 }
 
@@ -91,7 +90,6 @@ public class AssignOwner extends BaseActivity {
                 Integer currentClaimOwnerId = webUser.getId();
 
                 if (currentClaimOwnerId.equals(claimOwnerId)) {
-                    LOG.error("Nothing to update. The claim is already assigned to claimOwner={}", claimOwnerId);
                     throw new Exception("Nothing to update");
                 }
 
