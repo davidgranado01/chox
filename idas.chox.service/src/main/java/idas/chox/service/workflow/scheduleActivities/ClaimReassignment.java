@@ -22,6 +22,7 @@ import static idas.chox.core.model.ClaimType.INSURER_INVOICE;
 public class ClaimReassignment extends BaseScheduleActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimReassignment.class);
+    public static final int EXPECTED_CLAIM_RESULT_SIZE = 1;
 
     private UserService userService;
     private WorkgroupService workgroupService;
@@ -160,7 +161,7 @@ public class ClaimReassignment extends BaseScheduleActivity {
                         List<Claim> claims = validateClaimReferenceNumber(supplierReference, claimNumber, status);
 
                         // A list will always be returned
-                        if (claims.size() > 0) {
+                        if (claims.size() == EXPECTED_CLAIM_RESULT_SIZE) {
 
                             claims.forEach(claim -> {
 
@@ -259,6 +260,9 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
                             });
 
+                        } else if (claims.size() > EXPECTED_CLAIM_RESULT_SIZE) {
+                            status.append("Failed: Multiple claims found");
+                            LOG.warn("Claim not located: Multiple claims found");
                         } else {
                             status.append("Failed: Claim not found");
                             LOG.warn("Claim not found");
