@@ -41,10 +41,11 @@
 
     <bean id="reassignClaim" class="idas.chox.service.workflow.scheduleActivities.ClaimReassignment" scope="prototype">
         <property name="claimService" ref="claimService" />
-        <property name="xlsFileParser" ref="xlsFileParser" />
-        <property name="activityFactory" ref="activityFactory" />
         <property name="userService" ref="userService" />
         <property name="workgroupService" ref="workgroupService" />
+        <property name="breBandService" ref="breBandService" />
+        <property name="xlsFileParser" ref="xlsFileParser" />
+        <property name="activityFactory" ref="activityFactory" />
         <property name="workflowContext" ref="workflowContext"/>
     </bean>
 

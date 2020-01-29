@@ -227,4 +227,15 @@ public class Rule107TotalLossDiaryInformationCheck extends BaseTest {
         Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
 
+    @Test
+    public void testSkipped_NoHireMonitoring(){
+        Claim claim = getTestClaim(ClaimType.GTA);
+        claim.setHireMonitoringDetail(null);
+        TotalLossDiaryInformationCheck rule = new TotalLossDiaryInformationCheck();
+        RuleEvaluation rv = rule.applyToClaim(claim);
+
+        Assert.assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
+    }
+
+
 }

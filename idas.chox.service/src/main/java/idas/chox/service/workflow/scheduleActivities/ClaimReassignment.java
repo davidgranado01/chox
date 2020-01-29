@@ -22,9 +22,11 @@ import static idas.chox.core.model.ClaimType.INSURER_INVOICE;
 public class ClaimReassignment extends BaseScheduleActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(ClaimReassignment.class);
+    public static final int EXPECTED_CLAIM_RESULT_SIZE = 1;
 
     private UserService userService;
     private WorkgroupService workgroupService;
+    private BreBandService breBandService;
     private ActivityFactory activityFactory;
     private XlsFileParser xlsFileParser;
 
@@ -45,9 +47,6 @@ public class ClaimReassignment extends BaseScheduleActivity {
     public static final int CELL_SIZE_WITH_WORKGROUP_AND_STATUS = 5;
     public static final int STATUS_INDEX_WITHOUT_WORKGROUP_AND_STATUS = 3;
     public static final int STATUS_INDEX_WITH_WORKGROUP_AND_STATUS = 4;
-
-    private static final int NEW_OWNER_WITHOUT_WORKGROUP_SIZE = 3;
-    private static final int NEW_OWNER_WITH_WORKGROUP_SIZE = 4;
 
     private boolean claimOwnershipEnabled;
     private boolean claimWorkgroupEnabled;
@@ -72,6 +71,14 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
     public void setWorkgroupService(WorkgroupService workgroupService) {
         this.workgroupService = workgroupService;
+    }
+
+    public BreBandService getBreBandService() {
+        return breBandService;
+    }
+
+    public void setBreBandService(BreBandService breBandService) {
+        this.breBandService = breBandService;
     }
 
     @Override
@@ -154,7 +161,7 @@ public class ClaimReassignment extends BaseScheduleActivity {
                         List<Claim> claims = validateClaimReferenceNumber(supplierReference, claimNumber, status);
 
                         // A list will always be returned
-                        if (claims.size() > 0) {
+                        if (claims.size() == EXPECTED_CLAIM_RESULT_SIZE) {
 
                             claims.forEach(claim -> {
 
@@ -182,15 +189,10 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
                                             int loggedInsurerId = insurer.getId();
 
-                                            Optional<String> claimStatusOptional = Optional.ofNullable(claim.getStatus());
+                                            String claimStatus = claim.getStatus();
 
-                                            if (claimStatusOptional.isPresent()) {
-
-                                                String claimStatus = claimStatusOptional.get();
-
-                                                if (claimStatus.equals(CLAIM_UNACKNOWLEDGED_UNROUTED_STATUS)) {
-                                                    setNewWorkgroupId(status, cells, loggedInsurerId, assignWorkgroup);
-                                                }
+                                            if (claimStatus.equals(CLAIM_UNACKNOWLEDGED_UNROUTED_STATUS)) {
+                                                setNewWorkgroupId(status, cells, loggedInsurerId, assignWorkgroup);
                                             }
 
                                             if (isStatusEmpty(status)) {
@@ -211,15 +213,10 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
                                             int loggedInsurerId = insurer.getId();
 
-                                            Optional<String> claimStatusOptional = Optional.ofNullable(claim.getStatus());
+                                            String claimStatus = claim.getStatus();
 
-                                            if (claimStatusOptional.isPresent()) {
-
-                                                String claimStatus = claimStatusOptional.get();
-
-                                                if (claimStatus.equals(CLAIM_UNACKNOWLEDGED_UNROUTED_STATUS)) {
-                                                    setNewWorkgroupId(status, cells, loggedInsurerId, assignWorkgroup);
-                                                }
+                                            if (claimStatus.equals(CLAIM_UNACKNOWLEDGED_UNROUTED_STATUS)) {
+                                                setNewWorkgroupId(status, cells, loggedInsurerId, assignWorkgroup);
                                             }
 
                                             if (isStatusEmpty(status)) {
@@ -235,19 +232,22 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
                                     try {
 
-                                        Optional<String> claimStatusOptional = Optional.ofNullable(claim.getStatus());
+                                        String claimStatus = claim.getStatus();
 
-                                        if (claimStatusOptional.isPresent()) {
+                                        if (claimStatus.equals(CLAIM_UNACKNOWLEDGED_UNROUTED_STATUS)) {
+                                            assignWorkgroup.process(claim);
+                                        }
 
-                                            String claimStatus = claimStatusOptional.get();
+                                        Optional<BreBand> claimBreBandOptional = Optional.ofNullable(claim.getBreBand());
 
-                                            if (claimStatus.equals(CLAIM_UNACKNOWLEDGED_UNROUTED_STATUS)) {
-                                                assignWorkgroup.process(claim);
-                                            }
+                                        if (claimBreBandOptional.isEmpty()) {
+                                            BreBand choBand = breBandService.getBreBand(claim.getChorganisation().getId(), claim.getInsurer().getId());
+                                            claim.setBreBand(choBand);
                                         }
 
                                         assignOwner.process(claim);
                                         status.append("Success: Updated");
+
                                     } catch (AccessDeniedException ex) {
                                         status.append("Failed: Cannot complete assignment for claim '").append(claim.getClaimType().name()).append("' in status '").append(claim.getStatus()).append("'");
                                         LOG.warn("AccessDenied Exception thrown when reassigning owner via email scheduler job");
@@ -260,6 +260,9 @@ public class ClaimReassignment extends BaseScheduleActivity {
 
                             });
 
+                        } else if (claims.size() > EXPECTED_CLAIM_RESULT_SIZE) {
+                            status.append("Failed: Multiple claims found");
+                            LOG.warn("Claim not located: Multiple claims found");
                         } else {
                             status.append("Failed: Claim not found");
                             LOG.warn("Claim not found");
@@ -352,13 +355,13 @@ public class ClaimReassignment extends BaseScheduleActivity {
                     Integer newOwnerWebUserId = newOwnerWebUser.getId();
                     activity.setClaimOwnerId(newOwnerWebUserId);
                 } else {
-                    status.append("Failed: Web user is not a claim handler");
-                    LOG.warn("Web user is not a claim handler");
+                    status.append("Failed: User is not a claim handler");
+                    LOG.warn("User is not a claim handler");
                 }
 
             } else {
-                status.append("Failed: Web user not found");
-                LOG.warn("Web user not found");
+                status.append("Failed: User not found");
+                LOG.warn("User not found");
             }
         } else {
             status.append("Failed: New Owner Username was not provided");
