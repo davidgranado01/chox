@@ -186,7 +186,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
                             throw new AccessDeniedException("GmailSchedulerJob username does not exist.");
                         }
 
-                        mailSecurityAthenticator.authenticateSender(job.getLoginUserName(), ChoxPasswordEncoder.NOOP_PREFIX + webUser.getPassword());
+                        mailSecurityAthenticator.authenticateSender(job.getLoginUserName(), ChoxPasswordEncoder.HASHED_PASSWORD_SECRET + webUser.getPassword());
                         LOG.debug("Mapped login user {} is authenticated.", job.getLoginUserName());
 
                     } catch (AccessDeniedException | AuthenticationException e) {

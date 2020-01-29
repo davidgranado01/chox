@@ -27,7 +27,7 @@ public class ChoxPasswordEncoderTest {
 
         defaultHash = defaultPasswordEncoder.encode(rawPassword);
         // special password is simple special prefix with normal hash
-        specialPassword = ChoxPasswordEncoder.NOOP_PREFIX + defaultHash;
+        specialPassword = ChoxPasswordEncoder.HASHED_PASSWORD_SECRET + defaultHash;
     }
 
     @Test

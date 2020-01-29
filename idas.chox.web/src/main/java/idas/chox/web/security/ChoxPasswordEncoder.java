@@ -4,18 +4,19 @@ import org.springframework.security.crypto.codec.Utf8;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class ChoxPasswordEncoder implements PasswordEncoder {
     private final PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-    public static final String NOOP_PREFIX = UUID.randomUUID().toString();
-    private static final int NOOP_PREFIX_LENGTH = NOOP_PREFIX.length();
+    public static final String HASHED_PASSWORD_SECRET = UUID.randomUUID().toString();
+    private static final int HASHED_PASSWORD_SECRET_LENGTH = HASHED_PASSWORD_SECRET.length();
 
     @Override
     public String encode(CharSequence rawPassword) {
-        if (isSpecialPassword(rawPassword)) {
-            return rawPassword.subSequence(NOOP_PREFIX_LENGTH, rawPassword.length()).toString();
+        if (isHashedPasswordSecretPrefixed(rawPassword)) {
+            return extractRawPassword(rawPassword);
         }
 
         return passwordEncoder.encode(rawPassword);
@@ -23,8 +24,8 @@ public class ChoxPasswordEncoder implements PasswordEncoder {
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        if (isSpecialPassword(rawPassword)) {
-            return equals(encodedPassword, encode(rawPassword));
+        if (isHashedPasswordSecretPrefixed(rawPassword)) {
+            return equals(encodedPassword, extractRawPassword(rawPassword));
         }
 
         return passwordEncoder.matches(rawPassword, encodedPassword);
@@ -35,9 +36,26 @@ public class ChoxPasswordEncoder implements PasswordEncoder {
         return passwordEncoder.upgradeEncoding(encodedPassword);
     }
 
-    private boolean isSpecialPassword(CharSequence rawPassword) {
-        return null != rawPassword && rawPassword.length() > NOOP_PREFIX_LENGTH &&
-                NOOP_PREFIX.equals(rawPassword.subSequence(0, NOOP_PREFIX_LENGTH).toString());
+    private boolean isHashedPasswordSecretPrefixed(CharSequence rawPassword) {
+        boolean hashedPasswordSecretPrefixed = false;
+        Optional<CharSequence> rawPasswordOptional = Optional.ofNullable(rawPassword);
+        if (rawPasswordOptional.isPresent()) {
+            if (rawPassword.length() > HASHED_PASSWORD_SECRET_LENGTH) {
+                String prefixedSecret = extractSecret(rawPassword);
+                hashedPasswordSecretPrefixed = HASHED_PASSWORD_SECRET.equals(prefixedSecret);
+            }
+        }
+        return hashedPasswordSecretPrefixed;
+    }
+
+    private String extractRawPassword(CharSequence prefixedRawPassword) {
+        CharSequence rawPassword = prefixedRawPassword.subSequence(HASHED_PASSWORD_SECRET_LENGTH, prefixedRawPassword.length());
+        return rawPassword.toString();
+    }
+
+    private String extractSecret(CharSequence prefixedRawPassword) {
+        CharSequence rawPassword = prefixedRawPassword.subSequence(0, HASHED_PASSWORD_SECRET_LENGTH).toString();
+        return rawPassword.toString();
     }
 
     private boolean equals(String expected, String actual) {
