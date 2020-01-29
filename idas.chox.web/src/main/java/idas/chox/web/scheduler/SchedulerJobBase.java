@@ -89,7 +89,7 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
                         throw new AccessDeniedException("SchedulerJob username does not exist.");
                     }
 
-                    mailSecurityAthenticator.authenticateSender(loginUsername, ChoxPasswordEncoder.NOOP_PREFIX + webUser.getPassword());
+                    mailSecurityAthenticator.authenticateSender(loginUsername, ChoxPasswordEncoder.HASHED_PASSWORD_SECRET + webUser.getPassword());
                     LOG.debug("Mapped login user {} is authenticated.", loginUsername);
 
                     process(schedulerJob);
