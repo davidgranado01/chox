@@ -8,6 +8,9 @@ import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
 
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.UserService;
+import idas.chox.web.security.ChoxPasswordEncoder;
 import org.quartz.JobExecutionException;
 
 import org.slf4j.Logger;
@@ -39,6 +42,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
     private static final Logger LOG = LoggerFactory.getLogger(GmailSchedulerJob.class);
     private GmailUtils gmailUtils;
     private GmailSchedulerJobService gmailSchedulerJobService;
+    private UserService userService;
     private MailSecurityAthenticator mailSecurityAthenticator;
     private String hostName;
     private ServerConfig serverConfig;
@@ -78,6 +82,14 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -169,7 +181,12 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
 
                     //Ok, sender is authorised, so lets authenticate the user
                     try {
-                        mailSecurityAthenticator.authenticateSender(job.getLoginUserName(), job.getLoginPassword());
+                        WebUser webUser = userService.findByUserName(job.getLoginUserName());
+                        if (null == webUser) {
+                            throw new AccessDeniedException("GmailSchedulerJob username does not exist.");
+                        }
+
+                        mailSecurityAthenticator.authenticateSender(job.getLoginUserName(), ChoxPasswordEncoder.HASHED_PASSWORD_SECRET + webUser.getPassword());
                         LOG.debug("Mapped login user {} is authenticated.", job.getLoginUserName());
 
                     } catch (AccessDeniedException | AuthenticationException e) {

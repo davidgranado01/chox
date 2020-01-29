@@ -10,6 +10,9 @@ import java.util.regex.Pattern;
 
 import javax.mail.MessagingException;
 
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.UserService;
+import idas.chox.web.security.ChoxPasswordEncoder;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -48,6 +51,7 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     private Session session;
     private SessionFactory sessionFactory;
     private SchedulerJobService schedulerJobService;
+    private UserService userService;
     private String hostName;
     private ServerConfig serverConfig;
     private ApplicationContext applicationContext;
@@ -79,14 +83,18 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
             for (SchedulerJob schedulerJob : schedulerJobs) {
                 LOG.info("{} job started.", getClass().getSimpleName());
                 loginUsername = schedulerJob.getLoginUserName();
-                loginPassword = schedulerJob.getLoginPassword();
                 try {
-                    mailSecurityAthenticator.authenticateSender(loginUsername, loginPassword);
+                    WebUser webUser = userService.findByUserName(loginUsername);
+                    if (null == webUser) {
+                        throw new AccessDeniedException("SchedulerJob username does not exist.");
+                    }
+
+                    mailSecurityAthenticator.authenticateSender(loginUsername, ChoxPasswordEncoder.HASHED_PASSWORD_SECRET + webUser.getPassword());
                     LOG.debug("Mapped login user {} is authenticated.", loginUsername);
 
                     process(schedulerJob);
                 } catch (AccessDeniedException | AuthenticationException e) {
-                    LOG.error("The user for scheduler job {} is not authenticated: username='{}', password='{}' \n", new Object[]{ getClass().getSimpleName(), loginUsername, loginPassword, e});
+                    LOG.error("The user for scheduler job {} is not authenticated: username='{}' \n", new Object[]{ getClass().getSimpleName(), loginUsername, e});
                 } catch (Exception e) {
                     LOG.error("An exception was thrown during {} update:  \n", getClass().getSimpleName(), e);
                 } finally {
@@ -254,5 +262,12 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
         }
         return true;
     }
-  
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 }

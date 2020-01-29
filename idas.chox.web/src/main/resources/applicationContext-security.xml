@@ -37,10 +37,13 @@
     <beans:bean id="logoutSuccessHandler" class="idas.chox.web.security.LogoutSuccessHandler">
         <beans:property name="userService" ref="userService"/>
     </beans:bean>
+
+    <beans:bean id="choxPasswordEncoder" class="idas.chox.web.security.ChoxPasswordEncoder"></beans:bean>
     
     <beans:bean id="csrfSecurityRequestMatcher" class="idas.chox.web.security.CsrfSecurityRequestMatcher" />
     <authentication-manager alias="authenticationManager" erase-credentials="true">
         <authentication-provider user-service-ref="userDetailsService">
+            <password-encoder ref="choxPasswordEncoder"></password-encoder>
         </authentication-provider>
     </authentication-manager>
     

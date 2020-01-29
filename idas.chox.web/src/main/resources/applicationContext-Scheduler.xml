@@ -104,6 +104,7 @@
         <property name="maxQueuedRequests" value="${keoghs.maxQueuedRequests}" />
         <property name="maxPendingRequests" value="${keoghs.maxPendingRequests}" />
         <property name="keoghs" ref="keoghs" />
+        <property name="userService" ref="userService" />
     </bean-->
     <!--  Claim Matching Job -->
     <bean id="claimMatchingDbJob" class="idas.chox.web.scheduler.ClaimMatchingSchedulerJob">
@@ -118,6 +119,7 @@
         <property name="inboundDirectoryBase" value="/shared/nfs/chox/dataload/inbound"/>	
         <property name="processedDirectory" value="/home/chox/logs/processed"/>	
         <property name="xlsx2csvLocation" value="/usr/local/bin/xlsx2csv" />
+        <property name="userService" ref="userService" />
         <!--property name="inboundDirectoryBase" value="/Users/john/sprintTest/inbound"/-->	
         <!--property name="processedDirectory" value="/Users/john/sprintTest/processed"/-->	
     </bean>
@@ -152,7 +154,8 @@
         <property name="claimService" ref="claimService" />
         <property name="activityFactory" ref="activityFactory" />
         <property name="inboundDirectoryBase" value="/shared/nfs/chox/dataload/inbound"/>	
-        <property name="processedDirectory" value="/home/chox/logs/processed"/>	
+        <property name="processedDirectory" value="/home/chox/logs/processed"/>
+        <property name="userService" ref="userService" />
         <!--property name="inboundDirectoryBase" value="/Users/john/sprintTest/inbound"/-->	
         <!--property name="processedDirectory" value="/Users/john/sprintTest/processed"/-->	
     </bean>
@@ -165,6 +168,7 @@
         <property name="serverConfig" ref="serverConfig"/>
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="claimService" ref="claimService" />
+        <property name="userService" ref="userService" />
     </bean>
 	
     <!--  IMS Claim Chase Task for Total Loss -->
@@ -176,6 +180,7 @@
         <property name="serverConfig" ref="serverConfig"/>
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="claimService" ref="claimService" />
+        <property name="userService" ref="userService" />
     </bean>
 	
         
@@ -188,6 +193,7 @@
 	<property name="active" value="${scheduler.email.active}"/>	
         <property name="serverConfig" ref="serverConfig"/>
         <property name="gmailUtils" ref="gmailUtils" />
+        <property name="userService" ref="userService" />
     </bean>
 	
     <!--  Stored Procedure call: addMissingEcdTask -->
