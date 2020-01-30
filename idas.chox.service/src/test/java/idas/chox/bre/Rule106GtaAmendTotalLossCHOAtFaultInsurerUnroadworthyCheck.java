@@ -573,8 +573,8 @@ public class Rule106GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck extends 
     }
 
     @Test
-    public void testFailed_DateEngineersReportSentToInspectedDate() throws IOException, ParseException {
-        //4 working days between Date Engineers Report Sent and Inspected Date. Rest of the conditions are met
+    public void testFailed_InspectedDateToDateEngineersReportSent() throws IOException, ParseException {
+        //4 working days between Inspected Date and Date Engineers Report Sent. Rest of the conditions are met
 
         Claim claim = getTestClaim();
         claim.getBreBand().setTimeToSubmittEngineersReport6(3);  //Sets Date Engineers Report Sent to Inspected Date days so that it exceeds the limit
@@ -582,9 +582,9 @@ public class Rule106GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck extends 
 
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
         claim.getIncident().setDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
-        claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));                 //Monday
+        claim.getHireMonitoringDetail().setInspectionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));                 //Monday
         claim.getHireMonitoringDetail().setInspectionBookedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
-        claim.getHireMonitoringDetail().setInspectionDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));                          //Friday
+        claim.getHireMonitoringDetail().setEngineersReportSentDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));        //Friday
         claim.getHireMonitoringDetail().setRepairAuthorisedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
         claim.getHireMonitoringDetail().setTotalLossOfferCheckReceivedDate(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-04"));
         claim.getVehicleHire().setHireEnd(new SimpleDateFormat("yyyy-MM-dd").parse("2019-11-08"));
