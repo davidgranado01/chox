@@ -306,27 +306,7 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.2.0</version>
-                <executions>
-                    <execution>  <!-- Build tgz archive. -->
-                        <id>tar</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>tar.xml</descriptor>
-                            </descriptors>
-                            <finalName>chox-app.${version.number}</finalName>
-                            <appendAssemblyId>false</appendAssemblyId>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+
         </plugins>
         <resources>
             <resource>
