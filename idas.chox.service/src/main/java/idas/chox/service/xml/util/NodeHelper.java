@@ -32,7 +32,7 @@ public final class NodeHelper {
     private static final String MANDATORY_VEHICLE_CLASS_DATA_ERROR_MSG = "Selected Vehicle Class is invalid for '%s'";
     private static final String INCORRECT_INSURER_ALIAS = "Selected '%s' for 'Third Party Insurer' is invalid; this alias does not exist";
     private static final String INCORRECT_CHORGANISATION_ALIAS = "Selected '%s' for 'Supplier Name' is invalid, this alias does not exist";
-    private static final String INCORRECT_SENDING_PAV = "Value suppplied for '%s' is invlaid. Valid values are 'Customers Own Insurer', 'CHO' & 'At Fault Insurer'.";
+    private static final String INCORRECT_SENDING_PAV = "Value supplied for '%s' is invalid. Valid values are 'Customers Own Insurer', 'CHO' & 'At Fault Insurer'.";
     public static final String REG_TIMESTAMP = "^\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$";
     private static final Pattern PATTERN_REG_TIMESTAMP = Pattern.compile(REG_TIMESTAMP);
     public static final String REG_DATETIME = "^(([0-9]|[0,1,2][0-9]|3[0,1])/(0[0-9]|1[0,1,2])/\\d{4}.*)|(\\d{4}-(0[0-9]|1[0,1,2])-([0-9]|[0,1,2][0-9]|3[0,1])[T]([0-9]{2}):([0-9]{2}):([0-9]{2})$)";
@@ -251,7 +251,10 @@ public final class NodeHelper {
         }
 
         // Extra check for tl-who-is-sending-PAV
-        if ("tl-who-is-sending-PAV".equals(nodeName) && !value.trim().isEmpty() && !value.trim().equals("Customers Own Insurer") && !value.trim().equals("CHO") && !value.trim().equals("At Fault Insurer")) {
+        if ("tl-who-is-sending-PAV".equals(nodeName) && !value.trim().isEmpty() &&
+                !value.trim().equals("Customers Own Insurer") &&
+                !value.trim().toUpperCase().equals("CHO") &&
+                !value.trim().equals("At Fault Insurer")) {
             isValid = false;
             claimResult.getMessage().add(String.format(INCORRECT_SENDING_PAV, nodeName));
         }
