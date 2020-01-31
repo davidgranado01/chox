@@ -30,8 +30,7 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        if (claim.getBreBand().isActualHireDaysDoesNotExceedTotalLossInspection() && !ClaimType.isCollaborationProtocol(claim.getClaimType())
-                && !ClaimType.isSubscriber(claim.getClaimType()) && !ClaimType.isFixedFee(claim.getClaimType())
+        if (claim.getBreBand().isActualHireDaysDoesNotExceedTotalLossInspection()
                 && claim.getCustomer() != null && claim.getVehicleHire() != null) {
 
             Date firstJuly2019 = new Date();
@@ -41,8 +40,9 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
                 ; // Not reached
             }
             
-            if (claim.getCustomer().getIsTotalLoss() && claim.getVehicleHire().getHireStart().after(firstJuly2019)
-                    && (claim.getHireMonitoringDetail() == null || claim.getHireMonitoringDetail().getEngineersReportSentDate() == null || claim.getHireMonitoringDetail().getWhoIsSendingPav() == null)) {
+            if ( (ClaimType.isGTA_WideDef(claim.getClaimType()) && claim.getCustomer().getIsTotalLoss() && claim.getVehicleHire().getHireStart().before(firstJuly2019))
+                    || (!ClaimType.isGTA_WideDef(claim.getClaimType()) && claim.getCustomer().getIsTotalLoss())){
+
                 LOG.debug("Total loss claim - rule applies, hire days = ", claim.getVehicleHire().getDays());
                 CHOBandCalcHelper bandCalc = CHOBandCalcHelper.getInstance(claim.getBreBand());
                 boolean success = claim.getVehicleHire().getDays() <= bandCalc.getTotalLossInspectionDays();
