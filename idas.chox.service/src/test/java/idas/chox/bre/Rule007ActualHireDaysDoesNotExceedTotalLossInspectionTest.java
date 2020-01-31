@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import idas.chox.core.model.ClaimType;
 import junit.framework.TestCase;
 
 import org.junit.AfterClass;
@@ -88,7 +89,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
     }
 
     @Test
-    public void testSkipped_HireStart() throws IOException, ParseException {
+    public void testSkipped_GTA_HireStart() throws IOException, ParseException {
 
         Claim claim = getTestClaim();
 
@@ -101,7 +102,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         // SET HIRE DETAIL
         claim.getCustomer().setIsTotalLoss(true);
         claim.getVehicleHire().setDays(8);
-        claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-06-30"));
+        claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-02"));
 
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
         
@@ -110,7 +111,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
     }
 
     @Test
-    public void testSkipped_PAVandEngineersReportSentnotnull() throws IOException, ParseException {
+    public void testSkipped_GTA_HireStart_FirstJuly() throws IOException, ParseException {
 
         Claim claim = getTestClaim();
 
@@ -124,18 +125,15 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         claim.getCustomer().setIsTotalLoss(true);
         claim.getVehicleHire().setDays(8);
         claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-01"));
-        claim.getHireMonitoringDetail().setWhoIsSendingPav("CHO");
-        claim.getHireMonitoringDetail().setEngineersReportSentDate(new Date());
 
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
-        
+
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
 
     }
 
-
     @Test
-    public void testPassed_Equals() throws IOException, ParseException {
+    public void testPassed_GTA_Equals() throws IOException, ParseException {
 
         Claim claim = getTestClaim();
 
@@ -148,7 +146,7 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         // SET HIRE DETAIL
         claim.getCustomer().setIsTotalLoss(true);
         claim.getVehicleHire().setDays(9);
-        claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-01"));
+        claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-06-29"));
 
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
 
@@ -158,7 +156,33 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
     }
 
     @Test
-    public void testFailed() throws IOException, ParseException {
+    public void testPassed_NonGTA_Equals() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+
+        claim.setClaimType(ClaimType.SUBSCRIBER);
+
+        // SET BRE BAND
+        claim.getBreBand().setActualHireDaysDoesNotExceedTotalLossInspection(true);
+        claim.getBreBand().setOfferMadeDays(5);
+        claim.getBreBand().setReceiptOfFinalStatementChequeDays(3);
+        claim.getBreBand().setInspectionDelayDays(1);
+
+        // SET HIRE DETAIL
+        claim.getCustomer().setIsTotalLoss(true);
+        claim.getVehicleHire().setDays(9);
+        claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-06-29"));
+
+        RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RULE_PASSED == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase(""));
+
+    }
+
+
+    @Test
+    public void testFailed_GTA() throws IOException, ParseException {
 
         Claim claim = getTestClaim();
 
@@ -171,8 +195,33 @@ public class Rule007ActualHireDaysDoesNotExceedTotalLossInspectionTest extends T
         // SET HIRE DETAIL
         claim.getCustomer().setIsTotalLoss(true);
         claim.getVehicleHire().setDays(10);
-        claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-01"));
+        claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-06-02"));
         
+        RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
+
+        assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
+        assertTrue(rv.getRelatedRule().getNarrative().equalsIgnoreCase("The number of hire days billed by the CHO (10 days) exceeds the allowable days threshold (9 days) for total loss hires."));
+
+    }
+
+    @Test
+    public void testFailed_NonGTA() throws IOException, ParseException {
+
+        Claim claim = getTestClaim();
+
+        claim.setClaimType(ClaimType.SUBSCRIBER);
+
+        // SET BRE BAND
+        claim.getBreBand().setActualHireDaysDoesNotExceedTotalLossInspection(true);
+        claim.getBreBand().setOfferMadeDays(5);
+        claim.getBreBand().setReceiptOfFinalStatementChequeDays(3);
+        claim.getBreBand().setInspectionDelayDays(1);
+
+        // SET HIRE DETAIL
+        claim.getCustomer().setIsTotalLoss(true);
+        claim.getVehicleHire().setDays(10);
+        claim.getVehicleHire().setHireStart(new SimpleDateFormat("yyyy-MM-dd").parse("2019-07-05"));
+
         RuleEvaluation rv = new ActualHireDaysDoesNotExceedTotalLossInspection().applyToClaim(claim);
 
         assertTrue(RuleEvaluationResult.RULE_FAILED == rv.getResult());
