@@ -30,7 +30,7 @@
         <property name="claimService" ref="claimService" />
         <property name="xlsFileParser" ref="xlsFileParser" />
         <property name="activityFactory" ref="activityFactory" />
-        <property name="attachmentService" ref="attachmentService" />
+        <property name="vehicleClassService" ref="vehicleClassService" />
     </bean>
 
     <bean id="updateLou" class="idas.chox.service.workflow.scheduleActivities.UpdateLou" scope="prototype">
