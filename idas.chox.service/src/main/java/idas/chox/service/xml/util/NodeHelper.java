@@ -252,9 +252,9 @@ public final class NodeHelper {
 
         // Extra check for tl-who-is-sending-PAV
         if ("tl-who-is-sending-PAV".equals(nodeName) && !value.trim().isEmpty() &&
-                !value.trim().equals("Customers Own Insurer") &&
+                !value.trim().toUpperCase().equals("Customers Own Insurer".toUpperCase()) &&
                 !value.trim().toUpperCase().equals("CHO") &&
-                !value.trim().equals("At Fault Insurer")) {
+                !value.trim().toUpperCase().equals("At Fault Insurer".toUpperCase())) {
             isValid = false;
             claimResult.getMessage().add(String.format(INCORRECT_SENDING_PAV, nodeName));
         }
