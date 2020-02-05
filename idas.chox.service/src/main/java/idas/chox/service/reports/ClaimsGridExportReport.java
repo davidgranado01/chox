@@ -233,7 +233,7 @@ public class ClaimsGridExportReport {
         StringBuilder sb = new StringBuilder();
         sb.append("select")
             .append(" c.status, c.claim_type, c.cho_reference, cho.name as chorg_name, w.name as workgroup_name, c.last_review_date, c.status_modified_date, c.indeminty_amount,")
-            .append(" c.indemnity_stance, c.liability_status, c.percentage_liability_accepted, c.applied_liability, c.percentage_liability_cho, c.managing_repair, c.policy_holder_contact_date,")
+            .append(" c.indemnity_stance, c.liability_status, c.liability_agreed_date, c.percentage_liability_accepted, c.applied_liability, c.percentage_liability_cho, c.managing_repair, c.policy_holder_contact_date,")
             .append(" c.credit_agreement_date, c.gta_notice_date,c.claim_number, ")
             .append(" case when wu.hashed then 'GDPR: data removed (' || ins.name || ')' else wu.last_name || ' ' || wu.first_name end as claim_owner,")
             .append(" cust.title as customer_title, c.final_review_cho, c.final_review_ins,")
