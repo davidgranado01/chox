@@ -168,7 +168,11 @@
             <xsd:simpleType name="DateTime-or-empty">
                 <xsd:union memberTypes="xsd:dateTime chx:Empty-string" />
             </xsd:simpleType>
-            
+
+            <xsd:simpleType name="String-or-empty">
+                <xsd:union memberTypes="xsd:string chx:Empty-string" />
+            </xsd:simpleType>
+
             <xsd:simpleType name="YesNoType">
                 <xsd:restriction base="xsd:token">
                     <xsd:enumeration value="Y"/>
@@ -687,8 +691,8 @@
                     <xsd:element name="tl-offer-accepted-date" type="chx:DateTime-or-empty"/>
                     <xsd:element name="tl-cheque-issued" type="chx:DateTime-or-empty"/>
                     <xsd:element name="tl-cheque-received" type="chx:DateTime-or-empty"/>
-                    <xsd:element name="tl-who-is-sending-PAV" type="chx:SendingPAV-or-empty"/>
-                    <xsd:element name="engineers-report-date" type="chx:DateTime-or-empty"/>
+                    <xsd:element name="tl-who-is-sending-PAV" type="chx:SendingPAV-or-empty" nillable="true"/>
+                    <xsd:element name="engineers-report-date" type="chx:DateTime-or-empty" nillable="true"/>
                 </xsd:sequence>
             </xsd:complexType>
 
@@ -937,7 +941,7 @@
                         <xsd:complexType>
                             <xsd:sequence>
                                 <xsd:element name="first-contact" type="xsd:dateTime"/>
-                                <xsd:element name="note" type="xsd:string"/>
+                                <xsd:element name="note" type="chx:String-or-empty" nillable="true"/>
                                 <xsd:element name="supplier-name" minOccurs="0" type="chx:NonEmptyString128"/>
                                 <xsd:element name="supplier-reference" type="chx:NonEmptyString128"/>
                                 <xsd:element name="managing-repair" type="chx:YesNoType"/>
