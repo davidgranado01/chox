@@ -734,6 +734,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public UploadedXMLClaimsDetail processWebServiceClaim(InputStream stream) {
 
         Document document;
