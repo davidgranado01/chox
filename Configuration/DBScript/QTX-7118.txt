@@ -1,0 +1,38 @@
+Rollback and forward:
+1. make the backup directory:
+    mkdir -p /home/chox/backups/
+
+2. find out db login details:
+    chox@dev-rdg-chox-app01:/$ vim ~/tomcat/chox_9080/webapps/ROOT/WEB-INF/classes/application.properties
+
+3. connect to the db
+    psql -U dev_uk_chox -h dev-ukre-pgs28.dc.solera-uk.com -d dev_uk_chox
+
+4. check and backup the plain text passwords (mimic)
+    dev_uk_chox=> \copy (SELECT * FROM scheduler_job) TO '/home/chox/backups/backup_scheduler_job_19022020';
+    COPY 7
+    dev_uk_chox=> \copy (SELECT * FROM gmail_scheduler_job) TO '/home/chox/backups/backup_gmail_scheduler_job_19022020';
+    COPY 25
+
+5. restore the password (using the one from backup from pre):
+    by using provided python code to retrieve all the update statement and execute it
+
+6. remove {MD5} prefix (no need to remove {bcrypt}, it will not work anyway)
+    UPDATE web_user SET password = right(password, length(password) - 5) WHERE password LIKE '{MD5}%';
+    UPDATE password_history SET password = right(password, length(password) - 5) WHERE password LIKE '{MD5}%';
+
+7. deploy the previous version (Chox - APP and DB - Octopus release 1.0.11)
+
+
+
+8. After rollback testing, roll forward:
+    UPDATE web_user set password='{MD5}'||password where password not like '{MD5}%' and password not like '{bcrypt}%';
+    UPDATE password_history set password='{MD5}'||password where password not like '{MD5}%' and password not like '{bcrypt}%';
+
+    UPDATE scheduler_job SET login_password = '';
+    UPDATE gmail_scheduler_job SET login_password = '';
+
+9. deploy the new version again (Chox - APP and DB - Octopus release 8.16.43)
+
+* consideration: backup the web_user password hashes, in case user update password, which will be bcrypt,
+  and we need to roll back to md5 old password?
