@@ -9,7 +9,6 @@ if arguments_len is 1:
 
 print("parse the folder: %s" % data_folder)
 
-
 def process_file(file_path):
     with open(file_path) as datas:
         data_reader = csv.reader(datas, delimiter='\t')
@@ -21,9 +20,8 @@ def process_file(file_path):
                 print("UPDATE scheduler_job SET login_password = '%s' WHERE id = %s;" % (
                     data[2], data[0]))
 
-
-for r, d, f in os.walk(data_folder):
-    for file in f:
+for root, directories, files in os.walk(data_folder):
+    for file in files:
         if "backup" in file:
             print("\n")
-            process_file(os.path.join(r, file))
+            process_file(os.path.join(root, file))

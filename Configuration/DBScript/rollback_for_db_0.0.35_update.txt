@@ -1,17 +1,17 @@
-Rollback and deploy release version 1.0.11 *:
+Revert db and deploy octopus  'chox - app and db' release  1.0.11
 
-1. ssh to the application server and
-    > sudo su choxx
+1. ssh to the application server and switch to user 'chox'
+    > sudo su - chox
 
-2. copy the python script 'QTX-7118.py' to /home/chox
+2. copy the python script 'rollback_for_db_0.0.35_update.py' to /home/chox
 
 3. execute the python script which generate plain text password recovery update statements
-    > python QTX-7118.py backups
+    > python rollback_for_db_0.0.35_update.py backups
     copy the generated update statements use Ctrl + C / Command + C
 
 4. connect to the postgres database
 
-5. restore the password using the update statements generated in step 3 Ctrl + V / Command + V
+5. restore the password using the update statements generated in step 3, Ctrl + V / Command + V
 
 6. remove {MD5} prefixes from password hashes
     UPDATE web_user SET password = right(password, length(password) - 5) WHERE password LIKE '{MD5}%';
