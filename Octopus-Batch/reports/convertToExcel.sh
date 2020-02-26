@@ -138,9 +138,9 @@ function getEmailReceivers {
         "Auxillis-Moved_To_InvoicePaymentLogged_Claim_Detail_Report-"* )
 	        ACTIVE=1
             EMAIL_RECEIVERS=cpt@albanyassistance.co.uk,susan.harker@albanyassistance.co.uk,protocol@albanyassistance.co.uk;;
-	    "Auxillie-FNOL_Notifications_Report_DLG-"* )
+	    "Auxillis-FNOL_Notifications_Report_DLG-"* )
 	        ACTIVE=1
-	        EMAIL_RECEIVERS=protocol@albanyassistance.co.uk;;
+	        EMAIL_RECEIVERS=DLGclaimupdate@auxillis.com ;;
 	    "Auxillis-Invoice_Notifications_Report_DLG-"* )
 	        ACTIVE=1
 	        EMAIL_RECEIVERS=protocol@albanyassistance.co.uk;;
