@@ -104,11 +104,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.5</version>
-        </plugin>
         </plugins>
     </build>
     <modules>
@@ -117,11 +112,11 @@
         <module>idas.chox.events</module>
         <!--module>keoghs</module-->
         <module>idas.chox.service</module>
-        <module>idas.chox.web</module>
         <module>wsUploadClient</module>
         <module>reportToExcel</module>
         <module>reportToExcelTemplate</module>
         <!--module>emailNotifications</module-->
+        <module>idas.chox.web</module>
     </modules>
 
 </project>
