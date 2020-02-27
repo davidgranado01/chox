@@ -146,7 +146,8 @@ function getEmailReceivers {
 	        EMAIL_RECEIVERS=protocol@albanyassistance.co.uk;;
         "DLG-Insurer_User_State_Report-"* )
 	        ACTIVE=1
-            EMAIL_RECEIVERS=jamie.willshaw@directlinegroup.co.uk,tam.bedford@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk,Jonathan.Clarke@directlinegroup.co.uk,UAC.Governance@directlinegroup.co.uk;;
+            EMAIL_RECEIVERS=jamie.willshaw@directlinegroup.co.uk,tam.bedford@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk,Jonathan.Clarke@directlinegroup.co.uk,UAC.Governance@directlinegroup.co.uk
+            BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk,David.Hayes@audatex.co.uk;;
         "RSA-Average_Time_To_Allocate_Work-"* )
             EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com;;
 #        "ERAC-Supplementary_Consolidation_Report-"* )
@@ -240,7 +241,10 @@ fi
 #BCC_RECIPIENTS=Elliot.Roberts@Valexa.com
 #BCC_RECIPIENTS=Isabelle.Lecoeuche@audatex.co.uk
 #BCC_RECIPIENTS=John.Strawhorne@Valexa.com
-BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk
+#BCC_RECIPIENT may have been initialised already, otherwise just use a catch all
+if [[ -z "${BCC_RECIPIENTS}" ]]; then
+   BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk
+fi
 
 REPORT_DIR=$1
 PROCESSED_DIR=$2
