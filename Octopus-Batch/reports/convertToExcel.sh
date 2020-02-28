@@ -51,6 +51,7 @@ function getEmailReceivers {
 #    4 - the report is not password protected or zipped, and is sftp'ed to the FTP_CLIENT, with trg files added for txt/xls files (but not csv) (using transferToGateway.sh script for csv, transferToGatewayWithTrigger.sh for xls)
 #    5 - the report is not password protected or zipped, and is sftp'ed to the FTP_CLIENT (using transferToGateway.sh script). txt/xls files only.
     ACTIVE=0
+    BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk
     unset -v FTP_CLIENT
     case "$REPORT_NAME" in
         "ERS-Monthly_Insurer_Cost_Report-"* |\
