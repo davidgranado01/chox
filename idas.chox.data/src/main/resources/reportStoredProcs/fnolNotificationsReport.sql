@@ -69,7 +69,7 @@ END
 ;
 $$ LANGUAGE plpgsql
 ;
-GRANT EXECUTE ON FUNCTION fnol_notifications_report(integer[], integer, text, text) TO chox_user;
-GRANT EXECUTE ON FUNCTION fnol_notifications_report(integer[], integer, text, text) TO chox_mi;
+GRANT EXECUTE ON FUNCTION fnol_notifications_report(integer[], integer, text, text) TO #{DB_USER.CHOX_USER};
+GRANT EXECUTE ON FUNCTION fnol_notifications_report(integer[], integer, text, text) TO #{DB_USER.CHOX_MI};
 -- e.g.
 --     select * from fnol_notifications_report(array[6], 1125, '2016-03-02','2016-03-03');
