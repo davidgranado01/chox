@@ -53,7 +53,8 @@ RETURNS TABLE (
     "Date Repair Commenced" varchar,
     "Repair Completion Date" varchar,
     "Hire Start" varchar,
-    "Comprehensive?" varchar
+    "Comprehensive?" varchar,
+    "Status Modified Date" varchar
 )
 AS $BODY$
     BEGIN
@@ -69,7 +70,8 @@ AS $BODY$
                    inc.location::varchar, inc.incident_description::varchar, hmd.name_of_repairer, case when hmd.is_non_fault_insurer_managing_repair then 'Yes'::varchar else 'No'::varchar end,
                    to_char(hmd.repair_book_in_date, 'dd/mm/yyyy hh24:mi:ss')::varchar, to_char(hmd.repair_authorised_date, 'dd/mm/yyyy hh24:mi:ss')::varchar,
                    to_char(hmd.repair_commenced_date, 'dd/mm/yyyy hh24:mi:ss')::varchar, to_char(hmd.repair_completion_date, 'dd/mm/yyyy hh24:mi:ss')::varchar,
-                   to_char(vh.rental_start, 'dd/mm/yyyy hh24:mi:ss')::varchar, case when cu.comprehensive then 'Yes'::varchar else 'No'::varchar end
+                   to_char(vh.rental_start, 'dd/mm/yyyy hh24:mi:ss')::varchar, case when cu.comprehensive then 'Yes'::varchar else 'No'::varchar end,
+                   to_char(c.status_modified_date, 'dd/mm/yyyy hh24:mi:ss')::varchar
             from claim c left outer join workgroup w on (w.id=c.workgroup_id)
                          left outer join web_user wu on (wu.id=c.claim_owner_id)
                          left outer join hire_monitoring_detail hmd on (hmd.id=c.hire_monitoring_detail_id)
