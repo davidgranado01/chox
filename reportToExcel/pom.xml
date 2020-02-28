@@ -8,6 +8,7 @@
     </parent>
     <groupId>idas.chox</groupId>
     <artifactId>reportToExcel</artifactId>
+    <!-- please make sure to update artifact name accordingly in idas.chox.web/batch.tar.xml if version is updated here -->
     <version>0.2</version>
     <packaging>jar</packaging>
 
