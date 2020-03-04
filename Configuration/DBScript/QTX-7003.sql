@@ -42,6 +42,6 @@ INSERT INTO scheduler_job (login_username, login_password, job_name, active, ver
 VALUES (new_user_name, '', 'PAID_INVOICES', 't', 0, 999, NOW(), 999, NOW())
 RETURNING id INTO new_job_id;
 
-RETURN new_job_id;
+RAISE NOTICE 'New user id: %, and new job id: %', new_user_id, new_job_id;
 END $$;
 
