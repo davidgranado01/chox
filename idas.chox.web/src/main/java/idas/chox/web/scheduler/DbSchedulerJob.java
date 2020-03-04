@@ -36,6 +36,8 @@ public abstract class DbSchedulerJob extends SchedulerJobBase {
                 return "LV";
             case "RSA":
                 return "RSA";
+            case "QBE":
+                return "QBE";
             case "Enterprise Rent-A-Car UK Ltd":
                 return "EHI";
             default:
@@ -49,6 +51,8 @@ public abstract class DbSchedulerJob extends SchedulerJobBase {
                 return "LVCHOXInvoicepaid*.csv";
             case "RSA":
                 return "RSA-CHOXInvoicepaid*.csv";
+            case "QBE":
+                return "QBE-CHOXInvoicepaid*.csv";
             default:
                 return "";
         }
