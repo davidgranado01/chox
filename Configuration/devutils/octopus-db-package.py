@@ -37,7 +37,9 @@ def populate_package(manifest, packageroot):
    location = os.path.join(packageroot, 'ROLLFORWARD/CHOX')
    pathtodata = os.path.dirname(manifest)
 
+   os.remove(os.path.join(location, ".gitkeep"))
    fh = open (os.path.join(location, "00.runAll.sql"), "w")
+
 
    count = 0;
    try:
