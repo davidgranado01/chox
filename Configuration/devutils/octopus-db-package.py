@@ -14,6 +14,7 @@ import sys, getopt, os, shutil
 
 def usage(me):
    print("Usage : python3 {} -i <manifest_file> -o <final_db_package_folder> -t <octopus_db_template_folder>".format(me))
+   print("Example : \npython Configuration/devutils/octopus-db-package.py -i Configuration/DBScript/manifest_GTA-4.14-Changes.txt -o CHOX-DB-GTA-4.14-Changes  -t Octopus-DB")
 
 def mk_package_folders (src, dest):
    """
