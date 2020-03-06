@@ -1,0 +1,17 @@
+<assembly>
+    <id>zip</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <fileSets>
+        <fileSet>
+            <directory>target/chox-db</directory>
+            <outputDirectory>./</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>target/idas.chox.web</directory>
+            <outputDirectory>./tomcat/ROOT</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>
