@@ -4,6 +4,7 @@
 #
 #  Parameters
 #  -h : help
+#  -c : clear destination folder
 #  -i <manifest_file> : input manifest file listing all sql scripts to be included
 #  -o <db_package_folder> : full path to the root folder for new db package. The folder should not exist
 #  -t <template> : template db folder, eg. Octopus-DB in the chox project source directory
@@ -13,7 +14,7 @@
 import sys, getopt, os, shutil
 
 def usage(me):
-   print("Usage : python3 {} -i <manifest_file> -o <final_db_package_folder> -t <octopus_db_template_folder>".format(me))
+   print("Usage : python3 {} -h | [-c] [-i <manifest_file>] [-o <final_db_package_folder>] [-t <octopus_db_template_folder>]".format(me))
    print("Example : \npython Configuration/devutils/octopus-db-package.py -i Configuration/DBScript/manifest_GTA-4.14-Changes.txt -o CHOX-DB-GTA-4.14-Changes  -t Octopus-DB")
 
 def mk_package_folders (src, dest):
@@ -71,13 +72,12 @@ def main(me, argv):
    Exactly 2*3 parameters are expected 
    """
    inputfile = ''
-   outputfile = ''
-   if len(argv) != 6 :
-      usage(me)
-      sys.exit()
+   outputfolder = ''
+   templatefolder = ''
+   cleardest = False
 
    try:
-      opts, args = getopt.getopt(argv,"hi:o:t:",["ifile=","ofile=","tfolder="])
+      opts, args = getopt.getopt(argv,"hci:o:t:",["ifile=","ofile=","tfolder="])
    except getopt.GetoptError:
       usage(me)
       sys.exit(2)
@@ -85,16 +85,33 @@ def main(me, argv):
       if opt == '-h':
          usage(me)
          sys.exit()
+      elif opt in ("-c", "--clear"):
+         cleardest = True
       elif opt in ("-i", "--ifile"):
          inputfile = arg
       elif opt in ("-o", "--ofile"):
-         outputfile = arg
+         outputfolder = arg
       elif opt in ("-t", "--tfolder"):
          templatefolder = arg
 
-   mk_package_folders(templatefolder, outputfile)
-   populate_package(inputfile, outputfile)
-   print ("created db package folder {} with scripts listed in manifest {}".format(outputfile, inputfile))
+   # Use default values where missing
+   scriptpath = os.path.dirname(me)
+   if len(inputfile) == 0 :
+      inputfile = os.path.join(scriptpath, "../DBScript/manifest_latest.txt")
+
+   if len(outputfolder) == 0 :
+      outputfolder = os.path.join(scriptpath, "../../Octopus-DB-Latest")
+
+   if len(templatefolder) == 0 :
+      templatefolder= os.path.join(scriptpath, "../../Octopus-DB")
+
+   if (cleardest):
+      shutil.rmtree(outputfolder)
+
+
+   mk_package_folders(templatefolder, outputfolder)
+   populate_package(inputfile, outputfolder)
+   print ("created db package folder {} with scripts listed in manifest {}".format(outputfolder, inputfile))
 
 if __name__ == "__main__":
    main(sys.argv[0], sys.argv[1:])
