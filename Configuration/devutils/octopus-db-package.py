@@ -48,7 +48,7 @@ def populate_package(manifest, packageroot):
    try:
       os.remove(os.path.join(location, ".gitkeep"))
    except OSError as e:
-      print ('Warning - .geetkeep not found - possibly the template folder is not checked in git?')
+      print ('Warning - .gitkeep not found - possibly the template folder is not checked in git?')
    fh = open (os.path.join(location, "00.runAll.sql"), "w")
 
 
