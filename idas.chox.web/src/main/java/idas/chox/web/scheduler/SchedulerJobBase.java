@@ -10,16 +10,21 @@ import java.util.regex.Pattern;
 
 import javax.mail.MessagingException;
 
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.UserService;
+import idas.chox.web.security.ChoxPasswordEncoder;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.orm.hibernate4.SessionHolder;
+import org.springframework.orm.hibernate5.SessionHolder;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -46,11 +51,13 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     private Session session;
     private SessionFactory sessionFactory;
     private SchedulerJobService schedulerJobService;
+    private UserService userService;
     private String hostName;
     private ServerConfig serverConfig;
     private ApplicationContext applicationContext;
     protected ClaimService claimService;
-    
+    private Transaction hibernateTransaction;
+   
     protected abstract List<SchedulerJob> getSchedulerJobs();
     protected abstract void process(SchedulerJob schedulerJob) throws MessagingException;
 
@@ -76,14 +83,18 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
             for (SchedulerJob schedulerJob : schedulerJobs) {
                 LOG.info("{} job started.", getClass().getSimpleName());
                 loginUsername = schedulerJob.getLoginUserName();
-                loginPassword = schedulerJob.getLoginPassword();
                 try {
-                    mailSecurityAthenticator.authenticateSender(loginUsername, loginPassword);
+                    WebUser webUser = userService.findByUserName(loginUsername);
+                    if (null == webUser) {
+                        throw new AccessDeniedException("SchedulerJob username does not exist.");
+                    }
+
+                    mailSecurityAthenticator.authenticateSender(loginUsername, ChoxPasswordEncoder.HASHED_PASSWORD_SECRET + webUser.getPassword());
                     LOG.debug("Mapped login user {} is authenticated.", loginUsername);
 
                     process(schedulerJob);
                 } catch (AccessDeniedException | AuthenticationException e) {
-                    LOG.error("The user for scheduler job {} is not authenticated: username='{}', password='{}' \n", new Object[]{ getClass().getSimpleName(), loginUsername, loginPassword, e});
+                    LOG.error("The user for scheduler job {} is not authenticated: username='{}' \n", new Object[]{ getClass().getSimpleName(), loginUsername, e});
                 } catch (Exception e) {
                     LOG.error("An exception was thrown during {} update:  \n", getClass().getSimpleName(), e);
                 } finally {
@@ -129,21 +140,54 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
     public void setSchedulerJobService(SchedulerJobService schedulerJobService) {
         this.schedulerJobService = schedulerJobService;
     }
-  
+
     public void handleHibernateTransactionIntricacies() {
+        handleHibernateTransactionIntricacies(false );
+
+    }
+    public void handleHibernateTransactionIntricacies( boolean startTransaction ) {
         try {
             session = sessionFactory.getCurrentSession();
         } catch (HibernateException ex) {
-            LOG.debug("Exception thrown getting current session: {}", ex.getMessage());
+            LOG.trace("Exception thrown getting current session: {}", ex.getMessage());
             session = sessionFactory.openSession();
         }
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
+        if (startTransaction && !TransactionSynchronizationManager.isActualTransactionActive()) {
+            try {
+                hibernateTransaction = session.beginTransaction();
+                LOG.debug("Hibernate Transaction started: status={}", hibernateTransaction.getStatus());
+            } catch (HibernateException ex) {
+                LOG.error("Exception thrown starting hibernate transaction: {}\n", ex.getMessage(), ex);
+            }
+        } else if (TransactionSynchronizationManager.isActualTransactionActive()) {
+            LOG.debug("Transaction already active: {}", TransactionSynchronizationManager.getCurrentTransactionName());
+        } else {
+            LOG.debug("No transaction active");
+        }
+
     }
 
     public void releaseHibernateSessionConditionally() {
-        TransactionSynchronizationManager.unbindResource(sessionFactory);
-        session.clear();
-        session.close();
+        if (hibernateTransaction != null && hibernateTransaction.getStatus() == TransactionStatus.ACTIVE) {
+            hibernateTransaction.commit();
+            LOG.debug("Hibernate Transaction committed: {}", hibernateTransaction);
+            hibernateTransaction = null;
+        } else if (hibernateTransaction != null) {
+            LOG.debug("Hibernate Transaction status={}, ", hibernateTransaction.getStatus());
+        } else if (TransactionSynchronizationManager.isActualTransactionActive()) {
+            LOG.debug("Hibernate Transaction is null but there is an active transaction - commiting");
+            session.getTransaction().commit();
+        } else {
+            LOG.debug("Hibernate Transaction is null and no transaction active");
+        }
+
+        if (session != null) {
+            TransactionSynchronizationManager.unbindResource(sessionFactory);
+            session.clear();
+            session.close();
+            session = null;
+        }
     }
 
     public void setSessionFactory(SessionFactory sessionFactory) {
@@ -218,5 +262,12 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
         }
         return true;
     }
-  
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 }

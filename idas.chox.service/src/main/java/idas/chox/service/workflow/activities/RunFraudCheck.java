@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.Claim;
-import idas.chox.core.model.KeoghsRequest;
-import idas.chox.keoghs.Keoghs;
+//import idas.chox.core.model.KeoghsRequest;
+//import idas.chox.keoghs.Keoghs;
 
 
 /**
@@ -16,15 +16,15 @@ import idas.chox.keoghs.Keoghs;
 public class RunFraudCheck extends BaseActivity {
     private static final Logger LOG = LoggerFactory.getLogger(RunFraudCheck.class);
     final private String checkType = "Manual";
-    private Keoghs keoghs;
+//    private Keoghs keoghs;
     
     public String getCheckType() {
         return checkType;
     }
 
-    public void setKeoghs(Keoghs keoghs) {
-        this.keoghs = keoghs;
-    }
+//    public void setKeoghs(Keoghs keoghs) {
+//        this.keoghs = keoghs;
+//    }
 
     @Override
     @Secured ({"ROLE_INS"})
@@ -32,8 +32,8 @@ public class RunFraudCheck extends BaseActivity {
 //        boolean result = false;
 //        result = keoghs.queueAndSubmitDebug(claim, checkType);
 //        LOG.info("Claim '{}' submitted to Keoghs with result: {}", claim.getChoReference(), result);
-        KeoghsRequest request  = keoghs.queue(claim, checkType);
-        LOG.debug("Claim '{}' queued to Keoghs with request id={}", claim.getChoReference(), request.getId());
+//        KeoghsRequest request  = keoghs.queue(claim, checkType);
+//        LOG.debug("Claim '{}' queued to Keoghs with request id={}", claim.getChoReference(), request.getId());
         
     }
 }

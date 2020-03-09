@@ -69,8 +69,8 @@ public class AttachmentUpload extends BaseScheduleActivity {
         // First lets check that we have at least one valid attachment
         if (attachments != null && attachments.size() > 0) {
             noAttachments = attachments.stream().filter((ea) -> (ea.getName().length() > 4)).map((_item) -> 1).reduce(noAttachments, Integer::sum);
+            LOG.debug("Processing Attachment Upload email with {} attachments ({} valid)", attachments.size(), noAttachments);
         }
-        LOG.debug("Processing Attachment Upload email with {} attachments ({} valid)", attachments.size(), noAttachments);
         
         if (noAttachments==0) {
             LOG.debug("No valid attachments found in email '{}'", subject);
@@ -88,8 +88,13 @@ public class AttachmentUpload extends BaseScheduleActivity {
                 if (attachment.getName().length() < 9 || !attachment.getName().toLowerCase().startsWith("ren_")) {
                     statusString.append("Ignoring Invalid attachment: ").append(attachment.getName());
                 } else {
-                    referenceNumber = attachment.getName().substring(4, attachment.getName().length() - 4);
-                    claim = validateClaimReferenceNumber(referenceNumber, statusString);
+                    int indexOfDot = attachment.getName().lastIndexOf(".");
+                    if (indexOfDot > 4) { // check there is a dot, and dot should come behind "ren_"
+                        referenceNumber = attachment.getName().substring(4, indexOfDot);
+                        claim = validateClaimReferenceNumber(referenceNumber, statusString);
+                    } else {
+                        statusString.append("Ignoring Invalid attachment: ").append(attachment.getName());
+                    }
                 }
                 /* Check Claim Status */
                 if (claim != null && (ClaimStatus.CLAIM_CLOSED.equals(claim.getStatus())

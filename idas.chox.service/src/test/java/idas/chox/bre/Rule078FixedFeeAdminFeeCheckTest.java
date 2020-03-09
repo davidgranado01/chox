@@ -56,6 +56,7 @@ public class Rule078FixedFeeAdminFeeCheckTest extends BaseTest {
     }
 
     @Test
+    @Transactional
     public void testSkipped_ruleOff() throws IOException {
         Claim claim = getTestClaim();
         claim.getBreBand().setFixedFeeAdminFeeCheck(false);
@@ -64,8 +65,9 @@ public class Rule078FixedFeeAdminFeeCheckTest extends BaseTest {
         assertTrue(RuleEvaluationResult.RULE_SKIPPED == rv.getResult());
     }
     
-    @Test
-    public void testSkipped_wrongType() throws IOException {
+   @Test
+   @Transactional
+   public void testSkipped_wrongType() throws IOException {
         Claim claim = getTestClaim();
         claim.setClaimType(ClaimType.GTA);
         claim.getBreBand().setFixedFeeAdminFeeCheck(true);
@@ -76,6 +78,7 @@ public class Rule078FixedFeeAdminFeeCheckTest extends BaseTest {
     
     
     @Test
+    @Transactional
     public void testPassed_managingRepair() throws IOException {
         Claim claim = getTestClaim();
         claim.getBreBand().setFixedFeeAdminFeeCheck(true);
@@ -95,6 +98,7 @@ public class Rule078FixedFeeAdminFeeCheckTest extends BaseTest {
     }
 
     @Test
+    @Transactional
     public void testPassed_notManagingRepair() throws IOException {
         Claim claim = getTestClaim();
         claim.setManagingRepair(false);
@@ -116,6 +120,7 @@ public class Rule078FixedFeeAdminFeeCheckTest extends BaseTest {
 
     
     @Test
+    @Transactional
     public void testFailed_1() throws IOException {
         Claim claim = getTestClaim();
         claim.getBreBand().setFixedFeeAdminFeeCheck(true);
@@ -135,6 +140,7 @@ public class Rule078FixedFeeAdminFeeCheckTest extends BaseTest {
     }
 
     @Test
+    @Transactional
     public void testFailed_2() throws IOException {
         Claim claim = getTestClaim();
         claim.setManagingRepair(false);
@@ -153,8 +159,5 @@ public class Rule078FixedFeeAdminFeeCheckTest extends BaseTest {
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
     }
-
     
-    
-
 }

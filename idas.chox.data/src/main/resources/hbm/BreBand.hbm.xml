@@ -5,7 +5,7 @@
         <cache usage="read-write"/>
         <id column="id" name="id">
             <generator class="sequence">
-                <param name="sequence">bre_band_id_seq</param>
+                <param name="sequence_name">bre_band_id_seq</param>
             </generator>
         </id>
         <version column="version" name="version" unsaved-value="null"/>
@@ -192,6 +192,39 @@
         <property column="ved_charge_ceiling" name="vedChargeCeiling" not-null="true"/>
         <property column="enable_applied_liability" name="appliedLiabilityEnabled" not-null="true"/>
         <property column="blank_labour_rate_check" name="blankLabourRateCheck" not-null="true"/>
+        <property column="total_loss_own_roadworthy_check" name="totalLossOwnRoadworthyCheck" not-null="true"/>
+        <property column="total_loss_own_unroadworthy_check" name="totalLossOwnUnroadworthyCheck" not-null="true"/>
+        <property column="total_loss_cho_roadworthy_check" name="totalLossChoRoadworthyCheck" not-null="true"/>
+        <property column="total_loss_cho_unroadworthy_check" name="totalLossChoUnroadworthyCheck" not-null="true"/>
+        <property column="total_loss_cho_atFault_roadworthy_check" name="totalLossChoAtFaultRoadworthyCheck" not-null="true"/>
+        <property column="total_loss_cho_atFault_unroadworthy_check" name="totalLossChoAtFaultUnroadworthyCheck" not-null="true"/>
+        <property column="total_loss_diary_info_check" name="totalLossDiaryInfoCheck" not-null="true"/>
+        <property column="repair_diary_info_check" name="repairDiaryInfoCheck" not-null="true"/>
+        <property column="upload_414_check" name="upload414Check" not-null="true"/>
+        <property column="time_authorise_repair_1" name="timeToAuthoriseRepair1" not-null="true"/>
+        <property column="time_off_hire_1" name="timeToOffHire1" not-null="true"/>
+        <property column="time_authorise_repair_2" name="timeToAuthoriseRepair2" not-null="true"/>
+        <property column="time_off_hire_2" name="timeToOffHire2" not-null="true"/>
+        <property column="time_authorise_repair_3" name="timeToAuthoriseRepair3" not-null="true"/>
+        <property column="time_submit_engineers_report_3" name="timeToSubmittEngineersReport3" not-null="true"/>
+        <property column="time_off_hire_3" name="timeToOffHire3" not-null="true"/>
+        <property column="allowable_days_3" name="totalAllowableDays3" not-null="true"/>
+        <property column="time_instruct_engineer_4" name="timeToInstructEngineer4" not-null="true"/>
+        <property column="time_inspect_4" name="timeToInspect4" not-null="true"/>
+        <property column="time_authorise_repair_4" name="timeToAuthoriseRepair4" not-null="true"/>
+        <property column="time_submit_engineers_report_4" name="timeToSubmittEngineersReport4" not-null="true"/>
+        <property column="time_off_hire_4" name="timeToOffHire4" not-null="true"/>
+        <property column="allowable_days_4" name="totalAllowableDays4" not-null="true"/>
+        <property column="time_authorise_repair_5" name="timeToAuthoriseRepair5" not-null="true"/>
+        <property column="time_submit_engineers_report_5" name="timeToSubmittEngineersReport5" not-null="true"/>
+        <property column="time_off_hire_5" name="timeToOffHire5" not-null="true"/>
+        <property column="allowable_days_5" name="totalAllowableDays5" not-null="true"/>
+        <property column="time_instruct_engineer_6" name="timeToInstructEngineer6" not-null="true"/>
+        <property column="time_inspect_6" name="timeToInspect6" not-null="true"/>
+        <property column="time_authorise_repair_6" name="timeToAuthoriseRepair6" not-null="true"/>
+        <property column="time_submit_engineers_report_6" name="timeToSubmittEngineersReport6" not-null="true"/>
+        <property column="time_off_hire_6" name="timeToOffHire6" not-null="true"/>
+        <property column="allowable_days_6" name="totalAllowableDays6" not-null="true"/>
         <many-to-one class="idas.chox.core.model.Workgroup" column="claim_matching_workgroup" name="claimMatchingWorkgroup"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="claim_matching_owner" name="claimMatchingOwner"/>
         <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

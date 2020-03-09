@@ -71,7 +71,7 @@
     <!--for documentation-->
         <Subject>CHOX Application Error \(Production\)</Subject>
         <SMTPHost>localhost</SMTPHost>
-        <To>John.Dowson@valexa.com</To>
+        <To>#{LOGBACK_RECIPIENT}</To>
         <From>chox@#{APP_HOST}</From>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <pattern>%d{dd MMM yyyy HH:mm:ss} %p %t %mdc{userid} %c - %m%n</pattern>

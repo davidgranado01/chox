@@ -23,6 +23,18 @@ public class UserWorkgroupServiceImpl extends SecureDataService implements UserW
     }
 
     @Override
+    public List<WebUserWorkgroup> getUserWorkgroupsByWorkgroup(int  wgId) {
+
+        DetachedCriteria criteria = DetachedCriteria.forClass(WebUserWorkgroup.class);
+
+        if (wgId > 0) {
+            criteria.add(Restrictions.eq("workgroup.id", wgId));
+        }
+
+        return findByCriteria(criteria);
+    }
+
+    @Override
     public WebUserWorkgroup getUserWorkgroup(int userWorkgroupId) {
         return (WebUserWorkgroup) get(WebUserWorkgroup.class, userWorkgroupId);
     }

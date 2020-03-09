@@ -18,6 +18,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.Workgroup;
+import idas.chox.core.services.InsurerService;
 import idas.chox.service.ActionResponse;
 import idas.chox.service.admin.AdminInsurerService;
 import idas.chox.web.viewdata.WorkgroupViewData;
@@ -30,6 +31,7 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
     protected String workgroupName;
     protected String workgroupSite;
     protected String workgroupTeam;
+    private InsurerService insurerService;
     private Workgroup model;
     protected List<WorkgroupViewData> workgroups;
     private AdminInsurerService adminInsurerService;
@@ -50,6 +52,10 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
         } else {
             model = adminInsurerService.getWorkgroup(workgroupId);
         }
+    }
+
+    public void setInsurerService(InsurerService insurerService) {
+        this.insurerService = insurerService;
     }
 
     public String getJsonData() {
@@ -144,6 +150,10 @@ public class InsurerWorkgroupAction extends BaseAction implements ModelDriven<Wo
             if ( getUserOrganisationType() == 2 && this.insurerId != getUserOrganisationId()) {
                 LOG.error("Trying to create an insurer workgroup for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
                 throw new AccessDeniedException("Trying to create an insurer workgroup for an insurer that isn't mine (POSSIBLE HACK ATTEMPT)");
+            }
+            if (!insurerService.getInsurer(insurerId).isWorkgroupEnable()) {
+                LOG.error("Trying to create an insurer workgroup for an insurer where workgroups are disabled (POSSIBLE HACK ATTEMPT)");
+                throw new AccessDeniedException("Trying to create an insurer workgroup for an insurer where workgroups are disabled");
             }
             if (!this.workgroupName.equals(StringEscapeUtils.unescapeHtml4(Jsoup.clean(this.workgroupName, Whitelist.none())))) {
                 throw new Exception("Illegal characters found in Workgroup name");

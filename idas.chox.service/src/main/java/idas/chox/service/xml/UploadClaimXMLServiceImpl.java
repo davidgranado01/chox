@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -27,6 +28,7 @@ import idas.chox.core.bre.RulesEngineResponse;
 import idas.chox.core.model.Bordereau;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.Comment;
 import idas.chox.core.model.HireMonitoringEcd;
 import idas.chox.core.model.History;
 import idas.chox.core.model.Task;
@@ -57,7 +59,6 @@ import idas.chox.service.workflow.activities.NewSupplementaryInvoice;
 import idas.chox.service.workflow.event.EventBusWrapper;
 import idas.chox.service.xml.readers.BordereauReader;
 import idas.chox.service.xml.validations.BordereauSchemaValidation;
-import java.math.BigDecimal;
 
 public class UploadClaimXMLServiceImpl extends SecureDataService implements UploadClaimXMLService {
 
@@ -344,6 +345,56 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
                     LOG.debug("Checking for On Hire Task.");
                     claimService.addOnHireTask(claim);
                 }
+                
+                if (claimResult.getNote() != null && !claimResult.getNote().isEmpty()
+                        && (claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_CLAIM)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.HIRE_MONITORING_AND_NEW_INVOICE)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_CLAIM)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_HIRE_MONITORING_AND_NEW_INVOICE)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_INVOICE)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_NEW_SUPPLEMENTARY_INVOICE)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.INSURER_VS_INSURER_INVOICE)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_COLLABORATION_CLAIM)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_FIXEDFEE_CLAIM)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_INVOICE)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUBSCRIBER_CLAIM)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.NEW_SUPPLEMENTARY_INVOICE)
+                            || claimResult.getClaimParseStatus().equals(ClaimParseStatus.TPI_INTERVENTION))) {
+
+                    // logic mainly from: $chox/idas.chox.service/src/main/java/idas/chox/service/workflow/activities/AddNote.java
+                    boolean reviewRequired = !ClaimType.isInsurerUpload(claim.getClaimType());
+                    Comment comment = Comment.newComment(0, reviewRequired, claimResult.getNote(), true);
+
+                    // Determine if an external task can be created on the claim
+                    boolean canCreateTask = getCurrentUser().isCHO() && claim.getInsurer().isTaskManagementEnable();
+
+                    if (reviewRequired && canCreateTask) {
+                        // Create task for comment review required
+                        Task task = new Task();
+                        comment.setTask(task);
+                        task.setClaim(claim);
+                        String commentDescription;
+                        if (getCurrentUser().isAnInsurer()) {
+                            commentDescription = "The Insurer has added a note that requires review. Please go to the notes section of this claim to review.";
+                            task.setInsurer(Boolean.TRUE);
+                        } else {
+                            commentDescription = "The CHO has added a note that requires review. Please go to the notes section of this claim to review.";
+                            task.setInsurer(Boolean.FALSE);
+                        }
+                        task.setDescription(commentDescription);
+                        task.setDueDate(new Date());
+                        task.setRaisedBy(getCurrentUser());
+                        task.setType("Note Review Required");
+                        task.setVisibility(3); // External
+                        try {
+                            taskService.createNewTask(task);
+                        } catch (Exception ex) {
+                            LOG.warn("Error creating 'Note Review Required' task on claim with id={}: {}", claim.getId(), ex.getMessage());
+                        }
+                    }
+
+                    claim.addComment(comment);
+                }
 
             } catch (Exception ex) {
                 if (claimResult.getClaim() != null) {
@@ -437,6 +488,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public boolean processFile(int bordereauId, Map session) {
         int noClaims;
         int noProcessed = 0;
@@ -682,6 +734,7 @@ public class UploadClaimXMLServiceImpl extends SecureDataService implements Uplo
     }
 
     @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public UploadedXMLClaimsDetail processWebServiceClaim(InputStream stream) {
 
         Document document;

@@ -8,6 +8,9 @@ import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
 
+import idas.chox.core.model.WebUser;
+import idas.chox.core.services.UserService;
+import idas.chox.web.security.ChoxPasswordEncoder;
 import org.quartz.JobExecutionException;
 
 import org.slf4j.Logger;
@@ -16,8 +19,9 @@ import org.slf4j.LoggerFactory;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.quartz.DisallowConcurrentExecution;
-import org.springframework.orm.hibernate4.SessionHolder;
+import org.springframework.orm.hibernate5.SessionHolder;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -26,6 +30,7 @@ import idas.chox.core.services.GmailSchedulerJobService;
 import idas.chox.core.util.GmailUtils;
 import idas.chox.core.workflow.ScheduleActivity;
 import idas.chox.service.workflow.ScheduleActivityFactory;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 /**
  *
@@ -37,6 +42,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
     private static final Logger LOG = LoggerFactory.getLogger(GmailSchedulerJob.class);
     private GmailUtils gmailUtils;
     private GmailSchedulerJobService gmailSchedulerJobService;
+    private UserService userService;
     private MailSecurityAthenticator mailSecurityAthenticator;
     private String hostName;
     private ServerConfig serverConfig;
@@ -44,6 +50,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
     private Session session;
     private SessionFactory sessionFactory;
     private ScheduleActivityFactory scheduleActivityFactory;
+    private Transaction hibernateTransaction;
 
     public void setScheduleActivityFactory(ScheduleActivityFactory scheduleActivityFactory) {
         this.scheduleActivityFactory = scheduleActivityFactory;
@@ -75,6 +82,14 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -166,7 +181,12 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
 
                     //Ok, sender is authorised, so lets authenticate the user
                     try {
-                        mailSecurityAthenticator.authenticateSender(job.getLoginUserName(), job.getLoginPassword());
+                        WebUser webUser = userService.findByUserName(job.getLoginUserName());
+                        if (null == webUser) {
+                            throw new AccessDeniedException("GmailSchedulerJob username does not exist.");
+                        }
+
+                        mailSecurityAthenticator.authenticateSender(job.getLoginUserName(), ChoxPasswordEncoder.HASHED_PASSWORD_SECRET + webUser.getPassword());
                         LOG.debug("Mapped login user {} is authenticated.", job.getLoginUserName());
 
                     } catch (AccessDeniedException | AuthenticationException e) {
@@ -196,12 +216,14 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
                      *   TOTALLOSS_CHASE_TASK, PAID_INVOICES
                      */
                     ScheduleActivity activity = scheduleActivityFactory.getActivity(job.getJobName());
-                    handleHibernateTransactionIntricacies();
+                    handleHibernateTransactionIntricacies(false);
                     LOG.info("Processing scheduler activity '{}'", activity.getClass().toGenericString());
                     boolean processed = activity.process(emailContent, attachments, from, fullsubject);
                     LOG.debug("Done processing scheduler activity '{}'", activity.getClass().toGenericString());
-                    session.flush();
-                    LOG.debug("Session flushed.");
+                    if (TransactionSynchronizationManager.isActualTransactionActive()) {
+                        session.flush();
+                        LOG.debug("Session flushed.");
+                    }
 
                     // Mark message as read, remove from inbox and add correct label for processed message
                     // Note all emails with a prefix (i.e. not production) are given the label 'test-emails'
@@ -239,7 +261,7 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
         }
     }
 
-    private void handleHibernateTransactionIntricacies() {
+    private void handleHibernateTransactionIntricacies(boolean startTransaction) {
         try {
             session = sessionFactory.getCurrentSession();
         } catch (HibernateException ex) {
@@ -248,9 +270,29 @@ public class GmailSchedulerJob implements Scheduler { // , ApplicationContextAwa
             LOG.debug("Session created.");
         }
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
+
+        if (startTransaction && !TransactionSynchronizationManager.isActualTransactionActive()) {
+            try {
+                hibernateTransaction = session.beginTransaction();
+                LOG.debug("Hibernate Transaction started: {}", hibernateTransaction);
+            } catch (HibernateException ex) {
+                LOG.error("Exception thrown starting hibernate transaction: {}\n", ex.getMessage(), ex);
+            }
+        } else {
+            LOG.debug("Transaction already active: {}", TransactionSynchronizationManager.getCurrentTransactionName());
+        }
     }
 
     private void releaseHibernateSessionConditionally() {
+        if (hibernateTransaction != null && hibernateTransaction.getStatus() == TransactionStatus.ACTIVE) {
+            hibernateTransaction.commit();
+            LOG.debug("Hibernate Transaction committed: {}", hibernateTransaction);
+        } else if (hibernateTransaction != null) {
+            LOG.debug("Hibernate Transaction status={}, ", hibernateTransaction.getStatus());
+        } else {
+            LOG.debug("Hibernate Transaction is null");
+        }
+
         if (session != null) {
             TransactionSynchronizationManager.unbindResource(sessionFactory);
             session.clear();

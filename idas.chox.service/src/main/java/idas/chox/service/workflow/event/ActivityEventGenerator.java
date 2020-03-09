@@ -119,6 +119,14 @@ public class ActivityEventGenerator {
         if (modelName.indexOf('_') > 0) {
             modelName = modelName.substring(0, modelName.indexOf('_'));
         }
+
+        // Removing everything from the first dollar character $ to handle hibernate proxies
+        // For: ERROR http-nio-9080-exec-6 *** idas.chox.service.workflow.event.ActivityEventGenerator -
+        // No events for model 'HireMonitoringDetail$HibernateProxy$4p9cDpf3'
+        if (modelName.indexOf('$') > 0) {
+            modelName = modelName.substring(0, modelName.indexOf('$'));
+        }
+
         LOG.debug("Generating events for model '{}'", modelName);
         switch(modelName) {
             case "Claim":

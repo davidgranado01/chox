@@ -95,9 +95,19 @@ public class ClaimHireMonitoringDetailReader extends BaseEntityReader {
             hireMonitoringdtl.setTotalLossOfferCheckReceivedDate(XmlHelper.getDateFromNode(element, "tl-cheque-received"));
         }
 
+        if (XmlHelper.isNotNullDate(XmlHelper.getNodeValue(element, "engineers-report-date"))) {
+            isNotEmpty = true;
+            hireMonitoringdtl.setEngineersReportSentDate(XmlHelper.getDateFromNode(element, "engineers-report-date"));
+        }
+
         if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "labour-rate"))) {
             isNotEmpty = true;
             hireMonitoringdtl.setLabourRate(XmlHelper.getBigDecimalFromNode(element, "labour-rate"));
+        }
+
+        if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "tl-who-is-sending-PAV"))) {
+            isNotEmpty = true;
+            hireMonitoringdtl.setWhoIsSendingPav(XmlHelper.getNodeValue(element, "tl-who-is-sending-PAV"));
         }
 
         if (XmlHelper.isNotNull(XmlHelper.getNodeValue(element, "labour-hours"))) {
@@ -165,10 +175,24 @@ public class ClaimHireMonitoringDetailReader extends BaseEntityReader {
             NodeHelper.nodeValidate(sectionName, "labour-rate", element, claimResult, getDataValidationParameter());
             NodeHelper.nodeValidate(sectionName, "labour-hours", element, claimResult, getDataValidationParameter());
             NodeHelper.nodeValidate(sectionName, "labour-cost", element, claimResult, getDataValidationParameter());
-            NodeHelper.nodeValidate(sectionName, "tl-offer-made-date", element, claimResult, getDataValidationParameter());
-            NodeHelper.nodeValidate(sectionName, "tl-offer-accepted-date", element, claimResult, getDataValidationParameter());
-            NodeHelper.nodeValidate(sectionName, "tl-cheque-received", element, claimResult, getDataValidationParameter());
-            NodeHelper.nodeValidate(sectionName, "tl-cheque-issued", element, claimResult, getDataValidationParameter());
+            if (XmlHelper.isNotNull(XmlHelper.getNodeValue(claimResult.getElement(), "tl-offer-made-date"))) {
+                NodeHelper.nodeValidate(sectionName, "tl-offer-made-date", element, claimResult, getDataValidationParameter());
+            }
+            if (XmlHelper.isNotNull(XmlHelper.getNodeValue(claimResult.getElement(), "tl-offer-accepted-date"))) {
+                NodeHelper.nodeValidate(sectionName, "tl-offer-accepted-date", element, claimResult, getDataValidationParameter());
+            }
+            if (XmlHelper.isNotNull(XmlHelper.getNodeValue(claimResult.getElement(), "tl-cheque-received"))) {
+                NodeHelper.nodeValidate(sectionName, "tl-cheque-received", element, claimResult, getDataValidationParameter());
+            }
+            if (XmlHelper.isNotNull(XmlHelper.getNodeValue(claimResult.getElement(), "tl-cheque-issued"))) {
+               NodeHelper.nodeValidate(sectionName, "tl-cheque-issued", element, claimResult, getDataValidationParameter());
+            }
+            if (XmlHelper.isNotNull(XmlHelper.getNodeValue(claimResult.getElement(), "engineers-report-date"))) {
+                NodeHelper.nodeValidate(sectionName, "engineers-report-date", element, claimResult, getDataValidationParameter());
+            }
+            if (XmlHelper.isNotNull(XmlHelper.getNodeValue(claimResult.getElement(), "tl-who-is-sending-PAV"))) {
+                NodeHelper.nodeValidate(sectionName, "tl-who-is-sending-PAV", element, claimResult, getDataValidationParameter());
+            }
 
 
 

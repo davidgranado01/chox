@@ -9,9 +9,9 @@
 		xmlns:chx="http://www.idaschox.com/services/CHOX/">
     <wsdl:documentation>
         Service: CHOX UploadService
-        Version: 1.6.3
+        Version: 1.7.0
         Owner: Audatex
-        Contact: John.Dowson@valexa.com
+        Contact: Isabelle.Lecoeuche@audatex.co.uk
     </wsdl:documentation>
 
     <wsdl:types>
@@ -168,7 +168,11 @@
             <xsd:simpleType name="DateTime-or-empty">
                 <xsd:union memberTypes="xsd:dateTime chx:Empty-string" />
             </xsd:simpleType>
-            
+
+            <xsd:simpleType name="String-or-empty">
+                <xsd:union memberTypes="xsd:string chx:Empty-string" />
+            </xsd:simpleType>
+
             <xsd:simpleType name="YesNoType">
                 <xsd:restriction base="xsd:token">
                     <xsd:enumeration value="Y"/>
@@ -226,6 +230,18 @@
                 <xsd:restriction base="xsd:string">
                     <xsd:pattern value="((P|p)(U|u)(B|b)(L|l)(I|i)(C|c))|((P|p)(R|r)(I|i)(V|v)(A|a)(T|t)(E|e))|(^$)"/>
                 </xsd:restriction>
+            </xsd:simpleType>
+            
+            <xsd:simpleType name="SendingPAV">
+                <xsd:restriction base="xsd:token">
+			<xsd:enumeration value="Customers Own Insurer"/>
+			<xsd:enumeration value="CHO"/>
+			<xsd:enumeration value="At Fault Insurer"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+
+            <xsd:simpleType name="SendingPAV-or-empty">
+                <xsd:union memberTypes="chx:SendingPAV chx:Empty-string" />
             </xsd:simpleType>
 
             <xsd:simpleType name="VehicleClass">
@@ -675,6 +691,8 @@
                     <xsd:element name="tl-offer-accepted-date" type="chx:DateTime-or-empty"/>
                     <xsd:element name="tl-cheque-issued" type="chx:DateTime-or-empty"/>
                     <xsd:element name="tl-cheque-received" type="chx:DateTime-or-empty"/>
+                    <xsd:element name="tl-who-is-sending-PAV" type="chx:SendingPAV-or-empty" nillable="true"/>
+                    <xsd:element name="engineers-report-date" type="chx:DateTime-or-empty" nillable="true"/>
                 </xsd:sequence>
             </xsd:complexType>
 
@@ -923,6 +941,7 @@
                         <xsd:complexType>
                             <xsd:sequence>
                                 <xsd:element name="first-contact" type="xsd:dateTime"/>
+                                <xsd:element name="note" type="chx:String-or-empty" nillable="true"/>
                                 <xsd:element name="supplier-name" minOccurs="0" type="chx:NonEmptyString128"/>
                                 <xsd:element name="supplier-reference" type="chx:NonEmptyString128"/>
                                 <xsd:element name="managing-repair" type="chx:YesNoType"/>

@@ -4,8 +4,8 @@
 #2 - done Directory
 #3 - output directory
 
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
-export PATH=${PATH}:/bin:${JAVA_HOME}/bin
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+export PATH=${JAVA_HOME}/bin:/bin:${PATH}
 MODE=#{MODE} # EXPORT - send emails and transfer files, NOEMAIL - rports generated but not emailed but sftp ok, NOEXPORT - reports generated but not delivered via sftp or email
 
 
@@ -58,7 +58,7 @@ then
 fi
 
 BCC_RECIPIENTS=MichaelPaul.Kemp@valexa.com,Robert.Hon@audatex.co.uk
-RECIPIENTS=John.Dowson@valexa.com
+RECIPIENTS=DL-UKBR-Audatex-penguin-reporting@audatex.com
 
 REPORT_DIR=$1
 PROCESSED_DIR=$2

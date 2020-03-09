@@ -5,7 +5,7 @@
         <cache usage="read-only"/>
         <id column="id" name="id">
             <generator class="sequence">
-                <param name="sequence">accessibility_item_id_seq</param>
+                <param name="sequence_name">accessibility_item_id_seq</param>
             </generator>
         </id>
         <property column="role" name="role" not-null="true"/>

@@ -69,6 +69,8 @@ public class LouUpdateTest extends BaseTest {
         activity.setTotalLossReceivedDate(today);
         activity.setVatRegistered(Boolean.TRUE);
         activity.setUpdateInsurer(true);
+        activity.setWhoIsSendingPAVifTL("CHO");
+        activity.setEngineersReportSentDate(today);
         activity.process(claim);
 
         // Check data has been updated
@@ -93,6 +95,8 @@ public class LouUpdateTest extends BaseTest {
         Assert.assertEquals(claim.getHireMonitoringDetail().getTotalLossOfferMadeDate().toString(), today.toString());
         Assert.assertEquals(claim.getHireMonitoringDetail().getTotalLossOfferCheckReceivedDate().toString(), today.toString());
         Assert.assertEquals(claim.getHireMonitoringDetail().getClientVatRegistered(), true);
+        Assert.assertEquals(claim.getHireMonitoringDetail().getWhoIsSendingPav(), "CHO");
+        Assert.assertEquals(claim.getHireMonitoringDetail().getEngineersReportSentDate(), today);
 
         // Check insurer has been updated
         int noNotifications = notificationService.getNotifications(claim.getId()).size();
@@ -132,6 +136,8 @@ public class LouUpdateTest extends BaseTest {
         activity.setTotalLossReceivedDate(today);
         activity.setVatRegistered(Boolean.TRUE);
         activity.setUpdateInsurer(false);
+        activity.setWhoIsSendingPAVifTL("CHO");
+        activity.setEngineersReportSentDate(today);
         activity.process(claim);
         
         // Check date has been set
@@ -156,13 +162,12 @@ public class LouUpdateTest extends BaseTest {
         Assert.assertEquals(claim.getHireMonitoringDetail().getTotalLossOfferMadeDate().toString(), today.toString());
         Assert.assertEquals(claim.getHireMonitoringDetail().getTotalLossOfferCheckReceivedDate().toString(), today.toString());
         Assert.assertEquals(claim.getHireMonitoringDetail().getClientVatRegistered(), true);
+        Assert.assertEquals(claim.getHireMonitoringDetail().getWhoIsSendingPav(), "CHO");
+        Assert.assertEquals(claim.getHireMonitoringDetail().getEngineersReportSentDate(), today);
         
         // Check insurer has not been updated
         int noNotifications = notificationService.getNotifications(claim.getId()).size();
         
         Assert.assertEquals(noNotifications, noNotificationsOriginal);
-        
     }
-    
-   
 }

@@ -16,10 +16,8 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
-# set PATH so it includes user's private bin directories
-PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
-JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
+JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
 TOMCAT_HOME=/opt/tomcat
 CATALINA_HOME=/opt/tomcat
 CATALINA_BASE=/home/chox/tomcat/chox_9080
@@ -27,6 +25,9 @@ HTTP_PROXY=#{HTTP_PROXY}
 HTTPS_PROXY=#{HTTPS_PROXY}
 
 export JAVA_HOME TOMCAT_HOME CATALINA_HOME CATALINA_BASE HTTP_PROXY HTTPS_PROXY
+
+# set PATH so it includes user's private bin directories
+export PATH=./:/bin:${JAVA_HOME}/bin:${CATALINA_HOME}/bin:$HOME/bin:$HOME/.local/bin:${PATH}
 
 alias h='history | tail -20'
 alias vi=vim

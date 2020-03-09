@@ -18,7 +18,7 @@
             </tr>
 
             <tr>
-                <td><label class="std-label-ro">Date Repair Authorised</label></td>
+                <td><label class="std-label-ro">Date Repair Authorised or TL Identified</label></td>
                 <td>&nbsp;</td>
                 <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairAuthorisedDate" /></label></td>
             </tr>
@@ -45,6 +45,12 @@
                 <td><label class="std-label-ro">Is Total Loss?</label></td>
                 <td>&nbsp;</td>
                 <td><label id="hireMonitoringTotalLossId" class="std-data-ro"><s:property value="isTotalLossDesc" /></label></td>
+            </tr>
+
+            <tr>
+                <td><label class="std-label-ro">Date Engineers Report Sent</label></td>
+                <td>&nbsp;</td>
+                <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="engineersReportSentDate" /></label></td>
             </tr>
 
             <tr>

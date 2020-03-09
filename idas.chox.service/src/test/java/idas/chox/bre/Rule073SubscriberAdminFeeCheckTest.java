@@ -1,21 +1,26 @@
 package idas.chox.bre;
 
+import java.io.IOException;
 import java.math.BigDecimal;
-import idas.chox.core.model.Invoice;
-import idas.chox.core.model.ClaimType;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 import org.springframework.transaction.annotation.Transactional;
-import idas.chox.service.bre.rules.SubscriberAdminFeeCheck;
-import idas.chox.test.BaseTest;
+
 import idas.chox.bre.mock.MockObjects;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import java.io.IOException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.Invoice;
+import idas.chox.core.model.ReasonOfRejection;
+import idas.chox.service.bre.rules.SubscriberAdminFeeCheck;
+import idas.chox.test.BaseTest;
 
 /**
  *
@@ -51,7 +56,8 @@ public class Rule073SubscriberAdminFeeCheckTest extends BaseTest {
         return claim;
     }
 
-     @Test
+    @Test
+    @Transactional
     public void testSkipped_1() throws IOException {
         Claim claim = getTestClaim();
         claim.getBreBand().setSubscriberAdminFeeCheck(false);
@@ -64,6 +70,7 @@ public class Rule073SubscriberAdminFeeCheckTest extends BaseTest {
     }
     
     @Test
+    @Transactional
     public void testSkipped_2() throws IOException {
         Claim claim = getTestClaim();
         claim.setClaimType(ClaimType.GTA);
@@ -78,14 +85,17 @@ public class Rule073SubscriberAdminFeeCheckTest extends BaseTest {
     
     
     @Test
+    @Transactional
     public void testPassed_1() throws IOException {
         Claim claim = getTestClaim();
+        Insurer insurer = insurerService.getInsurer(3);
+        claim.setInsurer(insurer);
         claim.getBreBand().setSubscriberAdminFeeCheck(true);
 
-        Invoice invoice = new Invoice();
+        Invoice invoice = invoiceService.getInvoice(999);
         invoice.setAdminFee(BigDecimal.ZERO);
         claim.setInvoice(invoice);
-        
+
         // set-up audit trail
         //    Rejected after 2 days 3 hours, rejection accepted after 4 days
         auditTrailService.logAuditLogForce(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, null, claim);
@@ -104,18 +114,22 @@ public class Rule073SubscriberAdminFeeCheckTest extends BaseTest {
 
     
     @Test
+    @Transactional
     public void testFailed() throws IOException {
         Claim claim = getTestClaim();
+        Insurer insurer = insurerService.getInsurer(3);
+        claim.setInsurer(insurer);
         claim.getBreBand().setSubscriberAdminFeeCheck(true);
 
-        Invoice invoice = new Invoice();
-        invoice.setAdminFee(new BigDecimal(10.0));
+        Invoice invoice = invoiceService.getInvoice(999);
+        invoice.setAdminFee(BigDecimal.TEN);
         claim.setInvoice(invoice);
         
         // set-up audit trail
         //    Rejected after 2 days 3 hours, rejection accepted after 4 days
+        ReasonOfRejection claimRejectionReason = reasonOfRejectionService.getReason(1);
         auditTrailService.logAuditLogForce(ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, null, claim);
-        auditTrailService.logAuditLog(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED, claim, 1000*60*60*24*2 + 1000*60*60*3);
+        auditTrailService.logAuditLog(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED, claim, claimRejectionReason, null, 1000*60*60*24*2 + 1000*60*60*3);
         auditTrailService.logAuditLog(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO, ClaimStatus.SUBSCRIBER_CLAIM_REJECTED, claim, 1000*60*60*24*4);
 
 
@@ -127,8 +141,5 @@ public class Rule073SubscriberAdminFeeCheckTest extends BaseTest {
         assertTrue(rv.getRelatedRule().getStatusAfterFailure(claim.getClaimType()).equals(ClaimStatus.INVOICE_DATA_CALCULATION_INCORRECT));
         assertTrue(rv.getIsVisibleToCHO());
     }
-
-    
-    
 
 }

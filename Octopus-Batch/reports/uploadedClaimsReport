@@ -6,7 +6,7 @@ DB=#{DB_NAME.CHOX} #dev_uk_chox
 MODE=#{MODE} # EXPORT - send emails and transfer files, NOEXPORT - reports generated but not delivered
 
 DUMPFILE=Uploaded_Claims_Report-`date +"%F"`.txt
-#RECIPIENTS=john.dowson@valexa.com
+#RECIPIENTS=isabelle.lecoeuche@audatex.co.uk
 RECIPIENTS=michaelpaul.kemp@valexa.com
 CHO_ID=$1
 CHO_NAME=$2

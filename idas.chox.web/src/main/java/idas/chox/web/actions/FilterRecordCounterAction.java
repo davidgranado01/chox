@@ -38,7 +38,7 @@ public class FilterRecordCounterAction extends BaseAction implements ModelDriven
             }
             return "{totalCount:" + filterViewDatas.size() + ",results:" + jsonString + "}";
         } catch(Exception ex) {
-            LOG.error("exception occured:", ex);
+            LOG.error("exception occurred:", ex);
             return null;
         }
        

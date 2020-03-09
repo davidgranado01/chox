@@ -2,6 +2,9 @@ package idas.chox.core.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
@@ -88,7 +91,7 @@ public class DateHelper {
         Scanner in = new Scanner(cutOffTime).useDelimiter(":");
         int cutOffHour = in.nextInt();
         int cutOffMinute = in.nextInt();
-        
+
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         if (leeway != 0) {
@@ -132,6 +135,32 @@ public class DateHelper {
         Long days = (cal2.getTimeInMillis() - cal1.getTimeInMillis()) / (24 * 60 * 60 * 1000);
 
         return days.intValue();
+    }
+
+    public static int getNumberOfWorkingDaysBetween(Date startDate, Date endDate) {
+        return (int)calculateWeekDays(startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+                    endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    }
+
+
+    private static long calculateWeekDays(final LocalDate start, final LocalDate end) {
+        final int startW = start.getDayOfWeek().getValue();
+        final int endW = end.getDayOfWeek().getValue();
+
+        final long days = ChronoUnit.DAYS.between(start, end);
+        long result = days - 2 * (days / 7); //remove weekends
+
+        if (days % 7 != 0) { //deal with the rest days
+            if (startW == 7) {
+                result -= 1;
+            } else if (endW == 7) {  //they can't both be Sunday, otherwise rest would be zero
+                result -= 1;
+            } else if (endW < startW) { //another weekend is included
+                result -= 2;
+            }
+        }
+
+        return result;
     }
 
     public static Date mergeTimeToDate(Date a, Date b) {
@@ -285,7 +314,7 @@ public class DateHelper {
 
     public static double differenceInYears(Date date1, Date date2) {
         double days = differenceInDays(date1, date2);
-        return days / 365.2425; 
+        return days / 365.2425;
     }
 
     public static double differenceInDays(Date date1, Date date2) {
@@ -318,8 +347,8 @@ public class DateHelper {
         Calendar a = getCalendar(first);
         Calendar b = getCalendar(last);
         int diff = b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
-        if (a.get(Calendar.MONTH) > b.get(Calendar.MONTH) || 
-                (a.get(Calendar.MONTH) == b.get(Calendar.MONTH) && a.get(Calendar.DATE) > b.get(Calendar.DATE))) {
+        if (a.get(Calendar.MONTH) > b.get(Calendar.MONTH)
+                || (a.get(Calendar.MONTH) == b.get(Calendar.MONTH) && a.get(Calendar.DATE) > b.get(Calendar.DATE))) {
             diff--;
         }
         return diff;
@@ -330,6 +359,7 @@ public class DateHelper {
         cal.setTime(date);
         return cal;
     }
+
     /**
      * @return the sdf
      */
@@ -390,4 +420,3 @@ public class DateHelper {
         return new SimpleDateFormat("dd MMM yyyy");
     }
 }
-

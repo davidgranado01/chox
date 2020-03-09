@@ -16,7 +16,7 @@ import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException;
+import org.springframework.orm.hibernate5.HibernateOptimisticLockingFailureException;
 import org.springframework.security.access.AccessDeniedException;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -371,6 +371,14 @@ public class BaseAction extends ActionSupport implements SessionAware {
         }
     }
 
+    public boolean getInsurerIsDiscountsEnabled() {
+        if (!getIsInsurer()) {
+            return true;
+        } else {
+            return getAuthenticatedUser().getInsurer().isInsurerDiscountEnable();
+        }
+    }
+
     public boolean getInsurerOnlineSupportEnabled() {
         if (!getIsInsurer()) {
             return true;
@@ -604,9 +612,9 @@ public class BaseAction extends ActionSupport implements SessionAware {
         } else if (ex instanceof DataIntegrityViolationException) {
             return "An entered value exceeds predefined limits - please correct and try again. If this problem persists, please contact CHOX Support.";
         } else if (ex instanceof AccessDeniedException) {
-            return "An internal access error occured - please try again. If this problem persists then please contact CHOX Support.";
+            return "An internal access error occurred - please try again. If this problem persists then please contact CHOX Support.";
         } else if (ex instanceof RuntimeException) {
-            return "An internal error occured - please try again. If this problem persists then please contact CHOX Support.";
+            return "An internal error occurred - please try again. If this problem persists then please contact CHOX Support.";
         } else if (ex == null || ex.getMessage() == null || ex.getMessage().length() <= 0) {
             LOG.warn("No message to display for error: ", ex);
             return "";

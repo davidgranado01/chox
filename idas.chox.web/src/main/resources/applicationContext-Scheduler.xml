@@ -2,8 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:s="http://www.springframework.org/schema/security"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
-	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 	
     <bean id="gmailUtils" class="idas.chox.core.util.GmailUtils" scope="singleton">
     </bean>
@@ -37,6 +37,16 @@
         <property name="claimService" ref="claimService" />
         <property name="xlsFileParser" ref="xlsFileParser" />
         <property name="activityFactory" ref="activityFactory" />
+    </bean>
+
+    <bean id="reassignClaim" class="idas.chox.service.workflow.scheduleActivities.ClaimReassignment" scope="prototype">
+        <property name="claimService" ref="claimService" />
+        <property name="userService" ref="userService" />
+        <property name="workgroupService" ref="workgroupService" />
+        <property name="breBandService" ref="breBandService" />
+        <property name="xlsFileParser" ref="xlsFileParser" />
+        <property name="activityFactory" ref="activityFactory" />
+        <property name="workflowContext" ref="workflowContext"/>
     </bean>
 
     <bean id="penaltyUpdate" class="idas.chox.service.workflow.scheduleActivities.PenaltyUpdate" scope="prototype">
@@ -84,7 +94,7 @@
     </bean>
 
     <!--  Keoghs Check Job -->
-    <bean id="keoghsDbJob" class="idas.chox.web.scheduler.KeoghsSchedulerJob">
+    <!--bean id="keoghsDbJob" class="idas.chox.web.scheduler.KeoghsSchedulerJob">
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
         <property name="securityInfoProvider" ref="securityInfoProvider" />
         <property name="schedulerJobService" ref="schedulerJobService" />
@@ -94,7 +104,8 @@
         <property name="maxQueuedRequests" value="${keoghs.maxQueuedRequests}" />
         <property name="maxPendingRequests" value="${keoghs.maxPendingRequests}" />
         <property name="keoghs" ref="keoghs" />
-    </bean>
+        <property name="userService" ref="userService" />
+    </bean-->
     <!--  Claim Matching Job -->
     <bean id="claimMatchingDbJob" class="idas.chox.web.scheduler.ClaimMatchingSchedulerJob">
         <property name="mailSecurityAthenticator" ref="mailSecurityAthenticator"/>
@@ -108,6 +119,7 @@
         <property name="inboundDirectoryBase" value="/shared/nfs/chox/dataload/inbound"/>	
         <property name="processedDirectory" value="/home/chox/logs/processed"/>	
         <property name="xlsx2csvLocation" value="/usr/local/bin/xlsx2csv" />
+        <property name="userService" ref="userService" />
         <!--property name="inboundDirectoryBase" value="/Users/john/sprintTest/inbound"/-->	
         <!--property name="processedDirectory" value="/Users/john/sprintTest/processed"/-->	
     </bean>
@@ -142,7 +154,8 @@
         <property name="claimService" ref="claimService" />
         <property name="activityFactory" ref="activityFactory" />
         <property name="inboundDirectoryBase" value="/shared/nfs/chox/dataload/inbound"/>	
-        <property name="processedDirectory" value="/home/chox/logs/processed"/>	
+        <property name="processedDirectory" value="/home/chox/logs/processed"/>
+        <property name="userService" ref="userService" />
         <!--property name="inboundDirectoryBase" value="/Users/john/sprintTest/inbound"/-->	
         <!--property name="processedDirectory" value="/Users/john/sprintTest/processed"/-->	
     </bean>
@@ -155,6 +168,7 @@
         <property name="serverConfig" ref="serverConfig"/>
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="claimService" ref="claimService" />
+        <property name="userService" ref="userService" />
     </bean>
 	
     <!--  IMS Claim Chase Task for Total Loss -->
@@ -166,6 +180,7 @@
         <property name="serverConfig" ref="serverConfig"/>
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="claimService" ref="claimService" />
+        <property name="userService" ref="userService" />
     </bean>
 	
         
@@ -178,6 +193,7 @@
 	<property name="active" value="${scheduler.email.active}"/>	
         <property name="serverConfig" ref="serverConfig"/>
         <property name="gmailUtils" ref="gmailUtils" />
+        <property name="userService" ref="userService" />
     </bean>
 	
     <!--  Stored Procedure call: addMissingEcdTask -->
@@ -304,11 +320,11 @@
         <property name="concurrent" value="false" />
     </bean>
         
-    <bean id="keoghsDbJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <!--bean id="keoghsDbJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="keoghsDbJob" />
         <property name="targetMethod" value="execute" />
         <property name="concurrent" value="false" />
-    </bean>
+    </bean-->
         
     <bean id="claimMatchingDbJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="claimMatchingDbJob" />
@@ -427,16 +443,16 @@
     <!-- Cron Trigger -->
     <bean id="gmailJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="gmailJobDetail" /> 
-        <property name="cronExpression" value="0 0/15 7-20 ? * 1-7" /> 
+        <property name="cronExpression" value="0 0/15 7-20 ? * 1-7" />
     </bean>
     <bean id="cronRefDbUpdateTriggerWeek" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="referenceUpdateDbJobDetail" /> 
         <property name="cronExpression" value="0 1 18 ? * 2-6" /> 
     </bean>
-    <bean id="cronKeoghsDbTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
+    <!--bean id="cronKeoghsDbTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="keoghsDbJobDetail" /> 
         <property name="cronExpression" value="0 1/15 7-19 ? * 1-7" /> 
-    </bean>
+    </bean-->
     <bean id="cronClaimMatchingDbTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="claimMatchingDbJobDetail" /> 
         <property name="cronExpression" value="0 3 7-19 ? * 1-7" /> 
@@ -451,7 +467,7 @@
     </bean>
     <bean id="cronPaidInvoicesDbTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> 
         <property name="jobDetail" ref="paidInvoicesDbJobDetail" /> 
-        <property name="cronExpression" value="0 4 7-19 ? * 1-7" /> 
+        <property name="cronExpression" value="0 4 7-19 ? * 1-7" />
     </bean>
     <bean id="cronImsChaseTriggerDaily" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="imsChaseDbJobDetail" />

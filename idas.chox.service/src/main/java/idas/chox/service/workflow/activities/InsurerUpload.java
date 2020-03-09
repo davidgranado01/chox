@@ -13,12 +13,12 @@ import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.Comment;
 import idas.chox.core.model.History;
-import idas.chox.core.model.KeoghsRequest;
+//import idas.chox.core.model.KeoghsRequest;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.InsurerDiscountService;
 import idas.chox.core.services.UserService;
-import idas.chox.keoghs.Keoghs;
+//import idas.chox.keoghs.Keoghs;
 import idas.chox.service.xml.util.NodeHelper;
 
 public class InsurerUpload extends BaseActivity {
@@ -28,7 +28,7 @@ public class InsurerUpload extends BaseActivity {
     private InsurerDiscountService insurerDiscountService;
     private UserService userService;
     private boolean autoRoutedInvoice = false;
-    private Keoghs keoghs;
+//    private Keoghs keoghs;
     private boolean claimRouted = false;
     private boolean claimOwnerAssigned = false;
     public RulesEngineResponse breResponse;
@@ -41,9 +41,9 @@ public class InsurerUpload extends BaseActivity {
         return claimRouted;
     }
 
-    public void setKeoghs(Keoghs keoghs) {
-        this.keoghs = keoghs;
-    }
+//    public void setKeoghs(Keoghs keoghs) {
+//        this.keoghs = keoghs;
+//    }
 
     public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
         this.insurerDiscountService = insurerDiscountService;
@@ -270,7 +270,7 @@ public class InsurerUpload extends BaseActivity {
         // If not a supplementary claim, Queue to send to Keoghs for ADA fraud check
         if (choBand != null && choBand.isFraudCheckEnable() && !ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
             try {
-                KeoghsRequest request  = keoghs.queue(claim, "Invoice Upload");
+//                KeoghsRequest request  = keoghs.queue(claim, "Invoice Upload");
                 LOG.debug("New Insurer Invoice '{}' queued to Keoghs", claim.getChoReference());
             } catch (Exception ex) {
                 LOG.error("Error sending new Insurer Invoice with choref '{}' to keoghs: {}", claim.getChoReference(), ex.getMessage(), ex);

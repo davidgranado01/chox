@@ -48,7 +48,7 @@ public class BordereauSchemaValidation {
                 
                 // Allow xml versions 2.8 and 2.9, 2.11, 2.14, 2.15 & 2.16. NB. 2.14 is insurer upload
                 if (xmlVersion != null && (xmlVersion.equals("2.8") || xmlVersion.equals("2.9") || xmlVersion.equals("2.11")
-                            || xmlVersion.equals("2.14") || xmlVersion.equals("2.15") || xmlVersion.equals("2.16"))) {
+                            || xmlVersion.equals("2.14") || xmlVersion.equals("2.15") || xmlVersion.equals("2.16") || xmlVersion.equals("3.00"))) {
                     bordereauValidVersion = true;
                 }
                 

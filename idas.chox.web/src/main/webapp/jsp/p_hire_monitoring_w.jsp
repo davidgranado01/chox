@@ -13,6 +13,7 @@
         var inspectionDateDatePicker = ui.unvalidatedDateField('inspectionDate','<s:date format="dd/MM/yyyy" name="inspectionDate" />','inspectionDatePH');
         var nextReviewDatePicker = ui.unvalidatedDateField('nextReviewDate','<s:date format="dd/MM/yyyy" name="nextReviewDate" />','nextReviewDatePH');
         var repairCompletionDateDatePicker = ui.unvalidatedDateField('repairCompletionDate','<s:date format="dd/MM/yyyy" name="repairCompletionDate" />','repairCompletionDatePH');
+        var engineersReportSentDatePicker = ui.unvalidatedDateField('engineersReportSentDate','<s:date format="dd/MM/yyyy" name="engineersReportSentDate" />','engineersReportSentPH');
         var totalLossOfferMadeDatePicker = ui.unvalidatedDateField('totalLossOfferMadeDate','<s:date format="dd/MM/yyyy" name="totalLossOfferMadeDate" />','totalLossOfferMadeDatePH');
         var totalLossOfferAcceptedDatePicker = ui.unvalidatedDateField('totalLossOfferAcceptedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferAcceptedDate" />','totalLossOfferAcceptedDatePH');
         var totalLossOfferCheckIssuedDatePicker = ui.unvalidatedDateField('totalLossOfferCheckIssuedDate','<s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" />','totalLossOfferCheckIssuedDatePH');
@@ -36,6 +37,7 @@
                 inspectionBookedDate:{dateITA:true},
                 inspectionDate:{dateITA:true},
                 repairCompletionDate:{dateITA:true},
+                engineersReportSentDate:{dateITA:true},
                 totalLossOfferMadeDate:{dateITA:true},
                 totalLossOfferAcceptedDate:{dateITA:true},
                 totalLossOfferCheckIssuedDate:{dateITA:true},
@@ -50,12 +52,13 @@
             messages: {
                 nameOfRepairer:{required:"You must supply a date for 'Name Of Repairer'"},
                 repairBookInDate: {dateITA:"Invalid date format for 'Repair Book In Date'"},
-                repairAuthorisedDate: {dateITA:"Invalid date format for 'Date Repair Authorised'"},
+                repairAuthorisedDate: {dateITA:"Invalid date format for 'Date Repair Authorised or TL Identified'"},
                 repairCommencedDate: {dateITA:"Invalid date format for 'Date Repair Commenced'"},
                 inspectionBookedDate: {dateITA:"Invalid date format for 'Inspection Booked Date'"},
                 inspectionDate: {dateITA:"Invalid date format for 'Inspection Date'"},
                 nextReviewDate: {dateITA:"Invalid date format for 'Next Review Date'"},
                 repairCompletionDate: {dateITA:"Invalid date format for 'Repair Completion Date'"},
+                engineersReportSentDate: {dateITA:"Invalid date format for 'Date Engineers Report Sent'"},
                 totalLossOfferMadeDate: {dateITA:"Invalid date format for 'Date Total Loss Offer Made'"},
                 totalLossOfferAcceptedDate: {dateITA:"Invalid date format for 'Date Total Loss Offer Accepted'"},
                 totalLossOfferCheckIssuedDate: {dateITA:"Invalid date format for 'Date Total Loss Cheque Issued'"},
@@ -157,6 +160,14 @@
         new Ext.ToolTip({
             target: 'dateTotalLossOfferMadeId',
             html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="totalLossOfferMadeLastModified"/>',
+            title: 'Field Last Modified On',
+            autoHide: true,
+            closable: true,
+            draggable:true
+        });
+        new Ext.ToolTip({
+            target: 'dateEngineersReportSentId',
+            html: '<s:date format="EEE d MMM HH:mm:ss yyyy" name="engineersReportSentLastModified"/>',
             title: 'Field Last Modified On',
             autoHide: true,
             closable: true,
@@ -361,13 +372,13 @@
 
             <s:if test="repairAuthorisedDateLastModified != null">
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Repair Authorised </label>
+                    <label class="chox-form-std-label2">Date Repair Authorised or TL Identified</label>
                     <table><tr><td><div class="chox-form-std-label-dateId" id="repairAuthorisedDatePH"></div></td><td><img src="../images/sign_info.png" alt="" width="13" height="13" id="dateRepairAuthorisedId" /></td></tr></table>
                 </div>
             </s:if>
             <s:else>
                 <div class="chox-form-item">
-                    <label class="chox-form-std-label2">Date Repair Authorised <img  style="display:none" src="../images/sign_info.png" width="13" alt="" height="13" id="dateRepairAuthorisedId" /></label>
+                    <label class="chox-form-std-label2">Date Repair Authorised or TL Identified<img  style="display:none" src="../images/sign_info.png" width="13" alt="" height="13" id="dateRepairAuthorisedId" /></label>
                     <span id="repairAuthorisedDatePH"></span>
                 </div>
             </s:else>
@@ -421,6 +432,28 @@
                 <div class="chox-form-item">
                     <label class="chox-form-std-label2">Is Total Loss? <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="isTotalLossId" /></label>
                     <s:checkbox name="isTotalLostCheck" id="isTotalLostCheckId"/>
+                </div>
+            </s:else>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label3">Who Is Sending Pav If TL?</label>
+                <s:select name="whoIsSendingPav"
+                          list="sendingPAV"
+                          headerKey="" listKey="text"
+                          listValue="value"
+                          headerValue="-- Please Select --"
+                          emptyOption="false" cssStyle="width:230px"></s:select>
+            </div>
+            <s:if test="engineersReportSentLastModified!=null">
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">Date Engineers Report Sent </label>
+                    <table><tr><td><div class="chox-form-std-label-dateId" id="engineersReportSentPH"></div></td><td><img src="../images/sign_info.png" alt="" width="13" height="13" id="dateEngineersReportSentId" /></td></tr></table>
+                </div>
+            </s:if>
+            <s:else>
+                <div class="chox-form-item">
+                    <label class="chox-form-std-label2">Date Engineers Report Sent <img style="display: none" src="../images/sign_info.png" alt="" width="13" height="13" id="dateEngineersReportSentId" /></label>
+                    <span id="engineersReportSentPH"></span>
                 </div>
             </s:else>
 

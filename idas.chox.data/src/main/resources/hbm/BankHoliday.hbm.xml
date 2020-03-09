@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="idas.chox.core.model.BankHoliday" table="bank_holidays">
+    <cache usage="read-only"/>
+    <id column="id" name="id">
+            <generator class="sequence">
+                <param name="sequence_name">bank_holidays_id_seq</param>
+            </generator>
+    </id>
+    <property column="bank_holiday" name="bankHoliday" not-null="true"/>
+  </class>
+</hibernate-mapping>

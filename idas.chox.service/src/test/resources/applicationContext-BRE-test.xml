@@ -89,6 +89,8 @@
                 <bean class="idas.chox.service.bre.rules.InsurancePremiumTaxCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.SupplementaryInvoiceCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.MobileVehicleTotalLossCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.TotalLossDiaryInformationCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.RepairDiaryInformationCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.SubscriberCheckRejectedClaims" scope="prototype">
                     <property name="claimService" ref="claimService"/>                    
                 </bean>
@@ -132,6 +134,19 @@
                 <bean class="idas.chox.service.bre.rules.CopleyOfferMadeCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.ImpecuniousCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.VedChargeCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.BlankLabourRateCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.GtaAmendUploadCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.GtaAmendTotalLossOwnInsurerRoadworthy" scope="prototype">
+                    <property name="bankHolidayService" ref="bankHolidayService"/>
+                </bean>
+                <bean class="idas.chox.service.bre.rules.GtaAmendTotalLossOwnInsurerUnroadworthy" scope="prototype">
+                    <property name="bankHolidayService" ref="bankHolidayService"/>
+                </bean>
+                <bean class="idas.chox.service.bre.rules.RepairDiaryInformationCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.GtaAmendTotalLossCHOAtFaultInsurerRoadworthyCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.GtaAmendTotalLossCHORoadworthyCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.GtaAmendTotalLossCHOUnroadworthyCheck" scope="prototype"></bean>
             </list>
         </property>
     </bean>

@@ -12,6 +12,8 @@ import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 
+import java.util.Optional;
+
 public class AssignOwner extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(AssignOwner.class);
@@ -39,16 +41,63 @@ public class AssignOwner extends BaseActivity {
         if (claim.getClaimType() == ClaimType.INSURER_INVOICE) {
             workgroupsEnabled = claim.getInsurer().isEnableManualInvoiceWorkgroups();
             ownershipEnabled = claim.getInsurer().isEnableManualInvoiceOwnership();
-            if (!workgroupsEnabled && claim.getWorkgroup() != null && oasWorkgroupId > 0) {
-                workgroupsEnabled = true;
-            }
         } else {
             workgroupsEnabled = claim.getInsurer().isWorkgroupEnable();
             ownershipEnabled = claim.getInsurer().isClaimOwnershipEnable();
         }
 
+        if (!workgroupsEnabled && !ownershipEnabled)  {
+            throw new Exception("Both workgroup and ownership are disabled.");
+        }
+
+        // moved out of the first 'if' of this method to maintain backward compatibility
+        if (claim.getClaimType() == ClaimType.INSURER_INVOICE &&
+                !workgroupsEnabled && claim.getWorkgroup() != null && oasWorkgroupId > 0) {
+            workgroupsEnabled = true;
+        }
+
+        if (workgroupsEnabled && ownershipEnabled) {
+
+            Optional<Workgroup> workgroupOptional = Optional.ofNullable(claim.getWorkgroup());
+
+            Optional<WebUser> webUserOptional = Optional.ofNullable(claim.getClaimOwner());
+
+            if (workgroupOptional.isPresent() && webUserOptional.isPresent()) {
+
+                Workgroup workgroup = workgroupOptional.get();
+
+                WebUser webUser = webUserOptional.get();
+
+                Integer currentWorkgroupId = workgroup.getId();
+
+                Integer currentClaimOwnerId = webUser.getId();
+
+                if (currentWorkgroupId.equals(oasWorkgroupId) && currentClaimOwnerId.equals(claimOwnerId)) {
+                    throw new Exception("Nothing to update");
+                }
+
+            }
+        }
+
+        if (!workgroupsEnabled && ownershipEnabled) {
+
+            Optional<WebUser> webUserOptional = Optional.ofNullable(claim.getClaimOwner());
+
+            if (webUserOptional.isPresent()) {
+
+                WebUser webUser = webUserOptional.get();
+
+                Integer currentClaimOwnerId = webUser.getId();
+
+                if (currentClaimOwnerId.equals(claimOwnerId)) {
+                    throw new Exception("Nothing to update");
+                }
+
+            }
+        }
+
         if (workgroupsEnabled && oasWorkgroupId <= 0) {
-            LOG.error("No workgroup specified: {}", oasWorkgroupId);
+            LOG.error("No workgroup specified for claim '{}' ({}): workgroupId={}", new Object[]{claim.getChoReference(), claim.getId(), oasWorkgroupId});
             throw new Exception("No workgroup specified");
         } else if (workgroupsEnabled) {
             workgroup = (Workgroup) getDataService().get(Workgroup.class, oasWorkgroupId);
@@ -63,7 +112,7 @@ public class AssignOwner extends BaseActivity {
         }
 
         if (ownershipEnabled && claimOwnerId <= 0) {
-            LOG.error("No owner specified: {}", oasWorkgroupId);
+            LOG.error("No owner specified for claim '{}' ({}) with workgroupId={}: claimOwnerId={}", new Object[]{claim.getChoReference(), claim.getId(), oasWorkgroupId, claimOwnerId});
             throw new Exception("No owner specified");
         } else if (ownershipEnabled) {
             claimOwner = (WebUser) getDataService().get(WebUser.class, claimOwnerId);
@@ -75,8 +124,16 @@ public class AssignOwner extends BaseActivity {
             if (claimOwner.getInsurer().getId().intValue() != claim.getInsurer().getId().intValue()) {
                 throw new AccessDeniedException("The selected Claim Owner does not belong to the Insurer of the claim.");
             }
-        }
 
+            //check user belongs to workgroup, if any - no error message needed because it is a common user error)
+            if (workgroupsEnabled && workgroup != null) {
+                if (!isUserInWorkgroup(workgroup.getId(), claimOwnerId)) {
+                    //LOG.warn("Web user {} does not belong to workgroup={}", workgroup.getId(), claimOwnerId);
+                    throw new AccessDeniedException("The selected Claim Owner does not belong to the selected Workgroup.");
+                }
+            }
+
+        }
     }
 
     @Override
@@ -168,7 +225,11 @@ public class AssignOwner extends BaseActivity {
                 LOG.error("This should never be reached: oldOwnerName='{}', new owner id='{}' (telephone='{}', workgroupsEnabled={})",
                         new Object[]{oldOwnerName, claimOwner.getId(), claimOwner.getTelephone(), workgroupsEnabled});
             }
-            claim.addComment(comment);
+
+            if (comment != null) {
+                claim.addComment(comment);
+            }
+
         }
     }
 

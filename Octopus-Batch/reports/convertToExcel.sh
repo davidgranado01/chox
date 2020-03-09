@@ -3,8 +3,8 @@
 #1 - input Directory
 #2 - done Directory
 #3 - output directory
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
-export PATH=${PATH}:/bin:${JAVA_HOME}/bin
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+export PATH=${JAVA_HOME}/bin:/bin:${PATH}
 MODE=#{MODE} # EXPORT - send emails and transfer files, NOEMAIL - rports generated but not emailed but sftp ok, NOEXPORT - reports generated but not delivered via sftp or email
 
 function getPassword {
@@ -224,7 +224,7 @@ function getEmailReceivers {
 	        ACTIVE=1
 	        EMAIL_RECEIVERS=alane@keoghs.co.uk,lkearsley@keoghs.co.uk;;
         *)
-            EMAIL_RECEIVERS=john.dowson@valexa.com;;
+            EMAIL_RECEIVERS=DL-UKBR-Audatex-penguin-reporting@audatex.com;;
     esac
 
 }
@@ -238,7 +238,7 @@ then
 fi
 
 #BCC_RECIPIENTS=Elliot.Roberts@Valexa.com
-#BCC_RECIPIENTS=John.Dowson@Valexa.com
+#BCC_RECIPIENTS=Isabelle.Lecoeuche@audatex.co.uk
 #BCC_RECIPIENTS=John.Strawhorne@Valexa.com
 BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk
 

@@ -1,5 +1,10 @@
 package idas.chox.service.bre.rules;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,11 +30,19 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
         res.setRelatedRule(this);
         res.setClaimType(claim.getClaimType());
 
-        if (!ClaimType.isCollaborationProtocol(claim.getClaimType()) && !ClaimType.isSubscriber(claim.getClaimType())
-                && claim.getBreBand().isActualHireDaysDoesNotExceedTotalLossInspection()
+        if (claim.getBreBand().isActualHireDaysDoesNotExceedTotalLossInspection()
                 && claim.getCustomer() != null && claim.getVehicleHire() != null) {
 
-            if (claim.getCustomer().getIsTotalLoss()) {
+            Date firstJuly2019 = new Date();
+            try {
+                firstJuly2019 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse("2019-06-30 23:59:59.999");
+            } catch (ParseException ex) {
+                ; // Not reached
+            }
+            
+            if ( (ClaimType.isGTA_WideDef(claim.getClaimType()) && claim.getCustomer().getIsTotalLoss() && claim.getVehicleHire().getHireStart().before(firstJuly2019))
+                    || (!ClaimType.isGTA_WideDef(claim.getClaimType()) && claim.getCustomer().getIsTotalLoss())){
+
                 LOG.debug("Total loss claim - rule applies, hire days = ", claim.getVehicleHire().getDays());
                 CHOBandCalcHelper bandCalc = CHOBandCalcHelper.getInstance(claim.getBreBand());
                 boolean success = claim.getVehicleHire().getDays() <= bandCalc.getTotalLossInspectionDays();
@@ -42,7 +55,7 @@ public class ActualHireDaysDoesNotExceedTotalLossInspection implements IBusiness
 
             } else {
                 res.setResult(RuleEvaluationResult.RULE_SKIPPED);
-                narrative = "Rule only applies when the claim is a total loss";
+                narrative = "Rule only applies when the claim is a Total Loss, Hire Start is on or after 1st July 2019, and Managing Repair information to support GTA 4.14 not provided.";
             }
 
         } else {

@@ -1,17 +1,16 @@
 package idas.chox.core.util;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.mail.Transport;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
-import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.UnsupportedEncodingException;
+import java.util.Properties;
 
 public class EmailHelper {
     private static final Logger LOG = LoggerFactory.getLogger(EmailHelper.class);
@@ -68,8 +67,11 @@ public class EmailHelper {
             msg.setContent(message, "text/plain");
             Transport.send(msg);
 
-        } catch (UnsupportedEncodingException | MessagingException ex) {
+        } catch (UnsupportedEncodingException| MessagingException ex) {
             LOG.warn("Error posting email with subject '{}': \n{}\n", subject, message, ex);
+            throw ex;
+        } catch (Exception ex) {
+            LOG.warn("Exception posting email with subject '{}': \n{}\n", subject, message, ex);
             throw ex;
         }
     }

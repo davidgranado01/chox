@@ -27,6 +27,7 @@ public class ClaimResult {
     private boolean duplicateClaimInSameXmlFile;
     private List<Injury> injuries;
     private List<Solicitor> solicitors;
+    private String note;
 
     public boolean isDuplicateClaimInSameXmlFile() {
         return duplicateClaimInSameXmlFile;
@@ -36,6 +37,15 @@ public class ClaimResult {
         this.duplicateClaimInSameXmlFile = duplicateClaimInSameXmlFile;
     }
 
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    
     public Invoice getInvoice() {
         return invoice;
     }

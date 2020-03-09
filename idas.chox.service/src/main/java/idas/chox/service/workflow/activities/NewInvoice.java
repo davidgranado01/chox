@@ -11,7 +11,7 @@ import idas.chox.core.hpi.*;
 import idas.chox.core.model.*;
 import idas.chox.core.services.*;
 import idas.chox.core.util.DateHelper;
-import idas.chox.keoghs.Keoghs;
+//import idas.chox.keoghs.Keoghs;
 import idas.chox.service.bre.util.ClaimCalcHelper;
 import idas.chox.service.bre.util.VehicleClassHelper;
 import idas.chox.service.workflow.ClaimProcessWorkflowContext;
@@ -30,7 +30,7 @@ public class NewInvoice extends BaseActivity {
     private boolean claimOwnerAssigned = false;
     private boolean invoiceAccepted = false;
     private RulesEngineResponse breResponse = null;
-    private Keoghs keoghs;
+//    private Keoghs keoghs;
 
     public boolean isClaimRouted() {
         return claimRouted;
@@ -44,9 +44,9 @@ public class NewInvoice extends BaseActivity {
         return invoiceAccepted;
     }
 
-    public void setKeoghs(Keoghs keoghs) {
-        this.keoghs = keoghs;
-    }
+//    public void setKeoghs(Keoghs keoghs) {
+//        this.keoghs = keoghs;
+//    }
 
     public RulesEngineResponse getBreResponse() {
         return breResponse;
@@ -242,7 +242,7 @@ public class NewInvoice extends BaseActivity {
         // If not a supplementary claim, Queue to send to Keoghs for ADA fraud check
         if (claim.getBreBand().isFraudCheckEnable() && !ClaimType.isSupplementaryInvoice(claim.getClaimType())) {
             try {
-                KeoghsRequest request  = keoghs.queue(claim, "Invoice Upload");
+//                KeoghsRequest request  = keoghs.queue(claim, "Invoice Upload");
                 LOG.debug("New Invoice '{}' queued to Keoghs.", claim.getChoReference());
             } catch (Exception ex) {
                 LOG.error("Error sending new invoice with choref '{}' to keoghs: {}", claim.getChoReference(), ex.getMessage(), ex);

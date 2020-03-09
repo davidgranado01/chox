@@ -114,13 +114,13 @@
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
-        
+
         <action name="inbox" class="idas.chox.web.actions.InboxAction">
             <result name="success" type="redirectAction">
                 <param name="actionName">inboxPage</param>
             </result>
         </action>
-        
+
         <action name="inboxPage" class="idas.chox.web.actions.InboxAction" method="loadInbox">
             <result>/jsp/inbox.jsp</result>
         </action>
@@ -252,7 +252,11 @@
 
     <package name="private-partial-package" namespace="/prv/p" extends="home-package">
         <default-interceptor-ref name="authenticated" />
-        
+
+        <action name="buildTimestamp" class="idas.chox.web.actions.BuildTimestamp">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+
         <action name="addOrUpdateDiscount" class="idas.chox.web.actions.InsurerDiscountAction" method="addOrUpdateDiscount">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
@@ -1448,7 +1452,18 @@
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
-        
+
+
+        <action name="getEventLogPage" class="idas.chox.web.actions.EventLogAction" method="doRenderActionPage">
+            <result name="success">/jsp/p_claim_detail_event_log.jsp</result>
+        </action>
+        <action name="getEventLogs" class="idas.chox.web.actions.EventLogAction" method="getEventLogs">
+            <result name="success">/jsp/p_jsonArrayData.jsp</result>
+        </action>
+        <action name="getEventLogAttributes" class="idas.chox.web.actions.EventLogAction" method="getEventLogAttributes">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+
 
         <action name="getAuditTrailPage" class="idas.chox.web.actions.AuditTrailAction" method="doRenderActionPage">
             <result name="success">/jsp/p_claim_detail_claim_cycle.jsp</result>

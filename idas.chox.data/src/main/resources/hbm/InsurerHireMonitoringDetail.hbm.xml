@@ -5,7 +5,7 @@
     <cache usage="nonstrict-read-write"/>
     <id column="id" name="id">
             <generator class="sequence">
-                <param name="sequence">insurer_hire_monitoring_detail_id_seq</param>
+                <param name="sequence_name">insurer_hire_monitoring_detail_id_seq</param>
             </generator>
     </id>
     <version column="version" name="version" unsaved-value="null"/>
@@ -19,6 +19,7 @@
     <property column="total_loss_offer_accepted" name="totalLossOfferAcceptedDate"/>
     <property column="total_loss_check_issued" name="totalLossOfferCheckIssuedDate"/>
     <property column="total_loss_check_received" name="totalLossOfferCheckReceivedDate"/>
+    <property column="engineers_report_sent" name="engineersReportSentDate"/>
     <property column="labour_rate" name="labourRate"/>
     <property column="labour_hour" name="labourHour"/>
     <property column="labour_cost" name="labourCost"/>

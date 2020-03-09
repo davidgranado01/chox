@@ -1374,9 +1374,8 @@ table.chox-admin tr{
 div.admin-bre-band-detail-holder{
     height:530px;
     overflow:auto;
-    padding-right:5px;
-    padding-left:5px;
-    border:0px solid #B5B8C8;
+    padding-right:3px;
+    padding-left:3px;
 }
 
 .admin-panel-sub-heading {

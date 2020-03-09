@@ -88,7 +88,10 @@ public class CommentServiceImpl extends SecureDataService implements CommentServ
             // Delete task for comment review
             Task task = comment.getTask();
             comment.setTask(null);
-            delete(task);
+            // VUL-6846: note created by upload might not have task associate with them
+            if (task != null) {
+                delete(task);
+            }
         }
         this.save(comment);
     }

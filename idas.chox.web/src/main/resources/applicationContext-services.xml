@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
        default-autowire="byName">
     
     <bean id="baseDataService" class="idas.chox.data.services.BaseDataService" scope="prototype">
@@ -329,6 +329,11 @@
         <property name="securityInfoProvider" ref="securityInfoProvider"/>
     </bean>
 
+    <bean id="eventLogService" class="idas.chox.data.services.EventLogServiceImp" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="securityInfoProvider" ref="securityInfoProvider"/>
+    </bean>
+
     <bean id="ipWhitelistService" class="idas.chox.data.services.IPWhitelistServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
@@ -399,7 +404,11 @@
     <bean id="keoghsRequestService" class="idas.chox.data.services.KeoghsRequestServiceImpl" scope="prototype">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
-    <bean id="keoghs" class="idas.chox.keoghs.Keoghs" scope="prototype">
+    <bean id="bankHolidayService" class="idas.chox.data.services.BankHolidayServiceImpl" scope="prototype">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <!--bean id="keoghs" class="idas.chox.keoghs.Keoghs" scope="prototype">
         <property name="claimService" ref="claimService" />
         <property name="keoghsRequestService" ref="keoghsRequestService" />
         <property name="keoghsToken" value="${keoghs.token}" />
@@ -408,5 +417,5 @@
         <property name="maxAttempts" value="${keoghs.maxAttempts}" />
         <property name="maxRequeues" value="${keoghs.maxRequeues}" />
         <property name="useDebugEndpoint" value="${keoghs.useDebugEndpoint}" />
-    </bean>
+    </bean-->
 </beans>

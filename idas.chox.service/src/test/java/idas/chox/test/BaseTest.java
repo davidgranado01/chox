@@ -3,7 +3,7 @@ package idas.chox.test;
 
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -110,4 +110,6 @@ public abstract class BaseTest {
     protected HireMonitoringEcdService hireMonitoringEcdService;
     @Autowired
     protected InsurerHireMonitoringEcdService insurerHireMonitoringEcdService;
+    @Autowired
+    protected BankHolidayService bankHolidayService;
 }

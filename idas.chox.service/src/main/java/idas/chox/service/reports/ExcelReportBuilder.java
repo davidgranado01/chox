@@ -4,19 +4,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
-import net.sf.jxls.exception.ParsePropertyException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.sf.jxls.transformer.XLSTransformer;
-
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.ClientAnchor.AnchorType;
 import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.jxls.common.Context;
+import org.jxls.util.JxlsHelper;
 import org.springframework.core.io.ClassPathResource;
 
 public class ExcelReportBuilder implements ReportBuilder {
@@ -64,7 +64,7 @@ public class ExcelReportBuilder implements ReportBuilder {
             Sheet sheet = resultWorkbook.getSheetAt(0);
             Drawing patriarch = sheet.createDrawingPatriarch();
             patriarch.createPicture(anchor, index);
-            anchor.setAnchorType(2);
+            anchor.setAnchorType(AnchorType.DONT_MOVE_DO_RESIZE);
 
         } catch (IOException ioe) {
             LOG.error("Exception adding image to report: " + ioe.getMessage(), ioe);
@@ -84,25 +84,24 @@ public class ExcelReportBuilder implements ReportBuilder {
         return resultWorkbook;
     }
 
-    protected ByteArrayOutputStream doCreateReport(Map reportParameters, String templateFileName, boolean addLogo, short[] columnsToHide, boolean brandingLogo) {
-        ByteArrayOutputStream out = null;
-        try {
-            InputStream templateIS = new ClassPathResource(REPORT_TEMPLATE_PATH + templateFileName).getInputStream();
-            out = new ByteArrayOutputStream();
-            XLSTransformer transformer = new XLSTransformer();
-            if (columnsToHide != null) {
-                transformer.setColumnsToHide(columnsToHide);
+    protected ByteArrayOutputStream doCreateReport(Map<String, Object> reportParameters, String templateFileName, boolean addLogo, short[] columnsToHide, boolean brandingLogo) {
+//        ByteArrayOutputStream out = null;
+        try (InputStream templateIS = new ClassPathResource(REPORT_TEMPLATE_PATH + templateFileName).getInputStream()) {
+            try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                Context context = new Context();
+                for (Map.Entry<String, Object> entry : reportParameters.entrySet()) {
+                    context.putVar(entry.getKey(), entry.getValue());
+                }
+                JxlsHelper.getInstance().processTemplate(templateIS, out, context);
+                if (addLogo) { //
+//                    resultWorkbook = appendImage(resultWorkbook, brandingLogo);
+                }
+                LOG.info("Report written to stream");
+                return out;
             }
-            Workbook resultWorkbook = transformer.transformXLS(templateIS, reportParameters);
-
-            if (addLogo) {
-                resultWorkbook = appendImage(resultWorkbook, brandingLogo);
-            }
-            resultWorkbook.write(out);
-        } catch (IOException | ParsePropertyException | InvalidFormatException e) {
-            LOG.error("Exception creating report: " + e.getMessage(), e);
+        } catch (IOException ex) {
+            LOG.error("Exception creating report: {}", ex.getMessage(), ex);
         }
-        LOG.info("Report written to stream");
-        return out;
+        return null;
     }
 }

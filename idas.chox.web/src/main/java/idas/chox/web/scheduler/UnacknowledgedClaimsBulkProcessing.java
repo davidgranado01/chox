@@ -27,7 +27,6 @@ import idas.chox.core.model.WebUser;
 import idas.chox.core.model.Workgroup;
 import idas.chox.core.services.ChorganisationService;
 import idas.chox.core.services.ReasonOfRejectionService;
-import idas.chox.core.services.UserService;
 import idas.chox.core.services.WorkgroupService;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.Xlsx2csvUtility;
@@ -68,7 +67,6 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
     private String processedDirectory;
     private String xlsx2csvLocation;
     private WorkgroupService workgroupService;
-    private UserService userService;
     private ChorganisationService chorganisationService;
     private ReasonOfRejectionService reasonOfRejectionService;
 
@@ -82,10 +80,6 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
 
     public void setReasonOfRejectionService(ReasonOfRejectionService reasonOfRejectionService) {
         this.reasonOfRejectionService = reasonOfRejectionService;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 
     public void setChorganisationService(ChorganisationService chorganisationService) {
@@ -212,7 +206,7 @@ public class UnacknowledgedClaimsBulkProcessing extends DbSchedulerJob {
                         // Do we need to assign?
                         if (claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED)) {
                             // Claim Needs To be routed: get workgroup from column 5
-                            WebUser owner = userService.findByUserName(line[POSITION_OWNER].trim());
+                            WebUser owner = getUserService().findByUserName(line[POSITION_OWNER].trim());
                             if (owner == null) {
                                 LOG.error("Error processing entry {}: cannot assign claim as no such username '{}'", lineNo, line[POSITION_OWNER]);
                                 releaseHibernateSessionConditionally();
