@@ -10,6 +10,11 @@
 #  -t <template> : template db folder, eg. Octopus-DB in the chox project source directory
 #  Paths to sql files in the manifest are relative to the location of the manifest file
 #
+#  Unit tests :
+#  Default working case : python Configuration/devutils/octopus-db-package.py -c
+#  Error - destination exists : python Configuration/devutils/octopus-db-package.py -o  Configuration/devutils/../../Octopus-DB
+#  Error - Invalid manifest : python Configuration/devutils/octopus-db-package.py -i blah
+#  Error - Invalid manifest content : echo "blah.sql" > dummy.txt; python Configuration/devutils/octopus-db-package.py -i dummy.txt
 # --------------------------------------------------------------------------------------------------
 import sys, getopt, os, shutil
 
@@ -25,10 +30,12 @@ def mk_package_folders (src, dest):
       shutil.copytree(src, dest)
    except shutil.Error as e:
       # Directories are the same
-      print('Directory not copied. Error: %s' % e)
+      print('Error - Directory not copied. Exception: %s' % e)
+      sys.exit(2)
    except OSError as e:
       # Any error saying that the directory doesn't exist
-      print('Directory not copied. Error: %s' % e)
+      print('Error - Directory not copied. Exception: %s' % e)
+      sys.exit(2)
    
 def populate_package(manifest, packageroot):
    """
@@ -38,7 +45,10 @@ def populate_package(manifest, packageroot):
    location = os.path.join(packageroot, 'ROLLFORWARD/CHOX')
    pathtodata = os.path.dirname(manifest)
 
-   os.remove(os.path.join(location, ".gitkeep"))
+   try:
+      os.remove(os.path.join(location, ".gitkeep"))
+   except OSError as e:
+      print ('Warning - .geetkeep not found - possibly the template folder is not checked in git?')
    fh = open (os.path.join(location, "00.runAll.sql"), "w")
 
 
@@ -58,10 +68,15 @@ def populate_package(manifest, packageroot):
 
             scriptnameprefixed =  "{:02d}.{}".format(count, os.path.basename(scriptname))
             #print ('scriptname'+scriptname+' '+'scriptnameprefixed='+scriptnameprefixed)
-            shutil.copyfile(scriptname, os.path.join(location, scriptnameprefixed))
+            try:
+               shutil.copyfile(scriptname, os.path.join(location, scriptnameprefixed))
+            except shutil.Error as e:
+               print('Error - Could not copy sql script file. Exception: %s' % e)
+               sys.exit(2)
             fh.write("\i {}\n".format(scriptnameprefixed)) 
    except IOError as e:
-      print ("Could not read file {} - {} ".format(manifest, e) )
+      print ("Error : Could not process file {} - {} ".format(manifest, e) )
+      sys.exit(2)
 
    fh.close()
 
@@ -79,6 +94,7 @@ def main(me, argv):
    try:
       opts, args = getopt.getopt(argv,"hci:o:t:",["ifile=","ofile=","tfolder="])
    except getopt.GetoptError:
+      print("Error: incorrect parameters")
       usage(me)
       sys.exit(2)
    for opt, arg in opts:
@@ -106,7 +122,12 @@ def main(me, argv):
       templatefolder= os.path.join(scriptpath, "../../Octopus-DB")
 
    if (cleardest):
-      shutil.rmtree(outputfolder)
+      print ('Warning : Deleting existing folder {} - ensure the changes are not checked in git!'.format(outputfolder))
+      try:
+         shutil.rmtree(outputfolder)
+      except Exception as e:
+         print('Error - Could not delete folder. Exception: %s' % e)
+         sys.exit(2)
 
 
    mk_package_folders(templatefolder, outputfolder)
