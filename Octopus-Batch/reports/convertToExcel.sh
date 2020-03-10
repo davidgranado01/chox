@@ -51,6 +51,7 @@ function getEmailReceivers {
 #    4 - the report is not password protected or zipped, and is sftp'ed to the FTP_CLIENT, with trg files added for txt/xls files (but not csv) (using transferToGateway.sh script for csv, transferToGatewayWithTrigger.sh for xls)
 #    5 - the report is not password protected or zipped, and is sftp'ed to the FTP_CLIENT (using transferToGateway.sh script). txt/xls files only.
     ACTIVE=0
+    BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk
     unset -v FTP_CLIENT
     case "$REPORT_NAME" in
         "ERS-Monthly_Insurer_Cost_Report-"* |\
@@ -138,15 +139,16 @@ function getEmailReceivers {
         "Auxillis-Moved_To_InvoicePaymentLogged_Claim_Detail_Report-"* )
 	        ACTIVE=1
             EMAIL_RECEIVERS=cpt@albanyassistance.co.uk,susan.harker@albanyassistance.co.uk,protocol@albanyassistance.co.uk;;
-	    "Auxillie-FNOL_Notifications_Report_DLG-"* )
+	    "Auxillis-FNOL_Notifications_Report_DLG-"* )
 	        ACTIVE=1
-	        EMAIL_RECEIVERS=protocol@albanyassistance.co.uk;;
+	        EMAIL_RECEIVERS=DLGclaimupdate@auxillis.com ;;
 	    "Auxillis-Invoice_Notifications_Report_DLG-"* )
 	        ACTIVE=1
 	        EMAIL_RECEIVERS=protocol@albanyassistance.co.uk;;
         "DLG-Insurer_User_State_Report-"* )
 	        ACTIVE=1
-            EMAIL_RECEIVERS=jamie.willshaw@directlinegroup.co.uk,tam.bedford@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk,Jonathan.Clarke@directlinegroup.co.uk,UAC.Governance@directlinegroup.co.uk;;
+            EMAIL_RECEIVERS=jamie.willshaw@directlinegroup.co.uk,tam.bedford@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk,Jonathan.Clarke@directlinegroup.co.uk,UAC.Governance@directlinegroup.co.uk
+            BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk,David.Hayes@audatex.co.uk;;
         "RSA-Average_Time_To_Allocate_Work-"* )
             EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com;;
 #        "ERAC-Supplementary_Consolidation_Report-"* )
@@ -240,7 +242,10 @@ fi
 #BCC_RECIPIENTS=Elliot.Roberts@Valexa.com
 #BCC_RECIPIENTS=Isabelle.Lecoeuche@audatex.co.uk
 #BCC_RECIPIENTS=John.Strawhorne@Valexa.com
-BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk
+#BCC_RECIPIENT may have been initialised already, otherwise just use a catch all
+if [[ -z "${BCC_RECIPIENTS}" ]]; then
+   BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk
+fi
 
 REPORT_DIR=$1
 PROCESSED_DIR=$2

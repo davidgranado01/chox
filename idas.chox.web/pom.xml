@@ -188,7 +188,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>copy-octopus</id>
+                        <id>copy-app-octopus</id>
                         <phase>process-classes</phase>
                         <goals>
                             <goal>copy-resources</goal>
@@ -199,6 +199,22 @@
                             <resources>
                                 <resource>
                                     <directory>${basedir}/../Octopus-App</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-batch-octopus</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/chox-batch</outputDirectory>
+                            <encoding>UTF-8</encoding>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/../Octopus-Batch</directory>
                                 </resource>
                             </resources>
                         </configuration>
@@ -312,16 +328,30 @@
                 <version>3.2.0</version>
                 <executions>
                     <execution>  <!-- Build tgz archive. -->
-                        <id>tar</id>
+                        <id>app-tar</id>
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
                         </goals>
                         <configuration>
                             <descriptors>
-                                <descriptor>tar.xml</descriptor>
+                                <descriptor>app.tar.xml</descriptor>
                             </descriptors>
                             <finalName>chox-app.${version.number}</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>batch-tar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>batch.tar.xml</descriptor>
+                            </descriptors>
+                            <finalName>chox-batch.${batch.version.number}</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                     </execution>
