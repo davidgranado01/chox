@@ -16,7 +16,7 @@ CASE WHEN claim.liability_status=1 THEN 'Full Liability Accepted'
      WHEN claim.liability_status=5 THEN 'Liability Split'
      WHEN claim.liability_status=6 THEN 'Proceed Without Prejudice'
      ELSE ''
-END,
+END as liability_status,
 claim.percentage_liability_accepted,
 invoice.created_date as invoice_upload_date,
 audit_trail.created_date as paid_date, 
