@@ -1,0 +1,42 @@
+SELECT
+claim.status, 
+chorganisation.name as CHO,
+claim.cho_reference as Supplier_Ref, 
+claim.claim_number,
+insurer.name, 
+claim.claim_type, 
+claim.liability_status, 
+claim.percentage_liability_accepted,
+audit_trail.created_date as paid_date, 
+claim.status_modified_date,
+invoice_original.hire_net, 
+invoice_original.hire_gross, 
+invoice.hire_net,  
+invoice.hire_gross,  
+invoice_original.repair_net, 
+invoice_original.repair_gross, 
+invoice.repair_net, 
+invoice.repair_gross,
+invoice.total_penalty_charge, --LPP requested
+invoice.penalty_charges_paid,
+invoice_original.total_to_pay,    -- alternatives: invoice_original.total_gross, invoice_original.full_total_to_pay
+invoice.total_to_pay,
+invoice.gta_discount, 
+vehicle_hire.days,
+vehicle_hire.days_original,
+vco.name as original_veh_class,
+vc.name as veh_class,
+invoice_original.hire_rate_charged_per_day, 
+invoice.hire_rate_charged_per_day 
+from claim 
+JOIN chorganisation ON claim.chorganisation_id = chorganisation.id
+LEFT JOIN invoice ON invoice.id = claim.invoice_id
+LEFT JOIN invoice_original ON invoice_original.id = invoice.invoice_original_id
+LEFT JOIN vehicle_hire ON vehicle_hire.id = claim.vehicle_hire_id
+LEFT JOIN insurer ON claim.insurer_id = insurer.id
+JOIN vehicle_class vc ON vc.id = vehicle_hire.vehicle_class_id
+JOIN vehicle_class vco ON vco.id = vehicle_hire.vehicle_class_original_id
+JOIN audit_trail ON claim.id = audit_trail.claim_id
+WHERE 
+audit_trail.reverted = false 
+AND (claim.status = 'ManualInvoicePaid' OR claim.status = ' InvoicePaymentLogged');
