@@ -46,8 +46,8 @@ LEFT JOIN invoice_original ON invoice_original.id = invoice.invoice_original_id
 LEFT JOIN vehicle_hire ON vehicle_hire.id = claim.vehicle_hire_id
 LEFT JOIN insurer ON claim.insurer_id = insurer.id
 LEFT JOIN claim_type ON claim.claim_type = claim_type.claim_type
-JOIN vehicle_class vc ON vc.id = vehicle_hire.vehicle_class_id
-JOIN vehicle_class vco ON vco.id = vehicle_hire.vehicle_class_original_id
+LEFT JOIN vehicle_class vc ON vc.id = vehicle_hire.vehicle_class_id
+LEFT JOIN vehicle_class vco ON vco.id = vehicle_hire.vehicle_class_original_id
 JOIN audit_trail ON claim.id = audit_trail.claim_id
 WHERE 
 audit_trail.reverted = false 
