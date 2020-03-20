@@ -27,7 +27,7 @@ vehicle_hire.days_original,
 vco.name as original_veh_class,
 vc.name as veh_class,
 invoice_original.hire_rate_charged_per_day, 
-invoice.hire_rate_charged_per_day 
+invoice.hire_rate_charged_per_day
 from claim 
 JOIN chorganisation ON claim.chorganisation_id = chorganisation.id
 LEFT JOIN invoice ON invoice.id = claim.invoice_id
@@ -39,4 +39,6 @@ JOIN vehicle_class vco ON vco.id = vehicle_hire.vehicle_class_original_id
 JOIN audit_trail ON claim.id = audit_trail.claim_id
 WHERE 
 audit_trail.reverted = false 
-AND (claim.status = 'ManualInvoicePaid' OR claim.status = ' InvoicePaymentLogged');
+AND audit_trail.created_date >= '2019-01-01'  AND audit_trail.created_date < '2020-01-01' 
+AND (audit_trail.new_status = 'ManualInvoicePaid'  OR audit_trail.new_status = 'InvoicePaymentLogged')
+AND (claim.status = 'ManualInvoicePaid' OR claim.status = 'InvoicePaymentLogged' OR claim.status = 'PaymentReceived');
