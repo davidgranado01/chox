@@ -82,7 +82,7 @@ while [[ "$RANGE_START_DATE" < "$END_DATE" ]]; do
       RANGE_END_DATE=$END_DATE
     fi
 
-    echo "Dump range between: $RANGE_START_DATE to: $RANGE_END_DATE"
+    echo "Dump range between: $RANGE_START_DATE and: $RANGE_END_DATE"
 
     # Create XML data dump files
     if [ -z ${GENERATE_XSD} ]
