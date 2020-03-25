@@ -85,12 +85,13 @@ while [[ "$RANGE_START_DATE" < "$END_DATE" ]]; do
     echo "Dump range between: $RANGE_START_DATE and: $RANGE_END_DATE"
 
     # Create XML data dump files
-    if [ -z ${GENERATE_XSD} ]
-    then
+    if [[ "${GENERATE_XSD}" != "xsd" || "${XSD_GENERATED}" = "generated" ]]; then
         echo "Creating XML dump files in directory ${DUMP_DIR}"
         ${DUMP_SCRIPT_LOCATION} ${INSURER_ID} ${RANGE_START_DATE} ${RANGE_END_DATE} ${DUMP_DIR}
     else
         echo "Creating XML and XSD dump files in directory ${DUMP_DIR}"
+        # xsd only need to generate once for the whole date range
+        XSD_GENERATED=generated
         ${DUMP_SCRIPT_LOCATION} ${INSURER_ID} ${RANGE_START_DATE} ${RANGE_END_DATE} ${DUMP_DIR} ${GENERATE_XSD}
     fi
 
