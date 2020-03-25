@@ -13,7 +13,7 @@ fi
 
 if [ $# -eq 4 ]
 then
-    if [ $5 != 'xsd' ]
+    if [ $4 != 'xsd' ]
     then
         echo "Usage: $0 <insurerId> <startDate> <directory> [xsd]"
         echo

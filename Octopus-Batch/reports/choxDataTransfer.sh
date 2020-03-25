@@ -98,7 +98,7 @@ TRIGGER_FILE="${DUMP_DIR}/CHOX-`date "+%Y%m%d"`.trg"
 echo "Compressing files...."
 /usr/bin/zip -q -j ${DUMP_DIR}/CHOX-`date "+%Y%m%d"`.ZIP ${DUMP_DIR}/*.XML
 set echo
-if [ "${GENERATE_XSD}" = "true" ]
+if [ "${GENERATE_XSD}" = "xsd" ]
 then
     /usr/bin/zip -q -j ${DUMP_DIR}/CHOX-`date "+%Y%m%d"`.ZIP ${DUMP_DIR}/*.XSD
 fi
