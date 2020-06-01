@@ -6,3 +6,5 @@ target/
 build.log
 .classpath
 .DS_Store
+Octopus-DB-Latest/
+
