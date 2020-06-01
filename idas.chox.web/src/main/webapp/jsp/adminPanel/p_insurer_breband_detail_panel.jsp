@@ -3695,6 +3695,16 @@
                             <label class="chox-form-check-label">108: Repair Diary Information Check</label>
                             <div class="chox-form-check-description">Check to ensure that the CHO has provided the required repair diary information.</div>
                         </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="deliveryCollectionChargeCheck" value="deliveryCollectionChargeCheck" /></div>
+                            <label class="chox-form-check-label">109: Delivery / Collection Charge Check on Usable Vehicles</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for this extra and the vehicle is marked by the CHO as driveable/usable/mobile.</div>
+                        </div>
+                        <div class="chox-form-checkboxitem">
+                            <div class="chox-form-checkbox"><s:checkbox name="repairChargeCheck" value="repairChargeCheck" /></div>
+                            <label class="chox-form-check-label">110: Repair Check on Usable Vehicles</label>
+                            <div class="chox-form-check-description">Invoice will be flagged if the CHO is charging for repair and the vehicle is marked by the CHO as driveable/usable/mobile.</div>
+                        </div>
                     </div>
                     <input type="hidden" class="chox-ttxt" id="CCDisActive" name="isActive" value="true"/>
             </div>
