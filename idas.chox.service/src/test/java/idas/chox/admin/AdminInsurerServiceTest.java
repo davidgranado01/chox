@@ -314,6 +314,7 @@ public class AdminInsurerServiceTest extends BaseTest {
         breBand.setSatelliteNavigationChargeCheck(true);
         breBand.setTowBarsChargeCheck(true);
         breBand.setActualHireDaysDoesNotExceedAllowableHireDays(true);
+        breBand.setActualHireDaysDoesNotExceedTotalLossInspection(true);
         breBand.setRepairChargeCheck(true);
         breBand.setClaimHasZeroDiscountForDA(true);
         breBand.setCorrentAdminFee(true);
