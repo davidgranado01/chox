@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 
 
 public class RepairOnUsableVehicleCheck implements IBusinessRule {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(RepairOnUsableVehicleCheck.class);
 
     private String narrative = "";
@@ -27,8 +27,8 @@ public class RepairOnUsableVehicleCheck implements IBusinessRule {
         res.setClaimType(claim.getClaimType());
 
         //Default
-            narrative = "";
-            res.setResult(RuleEvaluationResult.RULE_SKIPPED);
+        narrative = "";
+        res.setResult(RuleEvaluationResult.RULE_SKIPPED);
 
 
         if ((ClaimType.isGTA_WideDef(claim.getClaimType()) || ClaimType.isInsurerUpload(claim.getClaimType()))
@@ -73,5 +73,4 @@ public class RepairOnUsableVehicleCheck implements IBusinessRule {
 
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
-    
 }
