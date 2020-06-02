@@ -146,6 +146,7 @@
                 <bean class="idas.chox.service.bre.rules.GtaAmendTotalLossCHOAtFaultInsurerUnroadworthyCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.GtaAmendTotalLossCHORoadworthyCheck" scope="prototype"></bean>
                 <bean class="idas.chox.service.bre.rules.GtaAmendTotalLossCHOUnroadworthyCheck" scope="prototype"></bean>
+                <bean class="idas.chox.service.bre.rules.RepairOnUsableVehicleCheck" scope="prototype"></bean>
             </list>
         </property>
     </bean>
