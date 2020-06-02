@@ -67,8 +67,13 @@ public class RepairOnUsableVehicleCheck implements IBusinessRule {
 
     @Override
     public String getStatusAfterFailure(ClaimType claimType) {
+        if (ClaimType.isInsurerUpload(claimType)) {
+            return ClaimStatus.MANUAL_INVOICE_REJECTED;
+        }
 
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
-
     }
+
+
+}
 }
