@@ -73,7 +73,5 @@ public class RepairOnUsableVehicleCheck implements IBusinessRule {
 
         return ClaimStatus.INVOICE_ESCALATED_TO_CH;
     }
-
-
-}
+    
 }
