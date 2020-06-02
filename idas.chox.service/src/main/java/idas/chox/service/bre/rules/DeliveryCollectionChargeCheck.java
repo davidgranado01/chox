@@ -41,7 +41,8 @@ public class DeliveryCollectionChargeCheck implements IBusinessRule {
 
             boolean success = true;
 
-            if (claim.getCustomer().getIsUsable() != null && claim.getCustomer().getIsUsable() &&
+            if (claim.getCustomer() != null &&
+                    claim.getCustomer().getIsUsable() != null && claim.getCustomer().getIsUsable() &&
                     claim.getInvoice().getDeliveryCollectionFee().compareTo(BigDecimal.ZERO) > 0) {
                 success = false;
                 narrative = FAILURE_MESSAGE;
