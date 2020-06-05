@@ -147,7 +147,7 @@ function getEmailReceivers {
 	        EMAIL_RECEIVERS=protocol@albanyassistance.co.uk;;
         "DLG-Insurer_User_State_Report-"* )
 	        ACTIVE=1
-            EMAIL_RECEIVERS=jamie.willshaw@directlinegroup.co.uk,tam.bedford@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk,Jonathan.Clarke@directlinegroup.co.uk,UAC.Governance@directlinegroup.co.uk
+            EMAIL_RECEIVERS=tam.bedford@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk,Jonathan.Clarke@directlinegroup.co.uk,UAC.Governance@directlinegroup.co.uk
             BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk,David.Hayes@audatex.co.uk;;
         "RSA-Average_Time_To_Allocate_Work-"* )
             EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com;;
