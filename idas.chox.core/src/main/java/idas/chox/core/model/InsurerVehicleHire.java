@@ -6,6 +6,7 @@ import java.util.Date;
 public class InsurerVehicleHire extends Entity implements Serializable {
 
     private Date rentalStart;
+    private Date rentalEnd;
     private VehicleClass vehicleClass;
 
 
@@ -27,6 +28,13 @@ public class InsurerVehicleHire extends Entity implements Serializable {
         this.rentalStart = rentalStart;
     }
 
+    public Date getRentalEnd() {
+        return rentalEnd;
+    }
+
+    public void setRentalEnd(Date rentalEnd) {
+        this.rentalEnd = rentalEnd;
+    }
 
     public VehicleClass getVehicleClass() {
         return vehicleClass;

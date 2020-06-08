@@ -20,6 +20,10 @@ public class InsurerHireMonitoringDetail extends Entity implements Serializable 
     private Date totalLossOfferCheckReceivedDate;
     private Date engineersReportSentDate;
 
+    private Date TPReportedIncidentToTPIDate;
+    private Date TLReportSentToUsDate;
+    private Date partsReceivedDate;
+
     private BigDecimal labourRate;
     private BigDecimal labourHour;
     private BigDecimal labourCost;
@@ -43,6 +47,30 @@ public class InsurerHireMonitoringDetail extends Entity implements Serializable 
 
     public void setEngineersReportSentDate(Date engineersReportSentDate) {
         this.engineersReportSentDate = engineersReportSentDate;
+    }
+
+    public Date getTPReportedIncidentToTPIDate() {
+        return TPReportedIncidentToTPIDate;
+    }
+
+    public void setTPReportedIncidentToTPIDate(Date TPReportedIncidentToTPIDate) {
+        this.TPReportedIncidentToTPIDate = TPReportedIncidentToTPIDate;
+    }
+
+    public Date getTLReportSentToUsDate() {
+        return TLReportSentToUsDate;
+    }
+
+    public void setTLReportSentToUsDate(Date TLReportSentToUsDate) {
+        this.TLReportSentToUsDate = TLReportSentToUsDate;
+    }
+
+    public Date getPartsReceivedDate() {
+        return partsReceivedDate;
+    }
+
+    public void setPartsReceivedDate(Date partsReceivedDate) {
+        this.partsReceivedDate = partsReceivedDate;
     }
 
     /**

@@ -783,6 +783,21 @@ public class BaseActivityEvent extends Entity implements Serializable {
                 } else {
                     addAttribute("hireMonitoringTotalLossCheckReceivedDate", null);
                 }
+                if (insurerHireMonitoringDetail.getTPReportedIncidentToTPIDate() != null) {
+                    addAttribute("TPReportedIncidentToTPIDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTPReportedIncidentToTPIDate()));
+                } else {
+                    addAttribute("TPReportedIncidentToTPIDate", null);
+                }
+                if (insurerHireMonitoringDetail.getTLReportSentToUsDate() != null) {
+                    addAttribute("TLReportSentToUsDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTLReportSentToUsDate()));
+                } else {
+                    addAttribute("TLReportSentToUsDate", null);
+                }
+                if (insurerHireMonitoringDetail.getPartsReceivedDate() != null) {
+                    addAttribute("partsReceivedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getPartsReceivedDate()));
+                } else {
+                    addAttribute("partsReceivedDate", null);
+                }
             } else {
                 addAttribute("hireMonitoringRepairBookedInDate", null);
                 addAttribute("hireMonitoringInspectionDate", null);
@@ -796,6 +811,9 @@ public class BaseActivityEvent extends Entity implements Serializable {
                 addAttribute("hireMonitoringTotalLossOfferAcceptedDate", null);
                 addAttribute("hireMonitoringTotalLossCheckIssuedDate", null);
                 addAttribute("hireMonitoringTotalLossCheckReceivedDate", null);
+                addAttribute("TPReportedIncidentToTPIDate", null);
+                addAttribute("TLReportSentToUsDate", null);
+                addAttribute("partsReceivedDate", null);
             }
 //        addClaimInsurerHireVehicleParameters(generator, claim);
         } catch (Exception ex) {
