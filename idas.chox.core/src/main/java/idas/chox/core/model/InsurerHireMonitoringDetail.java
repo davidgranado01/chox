@@ -19,6 +19,11 @@ public class InsurerHireMonitoringDetail extends Entity implements Serializable 
     private Date totalLossOfferCheckIssuedDate;
     private Date totalLossOfferCheckReceivedDate;
     private Date engineersReportSentDate;
+    private Date tpReportedIncidentToTPIDate;
+    private Date totalLossReportSentToUsDate;
+    private Date partsReceivedDate;
+    private Date hireEndDate;
+    private String hireEndTime;
 
     private BigDecimal labourRate;
     private BigDecimal labourHour;
@@ -211,4 +216,24 @@ public class InsurerHireMonitoringDetail extends Entity implements Serializable 
     public void setWhoManagedRepair(String whoManagedRepair) {
         this.whoManagedRepair = whoManagedRepair;
     }
+
+    public Date getTpReportedIncidentToTPIDate() { return tpReportedIncidentToTPIDate; }
+
+    public void setTpReportedIncidentToTPIDate(Date tpReportedIncidentToTPIDate) { this.tpReportedIncidentToTPIDate = tpReportedIncidentToTPIDate; }
+
+    public Date getTotalLossReportSentToUsDate() { return totalLossReportSentToUsDate; }
+
+    public void setTotalLossReportSentToUsDate(Date totalLossReportSentToUsDate) { this.totalLossReportSentToUsDate = totalLossReportSentToUsDate; }
+
+    public Date getPartsReceivedDate() { return partsReceivedDate; }
+
+    public void setPartsReceivedDate(Date partsReceivedDate) { this.partsReceivedDate = partsReceivedDate; }
+
+    public Date getHireEndDate() { return hireEndDate; }
+
+    public void setHireEndDate(Date hireEndDate) { this.hireEndDate = hireEndDate; }
+
+    public String getHireEndTime() { return hireEndTime; }
+
+    public void setHireEndTime(String hireEndTime) { this.hireEndTime = hireEndTime; }
 }

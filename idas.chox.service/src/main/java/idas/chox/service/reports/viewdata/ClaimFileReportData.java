@@ -326,6 +326,11 @@ public class ClaimFileReportData {
     private String copleyOfferMadeDate;
     private String invoiceReviewReason;
     private boolean invoiceReviewReasonsEnabled;
+    private String tpReportedIncidentToTPIDate;
+    private String totalLossReportSentToUsDate;
+    private String partsReceivedDate;
+    private String hireEndDate;
+    private String hireEndTime;
 
     public ClaimFileReportData(Claim claim, WebUser currentUser) {
         try {
@@ -417,6 +422,31 @@ public class ClaimFileReportData {
                         }
                         if (hmd.getRepairCompletionDate() != null) {
                             insurerHireMonRepairCompletionDate = DateHelper.getLocalDateFormat().format(hmd.getRepairCompletionDate());
+                        }
+                        if (hmd.getTpReportedIncidentToTPIDate() == null){
+                            tpReportedIncidentToTPIDate = "";
+                        } else {
+                            tpReportedIncidentToTPIDate = DateHelper.getLocalDateFormat().format(hmd.getTpReportedIncidentToTPIDate());
+                        }
+                        if (hmd.getTotalLossReportSentToUsDate() == null){
+                            totalLossReportSentToUsDate = "";
+                        } else {
+                            totalLossReportSentToUsDate = DateHelper.getLocalDateFormat().format(hmd.getTotalLossReportSentToUsDate());
+                        }
+                        if (hmd.getPartsReceivedDate() == null){
+                            partsReceivedDate = "";
+                        } else {
+                            partsReceivedDate = DateHelper.getLocalDateFormat().format(hmd.getPartsReceivedDate());
+                        }
+                        if (hmd.getHireEndDate() == null){
+                            hireEndDate = "";
+                        } else {
+                            hireEndDate = DateHelper.getLocalDateFormat().format(hmd.getHireEndDate());
+                        }
+                        if (hmd.getHireEndTime() == null){
+                            hireEndTime = "";
+                        } else {
+                            hireEndTime = DateHelper.getLocalDateFormat().format(hmd.getHireEndTime());
                         }
                         insurerHireMonLabourRate = hmd.getLabourRate();
                         insurerHireMonLabourHours = hmd.getLabourHour();

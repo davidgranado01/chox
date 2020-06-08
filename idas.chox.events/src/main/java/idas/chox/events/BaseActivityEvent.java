@@ -783,6 +783,31 @@ public class BaseActivityEvent extends Entity implements Serializable {
                 } else {
                     addAttribute("hireMonitoringTotalLossCheckReceivedDate", null);
                 }
+                if (insurerHireMonitoringDetail.getTpReportedIncidentToTPIDate() != null){
+                    addAttribute("hireMonitoringTpReportedIncidentToTPIDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTpReportedIncidentToTPIDate()));
+                } else {
+                    addAttribute("hireMonitoringTpReportedIncidentToTPIDate", null);
+                }
+                if (insurerHireMonitoringDetail.getTotalLossReportSentToUsDate() != null){
+                    addAttribute("hireMonitoringTotalLossReportSentToUsDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTotalLossReportSentToUsDate()));
+                } else {
+                    addAttribute("hireMonitoringTotalLossReportSentToUsDate", null);
+                }
+                if (insurerHireMonitoringDetail.getPartsReceivedDate() != null){
+                    addAttribute("hireMonitoringPartsReceivedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getPartsReceivedDate()));
+                } else {
+                    addAttribute("hireMonitoringPartsReceivedDate", null);
+                }
+                if (insurerHireMonitoringDetail.getHireEndDate() != null){
+                    addAttribute("hireMonitoringHireEndDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getHireEndDate()));
+                } else {
+                    addAttribute("hireMonitoringHireEndDate", null);
+                }
+                if (insurerHireMonitoringDetail.getHireEndTime() != null){
+                    addAttribute("hireMonitoringHireEndTime", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getHireEndTime()));
+                } else {
+                    addAttribute("hireMonitoringHireEndTime", null);
+                }
             } else {
                 addAttribute("hireMonitoringRepairBookedInDate", null);
                 addAttribute("hireMonitoringInspectionDate", null);
