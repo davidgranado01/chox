@@ -10,6 +10,7 @@
     </id>
     <version column="version" name="version" unsaved-value="null"/>
     <property column="rental_start" name="rentalStart" not-null="false"/>
+    <property column="rental_end" name="rentalEnd" not-null="false"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="created_by" name="createdBy"/>
     <property column="created_date" name="createdDate"/>
     <many-to-one class="idas.chox.core.model.WebUser" column="last_modified_by" name="lastModifiedBy"/>

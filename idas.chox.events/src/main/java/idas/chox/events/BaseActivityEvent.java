@@ -783,13 +783,13 @@ public class BaseActivityEvent extends Entity implements Serializable {
                 } else {
                     addAttribute("hireMonitoringTotalLossCheckReceivedDate", null);
                 }
-                if (insurerHireMonitoringDetail.getTpReportedIncidentToTPIDate() != null){
-                    addAttribute("hireMonitoringTpReportedIncidentToTPIDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTpReportedIncidentToTPIDate()));
+                if (insurerHireMonitoringDetail.getTPReportedIncidentToTPIDate() != null){
+                    addAttribute("hireMonitoringTpReportedIncidentToTPIDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTPReportedIncidentToTPIDate()));
                 } else {
                     addAttribute("hireMonitoringTpReportedIncidentToTPIDate", null);
                 }
-                if (insurerHireMonitoringDetail.getTotalLossReportSentToUsDate() != null){
-                    addAttribute("hireMonitoringTotalLossReportSentToUsDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTotalLossReportSentToUsDate()));
+                if (insurerHireMonitoringDetail.getTLReportSentToUsDate() != null){
+                    addAttribute("hireMonitoringTotalLossReportSentToUsDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTLReportSentToUsDate()));
                 } else {
                     addAttribute("hireMonitoringTotalLossReportSentToUsDate", null);
                 }
@@ -821,6 +821,9 @@ public class BaseActivityEvent extends Entity implements Serializable {
                 addAttribute("hireMonitoringTotalLossOfferAcceptedDate", null);
                 addAttribute("hireMonitoringTotalLossCheckIssuedDate", null);
                 addAttribute("hireMonitoringTotalLossCheckReceivedDate", null);
+                addAttribute("TPReportedIncidentToTPIDate", null);
+                addAttribute("TLReportSentToUsDate", null);
+                addAttribute("partsReceivedDate", null);
             }
 //        addClaimInsurerHireVehicleParameters(generator, claim);
         } catch (Exception ex) {

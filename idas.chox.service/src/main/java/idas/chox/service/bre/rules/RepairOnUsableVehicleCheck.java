@@ -42,7 +42,7 @@ public class RepairOnUsableVehicleCheck implements IBusinessRule {
                 res.setResult(success ? RuleEvaluationResult.RULE_PASSED : RuleEvaluationResult.RULE_FAILED);
 
                 if (!success) {
-                    narrative = "The CHO is claiming for repair and the vehicle is marked is usable";
+                    narrative = "The CHO is claiming for repair and the vehicle is marked as usable.";
                 }
             } else {
                 res.setResult(RuleEvaluationResult.RULE_PASSED);

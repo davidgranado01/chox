@@ -15,6 +15,11 @@
                 Hire Start</label></td>
             <td>&nbsp;</td>
             <td><label class="std-data-ro" id="insurerHireMonitorHireStartId"><s:date format="dd/MM/yyyy HH:mm" name="rentalStart" /></label></td></tr>
+        <tr>
+            <td><label class="std-label-ro">
+                Hire End</label></td>
+            <td>&nbsp;</td>
+            <td><label class="std-data-ro" id="insurerHireMonitorHireEndId"><s:date format="dd/MM/yyyy HH:mm" name="rentalEnd" /></label></td></tr>
         </table>
     </div>
 </fieldset>
