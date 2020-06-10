@@ -141,7 +141,7 @@ function getEmailReceivers {
             EMAIL_RECEIVERS=cpt@albanyassistance.co.uk,susan.harker@albanyassistance.co.uk,protocol@albanyassistance.co.uk;;
 	    "Auxillis-FNOL_Notifications_Report_DLG-"* )
 	        ACTIVE=1
-	        EMAIL_RECEIVERS=DLGclaimupdate@auxillis.com ;;
+	        EMAIL_RECEIVERS=DLGclaimupdate@auxillis.com,Emma.Howe@auxillis.com;;
 	    "Auxillis-Invoice_Notifications_Report_DLG-"* )
 	        ACTIVE=1
 	        EMAIL_RECEIVERS=protocol@albanyassistance.co.uk;;
