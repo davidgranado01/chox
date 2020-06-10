@@ -6,6 +6,12 @@
     <div style="display:none" class="form-container" id="insurerHireMonitoringRId">
         <table class="chox-table-form">
             <tr>
+                <td><label class="std-label-ro">Date TP Reported Incident to TPI</label></td>
+                <td>&nbsp;</td>
+                <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="TPReportedIncidentToTPIDate" /> </label></td>
+            </tr>
+
+            <tr>
                 <td><label class="std-label-ro">Inspection Booked Date</label></td>
                 <td>&nbsp;</td>
                 <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="inspectionBookedDate" /> </label></td>
@@ -24,9 +30,21 @@
             </tr>
 
             <tr>
+                <td><label class="std-label-ro">Date TL Report Sent To Us</label></td>
+                <td>&nbsp;</td>
+                <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="TLReportSentToUsDate" /></label></td>
+            </tr>
+
+            <tr>
                 <td><label class="std-label-ro">Repair Book In Date</label></td>
                 <td>&nbsp;</td>
                 <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="repairBookInDate" /></label></td>
+            </tr>
+
+            <tr>
+                <td><label class="std-label-ro">Date Parts Received</label></td>
+                <td>&nbsp;</td>
+                <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="partsReceivedDate" /></label></td>
             </tr>
 
             <tr>
