@@ -19,8 +19,6 @@ public class InsurerHireMonitoringDetail extends Entity implements Serializable 
     private Date totalLossOfferCheckIssuedDate;
     private Date totalLossOfferCheckReceivedDate;
     private Date engineersReportSentDate;
-    private Date hireEndDate;
-    private String hireEndTime;
     private Date TPReportedIncidentToTPIDate;
     private Date TLReportSentToUsDate;
     private Date partsReceivedDate;
@@ -237,11 +235,4 @@ public class InsurerHireMonitoringDetail extends Entity implements Serializable 
 
     public void setPartsReceivedDate(Date partsReceivedDate) { this.partsReceivedDate = partsReceivedDate; }
 
-    public Date getHireEndDate() { return hireEndDate; }
-
-    public void setHireEndDate(Date hireEndDate) { this.hireEndDate = hireEndDate; }
-
-    public String getHireEndTime() { return hireEndTime; }
-
-    public void setHireEndTime(String hireEndTime) { this.hireEndTime = hireEndTime; }
 }

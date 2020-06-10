@@ -578,13 +578,15 @@ public class BaseActivityEvent extends Entity implements Serializable {
             InsurerVehicleHire vehicleHire = claim.getInsurerVehicleHire();
             if (vehicleHire != null) {
                 addAttribute("insurerHireStart", DateHelper.getLocalDateTimeFormat().format(vehicleHire.getRentalStart()));
+                addAttribute("insurerHireEnd", DateHelper.getLocalDateTimeFormat().format(vehicleHire.getRentalEnd()));
                 addAttribute("insurerVehicleClass", vehicleHire.getVehicleClass() != null ? vehicleHire.getVehicleClass().getName() : "");
             } else {
                 addAttribute("insurerHireStart", null);
+                addAttribute("insurerHireEnd", null);
                 addAttribute("insurerVehicleClass", null);
             }
         } catch (Exception ex) {
-            LOG.error("Exceptin thrown adding claim hire vehicle attributes: {}", ex.getMessage(), ex);
+            LOG.error("Exception thrown adding claim hire vehicle attributes: {}", ex.getMessage(), ex);
         }
     }
 
@@ -797,16 +799,6 @@ public class BaseActivityEvent extends Entity implements Serializable {
                     addAttribute("hireMonitoringPartsReceivedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getPartsReceivedDate()));
                 } else {
                     addAttribute("hireMonitoringPartsReceivedDate", null);
-                }
-                if (insurerHireMonitoringDetail.getHireEndDate() != null){
-                    addAttribute("hireMonitoringHireEndDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getHireEndDate()));
-                } else {
-                    addAttribute("hireMonitoringHireEndDate", null);
-                }
-                if (insurerHireMonitoringDetail.getHireEndTime() != null){
-                    addAttribute("hireMonitoringHireEndTime", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getHireEndTime()));
-                } else {
-                    addAttribute("hireMonitoringHireEndTime", null);
                 }
             } else {
                 addAttribute("hireMonitoringRepairBookedInDate", null);
