@@ -17,6 +17,7 @@ public class UpdateManualInvoicePaid extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
+        InvoicePaymentLogged.updateClaimInvoice(claim, false);
 
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_PAID);
         selectRandomlyForAuditReview(claim);
