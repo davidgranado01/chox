@@ -109,7 +109,7 @@
             rules: {
                 rentalStart:{dateITA:true, required : true},
                 rentalStartTime:{time:true},
-                rentalEnd:{dateITA:true, required : true},
+                rentalEnd:{dateITA:true},
                 rentalEndTime:{time:true}
             },
             messages: {
