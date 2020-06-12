@@ -108,11 +108,15 @@
             errorLabelContainer: "#insurerHVDmessageBox",
             rules: {
                 rentalStart:{dateITA:true, required : true},
-                rentalStartTime:{time:true}
+                rentalStartTime:{time:true},
+                rentalEnd:{dateITA:true},
+                rentalEndTime:{time:true}
             },
             messages: {
                 rentalStart: {dateITA:"Invalid date format for 'Hire Start (Date)'", required : "You must select a 'Hire Start (Date)'"},
-                rentalStartTime: {time:"Invalid date format for 'Hire Start (Time)'"}
+                rentalStartTime: {time:"Invalid date format for 'Hire Start (Time)'"},
+                rentalEnd: {dateITA:"Invalid date format for 'Hire End (Date)'", required : "You must select a 'Hire End (Date)'"},
+                rentalEndTime: {time:"Invalid date format for 'Hire End (Time)'"}
             }
         });
         ui.ajaxForm(form,null,'html');
