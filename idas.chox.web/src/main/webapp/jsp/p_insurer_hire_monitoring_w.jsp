@@ -4,7 +4,43 @@
 <script type="text/javascript">
         
     // $(function(){
-    Ext.onReady(function(){
+    Ext.onReady(function() {
+        var TPReportedIncidentToTPIDatePicker = new Ext.form.DateField({
+            name: 'TPReportedIncidentToTPIDate',
+            id: 'TPReportedIncidentToTPIDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="TPReportedIncidentToTPIDate" />',
+            renderTo: 'insurerTPReportedIncidentToTPIDatePH'
+        });
+
+        var TLReportSentToUsDatePicker = new Ext.form.DateField({
+            name: 'TLReportSentToUsDate',
+            id: 'TLReportSentToUsDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="TLReportSentToUsDate" />',
+            renderTo: 'insurerTLReportSentToUsDatePH'
+        });
+
+        var partsReceivedDatePicker = new Ext.form.DateField({
+            name: 'partsReceivedDate',
+            id: 'partsReceivedDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="partsReceivedDate" />',
+            renderTo: 'insurerPartsReceivedDatePH'
+        });
+
         var repairBookInDatePicker = new Ext.form.DateField({
             name: 'repairBookInDate',
             id: 'insurerRepairBookInDateId',
@@ -148,6 +184,9 @@
         {
             errorLabelContainer: "#insurerHMmessageBox",
             rules: {
+                TPReportedIncidentToTPIDate:{dateITA:true},
+                TLReportSentToUsDate:{dateITA:true},
+                partsReceivedDate:{dateITA:true},
                 repairBookInDate:{dateITA:true},
                 repairAuthorisedDate:{dateITA:true},
                 repairCommencedDate:{dateITA:true},
@@ -165,6 +204,9 @@
                 date_compare_field:{required: isDateCorrect}
             },
             messages: {
+                TPReportedIncidentToTPIDate: {dateITA:"Invalid date format for 'Date TP Reported Incident to TPI'"},
+                TLReportSentToUsDate: {dateITA:"Invalid date format for 'Date TL Report Sent To Us'"},
+                partsReceivedDate: {dateITA:"Invalid date format for 'Date Parts Received'"},
                 repairBookInDate: {dateITA:"Invalid date format for 'Repair Book In Date'"},
                 repairAuthorisedDate: {dateITA:"Invalid date format for 'Date Repair Authorised'"},
                 repairCommencedDate: {dateITA:"Invalid date format for 'Date Repair Commenced'"},
@@ -233,6 +275,11 @@
         <div class="form-container" id="insurerHireMonitoringWId">
 
             <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date TP Reported Incident to TPI</label>
+                <span id="insurerTPReportedIncidentToTPIDatePH"></span>
+            </div>
+
+            <div class="chox-form-item">
                 <label class="chox-form-std-label2">Inspection Booked Date</label>
                 <span id="insurerInspectionBookedDatePH"></span>
             </div>
@@ -247,9 +294,19 @@
                 <span id="insurerRepairAuthorisedDatePH"></span>
             </div>
 
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date TL Report Sent To Us</label>
+                <span id="insurerTLReportSentToUsDatePH"></span>
+            </div>
+
             <div class="chox-form-item" >
                 <label class="chox-form-std-label2">Repair Book In Date</label>
                 <span id="insurerRepairBookInDatePH"></span>
+            </div>
+
+            <div class="chox-form-item" >
+                <label class="chox-form-std-label2">Date Parts Received</label>
+                <span id="insurerPartsReceivedDatePH"></span>
             </div>
 
             <div class="chox-form-item">
