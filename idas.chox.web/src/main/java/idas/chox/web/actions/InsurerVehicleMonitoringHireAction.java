@@ -109,4 +109,19 @@ public class InsurerVehicleMonitoringHireAction extends ClaimModelAction<Insurer
         }
     }
 
+    public String getRentalEndTime() {
+        return DateHelper.getTimeFormat().format(model.getRentalEnd());
+    }
+
+    public void setRentalEndTime(String time) {
+        if (model != null && time.length() > 0) {
+            try {
+                Date a = model.getRentalEnd();
+                Date b = DateHelper.getTimeFormat().parse(time);
+                model.setRentalEnd(DateHelper.mergeTimeToDate(a, b));
+            } catch (Exception ex) {
+                LOG.warn("Error setting rental end time to '{}'", time);
+            }
+        }
+    }
 }

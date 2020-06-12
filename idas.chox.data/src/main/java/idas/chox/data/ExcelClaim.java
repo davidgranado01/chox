@@ -208,6 +208,10 @@ public class ExcelClaim {
     private String claimInsHMDWhoManagedRepair;
     private String claimInsHMDReplacementVehicleClass;
     private Date claimInsHMDRentalStart;
+    private Date claimInsHMDTpReportedIncidentToTPI;
+    private Date claimInsHMDTotalLossReportSentToUs;
+    private Date claimInsHMDPartsReceived;
+    private Date claimInsHMDRentalEnd;
     private Boolean claimCopleyOfferMade;
     private Date claimCopleyOfferMadeDate;
     private boolean isCopleyOffer;
@@ -499,6 +503,10 @@ public class ExcelClaim {
             claimInsHMDWhoManagedRepair = (String) data.get("ihmd_who_managed_repair");
             claimInsHMDReplacementVehicleClass = (String) data.get("ihmd_replacement_vehicle_class");
             claimInsHMDRentalStart = (Date) data.get("ihmd_rental_start");
+            claimInsHMDTpReportedIncidentToTPI = (Date) data.get("ihmd_tp_reported_incident_to_tpi");
+            claimInsHMDTotalLossReportSentToUs = (Date) data.get("ihmd_tl_report_sent_to_us");
+            claimInsHMDPartsReceived = (Date) data.get("ihmd_parts_received");
+            claimInsHMDRentalEnd = (Date) data.get("ihmd_rental_end");
         } catch (Exception ex) {
             LOG.error("Exception thrown export claims grid: \n", ex);
         }
@@ -1279,5 +1287,13 @@ public class ExcelClaim {
     public String getClaimInvoiceReviewReason() {
         return claimInvoiceReviewReason;
     }
-    
+
+    public Date getClaimInsHMDTpReportedIncidentToTPI() { return claimInsHMDTpReportedIncidentToTPI; }
+
+    public Date getClaimInsHMDTotalLossReportSentToUs() { return claimInsHMDTotalLossReportSentToUs; }
+
+    public Date getClaimInsHMDPartsReceived() { return claimInsHMDPartsReceived; }
+
+    public Date getClaimInsHMDRentalEnd() { return claimInsHMDRentalEnd; }
+
 }

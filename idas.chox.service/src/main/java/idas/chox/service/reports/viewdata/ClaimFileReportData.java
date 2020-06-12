@@ -326,6 +326,10 @@ public class ClaimFileReportData {
     private String copleyOfferMadeDate;
     private String invoiceReviewReason;
     private boolean invoiceReviewReasonsEnabled;
+    private String insurerHireMonTpReportedIncidentToTPIDate;
+    private String insurerHireMonTotalLossReportSentToUsDate;
+    private String insurerHireMonPartsReceivedDate;
+    private String insurerHireMonHireEnd;
 
     public ClaimFileReportData(Claim claim, WebUser currentUser) {
         try {
@@ -418,6 +422,21 @@ public class ClaimFileReportData {
                         if (hmd.getRepairCompletionDate() != null) {
                             insurerHireMonRepairCompletionDate = DateHelper.getLocalDateFormat().format(hmd.getRepairCompletionDate());
                         }
+                        if (hmd.getTPReportedIncidentToTPIDate() == null){
+                            insurerHireMonTpReportedIncidentToTPIDate = "";
+                        } else {
+                            insurerHireMonTpReportedIncidentToTPIDate = DateHelper.getLocalDateFormat().format(hmd.getTPReportedIncidentToTPIDate());
+                        }
+                        if (hmd.getTLReportSentToUsDate() == null){
+                            insurerHireMonTotalLossReportSentToUsDate = "";
+                        } else {
+                            insurerHireMonTotalLossReportSentToUsDate = DateHelper.getLocalDateFormat().format(hmd.getTLReportSentToUsDate());
+                        }
+                        if (hmd.getPartsReceivedDate() == null){
+                            insurerHireMonPartsReceivedDate = "";
+                        } else {
+                            insurerHireMonPartsReceivedDate = DateHelper.getLocalDateFormat().format(hmd.getPartsReceivedDate());
+                        }
                         insurerHireMonLabourRate = hmd.getLabourRate();
                         insurerHireMonLabourHours = hmd.getLabourHour();
                         insurerHireMonTotalLabourCost = hmd.getLabourCost();
@@ -437,8 +456,10 @@ public class ClaimFileReportData {
                             }
                             if (insVehicleHire.getRentalStart() != null) {
                                 insurerHireMonHireStart = DateHelper.getLocalDateTimeFormat().format(insVehicleHire.getRentalStart());
+                                insurerHireMonHireEnd = DateHelper.getLocalDateTimeFormat().format(insVehicleHire.getRentalEnd());
                             } else {
                                 insurerHireMonHireStart = "";
+                                insurerHireMonHireEnd = "";
                             }
                         }
                     }
@@ -2080,4 +2101,21 @@ public class ClaimFileReportData {
     public String getCopleyOfferMadeDate() {
         return copleyOfferMadeDate;
     }
+
+    public String getInsurerHireMonTpReportedIncidentToTPIDate() {
+        return insurerHireMonTpReportedIncidentToTPIDate;
+    }
+
+    public String getInsurerHireMonTotalLossReportSentToUsDate() {
+        return insurerHireMonTotalLossReportSentToUsDate;
+    }
+
+    public String getInsurerHireMonPartsReceivedDate() {
+        return insurerHireMonPartsReceivedDate;
+    }
+
+    public String getInsurerHireMonHireEnd() {
+        return insurerHireMonHireEnd;
+    }
+
 }
