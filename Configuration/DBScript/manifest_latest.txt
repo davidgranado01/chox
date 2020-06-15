@@ -1,2 +1,3 @@
 CHOX-816.sql
 CHOX-818.sql
+CHOX-839.sql
