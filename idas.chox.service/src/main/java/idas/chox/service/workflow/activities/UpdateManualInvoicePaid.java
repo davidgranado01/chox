@@ -19,7 +19,6 @@ public class UpdateManualInvoicePaid extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
-        claim.setAppliedLiability(BigDecimal.valueOf(100));
         InvoicePaymentLogged.updateClaimInvoice(claim, false);
 
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_PAID);
