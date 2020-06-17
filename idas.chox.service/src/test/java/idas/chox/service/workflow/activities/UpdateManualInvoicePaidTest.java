@@ -20,6 +20,7 @@ public class UpdateManualInvoicePaidTest extends BaseTest {
     public void testUpdateManualInvoicePaidWithInvalidStatus() throws Exception {
 
         Claim claim = new Claim();
+        claim.setAppliedLiability(BigDecimal.valueOf(100));
         claim.setStatus(ClaimStatus.CLAIM_AWAITING_CAR_HIRE_INFO);
         Activity activity = activityFactory.getActivity("updateManualInvoicePaid");
         activity.process(claim);
@@ -30,6 +31,7 @@ public class UpdateManualInvoicePaidTest extends BaseTest {
     public void testUpdateManualInvoiceContested() throws Throwable {
 
         Claim claim = new Claim();
+        claim.setAppliedLiability(BigDecimal.valueOf(100));
         claim.setInsurer(insurerService.getInsurer(3));
         claim.setClaimType(ClaimType.INSURER_UPLOAD);
         claim.setStatus(ClaimStatus.AWAITING_INVOICE_PAYMENT);
