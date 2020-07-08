@@ -149,6 +149,10 @@ function getEmailReceivers {
 	        ACTIVE=1
             EMAIL_RECEIVERS=tam.bedford@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk,Jonathan.Clarke@directlinegroup.co.uk,UAC.Governance@directlinegroup.co.uk
             BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk,David.Hayes@audatex.co.uk;;
+        "Tesco-Underwriting-Insurer_User_State_Report-"* )
+	        ACTIVE=1
+            EMAIL_RECEIVERS=David.Crown@tescobank.com,Simon.Lund@tescobank.com,Daniel.Robinson@tescobank.com,Ruth.Lawson@tescobank.com
+            BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk;;
         "RSA-Average_Time_To_Allocate_Work-"* )
             EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com;;
 #        "ERAC-Supplementary_Consolidation_Report-"* )
