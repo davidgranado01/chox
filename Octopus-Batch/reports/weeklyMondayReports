@@ -363,6 +363,13 @@ $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
 \copy (select * from invoiceDetailsReport(array[6], array[1023, 1038, 1047, 1063, 1100, 1025, 1101, 1118, 1124, 1140], null::integer[], '2016-01-01', '2016-01-01', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['ClaimRejected']))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
 --EOF--
 
+echo 'Generating User State Report for Tesco Underwriting'
+INS_ID=27
+DUMPFILE='Tesco-Underwriting-Insurer_User_State_Report-'`date +"%F"`.txt
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from insurerUserStateReport(${INS_ID});
+--EOF--
+
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
 echo '***********************************************************'
