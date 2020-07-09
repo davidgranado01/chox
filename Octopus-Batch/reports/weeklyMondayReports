@@ -349,6 +349,14 @@ select * from auditHistoryReport(${INS_ID}, ${CHO_ID}, array[array[112,113,118,1
 
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
+echo 'Generating User State Report for Tesco Underwriting'
+INS_ID=27
+DUMPFILE='Tesco-Underwriting-Insurer_User_State_Report-'`date +"%F"`.txt
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select * from insurerUserStateReport(${INS_ID});
+--EOF--
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
 echo '***********************************************************'
 echo 'Finished generating weekly Monday reports'
 echo '***********************************************************'
