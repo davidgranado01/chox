@@ -349,6 +349,22 @@ select * from auditHistoryReport(${INS_ID}, ${CHO_ID}, array[array[112,113,118,1
 
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
+echo 'Generating LV Weekly Claim Details Dump'
+DUMPFILE='LV-ClaimDetailsDump-'`date +"%Y%m%d"`.csv
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
+\copy (select * from claimDetailsReport(array[6], array[1023, 1038, 1047, 1063, 1100, 1025, 1101, 1118, 1124, 1140], null::integer[], '2016-01-01', '2016-01-01', 'INS', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['ClaimRejected']))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+echo 'Generating LV Daily Invoice Details Dump'
+DUMPFILE='LV-InvoiceDetailsDump-'`date +"%Y%m%d"`.csv
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
+\copy (select * from invoiceDetailsReport(array[6], array[1023, 1038, 1047, 1063, 1100, 1025, 1101, 1118, 1124, 1140], null::integer[], '2016-01-01', '2016-01-01', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['ClaimRejected']))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
 echo '***********************************************************'
 echo 'Finished generating weekly Monday reports'
 echo '***********************************************************'
