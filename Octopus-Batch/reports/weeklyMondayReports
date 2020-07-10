@@ -363,6 +363,8 @@ $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
 \copy (select * from invoiceDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], '2016-01-01', '2016-01-01', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], null::varchar[]))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
 --EOF--
 
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
 echo 'Generating User State Report for Tesco Underwriting'
 INS_ID=27
 DUMPFILE='Tesco-Underwriting-Insurer_User_State_Report-'`date +"%F"`.txt
