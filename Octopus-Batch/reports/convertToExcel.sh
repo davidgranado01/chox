@@ -218,6 +218,12 @@ function getEmailReceivers {
 	    "LV-Closed_Claim_Report-"* )
 	        ACTIVE=1
 	        EMAIL_RECEIVERS=andrew.seedhouse@lv.com;;
+	    "LV-ClaimDetailsDump-"* )
+            ACTIVE=4
+            FTP_CLIENT=LV;;
+        "LV-InvoiceDetailsDump-"* )
+            ACTIVE=4
+            FTP_CLIENT=LV;;
 	    "Kindertons-Invoice_Upload_Report-"* )
 	        ACTIVE=5
 #            EMAIL_RECEIVERS=thomas.maddock@kindertons.co.uk;;
