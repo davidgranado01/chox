@@ -22,6 +22,8 @@ function getPassword {
             PASSWORD="Royal1";;
         "Motability-"* )
             PASSWORD="Mot1";;
+        "Tesco-"* )
+            PASSWORD="T3sc0UW";;
         "Auxillis-"* )
             PASSWORD="Help1";;
         "ERAC-"* )
