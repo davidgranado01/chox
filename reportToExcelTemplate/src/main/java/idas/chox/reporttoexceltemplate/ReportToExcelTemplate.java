@@ -43,6 +43,7 @@ public class ReportToExcelTemplate {
                 br.readLine();
                 br.readLine();
                 line = br.readLine();
+                HSSFCellStyle cellStyle = workbook.createCellStyle();
                 while (line != null) {
                     rowCount++;
                     // Parse line
@@ -56,7 +57,6 @@ public class ReportToExcelTemplate {
                         for (int i = 0; i < row.length; i++) {
                             // Grab a copy of the old/new cell
                             HSSFCell newCell = newRow.createCell(i);
-                            HSSFCellStyle cellStyle = workbook.createCellStyle();
                             HSSFCell existingCell = formatRow.getCell(i);
 //                            if (existingCell.getCellType() ==1)
 //                                LOG.info("Copying style from cell with value [type={}] '{}'", existingCell.getCellType(), existingCell.getStringCellValue());
