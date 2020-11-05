@@ -458,7 +458,7 @@ public class ClaimFileReportData {
                         if (insVehicleHire.getRentalStart() != null) {
                             insurerHireMonHireStart = DateHelper.getLocalDateTimeFormat().format(insVehicleHire.getRentalStart());
                         } else {
-                            insurerHireMonHireEnd = "";
+                            insurerHireMonHireStart = "";
                         }
                         if (insVehicleHire.getRentalEnd() != null) {
                             insurerHireMonHireEnd = DateHelper.getLocalDateTimeFormat().format(insVehicleHire.getRentalEnd());
