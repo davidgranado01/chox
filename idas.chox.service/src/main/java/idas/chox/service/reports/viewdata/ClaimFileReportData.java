@@ -446,21 +446,24 @@ public class ClaimFileReportData {
                         } else {
                             insurerHireMonWhoManagedRepair = "";
                         }
-                        
-                        InsurerVehicleHire insVehicleHire = claim.getInsurerVehicleHire();
-                        if (insVehicleHire != null) {
-                            if (insVehicleHire.getVehicleClass() != null) {
-                                insurerHireMonReplacementVehicleClass = insVehicleHire.getVehicleClass().getName();
-                            } else {
-                                insurerHireMonReplacementVehicleClass = "";
-                            }
-                            if (insVehicleHire.getRentalStart() != null) {
-                                insurerHireMonHireStart = DateHelper.getLocalDateTimeFormat().format(insVehicleHire.getRentalStart());
-                                insurerHireMonHireEnd = DateHelper.getLocalDateTimeFormat().format(insVehicleHire.getRentalEnd());
-                            } else {
-                                insurerHireMonHireStart = "";
-                                insurerHireMonHireEnd = "";
-                            }
+                    }
+
+                    InsurerVehicleHire insVehicleHire = claim.getInsurerVehicleHire();
+                    if (insVehicleHire != null) {
+                        if (insVehicleHire.getVehicleClass() != null) {
+                            insurerHireMonReplacementVehicleClass = insVehicleHire.getVehicleClass().getName();
+                        } else {
+                            insurerHireMonReplacementVehicleClass = "";
+                        }
+                        if (insVehicleHire.getRentalStart() != null) {
+                            insurerHireMonHireStart = DateHelper.getLocalDateTimeFormat().format(insVehicleHire.getRentalStart());
+                        } else {
+                            insurerHireMonHireEnd = "";
+                        }
+                        if (insVehicleHire.getRentalEnd() != null) {
+                            insurerHireMonHireEnd = DateHelper.getLocalDateTimeFormat().format(insVehicleHire.getRentalEnd());
+                        } else {
+                            insurerHireMonHireEnd = "";
                         }
                     }
                 }
