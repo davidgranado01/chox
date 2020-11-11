@@ -55,6 +55,9 @@
                     <s:if test="adminAccessibility.isBillingAdminAccessibility">
                         <li><a href="javascript:renderAdminParameterPanel('BillingBand');">Billing Band Setup</a></li>
                     </s:if>
+                    <s:if test="adminAccessibility.isSupplierRateAccessibility">
+                        <li><a href="javascript:renderAdminParameterPanel('SupplierRate');">Supplier Rate</a></li>
+                    </s:if>
                 </ul>
             </div>
         </div>
