@@ -1,17 +1,17 @@
 ######################
-version.number = 8.20.11
-batch.version.number = 8.20.10
-db.version.number = 8.20.10
+version.number = 8.20.9
+batch.version.number = 8.20.8
+db.version.number = 8.20.8
 ######################
 ###### SETTINGS ######
 #Development flag: controls the load of a minimazed content.
-development = false
+development = true
 #Controls the scheduler jobs
 scheduler.active = true
-scheduler.email.active = #{GMAIL_ACTIVE}
+scheduler.email.active=false
 
 # HPI check - should be set to true only in production
-hpi.active = #{HPI_ACTIVE}
+hpi.active=false
 # Event Generation - defines whether CHOX external events should be generated and added to the CHOX.Events topic
 events.active = false
 # Should internal events be logged in the event_log table
@@ -29,15 +29,15 @@ js.aggregator.choxall=1.22
 js.aggregator.libs=1.22
 
 #Database parameters
-db.url = jdbc:postgresql://#{DB_HOST}:5432/#{DB_NAME.CHOX}
-db.maxPoolSize = 20
-db.user = #{DB_USER.CHOX_USER}
-db.user_password = #{DB_PASS.CHOX_USER}
+db.url=jdbc:postgresql://localhost:5432/chox
+db.maxPoolSize=20
+db.user=chox_user
+db.user_password=ch0xpa33
 
 #Report database parameters
-db.maxReportPoolSize = 8
-db.mi_user = #{DB_USER.CHOX_MI}
-db.mi_user_password = #{DB_PASS.CHOX_MI}
+db.maxReportPoolSize=8
+db.mi_user=chox_mi
+db.mi_user_password=ch0xpa33
 
 ## Not currently used
 #ActiveMQ database parameters
@@ -49,32 +49,33 @@ db.mi_user_password = #{DB_PASS.CHOX_MI}
 #ws.active = false
 
 ######## Type of Install: controls which logging configuration will be used, together with string prefix for automation/scheduler email subject ##########
-HOSTNAME = #{ENV_PREFIX}
+HOSTNAME=localhost
 
 ######## GDPR parameters ##########
-gdpr.hashData = #{GDPR_FLAG}
+gdpr.hashData = false
 gdpr.hashDataPeriod = 90
-gdpr.closeClaims = #{GDPR_FLAG}
+gdpr.closeClaims = false
 gdpr.closeClaimsPeriod = 2555
-gdpr.removeNotes = #{GDPR_FLAG}
+gdpr.removeNotes = false
 gdpr.removeNotesPeriod = 1095
-gdpr.removeAttachments = #{GDPR_FLAG}
+gdpr.removeAttachments = false
 gdpr.removeAttachmentsPeriod = 1095
-gdpr.removeTasks = #{GDPR_FLAG}
+gdpr.removeTasks = false
 gdpr.removeTasksPeriod = 1095
-gdpr.deactivateUsers = #{GDPR_FLAG}
+gdpr.deactivateUsers = false
 gdpr.deactivateUsersPeriod = 365
-gdpr.hashUserData = #{GDPR_FLAG}
+gdpr.hashUserData = false
 gdpr.hashUserDataPeriodFromDeactivate = 365
 gdpr.hashUserDataPeriodFromLastLogin = 730
-gdpr.hashVrns = #{GDPR_FLAG}
+gdpr.hashVrns = false
 gdpr.hashVrnsPeriodFromCreation = 2555
 gdpr.hashVrnsPeriodFromClosure = 1095
 
 
+
 # Email address to send support requests and BRE Band notification emails
-onlineSupportDefaultEmail=#{SUPPORT_EMAIL}
-smtpEmailUser = #{SMTP_EMAIL}
+onlineSupportDefaultEmail=DL-UK-AX-Penguin@audatex.co.uk
+smtpEmailUser=DL-UK-AX-Penguin@audatex.co.uk
 
 #ACTIVITY MONITORING PROPERTIES
 activity_monitor_enabled = true
@@ -83,7 +84,7 @@ activity_monitor_request_interval = 5000
 #Email on new BreBand creation for non CHOX Admin
 
 emailOnBreBandCreation = #{BREBAND_EMAIL}
-emailReceivers = MichaelPaul.Kemp@audatex.co.uk
+emailReceivers=DL-UK-AX-Penguin@audatex.co.uk
 
 # Keoghs Properties
 #    security token
@@ -107,5 +108,5 @@ keoghs.logSoap = true
 #                                the keoghs pom must have the wsdlLocation pointing to the UAT debug endpoint
 keoghs.useDebugEndpoint = false
 
-keoghsReceiver = #{KEOGHS_EMAIL}
-keoghsBccReceiver = Isabelle.Lecoeuche@audatex.co.uk
+keoghsReceiver=DL-UK-AX-Penguin@audatex.co.uk
+keoghsBccReceiver=DL-UK-AX-Penguin@audatex.co.uk
