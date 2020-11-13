@@ -1389,6 +1389,15 @@
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
 
+        <!-- START VEHICLE CLASS  SPECIAL RATES-->
+        <action name="getVehicleClassSpecialRatePage" class="idas.chox.web.actions.VehicleClassPriceSpecialRateAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_supplier_rate_panel.jsp</result>
+        </action>
+
+        <action name="getVehicleClassSpecialRates" class="idas.chox.web.actions.VehicleClassPriceSpecialRateAction" method="getVehicleClassSpecialRates">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+
         <!-- START INSURER AUTOMATIC ROUTING -->
         <action name="getInsurerAutomaticRoutingPage" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_insurer_automatic_routing.jsp</result>
