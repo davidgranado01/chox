@@ -47,7 +47,6 @@
             enableHdMenu:false,
             enableColumnMove: false,
             layout:'fit',
-            loadMask:true,
             viewConfig:{forceFit:true},
             columns: [
                 {header: "Insurer", width: 150, dataIndex: 'insurerName', sortable: true, resizable: true},
