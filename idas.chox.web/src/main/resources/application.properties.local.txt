@@ -83,7 +83,7 @@ activity_monitor_request_interval = 5000
 
 #Email on new BreBand creation for non CHOX Admin
 
-emailOnBreBandCreation = #{BREBAND_EMAIL}
+emailOnBreBandCreation=DL-UK-AX-Penguin@audatex.co.uk
 emailReceivers=DL-UK-AX-Penguin@audatex.co.uk
 
 # Keoghs Properties
