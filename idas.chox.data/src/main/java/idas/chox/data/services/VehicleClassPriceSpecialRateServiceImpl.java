@@ -1,18 +1,19 @@
 package idas.chox.data.services;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
+import idas.chox.core.model.VehicleClass;
+import idas.chox.core.model.VehicleClassPriceSpecialRate;
+import idas.chox.core.search.SearchResult;
+import idas.chox.core.services.VehicleClassPriceSpecialRateService;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import idas.chox.core.model.VehicleClass;
-import idas.chox.core.model.VehicleClassPriceSpecialRate;
-import idas.chox.core.services.VehicleClassPriceSpecialRateService;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -93,9 +94,19 @@ public class VehicleClassPriceSpecialRateServiceImpl extends SecureDataService i
     }
 
     @Override
-    public List<VehicleClassPriceSpecialRate> getAllVehicleClassPriceSpecialRates() {
-        DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassPriceSpecialRate.class);
+    public SearchResult getVehicleClassPriceSpecialRatesPagination(int start, int limit) {
+        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(VehicleClassPriceSpecialRate.class);
+
+        Integer totalCount = totalCount(criteria);
+
         criteria.addOrder(Order.desc("startDate"));
-        return this.findByCriteria(criteria);
+
+        criteria.setFirstResult(start);
+        criteria.setMaxResults(limit);
+
+        List<VehicleClassPriceSpecialRate> vehicleClassPriceSpecialRates = criteria.list();
+
+        return new SearchResult(vehicleClassPriceSpecialRates, totalCount, null);
     }
+
 }
