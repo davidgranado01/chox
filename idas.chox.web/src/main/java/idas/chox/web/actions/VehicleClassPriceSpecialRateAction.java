@@ -3,11 +3,11 @@ package idas.chox.web.actions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import idas.chox.core.model.VehicleClassPriceSpecialRate;
+import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.VehicleClassPriceSpecialRateService;
 import idas.chox.web.viewdata.VehicleClassPriceSpecialRateViewData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,10 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
     protected VehicleClassPriceSpecialRateService vehicleClassPriceSpecialRateService;
     protected List<VehicleClassPriceSpecialRate> vehicleClassPriceSpecialRates;
 
+    private int start;
+    private int limit;
+    private int totalCount;
+
     public void setVehicleClassPriceSpecialRates(List<VehicleClassPriceSpecialRate> vehicleClassPriceSpecialRates) {
         this.vehicleClassPriceSpecialRates = vehicleClassPriceSpecialRates;
     }
@@ -27,25 +31,11 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
         this.vehicleClassPriceSpecialRateService = vehicleClassPriceSpecialRateService;
     }
 
-    @Override
-    public String execute() throws Exception {
-        if (getUserOrganisationType() != CHOX_ADMIN_INT) {
-            throw new AccessDeniedException("Illegal access detected.");
-        }
-
-        try {
-            this.vehicleClassPriceSpecialRates = vehicleClassPriceSpecialRateService.getAllVehicleClassPriceSpecialRates();
-        } catch (Exception ex) {
-            handleException(ex);
-            return ERROR;
-        }
-
-        return SUCCESS;
-    }
-
     public String getVehicleClassSpecialRates() {
         try {
-            this.vehicleClassPriceSpecialRates = vehicleClassPriceSpecialRateService.getAllVehicleClassPriceSpecialRates();
+            SearchResult searchResult = vehicleClassPriceSpecialRateService.getVehicleClassPriceSpecialRatesPagination(start, limit);
+            this.vehicleClassPriceSpecialRates = searchResult.getResult();
+            this.totalCount = searchResult.getTotalCount();
             return SUCCESS;
         } catch (Exception ex) {
             LOG.error("Exception creating jsonArray: {}", ex.getMessage());
@@ -74,7 +64,30 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
             return null;
         }
         LOG.debug("Returning json data: {}", jsonString);
-        return "{totalCount:" + vehicleClassPriceSpecialRates.size() + ",results:" + jsonString + "}";
+        return "{totalCount:" + totalCount + ",results:" + jsonString + "}";
     }
 
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
 }
