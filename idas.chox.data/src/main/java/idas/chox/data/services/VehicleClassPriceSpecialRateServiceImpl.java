@@ -91,4 +91,11 @@ public class VehicleClassPriceSpecialRateServiceImpl extends SecureDataService i
         }
         return ((VehicleClassPriceSpecialRate) vehicleClassPricesSpecialRate.get(0)).getPrice();
     }
+
+    @Override
+    public List<VehicleClassPriceSpecialRate> getAllVehicleClassPriceSpecialRates() {
+        DetachedCriteria criteria = DetachedCriteria.forClass(VehicleClassPriceSpecialRate.class);
+        criteria.addOrder(Order.desc("startDate"));
+        return this.findByCriteria(criteria);
+    }
 }
