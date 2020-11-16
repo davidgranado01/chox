@@ -18,8 +18,8 @@
             loadMask:false,
             activeTab: supplierRateSetupTabIndex,
             items:[
+                {contentEl:'existingRateTab', title:'Supplier Rates', listeners: {activate: handleActivate}},
                 {contentEl:'newRateTab', title:'Upload', listeners: {activate: handleActivate}},
-                {contentEl:'existingRateTab', title:'Supplier Rate', listeners: {activate: handleActivate}},
             ]
         });
         supplierRateSetupPanelTabs.setActiveTab(supplierRateSetupTabIndex);
@@ -109,10 +109,10 @@
     //
     // Upload New CSV for Rate
     //
-    var supplierRateStore = new Ext.data.ArrayStore({
+    var uploadRateStore = new Ext.data.ArrayStore({
         // store configs
         autoDestroy: true,
-        storeId: 'supplierRateStore',
+        storeId: 'uploadRateStore',
         // reader configs
         // idIndex: 0,
         // http://cdn.sencha.com/ext/gpl/3.4.1.1/docs/#!/api/Date
@@ -125,8 +125,8 @@
         ]
     });
 
-    var supplierRateGrid = new Ext.grid.GridPanel({
-        store: supplierRateStore,
+    var uploadRateGrid = new Ext.grid.GridPanel({
+        store: uploadRateStore,
         columns: [{
                 header: 'Insurer', dataIndex: 'Insurer', sortable: true, resizable: true
             }, {
@@ -146,7 +146,7 @@
         width: 765,
     });
 
-    var fileInput = document.getElementById("supplierRateFile");
+    var fileInput = document.getElementById("uploadRateFile");
     fileInput.addEventListener('change', readCsvFile);
 
     function readCsvFile() {
@@ -157,8 +157,8 @@
         var reader = new FileReader();
         reader.onload = function (e) {
             var csv = parseCsv(reader.result);
-            supplierRateStore.loadData(csv);
-            supplierRateGrid.render('gridviewSupplierRateHolder');
+            uploadRateStore.loadData(csv);
+            uploadRateGrid.render('gridviewUploadRateHolder');
         };
         // start reading the file. When it is done, calls the onload event defined above.
         reader.readAsBinaryString(fileInput.files[0]);
@@ -186,13 +186,13 @@
     </div>
 
     <div id="existingRateTab" class="x-hide-display" style="background-color:#DFE8F6;height:100%;">
-        <div id="header-title"><label>Supplier Rate</label></div>
+        <div id="header-title"><label>Supplier Rates</label></div>
         <div class="chox-form-submit-result">&nbsp;</div>
         <div id="gridviewGridHolderId"></div>
     </div>
 
     <div id="newRateTab" class="x-hide-display" style="background-color:#DFE8F6;height:100%;padding:10px 5px;">
-        <form id="supplierRateForm" name="supplierRateForm" action="<%= request.getContextPath()%>/prv/p/uploadSupplierRate.action" method="POST" enctype="multipart/form-data">
+        <form id="uploadRateForm" name="uploadRateForm" action="<%= request.getContextPath()%>/prv/p/uploadUploadRate.action" method="POST" enctype="multipart/form-data">
         <div class="form-container">
             <fieldset class="x-fieldset">
             <table class="chox-form-item" cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -201,10 +201,10 @@
                         <label class="std-label-ro">File &nbsp;</label>
                     </td>
                     <td>
-                        <div id="supplierRateWrapper">
-                            <input id="supplierRateFile" name="supplierRateFile" type="file" size="20" autocomplete="off"
+                        <div id="uploadRateWrapper">
+                            <input id="uploadRateFile" name="uploadRateFile" type="file" size="20" autocomplete="off"
                                 accept=".csv"
-                                class="x-form-file x-form-field" title="Upload Supplier Rate CSV File." style="width: 200px;" />
+                                class="x-form-file x-form-field" title="Upload Supplier Rates CSV File." style="width: 200px;" />
                         </div>
                     </td>
                 </tr>
@@ -222,7 +222,7 @@
                     <td>&nbsp;</td>
                     <td>
                         <s:if test="uploadFlag">
-                            <input id="supplierRateButton" type="submit" value="Upload Supplier Rate" />
+                            <input id="uploadRateButton" type="submit" value="Upload Supplier Rates" />
                         </s:if>
                         <s:else><br/>
                             <div class="action-error-msg"><b></b></div>
@@ -230,10 +230,10 @@
                     </td>
                 </tr>
             </table>
-            <div class="chox-form-submit-result" id="supplierRateResultId"/>
-            <div class="action-error-msg" id="supplierRateMsgBox"/>
+            <div class="chox-form-submit-result" id="uploadRateResultId"/>
+            <div class="action-error-msg" id="uploadRateMsgBox"/>
             </fieldset>
-            <div id="gridviewSupplierRateHolder"></div>
+            <div id="gridviewUploadRateHolder"></div>
         </div>
         </form>
     </div>
