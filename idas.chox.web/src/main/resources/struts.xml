@@ -1398,6 +1398,11 @@
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
 
+        <action name="deleteVehicleClassSpecialRate" class="idas.chox.web.actions.VehicleClassPriceSpecialRateAction" method="deleteVehicleClassSpecialRate">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+
         <!-- START INSURER AUTOMATIC ROUTING -->
         <action name="getInsurerAutomaticRoutingPage" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_insurer_automatic_routing.jsp</result>
