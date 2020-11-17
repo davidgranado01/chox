@@ -36,14 +36,14 @@
             root: 'results',
             fields:
                 [
-                    {name:'id'},
                     {name:'insurerName'},
                     {name:'chorganisationName'},
                     {name:'vehicleClassName'},
                     {name:'rate'},
                     {name:'startDate'},
                     {name:'createdBy'},
-                    {name:'createdDate'}
+                    {name:'createdDate'},
+                    {name:'id'}
                 ]
         });
 
@@ -52,6 +52,8 @@
             reader:supplierRateJsonReader,
             remoteSort: true
         });
+
+        supplierChoxDataStore.setDefaultSort('startDate', 'desc');
 
         supplierRatesPagingBar = new Ext.PagingToolbar({
             pageSize: (function(){return ($.browser.mozilla === true ? 22 : 23);}()),
@@ -72,19 +74,19 @@
             columns: [
                 {header: "Insurer", width: 95, dataIndex: 'insurerName', sortable: true, resizable: true},
                 {header: "CHO", width: 156, dataIndex: 'chorganisationName', sortable: true, resizable: true},
-                {header: "Class", width: 95, dataIndex: 'vehicleClassName', sortable: true, resizable: true},
-                {header: "Rate", width: 44, dataIndex: 'rate', sortable: true, resizable: true},
+                {header: "Class", width: 95, dataIndex: 'vehicleClassName', sortable: false, resizable: true},
+                {header: "Rate", width: 44, dataIndex: 'rate', sortable: true, resizable: false},
                 {header: "Start Date", width: 112, dataIndex: 'startDate', sortable: true, resizable: true},
-                {header: "Created Date", width: 112, dataIndex: 'createdDate', sortable: true, resizable: true},
-                {header: "Created By", width: 112, dataIndex: 'createdBy', sortable: true, resizable: true}
+                {header: "Created Date", width: 112, dataIndex: 'createdDate', sortable: false, resizable: true},
+                {header: "Created By", width: 112, dataIndex: 'createdBy', sortable: false, resizable: true}
             ],
             height:570,
             width: 765,
             bbar: supplierRatesPagingBar
         });
 
-        supplierRateGridPanel.render('gridviewGridHolderId');
         loadGridViewList();
+        supplierRateGridPanel.render('gridviewGridHolderId');
     });
 
     function loadGridViewList(){
@@ -103,8 +105,24 @@
 
     function recordOnclick(grid, rowIndex, columnIndex, e){
         // Delete record here
+
+        if(columnIndex===7){
+            loadSelectedRecord(grid, rowIndex, columnIndex, e);
+        }
     }
 
+    function loadSelectedRecord(grid, rowIndex, columnIndex, e){
+
+        var gridView = supplierRateGridPanel.getStore().getAt(rowIndex);
+        var gridViewId = gridView.get("id");
+
+        var target = "#admin_param_panel";
+        var url = "/prv/p/deleteVehicleClassSpecialRate.action";
+        var param = {"id":gridViewId};
+        ajax.loadHtml2(url,param,function(data){
+            loadGridViewList();
+        });
+    }
 
     //
     // Upload New CSV for Rate
@@ -186,7 +204,6 @@
     </div>
 
     <div id="existingRateTab" class="x-hide-display" style="background-color:#DFE8F6;height:100%;">
-        <div id="header-title"><label>Supplier Rates</label></div>
         <div class="chox-form-submit-result">&nbsp;</div>
         <div id="gridviewGridHolderId"></div>
     </div>

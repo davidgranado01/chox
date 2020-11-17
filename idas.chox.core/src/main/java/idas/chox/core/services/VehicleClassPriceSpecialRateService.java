@@ -14,6 +14,7 @@ public interface VehicleClassPriceSpecialRateService {
 
    BigDecimal getPrice(VehicleClass vehicleClass, Date startDate, BigDecimal age, int insId, int choId) throws Exception;
    BigDecimal getPrice(VehicleClass vehicleClass, Date startDate, int insId, int choId) throws Exception;
-   SearchResult getVehicleClassPriceSpecialRatesPagination(int start, int limit);
+   SearchResult getVehicleClassPriceSpecialRatesPagination(int start, int limit, String sort, String dir);
+   void deleteVehicleClassPriceSpecialRate(int id) throws Exception;
 }
 
