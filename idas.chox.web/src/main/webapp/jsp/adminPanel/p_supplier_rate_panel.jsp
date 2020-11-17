@@ -78,7 +78,12 @@
                 {header: "Rate", width: 44, dataIndex: 'rate', sortable: true, resizable: false},
                 {header: "Start Date", width: 112, dataIndex: 'startDate', sortable: true, resizable: true},
                 {header: "Created Date", width: 112, dataIndex: 'createdDate', sortable: false, resizable: true},
-                {header: "Created By", width: 112, dataIndex: 'createdBy', sortable: false, resizable: true}
+                {header: "Created By", width: 112, dataIndex: 'createdBy', sortable: false, resizable: true},
+                {
+                    header: "", width: 112, dataIndex: 'id', sortable: false, renderer: function (value, p, r) {
+                        return "<a href='#' class='high-light-item'> Delete</a>";
+                    }
+                }
             ],
             height:570,
             width: 765,
@@ -135,27 +140,27 @@
         // idIndex: 0,
         // http://cdn.sencha.com/ext/gpl/3.4.1.1/docs/#!/api/Date
         fields: [
-        'Insurer',
-        'CHO',
-        'Class',
-        {name: 'Rate', type: 'float'},
-        {name: 'StartDate', type: 'date', dateFormat: 'j/n/Y'},
+            'Insurer',
+            'CHO',
+            'Class',
+            {name: 'Rate', type: 'float'},
+            {name: 'StartDate', type: 'date', dateFormat: 'j/n/Y'},
         ]
     });
 
     var uploadRateGrid = new Ext.grid.GridPanel({
         store: uploadRateStore,
         columns: [{
-                header: 'Insurer', dataIndex: 'Insurer', sortable: true, resizable: true
-            }, {
-                header: 'CHO', dataIndex: 'CHO', sortable: true, resizable: true
-            }, {
-                header: 'Class', dataIndex: 'Class', sortable: true, resizable: true
-            }, {
-                header: 'Rate', dataIndex: 'Rate', sortable: true, resizable: true
-            }, {
-                header: 'Start Date', dataIndex: 'StartDate', sortable: true, resizable: true, renderer: Ext.util.Format.dateRenderer('j/n/Y')
-            }],
+            header: 'Insurer', dataIndex: 'Insurer', sortable: true, resizable: true
+        }, {
+            header: 'CHO', dataIndex: 'CHO', sortable: true, resizable: true
+        }, {
+            header: 'Class', dataIndex: 'Class', sortable: true, resizable: true
+        }, {
+            header: 'Rate', dataIndex: 'Rate', sortable: true, resizable: true
+        }, {
+            header: 'Start Date', dataIndex: 'StartDate', sortable: true, resizable: true, renderer: Ext.util.Format.dateRenderer('j/n/Y')
+        }],
         enableHdMenu:false,
         enableColumnMove: false,
         layout:'fit',
@@ -210,48 +215,48 @@
 
     <div id="newRateTab" class="x-hide-display" style="background-color:#DFE8F6;height:100%;padding:10px 5px;">
         <form id="uploadRateForm" name="uploadRateForm" action="<%= request.getContextPath()%>/prv/p/uploadUploadRate.action" method="POST" enctype="multipart/form-data">
-        <div class="form-container">
-            <fieldset class="x-fieldset">
-            <table class="chox-form-item" cellpadding="0" cellspacing="0" border="0" width="100%">
-                <tr>
-                    <td width="200" align="right">
-                        <label class="std-label-ro">File &nbsp;</label>
-                    </td>
-                    <td>
-                        <div id="uploadRateWrapper">
-                            <input id="uploadRateFile" name="uploadRateFile" type="file" size="20" autocomplete="off"
-                                accept=".csv"
-                                class="x-form-file x-form-field" title="Upload Supplier Rates CSV File." style="width: 200px;" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <div class="column-remark" style="padding:10px 0 10px 0;">
-                            <input type="button" value="Confirm" />
-                            &nbsp; Upload CSV file with maximum size of 2 MB.
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>
-                        <s:if test="uploadFlag">
-                            <input id="uploadRateButton" type="submit" value="Upload Supplier Rates" />
-                        </s:if>
-                        <s:else><br/>
-                            <div class="action-error-msg"><b></b></div>
-                        </s:else>
-                    </td>
-                </tr>
-            </table>
-            <div class="chox-form-submit-result" id="uploadRateResultId"/>
-            <div class="action-error-msg" id="uploadRateMsgBox"/>
-            </fieldset>
-            <div id="gridviewUploadRateHolder"></div>
-        </div>
+            <div class="form-container">
+                <fieldset class="x-fieldset">
+                    <table class="chox-form-item" cellpadding="0" cellspacing="0" border="0" width="100%">
+                        <tr>
+                            <td width="200" align="right">
+                                <label class="std-label-ro">File &nbsp;</label>
+                            </td>
+                            <td>
+                                <div id="uploadRateWrapper">
+                                    <input id="uploadRateFile" name="uploadRateFile" type="file" size="20" autocomplete="off"
+                                           accept=".csv"
+                                           class="x-form-file x-form-field" title="Upload Supplier Rates CSV File." style="width: 200px;" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                            </td>
+                            <td>
+                                <div class="column-remark" style="padding:10px 0 10px 0;">
+                                    <input type="button" value="Confirm" />
+                                    &nbsp; Upload CSV file with maximum size of 2 MB.
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                <s:if test="uploadFlag">
+                                    <input id="uploadRateButton" type="submit" value="Upload Supplier Rates" />
+                                </s:if>
+                                <s:else><br/>
+                                    <div class="action-error-msg"><b></b></div>
+                                </s:else>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="chox-form-submit-result" id="uploadRateResultId"/>
+                    <div class="action-error-msg" id="uploadRateMsgBox"/>
+                </fieldset>
+                <div id="gridviewUploadRateHolder"></div>
+            </div>
         </form>
     </div>
 </div>

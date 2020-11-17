@@ -42,6 +42,7 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
             return SUCCESS;
         } catch (Exception ex) {
             LOG.error("Exception creating jsonArray: {}", ex.getMessage());
+            ex.printStackTrace();
             return SUCCESS;
         }
     }
@@ -49,12 +50,10 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
     public String deleteVehicleClassSpecialRate() {
         try {
             vehicleClassPriceSpecialRateService.deleteVehicleClassPriceSpecialRate(id);
-            SearchResult searchResult = vehicleClassPriceSpecialRateService.getVehicleClassPriceSpecialRatesPagination(start, limit, sort, dir);
-            this.vehicleClassPriceSpecialRates = searchResult.getResult();
-            this.totalCount = searchResult.getTotalCount();
             return SUCCESS;
         } catch (Exception ex) {
             LOG.error("Exception creating jsonArray: {}", ex.getMessage());
+            ex.printStackTrace();
             return SUCCESS;
         }
     }
