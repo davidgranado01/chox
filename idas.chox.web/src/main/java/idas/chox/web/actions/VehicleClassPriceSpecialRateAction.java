@@ -22,6 +22,9 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
     private int start;
     private int limit;
     private int totalCount;
+    private int id;
+    private String sort;
+    private String dir;
 
     public void setVehicleClassPriceSpecialRates(List<VehicleClassPriceSpecialRate> vehicleClassPriceSpecialRates) {
         this.vehicleClassPriceSpecialRates = vehicleClassPriceSpecialRates;
@@ -33,7 +36,7 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
 
     public String getVehicleClassSpecialRates() {
         try {
-            SearchResult searchResult = vehicleClassPriceSpecialRateService.getVehicleClassPriceSpecialRatesPagination(start, limit);
+            SearchResult searchResult = vehicleClassPriceSpecialRateService.getVehicleClassPriceSpecialRatesPagination(start, limit, sort, dir);
             this.vehicleClassPriceSpecialRates = searchResult.getResult();
             this.totalCount = searchResult.getTotalCount();
             return SUCCESS;
@@ -42,6 +45,20 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
             return SUCCESS;
         }
     }
+
+    public String deleteVehicleClassSpecialRate() {
+        try {
+            vehicleClassPriceSpecialRateService.deleteVehicleClassPriceSpecialRate(id);
+            SearchResult searchResult = vehicleClassPriceSpecialRateService.getVehicleClassPriceSpecialRatesPagination(start, limit, sort, dir);
+            this.vehicleClassPriceSpecialRates = searchResult.getResult();
+            this.totalCount = searchResult.getTotalCount();
+            return SUCCESS;
+        } catch (Exception ex) {
+            LOG.error("Exception creating jsonArray: {}", ex.getMessage());
+            return SUCCESS;
+        }
+    }
+
 
     public String getJsonData() {
         ObjectMapper mapper = new ObjectMapper();
@@ -89,5 +106,29 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
 
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+    public String getDir() {
+        return dir;
+    }
+
+    public void setDir(String dir) {
+        this.dir = dir;
     }
 }

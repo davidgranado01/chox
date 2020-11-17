@@ -1,5 +1,6 @@
 package idas.chox.data.services;
 
+import idas.chox.core.model.AutomaticRoutingCho;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleClassPriceSpecialRate;
 import idas.chox.core.search.SearchResult;
@@ -10,6 +11,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -94,19 +97,48 @@ public class VehicleClassPriceSpecialRateServiceImpl extends SecureDataService i
     }
 
     @Override
-    public SearchResult getVehicleClassPriceSpecialRatesPagination(int start, int limit) {
+    public SearchResult getVehicleClassPriceSpecialRatesPagination(int start, int limit, String sort, String dir) {
         Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(VehicleClassPriceSpecialRate.class);
 
         Integer totalCount = totalCount(criteria);
 
-        criteria.addOrder(Order.desc("startDate"));
-
         criteria.setFirstResult(start);
         criteria.setMaxResults(limit);
+
+        if (!sort.isEmpty() && !dir.isEmpty()) {
+            if (sort.equalsIgnoreCase("startDate")) {
+                addSort(criteria, "startDate", dir);
+            } else if (sort.equalsIgnoreCase("insurerName")) {
+                addSort(criteria, "insurer.id", dir);
+            } else if (sort.equalsIgnoreCase("chorganisationName")) {
+                addSort(criteria, "chorganisation.id", dir);
+            }
+        } else {
+            criteria.addOrder(Order.desc("startDate"));
+        }
 
         List<VehicleClassPriceSpecialRate> vehicleClassPriceSpecialRates = criteria.list();
 
         return new SearchResult(vehicleClassPriceSpecialRates, totalCount, null);
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Override
+    public void deleteVehicleClassPriceSpecialRate(int id) throws Exception {
+
+        if (id > 0) {
+            try {
+                DetachedCriteria mapping = DetachedCriteria.forClass(VehicleClassPriceSpecialRate.class);
+                mapping.add(Restrictions.eq("id", id));
+
+                VehicleClassPriceSpecialRate vehicleClassPriceSpecialRate = (VehicleClassPriceSpecialRate) getByCriteria(mapping);
+                delete(vehicleClassPriceSpecialRate);
+
+            } catch (Exception ex) {
+                LOG.warn("Exception thrown removing rate: {}", ex.getMessage(), ex);
+                throw new Exception("An error occurred removing the rate - please try again");
+            }
+        }
     }
 
 }
