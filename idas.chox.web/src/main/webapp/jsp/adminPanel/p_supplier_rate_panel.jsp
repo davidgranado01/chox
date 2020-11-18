@@ -173,6 +173,7 @@
     var fileInput = document.getElementById("uploadRateFile");
     fileInput.addEventListener('change', readCsvFile);
 
+    var csvContent;
     function readCsvFile() {
         if (!fileInput.value || !fileInput.value.endsWith('.csv')) {
             return;
@@ -180,8 +181,8 @@
 
         var reader = new FileReader();
         reader.onload = function (e) {
-            var csv = parseCsv(reader.result);
-            uploadRateStore.loadData(csv);
+            csvContent = parseCsv(reader.result);
+            uploadRateStore.loadData(csvContent);
             uploadRateGrid.render('gridviewUploadRateHolder');
         };
         // start reading the file. When it is done, calls the onload event defined above.
@@ -202,6 +203,27 @@
         // console.table(result);
         return result;
     }
+
+    var uploadSupplierRatesMessage = '<s:property value="uploadMessage" />';
+    function uploadCsv() {
+        if (!csvContent || !csvContent.length) {
+            return;
+        }
+        var supplierRates = [];
+        for (var i = 0; i < csvContent.length; i++) {
+            var line = csvContent[i];
+            supplierRates.push(line.join(','));
+        }
+
+        var url = document.getElementById('uploadRateForm').getAttribute('action');
+        var param = { "csvContent": supplierRates.join(';') };
+        ajax.loadHtml2(url, param, function(data) {
+            fileInput.value = '';
+            uploadRateStore.loadData('');
+            document.getElementById('uploadSupplierRatesMessage').innerHTML = data;
+            loadGridViewList();
+        });
+    }
 </script>
 
 <div id="chox-admin-holder">
@@ -215,7 +237,7 @@
     </div>
 
     <div id="newRateTab" class="x-hide-display" style="background-color:#DFE8F6;height:100%;padding:10px 5px;">
-        <form id="uploadRateForm" name="uploadRateForm" action="<%= request.getContextPath()%>/prv/p/uploadUploadRate.action" method="POST" enctype="multipart/form-data">
+        <form id="uploadRateForm" name="uploadRateForm" action="<%= request.getContextPath()%>/prv/p/uploadSupplierRates.action" method="POST" enctype="multipart/form-data">
             <div class="form-container">
                 <fieldset class="x-fieldset">
                     <table class="chox-form-item" cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -236,7 +258,7 @@
                             </td>
                             <td>
                                 <div class="column-remark" style="padding:10px 0 10px 0;">
-                                    <input type="button" value="Confirm" />
+                                    <input type="button" value="Confirm" onclick="uploadCsv();" />
                                     &nbsp; Upload CSV file with maximum size of 2 MB.
                                 </div>
                             </td>
@@ -244,17 +266,10 @@
                         <tr>
                             <td>&nbsp;</td>
                             <td>
-                                <s:if test="uploadFlag">
-                                    <input id="uploadRateButton" type="submit" value="Upload Supplier Rates" />
-                                </s:if>
-                                <s:else><br/>
-                                    <div class="action-error-msg"><b></b></div>
-                                </s:else>
+                                <div class="action-error-msg"><b id="uploadSupplierRatesMessage"></b></div>
                             </td>
                         </tr>
                     </table>
-                    <div class="chox-form-submit-result" id="uploadRateResultId"/>
-                    <div class="action-error-msg" id="uploadRateMsgBox"/>
                 </fieldset>
                 <div id="gridviewUploadRateHolder"></div>
             </div>
