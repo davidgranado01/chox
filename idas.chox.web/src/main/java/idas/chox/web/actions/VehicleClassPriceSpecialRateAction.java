@@ -34,6 +34,7 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
     private String sort;
     private String dir;
     private String csvContent;
+    private String actionResponseString;
 
 
     public void setVehicleClassPriceSpecialRates(List<VehicleClassPriceSpecialRate> vehicleClassPriceSpecialRates) {
@@ -110,8 +111,10 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
             List<VehicleClassPriceSpecialRate> supplierRates = Arrays.stream(supplierRateStrings)
                     .map(this::parseSupplierRate).distinct().filter(Objects::nonNull).collect(Collectors.toList());
             vehicleClassPriceSpecialRateService.saveSupplierRates(supplierRates);
+            actionResponseString = "Successfully upload " + supplierRates.size() + " rates of " + supplierRateStrings.length;
             return SUCCESS;
         } catch (Exception ex) {
+            actionResponseString = "Failed to upload the supplier rates";
             LOG.error("Exception creating jsonArray: {}", ex.getMessage());
             return ERROR;
         }
@@ -282,5 +285,13 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
 
     public void setCsvContent(String csvContent) {
         this.csvContent = csvContent;
+    }
+
+    public String getActionResponseString() {
+        return actionResponseString;
+    }
+
+    public void setActionResponseString(String actionResponseString) {
+        this.actionResponseString = actionResponseString;
     }
 }
