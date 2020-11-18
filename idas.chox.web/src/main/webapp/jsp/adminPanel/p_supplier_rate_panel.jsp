@@ -204,6 +204,7 @@
         return result;
     }
 
+    var uploadSupplierRatesMessage = '<s:property value="uploadMessage" />';
     function uploadCsv() {
         if (!csvContent || !csvContent.length) {
             return;
@@ -219,6 +220,7 @@
         ajax.loadHtml2(url, param, function(data) {
             fileInput.value = '';
             uploadRateStore.loadData('');
+            document.getElementById('uploadSupplierRatesMessage').innerHTML = data;
             loadGridViewList();
         });
     }
@@ -264,17 +266,10 @@
                         <tr>
                             <td>&nbsp;</td>
                             <td>
-                                <s:if test="uploadFlag">
-                                    <input id="uploadRateButton" type="submit" value="Upload Supplier Rates" />
-                                </s:if>
-                                <s:else><br/>
-                                    <div class="action-error-msg"><b></b></div>
-                                </s:else>
+                                <div class="action-error-msg"><b id="uploadSupplierRatesMessage"></b></div>
                             </td>
                         </tr>
                     </table>
-                    <div class="chox-form-submit-result" id="uploadRateResultId"/>
-                    <div class="action-error-msg" id="uploadRateMsgBox"/>
                 </fieldset>
                 <div id="gridviewUploadRateHolder"></div>
             </div>
