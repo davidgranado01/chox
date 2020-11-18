@@ -75,12 +75,12 @@
                 {header: "Insurer", width: 95, dataIndex: 'insurerName', sortable: true, resizable: true},
                 {header: "CHO", width: 156, dataIndex: 'chorganisationName', sortable: true, resizable: true},
                 {header: "Class", width: 95, dataIndex: 'vehicleClassName', sortable: false, resizable: true},
-                {header: "Rate", width: 44, dataIndex: 'rate', sortable: true, resizable: false},
+                {header: "Rate", width: 44, dataIndex: 'rate', sortable: true, resizable: true, renderer: Ext.util.Format.numberRenderer('00.00')},
                 {header: "Start Date", width: 112, dataIndex: 'startDate', sortable: true, resizable: true},
                 {header: "Created Date", width: 112, dataIndex: 'createdDate', sortable: true, resizable: true},
                 {header: "Created By", width: 112, dataIndex: 'createdBy', sortable: false, resizable: true},
                 {
-                    header: "", width: 112, dataIndex: 'id', sortable: false, renderer: function (value, p, r) {
+                    header: "", width: 56, dataIndex: 'id', sortable: false, renderer: function (value, p, r) {
                         return "<a href='#' class='high-light-item'> Delete</a>";
                     }
                 }
@@ -158,7 +158,7 @@
         }, {
             header: 'Class', dataIndex: 'Class', sortable: true, resizable: true
         }, {
-            header: 'Rate', dataIndex: 'Rate', sortable: true, resizable: true
+            header: 'Rate', dataIndex: 'Rate', sortable: true, resizable: true, renderer: Ext.util.Format.numberRenderer('00.00')
         }, {
             header: 'Start Date', dataIndex: 'StartDate', sortable: true, resizable: true, renderer: Ext.util.Format.dateRenderer('j/n/Y')
         }],
