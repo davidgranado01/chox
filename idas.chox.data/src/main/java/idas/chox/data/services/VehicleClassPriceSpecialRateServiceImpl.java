@@ -144,10 +144,8 @@ public class VehicleClassPriceSpecialRateServiceImpl extends SecureDataService i
     }
 
     @Override
-    @Transactional(readOnly = false, propagation = Propagation.NEVER, value="transactionManager")
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
     public void saveSupplierRates(List<VehicleClassPriceSpecialRate> supplierRates) {
-        for (VehicleClassPriceSpecialRate supplierRate : supplierRates) {
-            getHibernateTemplate().save(supplierRate);
-        }
+        saveCollections(supplierRates);
     }
 }
