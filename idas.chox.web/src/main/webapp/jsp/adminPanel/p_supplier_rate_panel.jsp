@@ -77,7 +77,7 @@
                 {header: "Class", width: 95, dataIndex: 'vehicleClassName', sortable: false, resizable: true},
                 {header: "Rate", width: 44, dataIndex: 'rate', sortable: true, resizable: false},
                 {header: "Start Date", width: 112, dataIndex: 'startDate', sortable: true, resizable: true},
-                {header: "Created Date", width: 112, dataIndex: 'createdDate', sortable: false, resizable: true},
+                {header: "Created Date", width: 112, dataIndex: 'createdDate', sortable: true, resizable: true},
                 {header: "Created By", width: 112, dataIndex: 'createdBy', sortable: false, resizable: true},
                 {
                     header: "", width: 112, dataIndex: 'id', sortable: false, renderer: function (value, p, r) {
@@ -103,8 +103,10 @@
                     limit:(function(){return ($.browser.mozilla === true ? 22 : 23);}())
                 }
         });
+    }
 
-        $('div.chox-form-submit-result').html("");
+    function reloadGridViewList(){
+        supplierChoxDataStore.reload();
     }
 
 
@@ -112,20 +114,19 @@
         // Delete record here
 
         if(columnIndex===7){
-            loadSelectedRecord(grid, rowIndex, columnIndex, e);
+            deleteRecord(grid, rowIndex, columnIndex, e);
         }
     }
 
-    function loadSelectedRecord(grid, rowIndex, columnIndex, e){
+    function deleteRecord(grid, rowIndex, columnIndex, e){
 
         var gridView = supplierRateGridPanel.getStore().getAt(rowIndex);
         var gridViewId = gridView.get("id");
 
-        var target = "#admin_param_panel";
         var url = "/prv/p/deleteVehicleClassSpecialRate.action";
         var param = {"id":gridViewId};
         ajax.loadHtml2(url,param,function(data){
-            loadGridViewList();
+            reloadGridViewList();
         });
     }
 
