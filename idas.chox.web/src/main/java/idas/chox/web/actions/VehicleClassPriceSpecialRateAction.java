@@ -2,21 +2,29 @@ package idas.chox.web.actions;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import idas.chox.core.model.VehicleClassPriceSpecialRate;
+import idas.chox.core.model.*;
 import idas.chox.core.search.SearchResult;
-import idas.chox.core.services.VehicleClassPriceSpecialRateService;
+import idas.chox.core.services.*;
 import idas.chox.web.viewdata.VehicleClassPriceSpecialRateViewData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class VehicleClassPriceSpecialRateAction extends BaseAction {
 
     private static final Logger LOG = LoggerFactory.getLogger(VehicleClassDropDownAction.class);
     public static final int CHOX_ADMIN_INT = 1;
     protected VehicleClassPriceSpecialRateService vehicleClassPriceSpecialRateService;
+    private InsurerService insurerService;
+    private ChorganisationService chorganisationService;
+    private VehicleClassService vehicleClassService;
+    private UserService userService;
     protected List<VehicleClassPriceSpecialRate> vehicleClassPriceSpecialRates;
 
     private int start;
@@ -25,6 +33,9 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
     private int id;
     private String sort;
     private String dir;
+    private String csvContent;
+    private String actionResponseString;
+
 
     public void setVehicleClassPriceSpecialRates(List<VehicleClassPriceSpecialRate> vehicleClassPriceSpecialRates) {
         this.vehicleClassPriceSpecialRates = vehicleClassPriceSpecialRates;
@@ -32,6 +43,38 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
 
     public void setVehicleClassPriceSpecialRateService(VehicleClassPriceSpecialRateService vehicleClassPriceSpecialRateService) {
         this.vehicleClassPriceSpecialRateService = vehicleClassPriceSpecialRateService;
+    }
+
+    public InsurerService getInsurerService() {
+        return insurerService;
+    }
+
+    public void setInsurerService(InsurerService insurerService) {
+        this.insurerService = insurerService;
+    }
+
+    public ChorganisationService getChorganisationService() {
+        return chorganisationService;
+    }
+
+    public void setChorganisationService(ChorganisationService chorganisationService) {
+        this.chorganisationService = chorganisationService;
+    }
+
+    public VehicleClassService getVehicleClassService() {
+        return vehicleClassService;
+    }
+
+    public void setVehicleClassService(VehicleClassService vehicleClassService) {
+        this.vehicleClassService = vehicleClassService;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     public String getVehicleClassSpecialRates() {
@@ -58,6 +101,111 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
         }
     }
 
+    public String uploadSupplierRates() {
+        try {
+            if (StringUtils.isEmpty(csvContent)) {
+                return ERROR;
+            }
+
+            String[] supplierRateStrings = csvContent.split(";");
+            List<VehicleClassPriceSpecialRate> supplierRates = Arrays.stream(supplierRateStrings)
+                    .map(this::parseSupplierRate).distinct().filter(Objects::nonNull).collect(Collectors.toList());
+            vehicleClassPriceSpecialRateService.saveSupplierRates(supplierRates);
+            actionResponseString = "Successfully upload " + supplierRates.size() + " rates of " + supplierRateStrings.length;
+            return SUCCESS;
+        } catch (Exception ex) {
+            actionResponseString = "Failed to upload the supplier rates";
+            LOG.error("Exception creating jsonArray: {}", ex.getMessage());
+            return ERROR;
+        }
+    }
+
+    private Map<String, Insurer> insurers = new HashMap<>();
+    private Insurer getInsurerByName(String insurerName) {
+        if (insurers.containsKey(insurerName)) {
+            return insurers.get(insurerName);
+        }
+
+        Insurer insurer = insurerService.getInsurerByName(insurerName);
+        if (null != insurer) {
+            insurers.put(insurerName, insurer);
+            return insurer;
+        }
+
+        return null;
+    }
+
+    private Map<String, Chorganisation> chorganisations = new HashMap<>();
+    private Chorganisation getChorganisationByName(String choName) {
+        if (chorganisations.containsKey(choName)) {
+            return chorganisations.get(choName);
+        }
+
+        Chorganisation chorganisation = chorganisationService.getChorgByName(choName);
+        if (null != chorganisation) {
+            chorganisations.put(choName, chorganisation);
+            return chorganisation;
+        }
+
+        return null;
+    }
+
+    private static WebUser choxSystemUser;
+    private WebUser getChoxSystemUser() {
+        if (choxSystemUser == null) {
+            choxSystemUser = userService.findByEmail("system@chox.com");
+        }
+
+        return choxSystemUser;
+    }
+
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private final Date now = new Date();
+
+    private VehicleClassPriceSpecialRate parseSupplierRate(String rateString) {
+        VehicleClassPriceSpecialRate supplierRate = new VehicleClassPriceSpecialRate();
+        String[] rate = rateString.split(",");
+        if (rate.length != 5) {
+            return null;
+        }
+
+        try {
+            Date startDate = dateFormat.parse(rate[4]);
+            supplierRate.setStartDate(startDate);
+        } catch (ParseException e) {
+            return null;
+        }
+        try {
+            BigDecimal price = new BigDecimal(rate[3]);
+            supplierRate.setPrice(price);
+        } catch (NumberFormatException ex) {
+            return null;
+        }
+        Insurer insurer = getInsurerByName(rate[0]);
+        if (null == insurer) {
+            return null;
+        }
+        Chorganisation chorganisation = getChorganisationByName(rate[1]);
+        if (null == chorganisation) {
+            return null;
+        }
+        VehicleClass vehicleClass = vehicleClassService.getVehicleClassByName(rate[2]);
+        if (null == vehicleClass) {
+            return null;
+        }
+
+        supplierRate.setInsurer(insurer);
+        supplierRate.setChorganisation(chorganisation);
+        supplierRate.setVehicleClass(vehicleClass);
+        supplierRate.setVersion(0);
+        supplierRate.setCreatedBy(getChoxSystemUser());
+        supplierRate.setLastModifiedBy(getChoxSystemUser());
+        supplierRate.setCreatedDate(now);
+        supplierRate.setLastModifiedDate(now);
+        supplierRate.setAge(BigDecimal.valueOf(99));
+
+        return supplierRate;
+    }
 
     public String getJsonData() {
         ObjectMapper mapper = new ObjectMapper();
@@ -129,5 +277,21 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
 
     public void setDir(String dir) {
         this.dir = dir;
+    }
+
+    public String getCsvContent() {
+        return csvContent;
+    }
+
+    public void setCsvContent(String csvContent) {
+        this.csvContent = csvContent;
+    }
+
+    public String getActionResponseString() {
+        return actionResponseString;
+    }
+
+    public void setActionResponseString(String actionResponseString) {
+        this.actionResponseString = actionResponseString;
     }
 }
