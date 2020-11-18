@@ -4,6 +4,7 @@ package idas.chox.core.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Objects;
 
 
 /**
@@ -66,5 +67,22 @@ public class VehicleClassPriceSpecialRate extends Entity implements Serializable
         this.age = age;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        VehicleClassPriceSpecialRate that = (VehicleClassPriceSpecialRate) o;
+        return Objects.equals(price, that.price) &&
+                Objects.equals(startDate, that.startDate) &&
+                Objects.equals(vehicleClass, that.vehicleClass) &&
+                Objects.equals(insurer, that.insurer) &&
+                Objects.equals(chorganisation, that.chorganisation);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), price, startDate, vehicleClass, insurer, chorganisation);
+    }
 }
 

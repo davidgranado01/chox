@@ -1,6 +1,5 @@
 package idas.chox.data.services;
 
-import idas.chox.core.model.AutomaticRoutingCho;
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleClassPriceSpecialRate;
 import idas.chox.core.search.SearchResult;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -141,4 +141,11 @@ public class VehicleClassPriceSpecialRateServiceImpl extends SecureDataService i
         }
     }
 
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.NEVER, value="transactionManager")
+    public void saveSupplierRates(List<VehicleClassPriceSpecialRate> supplierRates) {
+        for (VehicleClassPriceSpecialRate supplierRate : supplierRates) {
+            getHibernateTemplate().save(supplierRate);
+        }
+    }
 }
