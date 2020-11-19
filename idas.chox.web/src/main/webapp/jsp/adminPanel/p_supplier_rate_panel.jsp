@@ -138,7 +138,7 @@
         autoDestroy: true,
         storeId: 'uploadRateStore',
         // reader configs
-        // idIndex: 0,
+        idIndex: 5,
         // http://cdn.sencha.com/ext/gpl/3.4.1.1/docs/#!/api/Date
         fields: [
             'Insurer',
@@ -146,15 +146,19 @@
             'Class',
             {name: 'Rate', type: 'float'},
             {name: 'StartDate', type: 'date', dateFormat: 'j/n/Y'},
+            'Row'
         ]
     });
 
     var uploadRateGrid = new Ext.grid.GridPanel({
         store: uploadRateStore,
         columns: [{
+            header: 'Row', width: 50, dataIndex: 'Row', sortable: true, renderer: function(value,p,r) {
+                return "<span id='supplier_rates_" + value + "'>" + value + "</span>";}
+        }, {
             header: 'Insurer', dataIndex: 'Insurer', sortable: true, resizable: true
         }, {
-            header: 'CHO', dataIndex: 'CHO', sortable: true, resizable: true
+            header: 'CHO', width: 200, dataIndex: 'CHO', sortable: true, resizable: true
         }, {
             header: 'Class', dataIndex: 'Class', sortable: true, resizable: true
         }, {
@@ -170,23 +174,24 @@
         width: 765,
     });
 
-    var fileInput = document.getElementById("uploadRateFile");
-    fileInput.addEventListener('change', readCsvFile);
-
-    var csvContent;
+    var fileInputSupplierRates = document.getElementById("uploadRateFile");
+    fileInputSupplierRates.addEventListener('change', readCsvFile);
+    var uploadSupplierRatesBtn = document.getElementById('uploadSupplierRatesBtn');
+    var csvContentSupplierRates;
     function readCsvFile() {
-        if (!fileInput.value || !fileInput.value.endsWith('.csv')) {
+        if (!fileInputSupplierRates.value || !fileInputSupplierRates.value.endsWith('.csv')) {
             return;
         }
 
         var reader = new FileReader();
         reader.onload = function (e) {
-            csvContent = parseCsv(reader.result);
-            uploadRateStore.loadData(csvContent);
+            csvContentSupplierRates = parseCsv(reader.result);
+            uploadRateStore.loadData(csvContentSupplierRates);
             uploadRateGrid.render('gridviewUploadRateHolder');
+            uploadSupplierRatesBtn.disabled = false;
         };
         // start reading the file. When it is done, calls the onload event defined above.
-        reader.readAsBinaryString(fileInput.files[0]);
+        reader.readAsBinaryString(fileInputSupplierRates.files[0]);
     };
 
     function parseCsv(csvString) {
@@ -197,30 +202,46 @@
         for (var i = 1; i < lines.length; i++) {
             var line = lines[i];
             if (line.length > 0) {
-                result.push(line.trim().split(","))
+                var rates = line.trim().split(",");
+                rates.push(i);  // add an indexes for error display
+                result.push(rates);
             }
         }
         // console.table(result);
         return result;
     }
 
-    var uploadSupplierRatesMessage = '<s:property value="uploadMessage" />';
     function uploadCsv() {
-        if (!csvContent || !csvContent.length) {
+        if (!csvContentSupplierRates || !csvContentSupplierRates.length) {
             return;
         }
         var supplierRates = [];
-        for (var i = 0; i < csvContent.length; i++) {
-            var line = csvContent[i];
+        for (var i = 0; i < csvContentSupplierRates.length; i++) {
+            var line = csvContentSupplierRates[i];
             supplierRates.push(line.join(','));
         }
 
         var url = document.getElementById('uploadRateForm').getAttribute('action');
         var param = { "csvContent": supplierRates.join(';') };
         ajax.loadHtml2(url, param, function(data) {
-            fileInput.value = '';
-            uploadRateStore.loadData('');
-            document.getElementById('uploadSupplierRatesMessage').innerHTML = data;
+            var result = data.split(':');
+            fileInputSupplierRates.value = '';
+            uploadSupplierRatesBtn.disabled = true;
+            // uploadRateStore.loadData('');
+            document.getElementById('uploadSupplierRatesMessage').innerHTML = result[0];
+            if (result[1]) {
+                var ids = result[1].trim().split(',');
+                for (var i = 0; i < ids.length; i++) {
+                    var id = ids[i].trim();
+                    if (id) {
+                        var idElement = document.getElementById('supplier_rates_' + id);
+                        if (idElement) {
+                            idElement.closest('table').style.backgroundColor = 'red';
+                        }
+                    }
+                }
+            }
+
             loadGridViewList();
         });
     }
@@ -258,7 +279,7 @@
                             </td>
                             <td>
                                 <div class="column-remark" style="padding:10px 0 10px 0;">
-                                    <input type="button" value="Confirm" onclick="uploadCsv();" />
+                                    <input id="uploadSupplierRatesBtn" disabled='disabled' type="button" value="Confirm" onclick="uploadCsv();" />
                                     &nbsp; Upload CSV file with maximum size of 2 MB.
                                 </div>
                             </td>

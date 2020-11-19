@@ -108,10 +108,21 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
             }
 
             String[] supplierRateStrings = csvContent.split(";");
-            List<VehicleClassPriceSpecialRate> supplierRates = Arrays.stream(supplierRateStrings)
-                    .map(this::parseSupplierRate).distinct().filter(Objects::nonNull).collect(Collectors.toList());
-            vehicleClassPriceSpecialRateService.saveSupplierRates(supplierRates);
-            actionResponseString = "Successfully upload " + supplierRates.size() + " rates of " + supplierRateStrings.length;
+            List<String> failedRows = new ArrayList<>();
+            Set<VehicleClassPriceSpecialRate> supplierRates = new HashSet<>();
+            for (String supplierRateString : supplierRateStrings) {
+                VehicleClassPriceSpecialRate supplierRate = parseSupplierRate(supplierRateString);
+                if (null == supplierRate) {
+                    failedRows.add(supplierRateString.substring(supplierRateString.lastIndexOf(",")));
+                } else {
+                    supplierRates.add(supplierRate);
+                }
+            }
+
+            List<VehicleClassPriceSpecialRate> supplierRatesList = new ArrayList<>(supplierRates);
+            vehicleClassPriceSpecialRateService.saveSupplierRates(supplierRatesList);
+            actionResponseString = "Successfully upload " + supplierRatesList.size() + " rates of "
+                    + supplierRateStrings.length + ":" + String.join(",", failedRows);
             return SUCCESS;
         } catch (Exception ex) {
             actionResponseString = "Failed to upload the supplier rates";
@@ -165,7 +176,7 @@ public class VehicleClassPriceSpecialRateAction extends BaseAction {
     private VehicleClassPriceSpecialRate parseSupplierRate(String rateString) {
         VehicleClassPriceSpecialRate supplierRate = new VehicleClassPriceSpecialRate();
         String[] rate = rateString.split(",");
-        if (rate.length != 5) {
+        if (rate.length < 5) {
             return null;
         }
 
