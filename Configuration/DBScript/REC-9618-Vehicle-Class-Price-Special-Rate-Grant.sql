@@ -1,0 +1,1 @@
+GRANT DELETE, UPDATE, INSERT ON TABLE vehicle_class_price_special_rate TO #{DB_USER.CHOX_USER};
