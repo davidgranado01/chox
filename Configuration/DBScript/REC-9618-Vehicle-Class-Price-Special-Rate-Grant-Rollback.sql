@@ -1,0 +1,1 @@
+REVOKE DELETE, UPDATE, INSERT ON TABLE vehicle_class_price_special_rate FROM #{DB_USER.CHOX_USER};
