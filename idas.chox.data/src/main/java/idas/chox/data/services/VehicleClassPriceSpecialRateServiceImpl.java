@@ -108,11 +108,7 @@ public class VehicleClassPriceSpecialRateServiceImpl extends SecureDataService i
         if (!sort.isEmpty() && !dir.isEmpty()) {
             if (sort.equalsIgnoreCase("startDate")) {
                 addSort(criteria, "startDate", dir);
-            } else if (sort.equalsIgnoreCase("insurerName")) {
-                addSort(criteria, "insurer.id", dir);
-            } else if (sort.equalsIgnoreCase("chorganisationName")) {
-                addSort(criteria, "chorganisation.id", dir);
-            }  else if (sort.equalsIgnoreCase("createdDate")) {
+            } else if (sort.equalsIgnoreCase("createdDate")) {
                 addSort(criteria, "createdDate", dir);
             }
         } else {
