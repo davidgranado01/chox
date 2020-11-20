@@ -72,10 +72,10 @@
             layout:'fit',
             viewConfig:{forceFit:true},
             columns: [
-                {header: "Insurer", width: 95, dataIndex: 'insurerName', sortable: true, resizable: true},
-                {header: "CHO", width: 156, dataIndex: 'chorganisationName', sortable: true, resizable: true},
+                {header: "Insurer", width: 95, dataIndex: 'insurerName', sortable: false, resizable: true},
+                {header: "CHO", width: 156, dataIndex: 'chorganisationName', sortable: false, resizable: true},
                 {header: "Class", width: 95, dataIndex: 'vehicleClassName', sortable: false, resizable: true},
-                {header: "Rate", width: 44, dataIndex: 'rate', sortable: true, resizable: true, renderer: Ext.util.Format.numberRenderer('00.00')},
+                {header: "Rate", width: 44, dataIndex: 'rate', sortable: false, resizable: true, renderer: Ext.util.Format.numberRenderer('00.00')},
                 {header: "Start Date", width: 112, dataIndex: 'startDate', sortable: true, resizable: true},
                 {header: "Created Date", width: 112, dataIndex: 'createdDate', sortable: true, resizable: true},
                 {header: "Created By", width: 112, dataIndex: 'createdBy', sortable: false, resizable: true},
