@@ -311,8 +311,9 @@ public class ClaimFileReportData {
     private String insurerHireMonInspectionDate;
     private String insurerHireMonTotalLossOfferMadeDate;
     private String insurerHireMonTotalLossAcceptedDate;
-    private String insurerHireMonTotalLossChequeIssuedDate;
-    private String insurerHireMonTotalLossChequeReceivedDate;
+    private String insurerHireMonTotalLossPaymentIssuedDate;
+    private String insurerHireMonPaymentType;
+    private String insurerHireMonTotalLossPaymentReceivedDate;
     private String insurerHireMonRepairCompletionDate;
     private BigDecimal insurerHireMonLabourRate;
     private BigDecimal insurerHireMonLabourHours;
@@ -409,15 +410,20 @@ public class ClaimFileReportData {
                         } else {
                             insurerHireMonTotalLossAcceptedDate = DateHelper.getLocalDateFormat().format(hmd.getTotalLossOfferAcceptedDate());
                         }
-                        if (hmd.getTotalLossOfferCheckIssuedDate() == null) {
-                            insurerHireMonTotalLossChequeIssuedDate = "";
+                        if (hmd.getTotalLossOfferPaymentIssuedDate() == null) {
+                            insurerHireMonTotalLossPaymentIssuedDate = "";
                         } else {
-                            insurerHireMonTotalLossChequeIssuedDate = DateHelper.getLocalDateFormat().format(hmd.getTotalLossOfferCheckIssuedDate());
+                            insurerHireMonTotalLossPaymentIssuedDate = DateHelper.getLocalDateFormat().format(hmd.getTotalLossOfferPaymentIssuedDate());
                         }
-                        if (hmd.getTotalLossOfferCheckReceivedDate() == null) {
-                            insurerHireMonTotalLossChequeReceivedDate = "";
+                        if (hmd.getPaymentType() == null) {
+                            insurerHireMonPaymentType = "";
                         } else {
-                            insurerHireMonTotalLossChequeReceivedDate = DateHelper.getLocalDateFormat().format(hmd.getTotalLossOfferCheckReceivedDate());
+                            insurerHireMonPaymentType = hmd.getPaymentType();
+                        }
+                        if (hmd.getTotalLossOfferPaymentReceivedDate() == null) {
+                            insurerHireMonTotalLossPaymentReceivedDate = "";
+                        } else {
+                            insurerHireMonTotalLossPaymentReceivedDate = DateHelper.getLocalDateFormat().format(hmd.getTotalLossOfferPaymentReceivedDate());
                         }
                         if (hmd.getRepairCompletionDate() != null) {
                             insurerHireMonRepairCompletionDate = DateHelper.getLocalDateFormat().format(hmd.getRepairCompletionDate());
@@ -2045,12 +2051,16 @@ public class ClaimFileReportData {
         return insurerHireMonTotalLossAcceptedDate;
     }
 
-    public String getInsurerHireMonTotalLossChequeIssuedDate() {
-        return insurerHireMonTotalLossChequeIssuedDate;
+    public String getInsurerHireMonTotalLossPaymentIssuedDate() {
+        return insurerHireMonTotalLossPaymentIssuedDate;
     }
 
-    public String getInsurerHireMonTotalLossChequeReceivedDate() {
-        return insurerHireMonTotalLossChequeReceivedDate;
+    public String getInsurerHireMonPaymentType() {
+        return insurerHireMonPaymentType;
+    }
+
+    public String getInsurerHireMonTotalLossPaymentReceivedDate() {
+        return insurerHireMonTotalLossPaymentReceivedDate;
     }
 
     public String getInsurerHireMonRepairCompletionDate() {

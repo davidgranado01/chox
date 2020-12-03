@@ -17,8 +17,9 @@
     <property column="repair_completion_date" name="repairCompletionDate"/>
     <property column="total_loss_offer_made" name="totalLossOfferMadeDate"/>
     <property column="total_loss_offer_accepted" name="totalLossOfferAcceptedDate"/>
-    <property column="total_loss_check_issued" name="totalLossOfferCheckIssuedDate"/>
-    <property column="total_loss_check_received" name="totalLossOfferCheckReceivedDate"/>
+    <property column="total_loss_payment_issued" name="totalLossOfferPaymentIssuedDate"/>
+    <property column="payment_type" name="paymentType"/>
+    <property column="total_loss_payment_received" name="totalLossOfferPaymentReceivedDate"/>
     <property column="engineers_report_sent" name="engineersReportSentDate"/>
     <property column="tp_reported_incident_to_tpi" name="TPReportedIncidentToTPIDate"/>
     <property column="tl_report_sent_to_us" name="TLReportSentToUsDate"/>

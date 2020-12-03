@@ -149,28 +149,30 @@
             renderTo: 'insurerTotalLossOfferAcceptedDatePH'
         });
         
-        var totalLossOfferCheckIssuedDatePicker = new Ext.form.DateField({
-            name: 'totalLossOfferCheckIssuedDate',
-            id: 'insurerTotalLossOfferCheckIssuedDateId',
+        var totalLossOfferPaymentIssuedDatePicker = new Ext.form.DateField({
+            name: 'totalLossOfferPaymentIssuedDate',
+            id: 'insurerTotalLossOfferPaymentIssuedDateId',
             width: 100,
             allowBlank: true,
             format: 'd/m/Y',
             showWeekNumber: true,
             validationEvent : false,
-            value: '<s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" />',
-            renderTo: 'insurerTotalLossOfferCheckIssuedDatePH'
+            value: '<s:date format="dd/MM/yyyy" name="totalLossOfferPaymentIssuedDate" />',
+            renderTo: 'insurerTotalLossOfferPaymentIssuedDatePH'
         });
+
+        $('select[name="paymentType"]').val('<s:property value='paymentType'/>');
         
-        var totalLossOfferCheckReceivedDatePicker = new Ext.form.DateField({
-            name: 'totalLossOfferCheckReceivedDate',
-            id: 'insurerTotalLossOfferCheckReceivedDateId',
+        var totalLossOfferPaymentReceivedDatePicker = new Ext.form.DateField({
+            name: 'totalLossOfferPaymentReceivedDate',
+            id: 'insurerTotalLossOfferPaymentReceivedDateId',
             width: 100,
             allowBlank: true,
             format: 'd/m/Y',
             showWeekNumber: true,
             validationEvent : false,
-            value: '<s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" />',
-            renderTo: 'insurerTotalLossOfferCheckReceivedDatePH'
+            value: '<s:date format="dd/MM/yyyy" name="totalLossOfferPaymentReceivedDate" />',
+            renderTo: 'insurerTotalLossOfferPaymentReceivedDatePH'
         });
         
         var form = $("form#formUpdateInsurerHireMonitoringDetail");
@@ -335,13 +337,23 @@
             </div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label2">Date Total Loss Cheque Issued</label>
-                <span id="insurerTotalLossOfferCheckIssuedDatePH"></span>
+                <label class="chox-form-std-label2">Date Total Loss Payment Issued</label>
+                <span id="insurerTotalLossOfferPaymentIssuedDatePH"></span>
             </div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label2">Date Total Loss Cheque Received</label>
-                <span id="insurerTotalLossOfferCheckReceivedDatePH"></span>
+                <label class="chox-form-std-label2">Payment Type</label>
+                <select name="paymentType" id="paymentType">
+                    <option value="">Unknown</option>
+                    <option value="BACS">BACS</option>
+                    <option value="Cheque">Cheque</option>
+                    <option value="CHAPS">CHAPS</option>
+                </select>
+            </div>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Total Loss Payment Received</label>
+                <span id="insurerTotalLossOfferPaymentReceivedDatePH"></span>
             </div>
 
             <div class="chox-form-item">

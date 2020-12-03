@@ -775,13 +775,18 @@ public class BaseActivityEvent extends Entity implements Serializable {
                 } else {
                     addAttribute("hireMonitoringTotalLossOfferAcceptedDate", null);
                 }
-                if (insurerHireMonitoringDetail.getTotalLossOfferCheckIssuedDate() != null) {
-                    addAttribute("hireMonitoringTotalLossCheckIssuedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTotalLossOfferCheckIssuedDate()));
+                if (insurerHireMonitoringDetail.getTotalLossOfferPaymentIssuedDate() != null) {
+                    addAttribute("hireMonitoringTotalLossCheckIssuedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTotalLossOfferPaymentIssuedDate()));
                 } else {
                     addAttribute("hireMonitoringTotalLossCheckIssuedDate", null);
                 }
-                if (insurerHireMonitoringDetail.getTotalLossOfferCheckReceivedDate() != null) {
-                    addAttribute("hireMonitoringTotalLossCheckReceivedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTotalLossOfferCheckReceivedDate()));
+                if (insurerHireMonitoringDetail.getPaymentType() != null) {
+                    addAttribute("hireMonitoringPaymentType", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getPaymentType()));
+                } else {
+                    addAttribute("hireMonitoringPaymentType", null);
+                }
+                if (insurerHireMonitoringDetail.getTotalLossOfferPaymentReceivedDate() != null) {
+                    addAttribute("hireMonitoringTotalLossCheckReceivedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTotalLossOfferPaymentReceivedDate()));
                 } else {
                     addAttribute("hireMonitoringTotalLossCheckReceivedDate", null);
                 }
