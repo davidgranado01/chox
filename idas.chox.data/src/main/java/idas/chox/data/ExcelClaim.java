@@ -199,8 +199,9 @@ public class ExcelClaim {
     private Date claimInsHMDRepairCompletionDate;
     private Date claimInsHMDTotalLossOfferMadeDate;
     private Date claimInsHMDTotalLossOfferAcceptedDate;
-    private Date claimInsHMDTotalLossOfferCheckIssuedDate;
-    private Date claimInsHMDTotalLossOfferCheckReceivedDate;
+    private Date claimInsHMDTotalLossOfferPaymentIssuedDate;
+    private String claimInsHMDPaymentType;
+    private Date claimInsHMDTotalLossOfferPaymentReceivedDate;
     private BigDecimal claimInsHMDLabourRate;
     private BigDecimal claimInsHMDLabourHour;
     private BigDecimal claimInsHMDLabourCost;
@@ -494,8 +495,9 @@ public class ExcelClaim {
             claimInsHMDRepairCompletionDate = (Date) data.get("ihmd_repair_completion_date");
             claimInsHMDTotalLossOfferMadeDate = (Date) data.get("ihmd_total_loss_offer_made");
             claimInsHMDTotalLossOfferAcceptedDate = (Date) data.get("ihmd_total_loss_offer_accepted");
-            claimInsHMDTotalLossOfferCheckIssuedDate = (Date) data.get("ihmd_total_loss_check_issued");
-            claimInsHMDTotalLossOfferCheckReceivedDate = (Date) data.get("ihmd_total_loss_check_received");
+            claimInsHMDTotalLossOfferPaymentIssuedDate = (Date) data.get("ihmd_total_loss_check_issued");
+            claimInsHMDPaymentType = (String) data.get("ihmd_payment_type");
+            claimInsHMDTotalLossOfferPaymentReceivedDate = (Date) data.get("ihmd_total_loss_check_received");
             claimInsHMDLabourRate = (BigDecimal) data.get("ihmd_labour_rate");
             claimInsHMDLabourHour = (BigDecimal) data.get("ihmd_labour_hour");
             claimInsHMDLabourCost = (BigDecimal) data.get("ihmd_labour_cost");
@@ -1232,12 +1234,16 @@ public class ExcelClaim {
         return claimInsHMDTotalLossOfferAcceptedDate;
     }
     
-    public Date getClaimInsHMDTotalLossOfferCheckIssuedDate() {
-        return claimInsHMDTotalLossOfferCheckIssuedDate;
+    public Date getClaimInsHMDTotalLossOfferPaymentIssuedDate() {
+        return claimInsHMDTotalLossOfferPaymentIssuedDate;
     }
-    
-    public Date getClaimInsHMDTotalLossOfferCheckReceivedDate() {
-        return claimInsHMDTotalLossOfferCheckReceivedDate;
+
+    public String getClaimInsHMDPaymentType() {
+        return claimInsHMDPaymentType;
+    }
+
+    public Date getClaimInsHMDTotalLossOfferPaymentReceivedDate() {
+        return claimInsHMDTotalLossOfferPaymentReceivedDate;
     }
     
     public BigDecimal getClaimInsHMDLabourRate() {

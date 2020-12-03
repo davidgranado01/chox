@@ -16,8 +16,9 @@ public class InsurerHireMonitoringDetail extends Entity implements Serializable 
     private Date repairCompletionDate;
     private Date totalLossOfferMadeDate;
     private Date totalLossOfferAcceptedDate;
-    private Date totalLossOfferCheckIssuedDate;
-    private Date totalLossOfferCheckReceivedDate;
+    private Date totalLossOfferPaymentIssuedDate;
+    private String paymentType;
+    private Date totalLossOfferPaymentReceivedDate;
     private Date engineersReportSentDate;
     private Date TPReportedIncidentToTPIDate;
     private Date TLReportSentToUsDate;
@@ -187,20 +188,29 @@ public class InsurerHireMonitoringDetail extends Entity implements Serializable 
         this.totalLossOfferAcceptedDate = totalLossOfferAcceptedDate;
     }
 
-    public Date getTotalLossOfferCheckIssuedDate() {
-        return totalLossOfferCheckIssuedDate;
+    public Date getTotalLossOfferPaymentIssuedDate() {
+        return totalLossOfferPaymentIssuedDate;
     }
 
-    public void setTotalLossOfferCheckIssuedDate(Date totalLossOfferCheckIssuedDate) {
-        this.totalLossOfferCheckIssuedDate = totalLossOfferCheckIssuedDate;
+    public void setTotalLossOfferPaymentIssuedDate(Date totalLossOfferPaymentIssuedDate) {
+        this.totalLossOfferPaymentIssuedDate = totalLossOfferPaymentIssuedDate;
     }
 
-    public Date getTotalLossOfferCheckReceivedDate() {
-        return totalLossOfferCheckReceivedDate;
+    public String getPaymentType() {
+        return paymentType;
     }
 
-    public void setTotalLossOfferCheckReceivedDate(Date totalLossOfferCheckReceivedDate) {
-        this.totalLossOfferCheckReceivedDate = totalLossOfferCheckReceivedDate;
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
+
+
+    public Date getTotalLossOfferPaymentReceivedDate() {
+        return totalLossOfferPaymentReceivedDate;
+    }
+
+    public void setTotalLossOfferPaymentReceivedDate(Date totalLossOfferPaymentReceivedDate) {
+        this.totalLossOfferPaymentReceivedDate = totalLossOfferPaymentReceivedDate;
     }
 
     public Date getTotalLossOfferMadeDate() {

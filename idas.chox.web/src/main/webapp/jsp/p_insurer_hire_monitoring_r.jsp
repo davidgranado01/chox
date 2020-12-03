@@ -84,15 +84,21 @@
             </tr>
 
             <tr>
-                <td><label class="std-label-ro">Date Total Loss Cheque Issued</label></td>
+                <td><label class="std-label-ro">Date Total Loss Payment Issued</label></td>
                 <td>&nbsp;</td>
-                <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" /></label></td>
+                <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferPaymentIssuedDate" /></label></td>
             </tr>
-            
-            <tr>
-                <td><label class="std-label-ro">Date Total Loss Cheque Received</label></td>
+
+             <tr>
+                <td><label class="std-label-ro">Payment Type</label></td>
                 <td>&nbsp;</td>
-                <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" /></label></td>
+                <td><label class="std-data-ro"><s:property value="paymentType" /></label></td>
+            </tr>
+
+            <tr>
+                <td><label class="std-label-ro">Date Total Loss Payment Received</label></td>
+                <td>&nbsp;</td>
+                <td><label class="std-data-ro"><s:date format="dd/MM/yyyy" name="totalLossOfferPaymentReceivedDate" /></label></td>
             </tr>
             
             <tr>
