@@ -495,9 +495,9 @@ public class ExcelClaim {
             claimInsHMDRepairCompletionDate = (Date) data.get("ihmd_repair_completion_date");
             claimInsHMDTotalLossOfferMadeDate = (Date) data.get("ihmd_total_loss_offer_made");
             claimInsHMDTotalLossOfferAcceptedDate = (Date) data.get("ihmd_total_loss_offer_accepted");
-            claimInsHMDTotalLossOfferPaymentIssuedDate = (Date) data.get("ihmd_total_loss_check_issued");
+            claimInsHMDTotalLossOfferPaymentIssuedDate = (Date) data.get("ihmd_total_loss_payment_issued");
             claimInsHMDPaymentType = (String) data.get("ihmd_payment_type");
-            claimInsHMDTotalLossOfferPaymentReceivedDate = (Date) data.get("ihmd_total_loss_check_received");
+            claimInsHMDTotalLossOfferPaymentReceivedDate = (Date) data.get("ihmd_total_loss_payment_received");
             claimInsHMDLabourRate = (BigDecimal) data.get("ihmd_labour_rate");
             claimInsHMDLabourHour = (BigDecimal) data.get("ihmd_labour_hour");
             claimInsHMDLabourCost = (BigDecimal) data.get("ihmd_labour_cost");
