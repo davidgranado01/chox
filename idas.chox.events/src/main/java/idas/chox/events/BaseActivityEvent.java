@@ -781,7 +781,7 @@ public class BaseActivityEvent extends Entity implements Serializable {
                     addAttribute("hireMonitoringTotalLossCheckIssuedDate", null);
                 }
                 if (insurerHireMonitoringDetail.getPaymentType() != null) {
-                    addAttribute("hireMonitoringPaymentType", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getPaymentType()));
+                    addAttribute("hireMonitoringPaymentType", insurerHireMonitoringDetail.getPaymentType());
                 } else {
                     addAttribute("hireMonitoringPaymentType", null);
                 }
