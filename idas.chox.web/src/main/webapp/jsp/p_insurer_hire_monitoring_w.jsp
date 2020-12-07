@@ -197,8 +197,8 @@
                 repairCompletionDate:{dateITA:true},
                 totalLossOfferMadeDate:{dateITA:true},
                 totalLossOfferAcceptedDate:{dateITA:true},
-                totalLossOfferCheckIssuedDate:{dateITA:true},
-                totalLossOfferCheckReceivedDate:{dateITA:true},
+                totalLossOfferPaymentIssuedDate:{dateITA:true},
+                totalLossOfferPaymentReceivedDate:{dateITA:true},
                 engineersReportSentDate:{dateITA:true},
                 labourRate :{number:true, min : 0}, //,max: 100000
                 labourHour :{number:true, min : 0}, //,max: 100000
