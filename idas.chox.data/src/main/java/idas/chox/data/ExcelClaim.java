@@ -199,8 +199,9 @@ public class ExcelClaim {
     private Date claimInsHMDRepairCompletionDate;
     private Date claimInsHMDTotalLossOfferMadeDate;
     private Date claimInsHMDTotalLossOfferAcceptedDate;
-    private Date claimInsHMDTotalLossOfferCheckIssuedDate;
-    private Date claimInsHMDTotalLossOfferCheckReceivedDate;
+    private Date claimInsHMDTotalLossOfferPaymentIssuedDate;
+    private String claimInsHMDPaymentType;
+    private Date claimInsHMDTotalLossOfferPaymentReceivedDate;
     private BigDecimal claimInsHMDLabourRate;
     private BigDecimal claimInsHMDLabourHour;
     private BigDecimal claimInsHMDLabourCost;
@@ -208,6 +209,10 @@ public class ExcelClaim {
     private String claimInsHMDWhoManagedRepair;
     private String claimInsHMDReplacementVehicleClass;
     private Date claimInsHMDRentalStart;
+    private Date claimInsHMDTpReportedIncidentToTPI;
+    private Date claimInsHMDTotalLossReportSentToUs;
+    private Date claimInsHMDPartsReceived;
+    private Date claimInsHMDRentalEnd;
     private Boolean claimCopleyOfferMade;
     private Date claimCopleyOfferMadeDate;
     private boolean isCopleyOffer;
@@ -490,8 +495,9 @@ public class ExcelClaim {
             claimInsHMDRepairCompletionDate = (Date) data.get("ihmd_repair_completion_date");
             claimInsHMDTotalLossOfferMadeDate = (Date) data.get("ihmd_total_loss_offer_made");
             claimInsHMDTotalLossOfferAcceptedDate = (Date) data.get("ihmd_total_loss_offer_accepted");
-            claimInsHMDTotalLossOfferCheckIssuedDate = (Date) data.get("ihmd_total_loss_check_issued");
-            claimInsHMDTotalLossOfferCheckReceivedDate = (Date) data.get("ihmd_total_loss_check_received");
+            claimInsHMDTotalLossOfferPaymentIssuedDate = (Date) data.get("ihmd_total_loss_payment_issued");
+            claimInsHMDPaymentType = (String) data.get("ihmd_payment_type");
+            claimInsHMDTotalLossOfferPaymentReceivedDate = (Date) data.get("ihmd_total_loss_payment_received");
             claimInsHMDLabourRate = (BigDecimal) data.get("ihmd_labour_rate");
             claimInsHMDLabourHour = (BigDecimal) data.get("ihmd_labour_hour");
             claimInsHMDLabourCost = (BigDecimal) data.get("ihmd_labour_cost");
@@ -499,6 +505,10 @@ public class ExcelClaim {
             claimInsHMDWhoManagedRepair = (String) data.get("ihmd_who_managed_repair");
             claimInsHMDReplacementVehicleClass = (String) data.get("ihmd_replacement_vehicle_class");
             claimInsHMDRentalStart = (Date) data.get("ihmd_rental_start");
+            claimInsHMDTpReportedIncidentToTPI = (Date) data.get("ihmd_tp_reported_incident_to_tpi");
+            claimInsHMDTotalLossReportSentToUs = (Date) data.get("ihmd_tl_report_sent_to_us");
+            claimInsHMDPartsReceived = (Date) data.get("ihmd_parts_received");
+            claimInsHMDRentalEnd = (Date) data.get("ihmd_rental_end");
         } catch (Exception ex) {
             LOG.error("Exception thrown export claims grid: \n", ex);
         }
@@ -1224,12 +1234,16 @@ public class ExcelClaim {
         return claimInsHMDTotalLossOfferAcceptedDate;
     }
     
-    public Date getClaimInsHMDTotalLossOfferCheckIssuedDate() {
-        return claimInsHMDTotalLossOfferCheckIssuedDate;
+    public Date getClaimInsHMDTotalLossOfferPaymentIssuedDate() {
+        return claimInsHMDTotalLossOfferPaymentIssuedDate;
     }
-    
-    public Date getClaimInsHMDTotalLossOfferCheckReceivedDate() {
-        return claimInsHMDTotalLossOfferCheckReceivedDate;
+
+    public String getClaimInsHMDPaymentType() {
+        return claimInsHMDPaymentType;
+    }
+
+    public Date getClaimInsHMDTotalLossOfferPaymentReceivedDate() {
+        return claimInsHMDTotalLossOfferPaymentReceivedDate;
     }
     
     public BigDecimal getClaimInsHMDLabourRate() {
@@ -1279,5 +1293,13 @@ public class ExcelClaim {
     public String getClaimInvoiceReviewReason() {
         return claimInvoiceReviewReason;
     }
-    
+
+    public Date getClaimInsHMDTpReportedIncidentToTPI() { return claimInsHMDTpReportedIncidentToTPI; }
+
+    public Date getClaimInsHMDTotalLossReportSentToUs() { return claimInsHMDTotalLossReportSentToUs; }
+
+    public Date getClaimInsHMDPartsReceived() { return claimInsHMDPartsReceived; }
+
+    public Date getClaimInsHMDRentalEnd() { return claimInsHMDRentalEnd; }
+
 }

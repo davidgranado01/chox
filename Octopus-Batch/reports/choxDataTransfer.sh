@@ -6,7 +6,7 @@
 #------------------------------------------------------------------------------
 #
 # This utility generates XML delta files for any of the business tables in
-# the PAWS database. Each of the business tables has an associated _history
+# the Chox database. Each of the business tables has an associated _history
 # table that contains all of the historical data for the main table. This
 # _history table is used to provide a full dump of all activity to the core
 # data items.
@@ -17,7 +17,7 @@
 #
 #------------------------------------------------------------------------------
 #
-# Usage: $0 <database> <insurerId> <startDate>
+# Usage: $0  <insurerId> <outboundLocation> [startDate] [xsd]
 #
 #------------------------------------------------------------------------------
 #
@@ -26,43 +26,44 @@
 #  v1 - March 2014       - JLD - Initial version
 #
 #==============================================================================
-if [ $# -ne 2 -a $# -ne 3 -a $# -ne 1 ];
+if [ $# -ne 1 -a $# -ne 2 -a $# -ne 3 -a $# -ne 4 ];
 then
-    echo "Usage: $0  <insurerId> [startDate] [xsd]"
+    echo "Usage: $0  <insurerId> <outboundLocation> [startDate] [xsd]"
     echo
     exit 1
 fi
 
-if [ $# -eq 3 ]
+if [ $# -eq 4 ]
 then
-    if [ $3 != 'xsd' ]
+    if [ $4 != 'xsd' ]
     then
-        echo "Usage: $0 <insurerId> <startDate> [xsd]"
+        echo "Usage: $0 <insurerId> <outboundLocation> [startDate] [xsd]"
         echo
         exit 1
     fi
     GENERATE_XSD=xsd
-    START_DATE=$2
+    START_DATE=$3
 fi
 
-if [ $# -eq 2 ]
+if [ $# -eq 3 ]
 then
-    if [ $2 = 'xsd' ]
+    if [ $3 = 'xsd' ]
     then
         GENERATE_XSD=xsd
     else
-	    START_DATE=$2
+	    START_DATE=$3
     fi
 fi
 
 : ${START_DATE:=`/bin/date --date="7 days ago" +%F`}
+INSURER_ID=$1
 
 echo '***********************************************************'
-echo `date`': Generating XML Dump fir insurer ' $1 '*************'
+echo `date`': Generating XML Dump fir insurer ' ${INSURER_ID} '*************'
 echo '***********************************************************'
 
 # Production
-OUTBOUND_LOCATION=/shared/nfs/chox/dataload/outbound/RSA
+OUTBOUND_LOCATION=$2
 DUMP_SCRIPT_LOCATION="/home/chox/bin/fullXmlDataDump.sh"
 
 if [ ! -f ${DUMP_SCRIPT_LOCATION} ]
@@ -83,10 +84,10 @@ DUMP_DIR="/tmp/chox-data-dump-$$"
 if [ -z ${GENERATE_XSD} ]
 then
     echo "Creating XML dump files in directory ${DUMP_DIR}"
-    ${DUMP_SCRIPT_LOCATION} $1 ${START_DATE} ${DUMP_DIR}
+    ${DUMP_SCRIPT_LOCATION} ${INSURER_ID} ${START_DATE} ${DUMP_DIR}
 else
     echo "Creating XML and XSD dump files in directory ${DUMP_DIR}"
-    ${DUMP_SCRIPT_LOCATION} $1 ${START_DATE} ${DUMP_DIR} ${GENERATE_XSD}
+    ${DUMP_SCRIPT_LOCATION} ${INSURER_ID} ${START_DATE} ${DUMP_DIR} ${GENERATE_XSD}
 fi
 
 # Create trigger file
@@ -97,7 +98,7 @@ TRIGGER_FILE="${DUMP_DIR}/CHOX-`date "+%Y%m%d"`.trg"
 echo "Compressing files...."
 /usr/bin/zip -q -j ${DUMP_DIR}/CHOX-`date "+%Y%m%d"`.ZIP ${DUMP_DIR}/*.XML
 set echo
-if [ "${GENERATE_XSD}" = "true" ]
+if [ "${GENERATE_XSD}" = "xsd" ]
 then
     /usr/bin/zip -q -j ${DUMP_DIR}/CHOX-`date "+%Y%m%d"`.ZIP ${DUMP_DIR}/*.XSD
 fi

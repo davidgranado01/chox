@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
 
+import java.math.BigDecimal;
+
 public class UpdateManualInvoicePaid extends BaseActivity {
 
     private static final Logger LOG = LoggerFactory.getLogger(UpdateManualInvoicePaid.class);
@@ -17,6 +19,7 @@ public class UpdateManualInvoicePaid extends BaseActivity {
 
     @Override
     protected void doProcess(Claim claim) {
+        InvoicePaymentLogged.updateClaimInvoice(claim, false);
 
         claim.setStatus(ClaimStatus.MANUAL_INVOICE_PAID);
         selectRandomlyForAuditReview(claim);

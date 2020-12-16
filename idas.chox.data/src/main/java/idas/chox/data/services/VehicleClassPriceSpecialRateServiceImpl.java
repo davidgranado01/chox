@@ -1,18 +1,22 @@
 package idas.chox.data.services;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Order;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import idas.chox.core.model.VehicleClass;
 import idas.chox.core.model.VehicleClassPriceSpecialRate;
+import idas.chox.core.search.SearchResult;
 import idas.chox.core.services.VehicleClassPriceSpecialRateService;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -90,5 +94,54 @@ public class VehicleClassPriceSpecialRateServiceImpl extends SecureDataService i
             throw new Exception("No vehicle class price found for class '" + vehicleClass.getName() + "'");
         }
         return ((VehicleClassPriceSpecialRate) vehicleClassPricesSpecialRate.get(0)).getPrice();
+    }
+
+    @Override
+    public SearchResult getVehicleClassPriceSpecialRatesPagination(int start, int limit, String sort, String dir) {
+        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(VehicleClassPriceSpecialRate.class);
+
+        Integer totalCount = totalCount(criteria);
+
+        criteria.setFirstResult(start);
+        criteria.setMaxResults(limit);
+
+        if (!sort.isEmpty() && !dir.isEmpty()) {
+            if (sort.equalsIgnoreCase("startDate")) {
+                addSort(criteria, "startDate", dir);
+            } else if (sort.equalsIgnoreCase("createdDate")) {
+                addSort(criteria, "createdDate", dir);
+            }
+        } else {
+            criteria.addOrder(Order.desc("startDate"));
+        }
+
+        List<VehicleClassPriceSpecialRate> vehicleClassPriceSpecialRates = criteria.list();
+
+        return new SearchResult(vehicleClassPriceSpecialRates, totalCount, null);
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Override
+    public void deleteVehicleClassPriceSpecialRate(int id) throws Exception {
+
+        if (id > 0) {
+            try {
+                DetachedCriteria mapping = DetachedCriteria.forClass(VehicleClassPriceSpecialRate.class);
+                mapping.add(Restrictions.eq("id", id));
+
+                VehicleClassPriceSpecialRate vehicleClassPriceSpecialRate = (VehicleClassPriceSpecialRate) getByCriteria(mapping);
+                delete(vehicleClassPriceSpecialRate);
+
+            } catch (Exception ex) {
+                LOG.warn("Exception thrown removing rate: {}", ex.getMessage(), ex);
+                throw new Exception("An error occurred removing the rate - please try again");
+            }
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    public void saveSupplierRates(List<VehicleClassPriceSpecialRate> supplierRates) {
+        saveCollections(supplierRates);
     }
 }
