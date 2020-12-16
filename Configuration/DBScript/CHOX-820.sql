@@ -1,0 +1,1 @@
+insert into vehicle_class_price_special_rate (insurer_id, chorganisation_id, vehicle_class_id,price, start_date, created_by, created_date, last_modified_by, last_modified_date, version) select 6, 1123, id, 51.87, '2020-03-01', 999, now(), 999, now(), 0 from vehicle_class;

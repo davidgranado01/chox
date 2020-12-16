@@ -30,7 +30,31 @@
             value: '<s:property value="rentalStartTime" />',
             renderTo:'insurerRentalMonitoringStartTimePH'
         });
-        
+
+        var rentalEndDatePicker = new Ext.form.DateField({
+            name: 'rentalEnd',
+            id: 'insurerRentalEndId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="rentalEnd" />',
+            renderTo: 'insurerRentalMonitoringEndPH'
+        });
+
+        var rentalEndTimPicker = new Ext.form.TimeField({
+            name: 'rentalEndTime',
+            id : 'insurerRentalEndTimePickerHMVId',
+            width: 100,
+            allowBlank: true,
+            validationEvent : false,
+            increment: 15,
+            format:'H:i',
+            value: '<s:property value="rentalEndTime" />',
+            renderTo:'insurerRentalMonitoringEndTimePH'
+        });
+
         var vcHMJsonReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
@@ -84,11 +108,15 @@
             errorLabelContainer: "#insurerHVDmessageBox",
             rules: {
                 rentalStart:{dateITA:true, required : true},
-                rentalStartTime:{time:true}
+                rentalStartTime:{time:true},
+                rentalEnd:{dateITA:true},
+                rentalEndTime:{time:true}
             },
             messages: {
                 rentalStart: {dateITA:"Invalid date format for 'Hire Start (Date)'", required : "You must select a 'Hire Start (Date)'"},
-                rentalStartTime: {time:"Invalid date format for 'Hire Start (Time)'"}
+                rentalStartTime: {time:"Invalid date format for 'Hire Start (Time)'"},
+                rentalEnd: {dateITA:"Invalid date format for 'Hire End (Date)'", required : "You must select a 'Hire End (Date)'"},
+                rentalEndTime: {time:"Invalid date format for 'Hire End (Time)'"}
             }
         });
         ui.ajaxForm(form,null,'html');
@@ -115,6 +143,14 @@
                 <label class="chox-form-std-label">
                     Hire Start (Time)</label>
                 <span id="insurerRentalMonitoringStartTimePH"></span></div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                    Hire End (Date)</label>
+                <span id="insurerRentalMonitoringEndPH"></span></div>
+            <div class="chox-form-item">
+                <label class="chox-form-std-label">
+                    Hire End (Time)</label>
+                <span id="insurerRentalMonitoringEndTimePH"></span></div>
             <div class="chox-form-button">
                 <input type="submit" id="insurerHireMonitoringVehicleSubmitButtonId" value="Save Changes" />
             </div>

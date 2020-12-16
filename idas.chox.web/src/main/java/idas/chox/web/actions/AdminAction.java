@@ -47,7 +47,8 @@ public class AdminAction extends BaseAction {
             || ("ChoxCreditHireMgmtPanel".equals(adminPanelName) && !getAdminAccessibility().getIsCreditHireOrgAdminAccessibility())
             || ("UserMgmt".equals(adminPanelName) && !getAdminAccessibility().getIsUserManagementAdminAccessibility())
             || ("UserroleMapping".equals(adminPanelName) && !getAdminAccessibility().getIsUserManagementAdminAccessibility())
-            || ("InsurerPanelMgmt".equals(adminPanelName) && !getIsChoxAdmin() && (!getIsInsurer() || !getIsAdmin()))) {
+            || ("InsurerPanelMgmt".equals(adminPanelName) && !getIsChoxAdmin() && (!getIsInsurer() || !getIsAdmin()))
+            || ("SupplierRate".equals(adminPanelName) && !getIsChoxAdmin())) {
             throw new AccessDeniedException("You do not have the privileges to access the requested resource. You will now be logged out.");
         } 
                     

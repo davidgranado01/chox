@@ -443,6 +443,7 @@
             <result name="UserroleMapping">/jsp/adminPanel/p_user_role_mapping.jsp</result>
             <result name="InsurerPanelMgmt">/jsp/adminPanel/p_insurers_panel.jsp</result>
             <result name="BillingBand">/jsp/adminPanel/p_billing_band_setup_panel.jsp</result>
+            <result name="SupplierRate">/jsp/adminPanel/p_supplier_rate_panel.jsp</result>
             <result name="NONE">/jsp/p_action_response_json_data.jsp</result>
         </action>
         
@@ -1384,6 +1385,25 @@
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
         <action name="editVehicleClassCeilingDetail" class="idas.chox.web.actions.InsurerVehicleClassCeilingAction" method="updateVehicleClassCeiling">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+
+        <!-- START VEHICLE CLASS  SPECIAL RATES-->
+        <action name="getVehicleClassSpecialRatePage" class="idas.chox.web.actions.VehicleClassPriceSpecialRateAction" method="doRenderActionPage">
+            <result name="success">/jsp/adminPanel/p_supplier_rate_panel.jsp</result>
+        </action>
+
+        <action name="getVehicleClassSpecialRates" class="idas.chox.web.actions.VehicleClassPriceSpecialRateAction" method="getVehicleClassSpecialRates">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+
+        <action name="deleteVehicleClassSpecialRate" class="idas.chox.web.actions.VehicleClassPriceSpecialRateAction" method="deleteVehicleClassSpecialRate">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+
+        <action name="uploadSupplierRates" class="idas.chox.web.actions.VehicleClassPriceSpecialRateAction" method="uploadSupplierRates">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>

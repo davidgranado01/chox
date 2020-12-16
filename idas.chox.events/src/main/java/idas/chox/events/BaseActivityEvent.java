@@ -578,13 +578,15 @@ public class BaseActivityEvent extends Entity implements Serializable {
             InsurerVehicleHire vehicleHire = claim.getInsurerVehicleHire();
             if (vehicleHire != null) {
                 addAttribute("insurerHireStart", DateHelper.getLocalDateTimeFormat().format(vehicleHire.getRentalStart()));
+                addAttribute("insurerHireEnd", DateHelper.getLocalDateTimeFormat().format(vehicleHire.getRentalEnd()));
                 addAttribute("insurerVehicleClass", vehicleHire.getVehicleClass() != null ? vehicleHire.getVehicleClass().getName() : "");
             } else {
                 addAttribute("insurerHireStart", null);
+                addAttribute("insurerHireEnd", null);
                 addAttribute("insurerVehicleClass", null);
             }
         } catch (Exception ex) {
-            LOG.error("Exceptin thrown adding claim hire vehicle attributes: {}", ex.getMessage(), ex);
+            LOG.error("Exception thrown adding claim hire vehicle attributes: {}", ex.getMessage(), ex);
         }
     }
 
@@ -773,15 +775,35 @@ public class BaseActivityEvent extends Entity implements Serializable {
                 } else {
                     addAttribute("hireMonitoringTotalLossOfferAcceptedDate", null);
                 }
-                if (insurerHireMonitoringDetail.getTotalLossOfferCheckIssuedDate() != null) {
-                    addAttribute("hireMonitoringTotalLossCheckIssuedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTotalLossOfferCheckIssuedDate()));
+                if (insurerHireMonitoringDetail.getTotalLossOfferPaymentIssuedDate() != null) {
+                    addAttribute("hireMonitoringTotalLossCheckIssuedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTotalLossOfferPaymentIssuedDate()));
                 } else {
                     addAttribute("hireMonitoringTotalLossCheckIssuedDate", null);
                 }
-                if (insurerHireMonitoringDetail.getTotalLossOfferCheckReceivedDate() != null) {
-                    addAttribute("hireMonitoringTotalLossCheckReceivedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTotalLossOfferCheckReceivedDate()));
+                if (insurerHireMonitoringDetail.getPaymentType() != null) {
+                    addAttribute("hireMonitoringPaymentType", insurerHireMonitoringDetail.getPaymentType());
+                } else {
+                    addAttribute("hireMonitoringPaymentType", null);
+                }
+                if (insurerHireMonitoringDetail.getTotalLossOfferPaymentReceivedDate() != null) {
+                    addAttribute("hireMonitoringTotalLossCheckReceivedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTotalLossOfferPaymentReceivedDate()));
                 } else {
                     addAttribute("hireMonitoringTotalLossCheckReceivedDate", null);
+                }
+                if (insurerHireMonitoringDetail.getTPReportedIncidentToTPIDate() != null){
+                    addAttribute("hireMonitoringTpReportedIncidentToTPIDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTPReportedIncidentToTPIDate()));
+                } else {
+                    addAttribute("hireMonitoringTpReportedIncidentToTPIDate", null);
+                }
+                if (insurerHireMonitoringDetail.getTLReportSentToUsDate() != null){
+                    addAttribute("hireMonitoringTotalLossReportSentToUsDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getTLReportSentToUsDate()));
+                } else {
+                    addAttribute("hireMonitoringTotalLossReportSentToUsDate", null);
+                }
+                if (insurerHireMonitoringDetail.getPartsReceivedDate() != null){
+                    addAttribute("hireMonitoringPartsReceivedDate", DateHelper.getLocalDateFormat().format(insurerHireMonitoringDetail.getPartsReceivedDate()));
+                } else {
+                    addAttribute("hireMonitoringPartsReceivedDate", null);
                 }
             } else {
                 addAttribute("hireMonitoringRepairBookedInDate", null);
@@ -796,6 +818,9 @@ public class BaseActivityEvent extends Entity implements Serializable {
                 addAttribute("hireMonitoringTotalLossOfferAcceptedDate", null);
                 addAttribute("hireMonitoringTotalLossCheckIssuedDate", null);
                 addAttribute("hireMonitoringTotalLossCheckReceivedDate", null);
+                addAttribute("TPReportedIncidentToTPIDate", null);
+                addAttribute("TLReportSentToUsDate", null);
+                addAttribute("partsReceivedDate", null);
             }
 //        addClaimInsurerHireVehicleParameters(generator, claim);
         } catch (Exception ex) {

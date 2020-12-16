@@ -22,6 +22,8 @@ function getPassword {
             PASSWORD="Royal1";;
         "Motability-"* )
             PASSWORD="Mot1";;
+        "Tesco-"* )
+            PASSWORD="T3sc0UW";;
         "Auxillis-"* )
             PASSWORD="Help1";;
         "ERAC-"* )
@@ -141,14 +143,18 @@ function getEmailReceivers {
             EMAIL_RECEIVERS=cpt@albanyassistance.co.uk,susan.harker@albanyassistance.co.uk,protocol@albanyassistance.co.uk;;
 	    "Auxillis-FNOL_Notifications_Report_DLG-"* )
 	        ACTIVE=1
-	        EMAIL_RECEIVERS=DLGclaimupdate@auxillis.com ;;
+	        EMAIL_RECEIVERS=DLGclaimupdate@auxillis.com,Emma.Howe@auxillis.com;;
 	    "Auxillis-Invoice_Notifications_Report_DLG-"* )
 	        ACTIVE=1
 	        EMAIL_RECEIVERS=protocol@albanyassistance.co.uk;;
         "DLG-Insurer_User_State_Report-"* )
 	        ACTIVE=1
-            EMAIL_RECEIVERS=jamie.willshaw@directlinegroup.co.uk,tam.bedford@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk,Jonathan.Clarke@directlinegroup.co.uk,UAC.Governance@directlinegroup.co.uk
+            EMAIL_RECEIVERS=tam.bedford@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk,Jonathan.Clarke@directlinegroup.co.uk,UAC.Governance@directlinegroup.co.uk
             BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk,David.Hayes@audatex.co.uk;;
+        "Tesco-Underwriting-Insurer_User_State_Report-"* )
+	        ACTIVE=1
+            EMAIL_RECEIVERS=David.Crown@tescobank.com,Simon.Lund@tescobank.com,Daniel.Robinson@tescobank.com,Ruth.Lawson@tescobank.com
+            BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk;;
         "RSA-Average_Time_To_Allocate_Work-"* )
             EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com;;
 #        "ERAC-Supplementary_Consolidation_Report-"* )
@@ -214,6 +220,12 @@ function getEmailReceivers {
 	    "LV-Closed_Claim_Report-"* )
 	        ACTIVE=1
 	        EMAIL_RECEIVERS=andrew.seedhouse@lv.com;;
+	    "LV-ClaimDetailsDump-"* )
+            ACTIVE=4
+            FTP_CLIENT=LV;;
+        "LV-InvoiceDetailsDump-"* )
+            ACTIVE=4
+            FTP_CLIENT=LV;;
 	    "Kindertons-Invoice_Upload_Report-"* )
 	        ACTIVE=5
 #            EMAIL_RECEIVERS=thomas.maddock@kindertons.co.uk;;

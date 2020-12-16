@@ -207,11 +207,11 @@
     <logger name="org.hibernate.stat" additivity="false" level="INFO">
         <appender-ref ref="Hibernate"/>
     </logger>
-    <logger name="org.hibernate.SQL" additivity="false" level="INFO">
+    <logger name="org.hibernate.SQL" additivity="false" level="DEBUG">
         <appender-ref ref="HibernateSQL"/>
     </logger>
     <!-- Log Hibernate SQL Parameters -->
-    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" additivity="false" level="INFO" >
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" additivity="false" level="DEBUG" >
         <appender-ref ref="HibernateSQL" />
     </logger>
     <!-- To also see extracted values, use the below logger on org.hibernate.type -->

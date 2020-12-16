@@ -4,7 +4,43 @@
 <script type="text/javascript">
         
     // $(function(){
-    Ext.onReady(function(){
+    Ext.onReady(function() {
+        var TPReportedIncidentToTPIDatePicker = new Ext.form.DateField({
+            name: 'TPReportedIncidentToTPIDate',
+            id: 'TPReportedIncidentToTPIDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="TPReportedIncidentToTPIDate" />',
+            renderTo: 'insurerTPReportedIncidentToTPIDatePH'
+        });
+
+        var TLReportSentToUsDatePicker = new Ext.form.DateField({
+            name: 'TLReportSentToUsDate',
+            id: 'TLReportSentToUsDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="TLReportSentToUsDate" />',
+            renderTo: 'insurerTLReportSentToUsDatePH'
+        });
+
+        var partsReceivedDatePicker = new Ext.form.DateField({
+            name: 'partsReceivedDate',
+            id: 'partsReceivedDateId',
+            width: 100,
+            allowBlank: true,
+            format: 'd/m/Y',
+            showWeekNumber: true,
+            validationEvent : false,
+            value: '<s:date format="dd/MM/yyyy" name="partsReceivedDate" />',
+            renderTo: 'insurerPartsReceivedDatePH'
+        });
+
         var repairBookInDatePicker = new Ext.form.DateField({
             name: 'repairBookInDate',
             id: 'insurerRepairBookInDateId',
@@ -113,28 +149,30 @@
             renderTo: 'insurerTotalLossOfferAcceptedDatePH'
         });
         
-        var totalLossOfferCheckIssuedDatePicker = new Ext.form.DateField({
-            name: 'totalLossOfferCheckIssuedDate',
-            id: 'insurerTotalLossOfferCheckIssuedDateId',
+        var totalLossOfferPaymentIssuedDatePicker = new Ext.form.DateField({
+            name: 'totalLossOfferPaymentIssuedDate',
+            id: 'insurerTotalLossOfferPaymentIssuedDateId',
             width: 100,
             allowBlank: true,
             format: 'd/m/Y',
             showWeekNumber: true,
             validationEvent : false,
-            value: '<s:date format="dd/MM/yyyy" name="totalLossOfferCheckIssuedDate" />',
-            renderTo: 'insurerTotalLossOfferCheckIssuedDatePH'
+            value: '<s:date format="dd/MM/yyyy" name="totalLossOfferPaymentIssuedDate" />',
+            renderTo: 'insurerTotalLossOfferPaymentIssuedDatePH'
         });
+
+        $('select[name="paymentType"]').val('<s:property value='paymentType'/>');
         
-        var totalLossOfferCheckReceivedDatePicker = new Ext.form.DateField({
-            name: 'totalLossOfferCheckReceivedDate',
-            id: 'insurerTotalLossOfferCheckReceivedDateId',
+        var totalLossOfferPaymentReceivedDatePicker = new Ext.form.DateField({
+            name: 'totalLossOfferPaymentReceivedDate',
+            id: 'insurerTotalLossOfferPaymentReceivedDateId',
             width: 100,
             allowBlank: true,
             format: 'd/m/Y',
             showWeekNumber: true,
             validationEvent : false,
-            value: '<s:date format="dd/MM/yyyy" name="totalLossOfferCheckReceivedDate" />',
-            renderTo: 'insurerTotalLossOfferCheckReceivedDatePH'
+            value: '<s:date format="dd/MM/yyyy" name="totalLossOfferPaymentReceivedDate" />',
+            renderTo: 'insurerTotalLossOfferPaymentReceivedDatePH'
         });
         
         var form = $("form#formUpdateInsurerHireMonitoringDetail");
@@ -148,6 +186,9 @@
         {
             errorLabelContainer: "#insurerHMmessageBox",
             rules: {
+                TPReportedIncidentToTPIDate:{dateITA:true},
+                TLReportSentToUsDate:{dateITA:true},
+                partsReceivedDate:{dateITA:true},
                 repairBookInDate:{dateITA:true},
                 repairAuthorisedDate:{dateITA:true},
                 repairCommencedDate:{dateITA:true},
@@ -156,8 +197,8 @@
                 repairCompletionDate:{dateITA:true},
                 totalLossOfferMadeDate:{dateITA:true},
                 totalLossOfferAcceptedDate:{dateITA:true},
-                totalLossOfferCheckIssuedDate:{dateITA:true},
-                totalLossOfferCheckReceivedDate:{dateITA:true},
+                totalLossOfferPaymentIssuedDate:{dateITA:true},
+                totalLossOfferPaymentReceivedDate:{dateITA:true},
                 engineersReportSentDate:{dateITA:true},
                 labourRate :{number:true, min : 0}, //,max: 100000
                 labourHour :{number:true, min : 0}, //,max: 100000
@@ -165,6 +206,9 @@
                 date_compare_field:{required: isDateCorrect}
             },
             messages: {
+                TPReportedIncidentToTPIDate: {dateITA:"Invalid date format for 'Date TP Reported Incident to TPI'"},
+                TLReportSentToUsDate: {dateITA:"Invalid date format for 'Date TL Report Sent To Us'"},
+                partsReceivedDate: {dateITA:"Invalid date format for 'Date Parts Received'"},
                 repairBookInDate: {dateITA:"Invalid date format for 'Repair Book In Date'"},
                 repairAuthorisedDate: {dateITA:"Invalid date format for 'Date Repair Authorised'"},
                 repairCommencedDate: {dateITA:"Invalid date format for 'Date Repair Commenced'"},
@@ -173,8 +217,8 @@
                 repairCompletionDate: {dateITA:"Invalid date format for 'Repair Completion Date'"},
                 totalLossOfferMadeDate: {dateITA:"Invalid date format for 'Date Total Loss Offer Made'"},
                 totalLossOfferAcceptedDate: {dateITA:"Invalid date format for 'Date Total Loss Offer Accepted'"},
-                totalLossOfferCheckIssuedDate: {dateITA:"Invalid date format for 'Date Total Loss Cheque Issued'"},
-                totalLossOfferCheckReceivedDate: {dateITA:"Invalid date format for 'Date Total Loss Cheque Received'"},
+                totalLossOfferPaymentIssuedDate: {dateITA:"Invalid date format for 'Date Total Loss Payment Issued'"},
+                totalLossOfferPaymentReceivedDate: {dateITA:"Invalid date format for 'Date Total Loss Payment Received'"},
                 engineersReportSentDate: {dateITA:"Invalid date format for 'Date Engineers Report Sent'"},
                 labourRate :{number:"You must supply a numeric value for 'Labour Rate'", min : "Labour Rate must not be negative."},
                 labourHour :{number:"You must supply a numeric value for 'Labour Hours'", min : "Labour Hours must not be negative."},
@@ -233,6 +277,11 @@
         <div class="form-container" id="insurerHireMonitoringWId">
 
             <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date TP Reported Incident to TPI</label>
+                <span id="insurerTPReportedIncidentToTPIDatePH"></span>
+            </div>
+
+            <div class="chox-form-item">
                 <label class="chox-form-std-label2">Inspection Booked Date</label>
                 <span id="insurerInspectionBookedDatePH"></span>
             </div>
@@ -247,9 +296,19 @@
                 <span id="insurerRepairAuthorisedDatePH"></span>
             </div>
 
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date TL Report Sent To Us</label>
+                <span id="insurerTLReportSentToUsDatePH"></span>
+            </div>
+
             <div class="chox-form-item" >
                 <label class="chox-form-std-label2">Repair Book In Date</label>
                 <span id="insurerRepairBookInDatePH"></span>
+            </div>
+
+            <div class="chox-form-item" >
+                <label class="chox-form-std-label2">Date Parts Received</label>
+                <span id="insurerPartsReceivedDatePH"></span>
             </div>
 
             <div class="chox-form-item">
@@ -278,13 +337,23 @@
             </div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label2">Date Total Loss Cheque Issued</label>
-                <span id="insurerTotalLossOfferCheckIssuedDatePH"></span>
+                <label class="chox-form-std-label2">Date Total Loss Payment Issued</label>
+                <span id="insurerTotalLossOfferPaymentIssuedDatePH"></span>
             </div>
 
             <div class="chox-form-item">
-                <label class="chox-form-std-label2">Date Total Loss Cheque Received</label>
-                <span id="insurerTotalLossOfferCheckReceivedDatePH"></span>
+                <label class="chox-form-std-label2">Payment Type</label>
+                <select name="paymentType" id="paymentType">
+                    <option value="">Unknown</option>
+                    <option value="BACS">BACS</option>
+                    <option value="Cheque">Cheque</option>
+                    <option value="CHAPS">CHAPS</option>
+                </select>
+            </div>
+
+            <div class="chox-form-item">
+                <label class="chox-form-std-label2">Date Total Loss Payment Received</label>
+                <span id="insurerTotalLossOfferPaymentReceivedDatePH"></span>
             </div>
 
             <div class="chox-form-item">

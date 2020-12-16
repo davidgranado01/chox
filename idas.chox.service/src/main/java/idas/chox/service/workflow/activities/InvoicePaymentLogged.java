@@ -146,44 +146,7 @@ public class InvoicePaymentLogged extends BaseActivity {
     protected void doProcess(Claim claim) {
         Invoice invoice = claim.getInvoice();
         if (finalPayment == null) { // Ok hit - no fields changed. Take values from invoice
-            if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType()) 
-                  || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType()) ) {
-                invoice.setHireGrossPaid(invoice.getHireGross().add(invoice.getGtaDiscount()));
-                invoice.setRepairGrossPaid(invoice.getRepairGross());
-                invoice.setEngineerFeeGrossPaid(invoice.getEngineerFeeGross());
-                invoice.setTotalLossFeeGrossPaid(invoice.getTotalLossFeeGross());
-                invoice.setStorageRecoveryGrossPaid(invoice.getStorageRecoveryGross());
-                invoice.setHirePenaltyChargePaid(invoice.getHirePenaltyCharge());
-                invoice.setRepairPenaltyChargePaid(invoice.getRepairPenaltyCharge());
-                invoice.setChoDiscountFeePaid(invoice.getDiscount());
-                invoice.setClaimHandlerChargePaid(invoice.getClaimsHandlingInvoiceAmount());
-                invoice.setDeductionClaimHandlerFeePaid(invoice.getDeductionForClaimsHandlingFee());
-                invoice.setInsurerDiscountFeePaid(invoice.getInsurerDiscount());
-            } else {
-                invoice.setHireGrossPaid(invoice.getHireGross().add(invoice.getGtaDiscount()).multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setRepairGrossPaid(invoice.getRepairGross().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setEngineerFeeGrossPaid(invoice.getEngineerFeeGross().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setTotalLossFeeGrossPaid(invoice.getTotalLossFeeGross().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setStorageRecoveryGrossPaid(invoice.getStorageRecoveryGross().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setHirePenaltyChargePaid(invoice.getHirePenaltyCharge().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setRepairPenaltyChargePaid(invoice.getRepairPenaltyCharge().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setChoDiscountFeePaid(invoice.getDiscount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setClaimHandlerChargePaid(invoice.getClaimsHandlingInvoiceAmount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setDeductionClaimHandlerFeePaid(invoice.getDeductionForClaimsHandlingFee().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                invoice.setInsurerDiscountFeePaid(invoice.getInsurerDiscount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-            }
-            if (invoice.getInterimPaymentMade() != null) {
-                invoice.setFinalPayment(invoice.getTotalToPay().subtract(invoice.getInterimPaymentMade()));
-            } else {
-                invoice.setFinalPayment(invoice.getTotalToPay());
-            }
-            if (invoice.getTotalPenaltyCharge() != null && invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {
-                claim.addComment(Comment.newComment(0, "A full payment amount of £" + invoice.getFinalPayment() + " has been made."));
-                invoice.setPenaltyChargesPaid(Boolean.TRUE);
-            } else {
-                claim.addComment(Comment.newComment(0, "A full payment amount of £" + invoice.getFinalPayment() + " has been made."));
-                invoice.setPenaltyChargesPaid(Boolean.FALSE);
-            }
+            updateClaimInvoice(claim, true);
         } else {
             BigDecimal total = invoice.getTotalToPay();
             if (invoice.getInterimPaymentMade() != null) {
@@ -213,4 +176,50 @@ public class InvoicePaymentLogged extends BaseActivity {
         claim.setStatus(ClaimStatus.INVOICE_PAYMENT_LOGGED);
     }
 
+
+    public static void updateClaimInvoice(Claim claim, boolean addClaimComment) {
+        Invoice invoice = claim.getInvoice();
+        if (ClaimType.isInsurerVsInsurer(claim.getClaimType()) || ClaimType.isSubscriber(claim.getClaimType())
+                || ClaimType.isFixedFee(claim.getClaimType()) || ClaimType.isCollaborationProtocol(claim.getClaimType()) ) {
+            invoice.setHireGrossPaid(invoice.getHireGross().add(invoice.getGtaDiscount()));
+            invoice.setRepairGrossPaid(invoice.getRepairGross());
+            invoice.setEngineerFeeGrossPaid(invoice.getEngineerFeeGross());
+            invoice.setTotalLossFeeGrossPaid(invoice.getTotalLossFeeGross());
+            invoice.setStorageRecoveryGrossPaid(invoice.getStorageRecoveryGross());
+            invoice.setHirePenaltyChargePaid(invoice.getHirePenaltyCharge());
+            invoice.setRepairPenaltyChargePaid(invoice.getRepairPenaltyCharge());
+            invoice.setChoDiscountFeePaid(invoice.getDiscount());
+            invoice.setClaimHandlerChargePaid(invoice.getClaimsHandlingInvoiceAmount());
+            invoice.setDeductionClaimHandlerFeePaid(invoice.getDeductionForClaimsHandlingFee());
+            invoice.setInsurerDiscountFeePaid(invoice.getInsurerDiscount());
+        } else {
+            invoice.setHireGrossPaid(invoice.getHireGross().add(invoice.getGtaDiscount()).multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+            invoice.setRepairGrossPaid(invoice.getRepairGross().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+            invoice.setEngineerFeeGrossPaid(invoice.getEngineerFeeGross().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+            invoice.setTotalLossFeeGrossPaid(invoice.getTotalLossFeeGross().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+            invoice.setStorageRecoveryGrossPaid(invoice.getStorageRecoveryGross().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+            invoice.setHirePenaltyChargePaid(invoice.getHirePenaltyCharge().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+            invoice.setRepairPenaltyChargePaid(invoice.getRepairPenaltyCharge().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+            invoice.setChoDiscountFeePaid(invoice.getDiscount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+            invoice.setClaimHandlerChargePaid(invoice.getClaimsHandlingInvoiceAmount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+            invoice.setDeductionClaimHandlerFeePaid(invoice.getDeductionForClaimsHandlingFee().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+            invoice.setInsurerDiscountFeePaid(invoice.getInsurerDiscount().multiply(claim.getAppliedLiability()).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+        }
+        if (invoice.getInterimPaymentMade() != null) {
+            invoice.setFinalPayment(invoice.getTotalToPay().subtract(invoice.getInterimPaymentMade()));
+        } else {
+            invoice.setFinalPayment(invoice.getTotalToPay());
+        }
+        if (invoice.getTotalPenaltyCharge() != null && invoice.getTotalPenaltyCharge().compareTo(BigDecimal.ZERO) > 0) {
+            if (addClaimComment) {
+                claim.addComment(Comment.newComment(0, "A full payment amount of £" + invoice.getFinalPayment() + " has been made."));
+            }
+            invoice.setPenaltyChargesPaid(Boolean.TRUE);
+        } else {
+            if (addClaimComment) {
+                claim.addComment(Comment.newComment(0, "A full payment amount of £" + invoice.getFinalPayment() + " has been made."));
+            }
+            invoice.setPenaltyChargesPaid(Boolean.FALSE);
+        }
+    }
 }
