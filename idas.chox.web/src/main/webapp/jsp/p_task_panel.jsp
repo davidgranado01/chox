@@ -16,6 +16,27 @@
     var start=0;
     var taskPanelRecordPerPage=20;
 
+    var insurerId;
+    var supplierId;
+
+    var workgroupCombo;
+    var workgroupStore;
+    var workgroupId;
+    var claimOwnerCombo;
+    var claimOwnerStore;
+    var supplierClaimOwnerCombo;
+    var supplierClaimOwnerStore;
+    // below variable will hold selected Workgroup records and reapply to the same combo box when corresponding(insurer) combo box changed.
+    var selectedWorkgroupValues;
+    // below variable will hold selected Supp. ClaimOwner records and reapply to the same combo box when corresponding(supplier) combo box changed.
+    var selectedSuppClaimOwnerValues;
+    // below variable will hold selected Ins. ClaimOwner records and reapply to the same combo box when corresponding(Insurer,Workgroup) combo box changed.
+    var selectedInsClaimOwnerValues;
+    var workgroupComboNumberOfSelectedRecord = 0;
+    var claimOwnerComboNumberOfSelectedRecord = 0;
+    var supplierClaimOwnerComboNumberOfSelectedRecord = 0;
+    var searchColumsPanel;
+
     Ext.onReady(function(){
 
         dateRenderer = Ext.util.Format.dateRenderer('d/m/Y');
@@ -234,7 +255,6 @@
             forceSelection: true,
             emptyText: 'Please select a task type...'
         });
-
 
         var visibilityOptions = [
             [1, 'Private'],
@@ -628,6 +648,304 @@
             });
 
         }
+
+        // Add Workgroup drop-down menu
+        var workgroupJsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+        });
+
+        var workgroupStore = new choxDataStore({
+            url : "/prv/p/WorkgroupDropDownActionByInsurer2.action",
+            params : {"orgId": insurerId},
+            reader : workgroupJsonReader
+            ,listeners: {load: function() {/*this.insert(0, new Ext.data.Record(defaultDropdownValue));*/
+                    if(selectedWorkgroupValues && workgroupCombo) {workgroupCombo.reset();workgroupCombo.setValue(selectedWorkgroupValues);}
+                }}
+        });
+
+        var workGroupCombo = new Ext.ux.form.SuperBoxSelect({
+                store : workgroupStore,
+                width: 250,
+                fieldLabel: 'Workgroup',
+                disabled : !((!<s:property value="isInsurer"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/>)),
+            hidden : !((!<s:property value="isInsurer"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/>)),
+        valueField : 'text', id : 'workgroupComboId',
+            displayField :'value',
+            typeAhead : true,
+            mode : 'local',
+            triggerAction : 'all',
+            emptyText: '--- ALL ---',
+            removeValuesFromStore : false,
+            selectOnFocus : true,
+            forceSelection : true,
+            listeners: {
+            blur: function () {
+                if(this.getValue() === "" ) {
+                }
+            },
+            specialkey:function (el, e) {
+                if(e.keyCode === e.ENTER) {
+                    searchClaim(true);
+                }
+            },
+            afterrender : function(){
+                // Store not loaded yet? Set value when it *is* loaded.
+                this.store.load({
+                    params : {"orgId": insurerId},
+                    callback: function() {
+                        if ('<s:property value="workgroupIdsAsString" />') {
+                            workgroupCombo.setValue('<s:property value="workgroupIdsAsString" />');
+                            workgroupComboNumberOfSelectedRecord = '<s:property value="workgroupIdsAsString" />'.split(',').length;
+                            // doLayoutSearchPanel();
+                        }
+                    }
+                });
+                workgroupId = '<s:property value="workgroupIdsAsString" />'.split(",");
+            },
+            select : function(){
+                workgroupComboNumberOfSelectedRecord ++;
+                doSearchWorkgroupOnChange();
+                // doLayoutSearchPanel();
+            },
+            removeitem : function() {
+                if (!this.getValue() && workgroupComboNumberOfSelectedRecord >= 1) {
+                    workgroupComboNumberOfSelectedRecord = 0;
+                    this.reset();
+                    this.clearValue();
+                    doSearchWorkgroupOnChange();
+                } else if (workgroupComboNumberOfSelectedRecord >= 1) {
+                    workgroupComboNumberOfSelectedRecord --;
+                    doSearchWorkgroupOnChange();
+                }
+                // doLayoutSearchPanel();
+            }
+        }
+    });
+
+        function doSearchWorkgroupOnChange(){
+            if (workgroupCombo.getValue() !== null && workgroupCombo.getValue() !== '') {
+                workgroupId = workgroupCombo.getValue().split(",");
+            }else{
+                workgroupId = null;
+            }
+            doShowClaimHandler(workgroupId, insurerId);
+        }
+
+        function doShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
+
+            <s:if test="isInsurer!=true">
+            claimOwnerStore.load({ params : {"workgroupId":selectedWorkgroupId,"insurerId":selectedInsurerId}});
+            selectedInsClaimOwnerValues = claimOwnerCombo.getValue();
+            </s:if>
+            <s:elseif test="isInsurer">
+            <s:if test="AuthenticatedUser.insurer.claimOwnershipEnable">
+            claimOwnerStore.load({ params : {"workgroupId":selectedWorkgroupId,"insurerId":selectedInsurerId}});
+            selectedInsClaimOwnerValues = claimOwnerCombo.getValue();
+            <s:if test="isCH && selectedWorkgroupId == null" >
+            claimOwnerCombo.setValue(<s:property value="AuthenticatedUser.id"/>);
+            </s:if>
+            </s:if>
+
+            </s:elseif>
+        }
+        
+        
+        // Add claim owner combo box
+        var claimOwnerReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                    {name:'id'},
+                    {name:'name'}
+                ]
+        });
+
+        claimOwnerStore = new choxDataStore({
+            url : "/prv/p/SearchClaimHandlerRoleUserDropDownAction.action",
+            params : {"workgroupId": workgroupId,"insurerId": insurerId},
+            reader : claimOwnerReader,
+            listeners: {load: function() {/*this.insert(0, new Ext.data.Record(claimOwnerdefaultDropdownValue));*/
+                    if (selectedInsClaimOwnerValues && claimOwnerCombo) {claimOwnerCombo.reset();claimOwnerCombo.setValue(selectedInsClaimOwnerValues);}
+                }}
+        });
+
+        claimOwnerCombo = new Ext.ux.form.SuperBoxSelect({
+            store : claimOwnerStore,
+            width: 250,
+            fieldLabel: (<s:property value="isInsurer"/>) ? 'Claim Owner' : 'Insurer\'s Claim Owner',
+            disabled : !((!<s:property value="isInsurer"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
+            hidden : !((!<s:property value="isInsurer"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
+            valueField : 'id',
+            id : 'claimOwnerComboId',
+            displayField :'name',
+            typeAhead : true,
+            mode : 'local',
+            triggerAction : 'all',
+            emptyText: '--- ALL ---',
+            removeValuesFromStore : false,
+            selectOnFocus : true,
+            forceSelection : true,
+            listeners: {
+            specialkey:function (el, e) {
+                if(e.keyCode === e.ENTER) {
+                    searchClaim(true);
+                }
+            },
+            afterrender : function(){
+                // Store not loaded yet? Set value when it *is* loaded.
+                this.store.load({
+                    params : {"workgroupId": workgroupId,"insurerId": insurerId},
+                    callback: function() {
+                        if ('<s:property value="claimOwnerIdsAsString"/>') {
+                            claimOwnerCombo.setValue('<s:property value="claimOwnerIdsAsString"/>');
+                            claimOwnerComboNumberOfSelectedRecord = '<s:property value="claimOwnerIdsAsString"/>'.split(',').length;
+                            // doLayoutSearchPanel();
+                        }
+                    }
+                });
+            },
+            select : function(){
+                claimOwnerComboNumberOfSelectedRecord ++;
+                // doLayoutSearchPanel();
+            },
+            removeitem : function() {
+                if (!this.getValue() && claimOwnerComboNumberOfSelectedRecord >=1) {
+                    claimOwnerComboNumberOfSelectedRecord = 0;
+                    this.reset();
+                    this.clearValue();
+                } else if (claimOwnerComboNumberOfSelectedRecord >= 1) {
+                    claimOwnerComboNumberOfSelectedRecord --;
+                }
+                // doLayoutSearchPanel();
+            }
+        }
+    });
+
+        var supplierClaimOwnerReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                    {name:'id'},
+                    {name:'name'}
+                ]
+        });
+
+        supplierClaimOwnerStore = new choxDataStore({
+            url : "/prv/p/SearchSupplierClaimOwnerDropDownAction.action",
+            params : {"supplierId": supplierId},
+            // Don't know if this is neded (search code for this already exists
+            // - just uncomment this to add and it should work
+            <%--listeners: {load: function() {--%>
+            <%--        <s:if test="isCHO" >--%>
+            <%--        var notAssigned = new Array();--%>
+            <%--        // this next assignment is ugly and should be removed/refactored at some point--%>
+            <%--        notAssigned['id'] = '<%= ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED%>';--%>
+            <%--        notAssigned['name'] = 'NOT ASSIGNED';--%>
+            <%--        this.insert(0, new Ext.data.Record(notAssigned));--%>
+
+            <%--        </s:if>--%>
+            <%--        <s:else >--%>
+
+            <%--        </s:else>--%>
+            <%--        if (selectedSuppClaimOwnerValues && supplierClaimOwnerCombo) {supplierClaimOwnerCombo.reset();supplierClaimOwnerCombo.setValue(selectedSuppClaimOwnerValues);}--%>
+            <%--    }},--%>
+            reader : supplierClaimOwnerReader
+        });
+
+        supplierClaimOwnerCombo = new Ext.ux.form.SuperBoxSelect({
+            store : supplierClaimOwnerStore,
+            width: 250,
+            fieldLabel: <s:property value="isCHO"/> ? 'Claim Owner' : 'Supplier Claim Owner',
+            disabled : !((!<s:property value="isCHO"/>) || (<s:property value="isCHO"/> && <s:property value="choIsClaimOwnershipEnabled"/>)),
+            hidden : !((!<s:property value="isCHO"/>) || (<s:property value="isCHO"/> && <s:property value="choIsClaimOwnershipEnabled"/>)),
+        valueField : 'id',
+            id : 'SupplierClaimOwnerComboId',
+            displayField :'name',
+            typeAhead : true,
+            mode : 'local',
+            triggerAction : 'all',
+            emptyText: '--- ALL ---',
+            removeValuesFromStore : false,
+            selectOnFocus : true,
+            forceSelection : true,
+            listeners: {
+            specialkey:function (el, e) {
+                if(e.keyCode === e.ENTER) {
+                    searchClaim(true);
+                }
+            },
+            afterrender : function(){
+
+                // Store not loaded yet? Set value when it *is* loaded.
+                this.store.load({
+                    params : {"supplierId": supplierId},
+                    callback: function() {
+                        if ('<s:property value="supplierClaimOwnerIdsAsString"/>') {
+                            supplierClaimOwnerCombo.setValue('<s:property value="supplierClaimOwnerIdsAsString"/>');
+                            supplierClaimOwnerComboNumberOfSelectedRecord = '<s:property value="supplierClaimOwnerIdsAsString"/>'.split(',').length;
+                            doLayoutSearchPanel();
+                        }
+                    }
+                });
+            },
+            select : function(){
+                supplierClaimOwnerComboNumberOfSelectedRecord ++;
+                doLayoutSearchPanel();
+            },
+            removeitem : function() {
+                if (!this.getValue() && supplierClaimOwnerComboNumberOfSelectedRecord >=1) {
+                    supplierClaimOwnerComboNumberOfSelectedRecord = 0;
+                    this.reset();
+                    this.clearValue();
+                } else if (supplierClaimOwnerComboNumberOfSelectedRecord >=1) {
+                    supplierClaimOwnerComboNumberOfSelectedRecord --;
+                }
+                doLayoutSearchPanel();
+            }
+        }
+    });
+
+        searchColumsPanel = new Ext.Panel({
+            layout : 'hbox',
+            width : 890,
+            frame : true,
+            height : 380, // if height is changed then also change height in searchAndButtonPanel and queueGrid config.
+            autoScroll : true,
+            items : [claimOwnerCombo, workGroupCombo],
+            headerAsText : true,
+            title : '<div class="search-panel-status-info">Search Screen Information Panel</div>'
+        });
+
+        // We need to create another button panel to separate the search panel frame from search and reset button.
+        // This is needed because when search panel size increase vertically we need to have separate frame to visually identify some search fields is hidden.
+        var searchPanel = new Ext.Panel({
+            width : 990,
+            height : 450, // This height should be same as queueGrid height
+            frame : true,
+            items : [searchColumsPanel]
+        });
+
+        <s:if test="isInsurer && insurerIsWorkgroupEnabled">
+            workGroupCombo.render(workgroupComboDiv);
+        </s:if>
+
+        <s:if test="isInsurer && insurerIsClaimOwnershipEnabled">
+            claimOwnerCombo.render(claimOwnerComboDiv);
+        </s:if>
+
+        <s:if test="isCHO && choIsClaimOwnershipEnabled">
+            supplierClaimOwnerCombo.render(supplierClaimOwnerComboDiv);
+        </s:if>
+
+        // Add tasks
         taskTypeStore.load({params:{visibility: 1}}); // initially load with 'private' visibility tasks
         loadTasks();
     });
@@ -701,5 +1019,43 @@
 </script>
 
 <div id="tasksCreateWindow"></div>
+<s:if test="!isChoxAdmin">
+    <div class="x-panel-bwrap chox-form-container">
+        <fieldset class="x-fieldset">
+            <div class="dashboard" class="form-container">
+                <table cellpadding="0" cellspacing="0" class="dashboard" border="0">
+                    <legend>Task Filter</legend>
+                    <s:if test="isInsurer && insurerIsWorkgroupEnabled">
+                        <tr>
+                            <!--<th nowrap><label id="tipTitle1">Workgroup</label></th>-->
+                            <th nowrap style="width:100%;"><label id="tipTitle1">Workgroup</label></th>
+                            <td>
+                                <div id="workgroupComboDiv"></div>
+                            </td>
+                        </tr>
+                    </s:if>
+                    <s:if test="isInsurer && insurerIsClaimOwnershipEnabled">
+                        <tr>
+                            <!--<th nowrap><label id="tipTitle2">Claim Owner</label></th>-->
+                            <th nowrap style="width:100%;"><label id="tipTitle2">Claim Owner</label></th>
+                            <td>
+                                <div id="claimOwnerComboDiv"></div>
+                            </td>
+                        </tr>
+                    </s:if>
+                    <s:if test="isCHO && choIsClaimOwnershipEnabled">
+                        <tr>
+                            <!--<th nowrap><label id="tipTitle2">Claim Owner</label></th>-->
+                            <th nowrap style="width:100%;"><label id="tipTitle2">Supplier Claim Owner</label></th>
+                            <td>
+                                <div id="supplierClaimOwnerComboDiv"></div>
+                            </td>
+                        </tr>
+                    </s:if>
+                </table>
+            </div>
+        </fieldset>
+    </div>
+</s:if>
 <div id="tasksGridId"></div>
 
