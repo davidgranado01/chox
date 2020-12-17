@@ -1019,7 +1019,7 @@
 </script>
 
 <div id="tasksCreateWindow"></div>
-<s:if test="!isChoxAdmin">
+<s:if test="!isChoxAdmin && isManager">
     <s:if test="((isInsurer && (insurerIsWorkgroupEnabled || insurerIsClaimOwnershipEnabled)) || (isCHO && choIsClaimOwnershipEnabled))">
     <div class="x-panel-bwrap chox-form-container">
         <fieldset class="x-fieldset">
