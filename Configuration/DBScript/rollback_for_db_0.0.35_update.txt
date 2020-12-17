@@ -1,0 +1,25 @@
+Revert db and deploy octopus  'chox - app and db' release  1.0.11
+
+1. ssh to the application server and switch to user 'chox'
+    > sudo su - chox
+
+2. copy the python script 'rollback_for_db_0.0.35_update.py' to /home/chox
+
+3. check the /home/chox/backups folder exists and contains the 2 files 'backup_gmail_scheduler_job_26022020 and backup_scheduler_job_26022020
+    from /home/chox folder, execute the python script which generate plain text password recovery update statements
+
+    chox@prd-rdg-chox-app01:~$ python rollback_for_db_0.0.35_update.py backups
+
+    copy the generated update statements use Ctrl + C / Command + C
+
+4. connect to the postgres database
+
+5. restore the password using the update statements generated in step 3, Ctrl + V / Command + V
+
+6. remove {MD5} prefixes from password hashes
+    UPDATE web_user SET password = right(password, length(password) - 5) WHERE password LIKE '{MD5}%';
+    UPDATE password_history SET password = right(password, length(password) - 5) WHERE password LIKE '{MD5}%';
+
+7. deploy the previous released version (Chox - APP and DB - Octopus release 1.0.11)
+
+
