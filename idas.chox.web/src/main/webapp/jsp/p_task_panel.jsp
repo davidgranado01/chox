@@ -1020,6 +1020,7 @@
 
 <div id="tasksCreateWindow"></div>
 <s:if test="!isChoxAdmin">
+    <s:if test="((isInsurer && (insurerIsWorkgroupEnabled || insurerIsClaimOwnershipEnabled)) || (isCHO && choIsClaimOwnershipEnabled))">
     <div class="x-panel-bwrap chox-form-container">
         <fieldset class="x-fieldset">
             <div class="dashboard" class="form-container">
@@ -1056,6 +1057,7 @@
             </div>
         </fieldset>
     </div>
+    </s:if>
 </s:if>
 <div id="tasksGridId"></div>
 
