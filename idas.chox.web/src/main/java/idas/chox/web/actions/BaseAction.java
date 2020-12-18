@@ -169,6 +169,10 @@ public class BaseAction extends ActionSupport implements SessionAware {
         return securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO_OPR);
     }
 
+    public boolean getIsManager() {
+        return securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG);
+    }
+
     public boolean isPcOnly() {
         boolean isPc = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_PC);
         boolean isMng = securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG);
