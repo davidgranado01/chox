@@ -170,7 +170,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
     }
 
     public boolean getIsManager() {
-        return securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG);
+        return securityInfoProvider.isInRoleOf(WebUserRole.ROLE_INS_MNG) || securityInfoProvider.isInRoleOf(WebUserRole.ROLE_CHO_MNG) ;
     }
 
     public boolean isPcOnly() {

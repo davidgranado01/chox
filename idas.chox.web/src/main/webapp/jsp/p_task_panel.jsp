@@ -1006,36 +1006,25 @@
 
 <div id="tasksCreateWindow"></div>
 <s:if test="!isChoxAdmin && isManager">
-    <s:if test="((isInsurer && (insurerIsWorkgroupEnabled || insurerIsClaimOwnershipEnabled)) || (isCHO && choIsClaimOwnershipEnabled))">
+    <s:if test="(isInsurer && (insurerIsWorkgroupEnabled || insurerIsClaimOwnershipEnabled))">
     <div class="x-panel-bwrap chox-form-container">
         <fieldset class="x-fieldset">
             <div class="dashboard" class="form-container">
                 <table cellpadding="0" cellspacing="0" class="dashboard" border="0">
                     <legend>Task Filter</legend>
-                    <s:if test="isInsurer && insurerIsWorkgroupEnabled">
+                    <s:if test="insurerIsWorkgroupEnabled">
                         <tr>
-                            <!--<th nowrap><label id="tipTitle1">Workgroup</label></th>-->
                             <th nowrap style="width:100%;"><label id="tipTitle1">Workgroup</label></th>
                             <td>
                                 <div id="workgroupComboDiv"></div>
                             </td>
                         </tr>
                     </s:if>
-                    <s:if test="isInsurer && insurerIsClaimOwnershipEnabled">
+                    <s:if test="insurerIsClaimOwnershipEnabled">
                         <tr>
-                            <!--<th nowrap><label id="tipTitle2">Claim Owner</label></th>-->
                             <th nowrap style="width:100%;"><label id="tipTitle2">Claim Owner</label></th>
                             <td>
                                 <div id="claimOwnerComboDiv"></div>
-                            </td>
-                        </tr>
-                    </s:if>
-                    <s:if test="isCHO && choIsClaimOwnershipEnabled">
-                        <tr>
-                            <!--<th nowrap><label id="tipTitle2">Claim Owner</label></th>-->
-                            <th nowrap style="width:100%;"><label id="tipTitle2">Supplier Claim Owner</label></th>
-                            <td>
-                                <div id="supplierClaimOwnerComboDiv"></div>
                             </td>
                         </tr>
                     </s:if>
@@ -1044,6 +1033,23 @@
         </fieldset>
     </div>
     </s:if>
+    <s:elseif test="(isCHO && choIsClaimOwnershipEnabled)">
+    <div class="x-panel-bwrap chox-form-container">
+        <fieldset class="x-fieldset">
+            <div class="dashboard" class="form-container">
+                <table cellpadding="0" cellspacing="0" class="dashboard" border="0">
+                    <legend>Task Filter</legend>
+                        <tr>
+                            <th nowrap style="width:100%;"><label id="tipTitle2">Supplier Claim Owner</label></th>
+                            <td>
+                                <div id="supplierClaimOwnerComboDiv"></div>
+                            </td>
+                        </tr>
+                </table>
+            </div>
+        </fieldset>
+    </div>
+    </s:elseif>
 </s:if>
 <div id="tasksGridId"></div>
 
