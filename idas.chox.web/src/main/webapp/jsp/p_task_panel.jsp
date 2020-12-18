@@ -35,10 +35,16 @@
     var workgroupComboNumberOfSelectedRecord = 0;
     var claimOwnerComboNumberOfSelectedRecord = 0;
     var supplierClaimOwnerComboNumberOfSelectedRecord = 0;
-    var searchColumsPanel;
 
     Ext.onReady(function(){
 
+        <s:if test="isInsurer" >
+        insurerId = '<s:property value="UserOrganisationId"/>'.split(",");
+        </s:if>
+        <s:elseif test="isCHO" >
+        supplierId = '<s:property value="UserOrganisationId"/>'.split(",");
+        </s:elseif>
+        
         dateRenderer = Ext.util.Format.dateRenderer('d/m/Y');
         // LOAD RECORDS
         tasksJsonReader = new Ext.data.JsonReader({
@@ -660,7 +666,7 @@
                 ]
         });
 
-        var workgroupStore = new choxDataStore({
+        workgroupStore = new choxDataStore({
             url : "/prv/p/WorkgroupDropDownActionByInsurer2.action",
             params : {"orgId": insurerId},
             reader : workgroupJsonReader
@@ -669,7 +675,7 @@
                 }}
         });
 
-        var workGroupCombo = new Ext.ux.form.SuperBoxSelect({
+        workgroupCombo = new Ext.ux.form.SuperBoxSelect({
                 store : workgroupStore,
                 width: 250,
                 fieldLabel: 'Workgroup',
@@ -913,28 +919,8 @@
         }
     });
 
-        searchColumsPanel = new Ext.Panel({
-            layout : 'hbox',
-            width : 890,
-            frame : true,
-            height : 380, // if height is changed then also change height in searchAndButtonPanel and queueGrid config.
-            autoScroll : true,
-            items : [claimOwnerCombo, workGroupCombo],
-            headerAsText : true,
-            title : '<div class="search-panel-status-info">Search Screen Information Panel</div>'
-        });
-
-        // We need to create another button panel to separate the search panel frame from search and reset button.
-        // This is needed because when search panel size increase vertically we need to have separate frame to visually identify some search fields is hidden.
-        var searchPanel = new Ext.Panel({
-            width : 990,
-            height : 450, // This height should be same as queueGrid height
-            frame : true,
-            items : [searchColumsPanel]
-        });
-
         <s:if test="isInsurer && insurerIsWorkgroupEnabled">
-            workGroupCombo.render(workgroupComboDiv);
+            workgroupCombo.render(workgroupComboDiv);
         </s:if>
 
         <s:if test="isInsurer && insurerIsClaimOwnershipEnabled">
