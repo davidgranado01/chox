@@ -175,6 +175,11 @@
                             {
                                 this.setText('Show My Assigned Tasks Only');
                             } else {
+                                var supplierClaimOwnerFilterCombo = Ext.getCmp('SupplierClaimOwnerComboId');
+                                if (supplierClaimOwnerFilterCombo) {
+                                    supplierClaimOwnerFilterCombo.reset();
+                                    supplierClaimOwnerFilterCombo.clearValue();
+                                }
                                 this.setText('Show All Tasks');
                             }
                         },
@@ -885,7 +890,7 @@
             listeners: {
             specialkey:function (el, e) {
                 if(e.keyCode === e.ENTER) {
-                    searchClaim(true);
+                    applyFilter();
                 }
             },
             afterrender : function(){
@@ -904,8 +909,6 @@
             },
             select : function(select){
                 supplierClaimOwnerComboNumberOfSelectedRecord ++;
-                // doLayoutSearchPanel();
-                console.log(getSelectedSupplierClaimOwnerIds());
             },
             removeitem : function(select) {
                 if (!this.getValue() && supplierClaimOwnerComboNumberOfSelectedRecord >=1) {
@@ -915,8 +918,6 @@
                 } else if (supplierClaimOwnerComboNumberOfSelectedRecord >=1) {
                     supplierClaimOwnerComboNumberOfSelectedRecord --;
                 }
-                // doLayoutSearchPanel();
-                console.log(getSelectedSupplierClaimOwnerIds());
             }
         }
     });
@@ -924,16 +925,14 @@
 
     // Create the search and reset buttons
     var filterButton = new Ext.Button({
-        text: 'Filter',
+        text: 'Apply',
         scale : 'small',
         width : 100,
         style: {
             marginBottom: '0px',
             marginTop: '0px'
         },
-        handler: function(button, event) {
-            loadTasks();
-        }
+        handler: applyFilter
     });
 
     var buttonPanel = new Ext.Panel({
@@ -1043,6 +1042,14 @@
             var supplierClaimOwnerIds = Ext.getCmp('SupplierClaimOwnerComboId').getValue().split(',');
             return {supplierClaimOwnerIds : supplierClaimOwnerIds};
         }
+    }
+
+    function applyFilter(button, event) {
+        showAssignedTasksOnly = false;
+        var assignedTasksOnlyBtn = Ext.getCmp('assignedTasksOnlyButtonId');
+        assignedTasksOnlyBtn.setText('Show My Assigned Tasks Only');
+        assignedTasksOnlyBtn.pressed = true;
+        loadTasks();
     }
 </script>
 

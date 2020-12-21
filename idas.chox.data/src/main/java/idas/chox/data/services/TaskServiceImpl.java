@@ -385,13 +385,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 isCHO = true;
             }
             if (isCHO) {
-                boolean filterBySupplierOwnerIds = false;
-                if (supplierClaimOwnerIds != null && supplierClaimOwnerIds.size() > 0) {
-                    showAssignedTasksOnly = false;
-                    filterBySupplierOwnerIds = true;
-                }
-
-                // declare default Criterion restriction to avoid null value when below if condition not passed. 
+                // declare default Criterion restriction to avoid null value when below if condition not passed.
                 Criterion internalTasksOnClaimsUserOwns = Restrictions.eq("id", -1);
                 Criterion externalTasksOnClaimsUserOwns = Restrictions.eq("id", -1);
                 Criterion internalTasksOnClaimsBelongsToUserOrg = Restrictions.eq("id", -1);
@@ -441,7 +435,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                     }
 
                 } else {
-                    if (filterBySupplierOwnerIds) {
+                    if (supplierClaimOwnerIds != null && supplierClaimOwnerIds.size() > 0) {
                         // Add CHO internal tasks on claims belongs to user organisation.
                         internalTasksOnClaimsBelongsToUserOrg = Restrictions.conjunction()
                                 .add(Restrictions.eq("this.insurer", Boolean.FALSE))
