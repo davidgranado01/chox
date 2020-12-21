@@ -897,16 +897,17 @@
                         if ('<s:property value="supplierClaimOwnerIdsAsString"/>') {
                             supplierClaimOwnerCombo.setValue('<s:property value="supplierClaimOwnerIdsAsString"/>');
                             supplierClaimOwnerComboNumberOfSelectedRecord = '<s:property value="supplierClaimOwnerIdsAsString"/>'.split(',').length;
-                            doLayoutSearchPanel();
+                            // doLayoutSearchPanel();
                         }
                     }
                 });
             },
-            select : function(){
+            select : function(select){
                 supplierClaimOwnerComboNumberOfSelectedRecord ++;
-                doLayoutSearchPanel();
+                // doLayoutSearchPanel();
+                console.log(getSelectedSupplierClaimOwnerIds());
             },
-            removeitem : function() {
+            removeitem : function(select) {
                 if (!this.getValue() && supplierClaimOwnerComboNumberOfSelectedRecord >=1) {
                     supplierClaimOwnerComboNumberOfSelectedRecord = 0;
                     this.reset();
@@ -914,9 +915,38 @@
                 } else if (supplierClaimOwnerComboNumberOfSelectedRecord >=1) {
                     supplierClaimOwnerComboNumberOfSelectedRecord --;
                 }
-                doLayoutSearchPanel();
+                // doLayoutSearchPanel();
+                console.log(getSelectedSupplierClaimOwnerIds());
             }
         }
+    });
+
+
+    // Create the search and reset buttons
+    var filterButton = new Ext.Button({
+        text: 'Filter',
+        scale : 'small',
+        width : 100,
+        style: {
+            marginBottom: '0px',
+            marginTop: '0px'
+        },
+        handler: function(button, event) {
+            loadTasks();
+        }
+    });
+
+    var buttonPanel = new Ext.Panel({
+        fbar : [filterButton],
+        header : false,
+        border: false,
+        bodyStyle: 'background-color:transparent;height:0',
+        mainBody: false,
+        frame : false,
+        width : 1140,
+        height : 50,
+        buttonAlign : 'right'
+        ,margins : {top : 0}
     });
 
         <s:if test="isInsurer && insurerIsWorkgroupEnabled">
@@ -927,14 +957,20 @@
             claimOwnerCombo.render(claimOwnerComboDiv);
         </s:if>
 
+        <s:if test="isInsurer">
+            buttonPanel.render(taskFilterButtonInsurerDiv);
+        </s:if>
+
         <s:if test="isCHO && choIsClaimOwnershipEnabled">
             supplierClaimOwnerCombo.render(supplierClaimOwnerComboDiv);
+            buttonPanel.render(taskFilterButtonCHODiv);
         </s:if>
 
         // Add tasks
         taskTypeStore.load({params:{visibility: 1}}); // initially load with 'private' visibility tasks
         loadTasks();
     });
+
 
     function taskOnClick(grid, rowIndex, columnIndex){
         if (columnIndex === 4) {
@@ -959,7 +995,7 @@
     }
 
     function loadTasks(){
-        tasksDataStore.baseParams = {hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly};
+        tasksDataStore.baseParams =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedSupplierClaimOwnerIds());
         tasksDataStore.load({params:{start:start, limit:taskPanelRecordPerPage}});
         if (!hideCompleted || !showAssignedTasksOnly) {
             updateTaskTab();
@@ -1001,7 +1037,13 @@
         showAssignedTasksOnly = !showAssignedTasksOnly;
         loadTasks();
     }
-    
+
+    function getSelectedSupplierClaimOwnerIds() {
+        if (Ext.getCmp('SupplierClaimOwnerComboId')) {
+            var supplierClaimOwnerIds = Ext.getCmp('SupplierClaimOwnerComboId').getValue().split(',');
+            return {supplierClaimOwnerIds : supplierClaimOwnerIds};
+        }
+    }
 </script>
 
 <div id="tasksCreateWindow"></div>
@@ -1029,6 +1071,7 @@
                         </tr>
                     </s:if>
                 </table>
+                <div id="taskFilterButtonInsurerDiv"></div>
             </div>
         </fieldset>
     </div>
@@ -1046,6 +1089,7 @@
                             </td>
                         </tr>
                 </table>
+                <div id="taskFilterButtonCHODiv"></div>
             </div>
         </fieldset>
     </div>
