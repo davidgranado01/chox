@@ -39,12 +39,12 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
     @Override
     public SearchResult getAllTasks(int start, int limit, String sort, String dir) {
-        return getTasks(null, null, false, false, false, start, limit, sort, dir, true);
+        return getTasks(null, null, null, null, false, false, false, start, limit, sort, dir, true);
     }
 
     @Override
-    public SearchResult getAllVisibleTasks(int webUserId, Set<Integer> supplierClaimOwnerIds, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly) {
-        return getTasks(webUserId, supplierClaimOwnerIds, false, hasOwnership, hasWorkgroups, start, limit, sort, dir, showAssignedTasksOnly);
+    public SearchResult getAllVisibleTasks(int webUserId, Set<Integer> supplierClaimOwnerIds, Set<Integer> claimOwnerIds, Set<Integer> workgroupIds, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly) {
+        return getTasks(webUserId, supplierClaimOwnerIds, claimOwnerIds, workgroupIds, false, hasOwnership, hasWorkgroups, start, limit, sort, dir, showAssignedTasksOnly);
     }
 
     @Override
@@ -62,12 +62,12 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
     @Override
     public SearchResult getIncompleteTasks(int start, int limit, String sort, String dir) {
-        return getTasks(null, null, true, false, false, start, limit, sort, dir, true);
+        return getTasks(null, null, null, null, true, false, false, start, limit, sort, dir, true);
     }
 
     @Override
-    public SearchResult getIncompleteVisibleTasks(int webUserId, Set<Integer> supplierClaimOwnerIds, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly) {
-        return getTasks(webUserId, supplierClaimOwnerIds, true, hasOwnership, hasWorkgroups, start, limit, sort, dir, showAssignedTasksOnly);
+    public SearchResult getIncompleteVisibleTasks(int webUserId, Set<Integer> supplierClaimOwnerIds,  Set<Integer> claimOwnerIds, Set<Integer> workgroupIds, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly) {
+        return getTasks(webUserId, supplierClaimOwnerIds, claimOwnerIds, workgroupIds, true, hasOwnership, hasWorkgroups, start, limit, sort, dir, showAssignedTasksOnly);
     }
 
     @Override
@@ -344,7 +344,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
         try {
 
-            Criteria criteria = getSearchCriteria(user, null, incompleteOnly, hasOwnership, hasWorkgroups, showAssignedTasksOnly);
+            Criteria criteria = getSearchCriteria(user, null, null, null, incompleteOnly, hasOwnership, hasWorkgroups, showAssignedTasksOnly);
 
             totalCount = totalCount(criteria);
         } catch (Exception ex) {
@@ -355,7 +355,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         return totalCount;
     }
 
-    private Criteria getSearchCriteria(WebUser user, Set<Integer> supplierClaimOwnerIds, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, boolean showAssignedTasksOnly) {
+    private Criteria getSearchCriteria(WebUser user, Set<Integer> supplierClaimOwnerIds,  Set<Integer> claimOwnerIds, Set<Integer> workgroupIds, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, boolean showAssignedTasksOnly) {
         boolean isCHO = false;
 
         // select insurer task depends upon the visibility role. 
@@ -602,18 +602,36 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
                     }
                 } else {
+                    if ((claimOwnerIds != null && claimOwnerIds.size() > 0) || (workgroupIds != null && workgroupIds.size() > 0)) {
+                        // Add all Insurer internal tasks with claim assigned to the task
+                        intTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
+                                .add(Restrictions.eq("this.insurer", Boolean.TRUE))
+                                .add(Restrictions.eq("this.visibility", 2))
+                                .add(Restrictions.eq("c.insurer", user.getInsurer()))
+                                .add(Restrictions.in("c.claimOwner.id", claimOwnerIds.toArray()))
+                                .add(Restrictions.in("c.workgroup.id", workgroupIds.toArray()));
 
-                    // Add all Insurer internal tasks with claim assigned to the task
-                    intTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
-                            .add(Restrictions.eq("this.insurer", Boolean.TRUE))
-                            .add(Restrictions.eq("this.visibility", 2))
-                            .add(Restrictions.eq("c.insurer", user.getInsurer()));
 
-                    // Add all Insurer external tasks
-                    extTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
-                            .add(Restrictions.eq("this.insurer", Boolean.FALSE))
-                            .add(Restrictions.eq("this.visibility", 3))
-                            .add(Restrictions.eq("c.insurer", user.getInsurer()));
+                        // Add all Insurer external tasks
+                        extTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
+                                .add(Restrictions.eq("this.insurer", Boolean.FALSE))
+                                .add(Restrictions.eq("this.visibility", 3))
+                                .add(Restrictions.eq("c.insurer", user.getInsurer()))
+                                .add(Restrictions.in("c.claimOwner.id", claimOwnerIds.toArray()))
+                                .add(Restrictions.in("c.workgroup.id", workgroupIds.toArray()));
+                    } else {
+                        // Add all Insurer internal tasks with claim assigned to the task
+                        intTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
+                                .add(Restrictions.eq("this.insurer", Boolean.TRUE))
+                                .add(Restrictions.eq("this.visibility", 2))
+                                .add(Restrictions.eq("c.insurer", user.getInsurer()));
+
+                        // Add all Insurer external tasks
+                        extTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
+                                .add(Restrictions.eq("this.insurer", Boolean.FALSE))
+                                .add(Restrictions.eq("this.visibility", 3))
+                                .add(Restrictions.eq("c.insurer", user.getInsurer()));
+                    }
 
                 }
 
@@ -636,14 +654,14 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         return criteria;
     }
 
-    private SearchResult getTasks(WebUser user, Set<Integer> supplierClaimOwnerIds, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly) {
+    private SearchResult getTasks(WebUser user, Set<Integer> supplierClaimOwnerIds,  Set<Integer> claimOwnerIds, Set<Integer> workgroupIds, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly) {
         Integer totalCount = 0;
         String colorCode = null;
         List<HashMap> resultMap;
         List<Task> results = new ArrayList<>();
 
         try {
-            Criteria criteria = getSearchCriteria(user, supplierClaimOwnerIds, incompleteOnly, hasOwnership, hasWorkgroups, showAssignedTasksOnly);
+            Criteria criteria = getSearchCriteria(user, supplierClaimOwnerIds, claimOwnerIds, workgroupIds, incompleteOnly, hasOwnership, hasWorkgroups, showAssignedTasksOnly);
 
             totalCount = totalCount(criteria);
 
@@ -735,7 +753,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
         return userWorkgroupIds;
     }
 
-    private SearchResult getTasks(int webUserId, Set<Integer> supplierClaimOwnerIds, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly) {
+    private SearchResult getTasks(int webUserId, Set<Integer> supplierClaimOwnerIds,  Set<Integer> claimOwnerIds, Set<Integer> workgroupIds, boolean incompleteOnly, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly) {
         WebUser webUser = null;
         if (webUserId > 0) {
             webUser = (WebUser) get(WebUser.class, webUserId);
@@ -744,7 +762,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                 throw new IllegalArgumentException("No such user.");
             }
         }
-        return getTasks(webUser, supplierClaimOwnerIds, incompleteOnly, hasOwnership, hasWorkgroups, start, limit, sort, dir, showAssignedTasksOnly);
+        return getTasks(webUser, supplierClaimOwnerIds, claimOwnerIds, workgroupIds, incompleteOnly, hasOwnership, hasWorkgroups, start, limit, sort, dir, showAssignedTasksOnly);
     }
 
     private List<Task> getTasksByClaim(int webUserId, int claimId, boolean incompleteOnly) {
