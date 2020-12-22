@@ -994,7 +994,11 @@
     }
 
     function loadTasks(){
+<<<<<<< HEAD
         tasksDataStore.baseParams =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedSupplierClaimOwnerIds(), getSelectedWorkgroupIds(), getSelectedOwnerIds());
+=======
+        tasksDataStore.baseParams =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedSupplierClaimOwnerIds());
+>>>>>>> 23eef073c0cb15c4e211f531f7a7167f8622954d
         tasksDataStore.load({params:{start:start, limit:taskPanelRecordPerPage}});
         if (!hideCompleted || !showAssignedTasksOnly) {
             updateTaskTab();
@@ -1050,7 +1054,6 @@
             return {claimOwnerIds : claimOwnerIds};
         }
     }
-
 
     function getSelectedSupplierClaimOwnerIds() {
         if (Ext.getCmp('SupplierClaimOwnerComboId')) {
