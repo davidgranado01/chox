@@ -265,6 +265,8 @@ public class TasksAction extends BaseAction {
         // if login user is not manager, will not allow user to filter by supplierClaimOwnerIds
         if (!getIsManager()) {
             this.supplierClaimOwnerIds = null;
+            this.claimOwnerIds = null;
+            this.workgroupIds = null;
         }
 
         List<TaskViewData> viewData = new ArrayList<>();
