@@ -602,37 +602,37 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
                     }
                 } else {
-                    if ((claimOwnerIds != null && claimOwnerIds.size() > 0) || (workgroupIds != null && workgroupIds.size() > 0)) {
-                        // Add all Insurer internal tasks with claim assigned to the task
+                    // Add all Insurer internal tasks with claim assigned to the task
+                    intTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
+                            .add(Restrictions.eq("this.insurer", Boolean.TRUE))
+                            .add(Restrictions.eq("this.visibility", 2))
+                            .add(Restrictions.eq("c.insurer", user.getInsurer()));
+
+                    // Add all Insurer external tasks
+                    extTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
+                            .add(Restrictions.eq("this.insurer", Boolean.FALSE))
+                            .add(Restrictions.eq("this.visibility", 3))
+                            .add(Restrictions.eq("c.insurer", user.getInsurer()));
+
+                    if (claimOwnerIds != null && claimOwnerIds.size() > 0) {
                         intTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
-                                .add(Restrictions.eq("this.insurer", Boolean.TRUE))
-                                .add(Restrictions.eq("this.visibility", 2))
-                                .add(Restrictions.eq("c.insurer", user.getInsurer()))
-                                .add(Restrictions.in("c.claimOwner.id", claimOwnerIds.toArray()))
-                                .add(Restrictions.in("c.workgroup.id", workgroupIds.toArray()));
+                                .add(intTskAssingedToClaimBelongsToUserInsurer)
+                                .add(Restrictions.in("c.claimOwner.id", claimOwnerIds.toArray()));
 
-
-                        // Add all Insurer external tasks
                         extTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
-                                .add(Restrictions.eq("this.insurer", Boolean.FALSE))
-                                .add(Restrictions.eq("this.visibility", 3))
-                                .add(Restrictions.eq("c.insurer", user.getInsurer()))
-                                .add(Restrictions.in("c.claimOwner.id", claimOwnerIds.toArray()))
-                                .add(Restrictions.in("c.workgroup.id", workgroupIds.toArray()));
-                    } else {
-                        // Add all Insurer internal tasks with claim assigned to the task
-                        intTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
-                                .add(Restrictions.eq("this.insurer", Boolean.TRUE))
-                                .add(Restrictions.eq("this.visibility", 2))
-                                .add(Restrictions.eq("c.insurer", user.getInsurer()));
-
-                        // Add all Insurer external tasks
-                        extTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
-                                .add(Restrictions.eq("this.insurer", Boolean.FALSE))
-                                .add(Restrictions.eq("this.visibility", 3))
-                                .add(Restrictions.eq("c.insurer", user.getInsurer()));
+                                .add(extTskAssingedToClaimBelongsToUserInsurer)
+                                .add(Restrictions.in("c.claimOwner.id", claimOwnerIds.toArray()));
                     }
 
+                    if (workgroupIds != null && workgroupIds.size() > 0) {
+                        intTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
+                                .add(intTskAssingedToClaimBelongsToUserInsurer)
+                                .add(Restrictions.in("c.workgroup.id", workgroupIds.toArray()));
+
+                        extTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
+                                .add(extTskAssingedToClaimBelongsToUserInsurer)
+                                .add(Restrictions.in("c.workgroup.id", workgroupIds.toArray()));
+                    }
                 }
 
                 // add all Criterion together to make final query for insurer task.
