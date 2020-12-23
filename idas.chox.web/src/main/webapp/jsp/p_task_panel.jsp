@@ -994,7 +994,14 @@
     }
 
     function loadTasks(){
-        tasksDataStore.baseParams =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedSupplierClaimOwnerIds(), getSelectedWorkgroupIds(), getSelectedOwnerIds());
+        <s:if test="isCHO && choIsClaimOwnershipEnabled">
+        tasksDataStore.baseParams =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedSupplierClaimOwnerIds());
+        </s:if>
+
+        <s:if test="isInsurer">
+        tasksDataStore.baseParams =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedWorkgroupIds(), getSelectedOwnerIds());
+        </s:if>
+
         tasksDataStore.load({params:{start:start, limit:taskPanelRecordPerPage}});
         if (!hideCompleted || !showAssignedTasksOnly) {
             updateTaskTab();
