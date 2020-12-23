@@ -46,7 +46,7 @@
                 <artifactId>properties-maven-plugin</artifactId>
                 <version>1.0.0</version>
                 <executions>
-                    <!-- Associate the read-project-properties goal with the initialize phase, 
+                    <!-- Associate the read-project-properties goal with the initialize phase,
                     to read the properties file. -->
                     <execution>
                         <phase>initialize</phase>
@@ -160,7 +160,7 @@
                             <output>${project.build.directory}/${project.build.finalName}/css/chox-${js.aggregator.choxall}-min.css</output>
                         </aggregation>
                     </aggregations>
-                </configuration>             
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -238,7 +238,7 @@
                 </executions>
             </plugin>
 
-            <!-- WSDL2Java (Apache-CXF) plugin Uncomment only when WSDL (contract-first) 
+            <!-- WSDL2Java (Apache-CXF) plugin Uncomment only when WSDL (contract-first)
             changes Yhe JAX-WS maven plugin (wsimport) can also be used - see below -->
             <plugin>
                 <groupId>org.apache.cxf</groupId>
@@ -268,36 +268,36 @@
             <!--
                         <plugin>
                             <groupId>org.codehaus.mojo</groupId>
-                            <artifactId>jaxws-maven-plugin</artifactId> 
+                            <artifactId>jaxws-maven-plugin</artifactId>
                             <version>1.10</version>
                             <executions>
                                 <execution>
                                     <goals>
-                                        <goal>wsimport</goal> 
+                                        <goal>wsimport</goal>
                                     </goals>
                                     <configuration>
                                         <wsdlDirectory>${basedir}/src/main/resources/wsdl</wsdlDirectory>
                                         <wsdlFiles>
-                                            <wsdlFile>chox-webservices.wsdl</wsdlFile> 
+                                            <wsdlFile>chox-webservices.wsdl</wsdlFile>
                                         </wsdlFiles>
-                                        <staleFile>${project.build.directory}/jaxws/stale/chox-webservices.stale</staleFile> 
+                                        <staleFile>${project.build.directory}/jaxws/stale/chox-webservices.stale</staleFile>
                                     </configuration>
                                     <id>wsimport-generate-chox-webservices</id>
-                                    <phase>generate-sources</phase> 
+                                    <phase>generate-sources</phase>
                                 </execution>
                             </executions>
                             <dependencies>
                                 <dependency>
-                                    <groupId>javax.xml</groupId> 
+                                    <groupId>javax.xml</groupId>
                                     <artifactId>webservices-api</artifactId>
                                     <version>1.4</version>
-                                </dependency> 
+                                </dependency>
                                             </dependencies>
                             <configuration>
-                                <sourceDestDir>${project.build.directory}/generated-sources/jaxws-wsimport</sourceDestDir> 
+                                <sourceDestDir>${project.build.directory}/generated-sources/jaxws-wsimport</sourceDestDir>
                                 <xnocompile>true</xnocompile>
                                 <verbose>true</verbose>
-                                <extension>true</extension> 
+                                <extension>true</extension>
                                 <catalog>${basedir}/src/jax-ws-catalog.xml</catalog>
                             </configuration>
                         </plugin>
@@ -422,7 +422,7 @@
         <dependency>
             <groupId>org.apache.struts</groupId>
             <artifactId>struts2-sitemesh-plugin</artifactId>
-            <version>${struts.version}</version> 
+            <version>${struts.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.struts</groupId>
@@ -587,7 +587,7 @@
             </exclusions>
         </dependency>
         <!-- add direct dependency for ASM (version 5) -->
-        <dependency> 
+        <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
             <version>${asm.version}</version>
@@ -637,7 +637,7 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-        
+
         <!-- jsoup HTML parser library @ http://jsoup.org/ -->
         <dependency>
             <groupId>org.jsoup</groupId>
@@ -745,7 +745,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>

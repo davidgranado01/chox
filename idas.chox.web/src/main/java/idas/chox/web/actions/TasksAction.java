@@ -84,6 +84,8 @@ public class TasksAction extends BaseAction {
     private String paymentMethod;
     private Date paymentDate;
     private Set<Integer> supplierClaimOwnerIds;
+    private Set<Integer> claimOwnerIds;
+    private Set<Integer> workgroupIds;
 
     public String getSort() {
         return sort;
@@ -182,6 +184,26 @@ public class TasksAction extends BaseAction {
         }
     }
 
+    public Set<Integer> getClaimOwnerIds() { return claimOwnerIds; }
+
+    public void setClaimOwnerIds(Set<Integer> claimOwnerIds) {
+        if (claimOwnerIds.contains(null) || claimOwnerIds.contains(0)){
+            this.claimOwnerIds = null;
+        } else {
+            this.claimOwnerIds = claimOwnerIds;
+        }
+    }
+
+    public Set<Integer> getWorkgroupIds() { return workgroupIds; }
+
+    public void setWorkgroupIds(Set<Integer> workgroupIds) {
+        if (workgroupIds.contains(null) || workgroupIds.contains(0)){
+            this.workgroupIds = null;
+        } else {
+            this.workgroupIds = workgroupIds;
+        }    }
+
+
     @Override
     public String execute() throws Exception {
         return SUCCESS;
@@ -243,29 +265,31 @@ public class TasksAction extends BaseAction {
         // if login user is not manager, will not allow user to filter by supplierClaimOwnerIds
         if (!getIsManager()) {
             this.supplierClaimOwnerIds = null;
+            this.claimOwnerIds = null;
+            this.workgroupIds = null;
         }
 
         List<TaskViewData> viewData = new ArrayList<>();
         LOG.debug("Calling taskService to get all visible tasks");
         if (hideCompleted) {
             if (this.getIsCHO()) {
-                SearchResult searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), supplierClaimOwnerIds, this.getChoIsClaimOwnershipEnabled(), false, start, limit, sort, dir, showAssignedTasksOnly);
+                SearchResult searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), supplierClaimOwnerIds, claimOwnerIds, workgroupIds, this.getChoIsClaimOwnershipEnabled(), false, start, limit, sort, dir, showAssignedTasksOnly);
                 tasks = searchResult.getResult();
                 totalCount = searchResult.getTotalCount();
                 colorCode = searchResult.getColorCode();
             } else {
-                SearchResult searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), supplierClaimOwnerIds, this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), start, limit, sort, dir, showAssignedTasksOnly);
+                SearchResult searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), supplierClaimOwnerIds,  claimOwnerIds, workgroupIds, this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), start, limit, sort, dir, showAssignedTasksOnly);
                 tasks = searchResult.getResult();
                 totalCount = searchResult.getTotalCount();
                 colorCode = searchResult.getColorCode();
             }
         } else {
             if (this.getIsCHO()) {
-                SearchResult searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), supplierClaimOwnerIds, this.getChoIsClaimOwnershipEnabled(), false, start, limit, sort, dir, showAssignedTasksOnly);
+                SearchResult searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), supplierClaimOwnerIds,  claimOwnerIds, workgroupIds, this.getChoIsClaimOwnershipEnabled(), false, start, limit, sort, dir, showAssignedTasksOnly);
                 tasks = searchResult.getResult();
                 totalCount = searchResult.getTotalCount();
             } else {
-                SearchResult searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), supplierClaimOwnerIds, this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), start, limit, sort, dir, showAssignedTasksOnly);
+                SearchResult searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), supplierClaimOwnerIds, claimOwnerIds, workgroupIds, this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), start, limit, sort, dir, showAssignedTasksOnly);
                 tasks = searchResult.getResult();
                 totalCount = searchResult.getTotalCount();
             }
@@ -548,18 +572,18 @@ public class TasksAction extends BaseAction {
                 SearchResult searchResult;
                 if (hideCompleted) {
                     if (this.getIsCHO()) {
-                        searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), supplierClaimOwnerIds, this.getChoIsClaimOwnershipEnabled(), false, 0, MAX_EXPORT_SIZE, sort, dir, showAssignedTasksOnly);
+                        searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), supplierClaimOwnerIds, claimOwnerIds, workgroupIds, this.getChoIsClaimOwnershipEnabled(), false, 0, MAX_EXPORT_SIZE, sort, dir, showAssignedTasksOnly);
                     } else if (this.getIsInsurer()) {
-                        searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), supplierClaimOwnerIds, this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), 0, MAX_EXPORT_SIZE, sort, dir, showAssignedTasksOnly);
+                        searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), supplierClaimOwnerIds, claimOwnerIds, workgroupIds, this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), 0, MAX_EXPORT_SIZE, sort, dir, showAssignedTasksOnly);
                     } else {
                         searchResult = taskService.getIncompleteTasks(0, MAX_EXPORT_SIZE, sort, dir);
                     }
 
                 } else {
                     if (this.getIsCHO()) {
-                        searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), supplierClaimOwnerIds, this.getChoIsClaimOwnershipEnabled(), false, 0, MAX_EXPORT_SIZE, sort, dir, showAssignedTasksOnly);
+                        searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), supplierClaimOwnerIds, claimOwnerIds, workgroupIds, this.getChoIsClaimOwnershipEnabled(), false, 0, MAX_EXPORT_SIZE, sort, dir, showAssignedTasksOnly);
                     } else if (this.getIsInsurer()) {
-                        searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), supplierClaimOwnerIds, this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), 0, MAX_EXPORT_SIZE, sort, dir, showAssignedTasksOnly);
+                        searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), supplierClaimOwnerIds, claimOwnerIds, workgroupIds, this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), 0, MAX_EXPORT_SIZE, sort, dir, showAssignedTasksOnly);
                     } else {
                         searchResult = taskService.getAllTasks(0, MAX_EXPORT_SIZE, sort, dir);
                     }

@@ -994,7 +994,14 @@
     }
 
     function loadTasks(){
+        <s:if test="isCHO && choIsClaimOwnershipEnabled">
         tasksDataStore.baseParams =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedSupplierClaimOwnerIds());
+        </s:if>
+
+        <s:if test="isInsurer">
+        tasksDataStore.baseParams =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedWorkgroupIds(), getSelectedOwnerIds());
+        </s:if>
+
         tasksDataStore.load({params:{start:start, limit:taskPanelRecordPerPage}});
         if (!hideCompleted || !showAssignedTasksOnly) {
             updateTaskTab();
@@ -1035,6 +1042,20 @@
     function toggleShowAssignedTasksOnly(el) {
         showAssignedTasksOnly = !showAssignedTasksOnly;
         loadTasks();
+    }
+
+    function getSelectedWorkgroupIds() {
+        if (Ext.getCmp('workgroupComboId')){
+            var workgroupIds = Ext.getCmp('workgroupComboId').getValue().split(",");
+             return {workgroupIds : workgroupIds};
+        }
+    }
+
+    function getSelectedOwnerIds() {
+         if (Ext.getCmp('claimOwnerComboId')){
+            var claimOwnerIds = Ext.getCmp('claimOwnerComboId').getValue().split(",");
+            return {claimOwnerIds : claimOwnerIds};
+        }
     }
 
     function getSelectedSupplierClaimOwnerIds() {
