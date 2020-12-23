@@ -13,9 +13,9 @@ import idas.chox.core.search.SearchResult;
 public interface TaskService {
     SearchResult getAllTasks(int start, int limit, String sort, String dir);
     SearchResult getIncompleteTasks(int start, int limit, String sort, String dir);
-    SearchResult getAllVisibleTasks(int webUserId, Set<Integer> supplierClaimOwnerIds, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly);
+    SearchResult getAllVisibleTasks(int webUserId, Set<Integer> supplierClaimOwnerIds, Set<Integer> claimOwnerIds, Set<Integer> workgroupIds, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly);
     int getAllVisibleTaskCount(int webUserId, boolean hasOwnership, boolean hasWorkgroups, boolean showAssignedTasksOnly);
-    SearchResult getIncompleteVisibleTasks(int webUserId, Set<Integer> supplierClaimOwnerIds, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly);
+    SearchResult getIncompleteVisibleTasks(int webUserId, Set<Integer> supplierClaimOwnerIds, Set<Integer> claimOwnerIds, Set<Integer> workgroupIds, boolean hasOwnership, boolean hasWorkgroups, int start, int limit, String sort, String dir, boolean showAssignedTasksOnly);
     int getIncompleteVisibleTaskCount(int webUserId, boolean hasOwnership, boolean hasWorkgroups, boolean showAssignedTasksOnly);
     List<Task> getAllTasksByClaim(int claimId);
     List<Task> getIncompleteTasksByClaim(int claimId);
