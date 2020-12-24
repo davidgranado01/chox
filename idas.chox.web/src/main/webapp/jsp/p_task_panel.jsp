@@ -175,11 +175,28 @@
                             {
                                 this.setText('Show My Assigned Tasks Only');
                             } else {
+                                <s:if test="isCHO && choIsClaimOwnershipEnabled && isManager">
                                 var supplierClaimOwnerFilterCombo = Ext.getCmp('SupplierClaimOwnerComboId');
-                                if (supplierClaimOwnerFilterCombo) {
+                                if (supplierClaimOwnerFilterCombo && supplierClaimOwnerFilterCombo.rendered) {
                                     supplierClaimOwnerFilterCombo.reset();
                                     supplierClaimOwnerFilterCombo.clearValue();
                                 }
+                                </s:if>
+
+                                <s:if test="isInsurer && isManager">
+                                var workgroupFilterCombo = Ext.getCmp('workgroupComboId');
+                                if (workgroupFilterCombo && workgroupFilterCombo.rendered) {
+                                    workgroupFilterCombo.reset();
+                                    workgroupFilterCombo.clearValue();
+                                }
+
+                                var claimOwnerFilterCombo = Ext.getCmp('claimOwnerComboId');
+                                if (claimOwnerFilterCombo && claimOwnerFilterCombo.rendered) {
+                                    claimOwnerFilterCombo.reset();
+                                    claimOwnerFilterCombo.clearValue();
+                                }
+                                </s:if>
+
                                 this.setText('Show All Tasks');
                             }
                         },
@@ -994,11 +1011,11 @@
     }
 
     function loadTasks(){
-        <s:if test="isCHO && choIsClaimOwnershipEnabled">
+        <s:if test="isCHO && choIsClaimOwnershipEnabled && isManager">
         tasksDataStore.baseParams =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedSupplierClaimOwnerIds());
         </s:if>
 
-        <s:if test="isInsurer">
+        <s:if test="isInsurer && isManager">
         tasksDataStore.baseParams =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedWorkgroupIds(), getSelectedOwnerIds());
         </s:if>
 
@@ -1068,8 +1085,11 @@
     function applyFilter(button, event) {
         showAssignedTasksOnly = false;
         var assignedTasksOnlyBtn = Ext.getCmp('assignedTasksOnlyButtonId');
-        assignedTasksOnlyBtn.setText('Show My Assigned Tasks Only');
-        assignedTasksOnlyBtn.pressed = true;
+        if (assignedTasksOnlyBtn && assignedTasksOnlyBtn.rendered) {
+            assignedTasksOnlyBtn.setText('Show My Assigned Tasks Only');
+            assignedTasksOnlyBtn.pressed = true;
+            assignedTasksOnlyBtn.getClickEl().addClass('x-btn-pressed');
+        }
         loadTasks();
     }
 </script>
