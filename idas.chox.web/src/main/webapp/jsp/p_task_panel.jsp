@@ -965,19 +965,19 @@
         ,margins : {top : 0}
     });
 
-        <s:if test="isInsurer && insurerIsWorkgroupEnabled">
+        <s:if test="isInsurer && insurerIsWorkgroupEnabled && isManager">
             workgroupCombo.render(workgroupComboDiv);
         </s:if>
 
-        <s:if test="isInsurer && insurerIsClaimOwnershipEnabled">
+        <s:if test="isInsurer && insurerIsClaimOwnershipEnabled && isManager">
             claimOwnerCombo.render(claimOwnerComboDiv);
         </s:if>
 
-        <s:if test="isInsurer">
+        <s:if test="isInsurer && isManager">
             buttonPanel.render(taskFilterButtonInsurerDiv);
         </s:if>
 
-        <s:if test="isCHO && choIsClaimOwnershipEnabled">
+        <s:if test="isCHO && choIsClaimOwnershipEnabled && isManager">
             supplierClaimOwnerCombo.render(supplierClaimOwnerComboDiv);
             buttonPanel.render(taskFilterButtonCHODiv);
         </s:if>
@@ -1010,7 +1010,9 @@
         }
     }
 
-    function loadTasks(){
+    function loadTasks() {
+        tasksDataStore.baseParams = {hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly};
+
         <s:if test="isCHO && choIsClaimOwnershipEnabled && isManager">
         tasksDataStore.baseParams =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedSupplierClaimOwnerIds());
         </s:if>
