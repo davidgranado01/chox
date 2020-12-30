@@ -775,7 +775,7 @@
             <s:if test="AuthenticatedUser.insurer.claimOwnershipEnable">
             claimOwnerStore.load({ params : {"workgroupId":selectedWorkgroupId,"insurerId":selectedInsurerId}});
             selectedInsClaimOwnerValues = claimOwnerCombo.getValue();
-            <s:if test="isCH && selectedWorkgroupId == null" >
+            <s:if test="!isManager && isCH && selectedWorkgroupId == null" >
             claimOwnerCombo.setValue(<s:property value="AuthenticatedUser.id"/>);
             </s:if>
             </s:if>
