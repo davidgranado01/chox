@@ -206,7 +206,10 @@
                     ,{
                         text:'Export To Excel',
                         id : 'taskExportToExcelButtonId',
-                        handler : doTaskExportExcel
+                        handler : function() {
+                            var params = getTaskFilterParams();
+                            doTaskExportExcel(params);
+                        }
                      }
                  ]
         });
@@ -719,7 +722,7 @@
             },
             specialkey:function (el, e) {
                 if(e.keyCode === e.ENTER) {
-                    searchClaim(true);
+                    applyFilter();
                 }
             },
             afterrender : function(){
@@ -823,7 +826,7 @@
             listeners: {
             specialkey:function (el, e) {
                 if(e.keyCode === e.ENTER) {
-                    searchClaim(true);
+                    applyFilter();
                 }
             },
             afterrender : function(){
@@ -1010,17 +1013,19 @@
         }
     }
 
-    function loadTasks() {
-        tasksDataStore.baseParams = {hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly};
-
+    function getTaskFilterParams() {
+        var params = {hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly};
         <s:if test="isCHO && choIsClaimOwnershipEnabled && isManager">
-        tasksDataStore.baseParams =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedSupplierClaimOwnerIds());
+        params =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedSupplierClaimOwnerIds());
         </s:if>
-
         <s:if test="isInsurer && isManager">
-        tasksDataStore.baseParams =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedWorkgroupIds(), getSelectedOwnerIds());
+        params =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedWorkgroupIds(), getSelectedOwnerIds());
         </s:if>
+        return params
+    }
 
+    function loadTasks() {
+        tasksDataStore.baseParams = getTaskFilterParams();
         tasksDataStore.load({params:{start:start, limit:taskPanelRecordPerPage}});
         if (!hideCompleted || !showAssignedTasksOnly) {
             updateTaskTab();
