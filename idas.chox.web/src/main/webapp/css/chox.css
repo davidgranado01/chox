@@ -921,6 +921,28 @@ table.dashboard td
     text-align:right;
 }
 
+table.taskpanel th
+{
+    padding:6px;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 12px;
+    font-weight:bold;
+    /*width:100%;*/
+    width:25%;
+    border-bottom:1px #ccc solid;
+}
+
+table.taskpanel td
+{
+    padding:6px;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 12px;
+    /*width:180px;*/
+    width:25%;
+    border-bottom:1px #ccc solid;
+    text-align:right;
+}
+
 img.tip-target
 {
     margin-left:4px;
