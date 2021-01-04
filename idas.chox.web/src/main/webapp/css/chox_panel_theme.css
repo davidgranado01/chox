@@ -46,6 +46,14 @@ table.dashboard
     margin: 16px 2px 2px 2px;        
 }
 
+table.taskpanel
+{
+    background: #dfe8f6;
+    width:99.6%;
+    border-collapse:collapse;
+    margin: 16px 2px 2px 2px;
+}
+
 .sub-admin-tab-css{
     background:inherit;
     background-color:inherit;

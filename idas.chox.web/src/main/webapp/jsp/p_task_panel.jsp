@@ -206,7 +206,10 @@
                     ,{
                         text:'Export To Excel',
                         id : 'taskExportToExcelButtonId',
-                        handler : doTaskExportExcel
+                        handler : function() {
+                            var params = getTaskFilterParams();
+                            doTaskExportExcel(params);
+                        }
                      }
                  ]
         });
@@ -719,7 +722,7 @@
             },
             specialkey:function (el, e) {
                 if(e.keyCode === e.ENTER) {
-                    searchClaim(true);
+                    applyFilter();
                 }
             },
             afterrender : function(){
@@ -823,7 +826,7 @@
             listeners: {
             specialkey:function (el, e) {
                 if(e.keyCode === e.ENTER) {
-                    searchClaim(true);
+                    applyFilter();
                 }
             },
             afterrender : function(){
@@ -1010,17 +1013,19 @@
         }
     }
 
-    function loadTasks() {
-        tasksDataStore.baseParams = {hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly};
-
+    function getTaskFilterParams() {
+        var params = {hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly};
         <s:if test="isCHO && choIsClaimOwnershipEnabled && isManager">
-        tasksDataStore.baseParams =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedSupplierClaimOwnerIds());
+        params =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedSupplierClaimOwnerIds());
         </s:if>
-
         <s:if test="isInsurer && isManager">
-        tasksDataStore.baseParams =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedWorkgroupIds(), getSelectedOwnerIds());
+        params =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly}, getSelectedWorkgroupIds(), getSelectedOwnerIds());
         </s:if>
+        return params
+    }
 
+    function loadTasks() {
+        tasksDataStore.baseParams = getTaskFilterParams();
         tasksDataStore.load({params:{start:start, limit:taskPanelRecordPerPage}});
         if (!hideCompleted || !showAssignedTasksOnly) {
             updateTaskTab();
@@ -1101,25 +1106,25 @@
     <s:if test="(isInsurer && (insurerIsWorkgroupEnabled || insurerIsClaimOwnershipEnabled))">
     <div class="x-panel-bwrap chox-form-container">
         <fieldset class="x-fieldset">
-            <div class="dashboard" class="form-container">
-                <table cellpadding="0" cellspacing="0" class="dashboard" border="0">
-                    <legend>Task Filter</legend>
-                    <s:if test="insurerIsWorkgroupEnabled">
-                        <tr>
-                            <th nowrap style="width:100%;"><label id="tipTitle1">Workgroup</label></th>
-                            <td>
-                                <div id="workgroupComboDiv"></div>
-                            </td>
-                        </tr>
-                    </s:if>
-                    <s:if test="insurerIsClaimOwnershipEnabled">
-                        <tr>
-                            <th nowrap style="width:100%;"><label id="tipTitle2">Claim Owner</label></th>
-                            <td>
-                                <div id="claimOwnerComboDiv"></div>
-                            </td>
-                        </tr>
-                    </s:if>
+            <legend>Task Filter</legend>
+            <div class="taskpanel" class="form-container">
+                <table cellpadding="0" cellspacing="0" class="taskpanel" border="0">
+                        <s:if test="insurerIsWorkgroupEnabled">
+                            <tr>
+                                <th nowrap style="width:100%;"><label id="tipTitle1">Workgroup</label></th>
+                                <td>
+                                    <div id="workgroupComboDiv"></div>
+                                </td>
+                            </tr>
+                        </s:if>
+                        <s:if test="insurerIsClaimOwnershipEnabled">
+                            <tr>
+                                <th nowrap style="width:100%;"><label id="tipTitle2">Claim Owner</label></th>
+                                <td>
+                                    <div id="claimOwnerComboDiv"></div>
+                                </td>
+                            </tr>
+                        </s:if>
                 </table>
                 <div id="taskFilterButtonInsurerDiv"></div>
             </div>
@@ -1127,22 +1132,22 @@
     </div>
     </s:if>
     <s:elseif test="(isCHO && choIsClaimOwnershipEnabled)">
-    <div class="x-panel-bwrap chox-form-container">
-        <fieldset class="x-fieldset">
-            <div class="dashboard" class="form-container">
-                <table cellpadding="0" cellspacing="0" class="dashboard" border="0">
-                    <legend>Task Filter</legend>
+        <div class="x-panel-bwrap chox-form-container">
+            <fieldset class="x-fieldset">
+                <legend>Task Filter</legend>
+                <div class="taskpanel" class="form-container">
+                    <table cellpadding="0" cellspacing="0" class="taskpanel" border="0">
                         <tr>
                             <th nowrap style="width:100%;"><label id="tipTitle2">Supplier Claim Owner</label></th>
                             <td>
                                 <div id="supplierClaimOwnerComboDiv"></div>
                             </td>
                         </tr>
-                </table>
-                <div id="taskFilterButtonCHODiv"></div>
-            </div>
-        </fieldset>
-    </div>
+                    </table>
+                    <div id="taskFilterButtonCHODiv"></div>
+                </div>
+            </fieldset>
+        </div>
     </s:elseif>
 </s:if>
 <div id="tasksGridId"></div>

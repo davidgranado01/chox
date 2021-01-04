@@ -247,7 +247,7 @@ function loadDirectExportToExcelStatus(){
     });
 }
 
-function doTaskExportExcel(){
+function doTaskExportExcel(params) {
     if(!tasksDataStore.getCount()){
         Ext.Msg.alert('','No task found, Please try again');
     }else{
@@ -259,14 +259,42 @@ function doTaskExportExcel(){
                     width        : 300,
                     closable     : false
                 });
-                window.location = contextPath+"/prv/doTaskExportExcel.action?directDownload="+ true + "&" +"hideCompleted="+hideCompleted + "&" +"showAssignedTasksOnly="+showAssignedTasksOnly;
+                var taskExportUrl = contextPath+"/prv/doTaskExportExcel.action?directDownload="+ true + "&" +"hideCompleted="+hideCompleted + "&" +"showAssignedTasksOnly="+showAssignedTasksOnly;
+                if (params) {
+                    if (params.supplierClaimOwnerIds) {
+                        var extraParam = '';
+                        for (var i = 0; i < params.supplierClaimOwnerIds.length; i++) {
+                            extraParam = extraParam + '&supplierClaimOwnerIds=' + params.supplierClaimOwnerIds[i];
+                        }
+                        taskExportUrl = taskExportUrl + extraParam;
+                    } else {
+                        if (params.workgroupIds) {
+                            var extraParam2 = '';
+                            for (var i = 0; i < params.workgroupIds.length; i++) {
+                                extraParam2 = extraParam2 + '&workgroupIds=' + params.workgroupIds[i];
+                            }
+                            taskExportUrl = taskExportUrl + extraParam2;
+                        }
+                        if (params.claimOwnerIds) {
+                            var extraParam3 = '';
+                            for (var i = 0; i < params.claimOwnerIds.length; i++) {
+                                extraParam3 = extraParam3 + '&claimOwnerIds=' + params.claimOwnerIds[i];
+                            }
+                            taskExportUrl = taskExportUrl + extraParam3;
+                        }
+                    }
+                }
+                window.location = taskExportUrl;
                 directTaskExportToExcelStatusIntervelId = setTimeout(loadDirectTaskExportToExcelStatus, 1000);
             }else{
                 cancelled = false;
+                if (!params) {
+                    params = {'hideCompleted' : hideCompleted, 'showAssignedTasksOnly' : showAssignedTasksOnly};
+                }
                 choxExtAjaxRequest({
                     url: "/prv/p/generateTaskExportFile.action",
                     timeout : 3600000,
-                    params : {'hideCompleted' : hideCompleted, 'showAssignedTasksOnly' : showAssignedTasksOnly},
+                    params : params,
                     callback : function(options,success,response  ){
                     }
                 });
