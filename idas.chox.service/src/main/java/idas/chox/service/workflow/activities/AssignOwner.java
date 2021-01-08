@@ -163,7 +163,10 @@ public class AssignOwner extends BaseActivity {
                 claim.getInvoice().setPaymentTeam(true);
             }
         }
-        if (oldOwnerName == null) { // need to update status
+        if (!claim.getStatus().equals(ClaimStatus.CLAIM_PENDING) &&
+            !claim.getStatus().equals(ClaimStatus.CLAIM_REJECTED) &&
+            oldOwnerName == null) { // need to update status
+
             if (claim.getStatus().equals(ClaimStatus.MANUAL_INVOICE_UNASSIGNED)) {
                 if (claim.isManualInvoiceApproved() && claim.getInvoice().isPaymentTeam()) {
                     claim.setPreviousStatus(claim.getStatus());
