@@ -1,4 +1,4 @@
-DO $$
+DO $pending$
 DECLARE copy_accessibility_id integer;
 DECLARE new_accessibility_id integer;
 BEGIN
@@ -31,4 +31,4 @@ SELECT nextval('accessibility_item_id_seq'), new_accessibility_id, role, access_
 FROM accessibility_item
 WHERE accessibility_id = copy_accessibility_id;
 
-END $$;
+END $pending$;
