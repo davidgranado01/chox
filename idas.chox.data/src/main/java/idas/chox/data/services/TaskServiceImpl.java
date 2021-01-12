@@ -387,13 +387,10 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
             if (isCHO) {
                 // declare default Criterion restriction to avoid null value when below if condition not passed.
                 Criterion internalTasksOnClaimsUserOwns = Restrictions.eq("id", -1);
-                Criterion privateTasksOnClaimsUserOwns = Restrictions.eq("id", -1);
                 Criterion externalTasksOnClaimsUserOwns = Restrictions.eq("id", -1);
                 Criterion internalTasksOnClaimsBelongsToUserOrg = Restrictions.eq("id", -1);
-                Criterion privateTasksOnClaimsBelongsToUserOrg = Restrictions.eq("id", -1);
                 Criterion externalTasksOnClaimsBelongsToUserOrg = Restrictions.eq("id", -1);
                 Criterion internalTasksOnClaimsNobodyOwns = Restrictions.eq("id", -1);
-                Criterion privateTasksOnClaimsNobodyOwns = Restrictions.eq("id", -1);
                 Criterion externalTasksOnClaimsNobodyOwns = Restrictions.eq("id", -1);
 
                 if (showAssignedTasksOnly) {
@@ -402,12 +399,6 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                     internalTasksOnClaimsUserOwns = Restrictions.conjunction()
                             .add(Restrictions.eq("this.insurer", Boolean.FALSE))
                             .add(Restrictions.eq("this.visibility", 2))
-                            .add(Restrictions.eq("c.supplierClaimOwner", user));
-
-                    // Add CHO private tasks on claims user owns
-                    privateTasksOnClaimsUserOwns = Restrictions.conjunction()
-                            .add(Restrictions.eq("this.insurer", Boolean.FALSE))
-                            .add(Restrictions.eq("this.visibility", 1))
                             .add(Restrictions.eq("c.supplierClaimOwner", user));
 
                     // Add Insurer external tasks on claims user own
@@ -433,14 +424,6 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                                     .add(Restrictions.isNull("c.supplierClaimOwner"))
                                     .add(Restrictions.eq("c.chorganisation", user.getChorganisation()));
 
-                            // Add CHO private tasks on claims nobody owns (but of this CHO)
-                            privateTasksOnClaimsNobodyOwns = Restrictions.conjunction()
-                                    .add(Restrictions.eq("insurer", Boolean.FALSE))
-                                    .add(Restrictions.eq("visibility", 1))
-                                    .add(Restrictions.isNull("c.supplierClaimOwner"))
-                                    .add(Restrictions.eq("c.chorganisation", user.getChorganisation()));
-
-
                             // Add Insurer external tasks on claims nobody owns
                             externalTasksOnClaimsNobodyOwns = Restrictions.conjunction()
                                     .add(Restrictions.eq("this.insurer", Boolean.TRUE))
@@ -460,14 +443,6 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                                 .add(Restrictions.eq("c.chorganisation", user.getChorganisation()))
                                 .add(Restrictions.in("c.supplierClaimOwner.id", supplierClaimOwnerIds.toArray()));
 
-                        // Add CHO private tasks on claims belongs to user organisation.
-                        privateTasksOnClaimsBelongsToUserOrg = Restrictions.conjunction()
-                                .add(Restrictions.eq("this.insurer", Boolean.FALSE))
-                                .add(Restrictions.eq("this.visibility", 1))
-                                .add(Restrictions.eq("c.chorganisation", user.getChorganisation()))
-                                .add(Restrictions.in("c.supplierClaimOwner.id", supplierClaimOwnerIds.toArray()));
-
-
                         // Add Insurer external tasks on claims belongs to user organisation.
                         externalTasksOnClaimsBelongsToUserOrg = Restrictions.conjunction()
                                 .add(Restrictions.eq("this.insurer", Boolean.TRUE))
@@ -481,12 +456,6 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                                 .add(Restrictions.eq("this.visibility", 2))
                                 .add(Restrictions.eq("c.chorganisation", user.getChorganisation()));
 
-                        // Add CHO private tasks on claims belongs to user organisation.
-                        privateTasksOnClaimsBelongsToUserOrg = Restrictions.conjunction()
-                                .add(Restrictions.eq("this.insurer", Boolean.FALSE))
-                                .add(Restrictions.eq("this.visibility", 1))
-                                .add(Restrictions.eq("c.chorganisation", user.getChorganisation()));
-
                         // Add Insurer external tasks on claims belongs to user organisation.
                         externalTasksOnClaimsBelongsToUserOrg = Restrictions.conjunction()
                                 .add(Restrictions.eq("this.insurer", Boolean.TRUE))
@@ -497,9 +466,7 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
                 // add all Criterion together to make final query for CHO tasks.
                 criteria.add(Restrictions.disjunction()
-                        .add(privateTasksOnClaimsUserOwns)
-                        .add(privateTasksOnClaimsBelongsToUserOrg)
-                        .add(privateTasksOnClaimsNobodyOwns)
+                        .add(privateTasks)
                         .add(internalTasksOnClaimsUserOwns)
                         .add(externalTasksOnClaimsUserOwns)
                         .add(internalTasksOnClaimsBelongsToUserOrg)
@@ -517,20 +484,14 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
                 // declare default Criterion restriction to avoid null value when below if condition not passed. 
                 Criterion internalTasksAssignedToThisRoleOnClaimsUserOwns = Restrictions.eq("id", -1);
-                Criterion privateTasksAssignedToThisRoleOnClaimsUserOwns = Restrictions.eq("id", -1);
                 Criterion internalTasksAssignedToThisRoleOnClaimsNobodyOwns = Restrictions.eq("id", -1);
-                Criterion privateTasksAssignedToThisRoleOnClaimsNobodyOwns = Restrictions.eq("id", -1);
                 Criterion externalTasksAssignedToThisRoleOnClaimsUserOwns = Restrictions.eq("id", -1);
                 Criterion internalTaskesAssignedToThisRoleAndWorkgroup = Restrictions.eq("id", -1);
-                Criterion privateTaskesAssignedToThisRoleAndWorkgroup = Restrictions.eq("id", -1);
                 Criterion internalTaskesAssignedToThisRoleAndNoWorkgroup = Restrictions.eq("id", -1);
-                Criterion privateTasksAssignedToThisRoleAndNoWorkgroup = Restrictions.eq("id", -1);
                 Criterion extTskAssignedToThisRoleOnClaimsAssignedToWG = Restrictions.eq("id", -1);
                 Criterion intTskAssignedToClaimAndThisRole = Restrictions.eq("id", -1);
-                Criterion privTskAssignedToClaimAndThisRole = Restrictions.eq("id", -1);
                 Criterion extTskAssingedToRole = Restrictions.eq("id", -1);
                 Criterion intTskAssingedToClaimBelongsToUserInsurer = Restrictions.eq("id", -1);
-                Criterion privTskAssingedToClaimBelongsToUserInsurer = Restrictions.eq("id", -1);
                 Criterion extTskAssingedToClaimBelongsToUserInsurer = Restrictions.eq("id", -1);
 
                 if (showAssignedTasksOnly) {
@@ -593,21 +554,6 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                                     .add(Restrictions.or(Restrictions.in("this.visibilityRole", visibilityRole1), Restrictions.in("this.visibilityRole2", visibilityRole1)))
                                     .add(Restrictions.eq("c.claimOwner", user));
 
-                            // Add all Insurer private tasks assigned to this role on claims user owns
-                            privateTasksAssignedToThisRoleOnClaimsUserOwns = Restrictions.conjunction()
-                                    .add(Restrictions.eq("this.insurer", Boolean.TRUE))
-                                    .add(Restrictions.eq("this.visibility", 1))
-                                    .add(Restrictions.in("this.visibilityRole", visibilityRole1))
-                                    .add(Restrictions.eq("c.claimOwner", user));
-
-                            // Add all Private internal tasks assigned to this role on claims no-one owns
-                            privateTasksAssignedToThisRoleOnClaimsNobodyOwns = Restrictions.conjunction()
-                                    .add(Restrictions.eq("this.insurer", Boolean.TRUE))
-                                    .add(Restrictions.eq("this.visibility", 1))
-                                    .add(Restrictions.in("this.visibilityRole", visibilityRole1))
-                                    .add(Restrictions.isNull("c.claimOwner"))
-                                    .add(Restrictions.eq("c.insurer", user.getInsurer()));
-
                         }
 
                         if (workgroupEnabled) {
@@ -620,27 +566,12 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                                     .add(Restrictions.isNull("c.workgroup"))
                                     .add(Restrictions.eq("c.insurer", user.getInsurer()));
 
-                            // Add all Insurer Private tasks assigned to role on claims with no workgroup yet assigned
-                            privateTasksAssignedToThisRoleAndNoWorkgroup = Restrictions.conjunction()
-                                    .add(Restrictions.eq("this.insurer", Boolean.TRUE))
-                                    .add(Restrictions.eq("this.visibility", 1))
-                                    .add(Restrictions.in("this.visibilityRole", visibilityRole2))
-                                    .add(Restrictions.isNull("c.workgroup"))
-                                    .add(Restrictions.eq("c.insurer", user.getInsurer()));
-
                             if (userWorkgroups.size() > 0) {
 
                                 // Add all Insurer internal tasks assigned to role on claims assigned to a workgroup that user is in
                                 internalTaskesAssignedToThisRoleAndWorkgroup = Restrictions.conjunction()
                                         .add(Restrictions.eq("this.insurer", Boolean.TRUE))
                                         .add(Restrictions.eq("this.visibility", 2))
-                                        .add(Restrictions.in("this.visibilityRole", visibilityRole3))
-                                        .add(Restrictions.in("c.workgroup.id", userWorkgroups));
-
-                                // Add all Insurer Private tasks assigned to role on claims assigned to a workgroup that user is in
-                                privateTaskesAssignedToThisRoleAndWorkgroup = Restrictions.conjunction()
-                                        .add(Restrictions.eq("this.insurer", Boolean.TRUE))
-                                        .add(Restrictions.eq("this.visibility", 1))
                                         .add(Restrictions.in("this.visibilityRole", visibilityRole3))
                                         .add(Restrictions.in("c.workgroup.id", userWorkgroups));
 
@@ -658,13 +589,6 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                             intTskAssignedToClaimAndThisRole = Restrictions.conjunction()
                                     .add(Restrictions.eq("this.insurer", Boolean.TRUE))
                                     .add(Restrictions.eq("this.visibility", 2))
-                                    .add(Restrictions.in("this.visibilityRole", visibilityRole4))
-                                    .add(Restrictions.eq("c.insurer", user.getInsurer()));
-
-                            // Add all Insurer private tasks assigned to a claim and this role
-                            privTskAssignedToClaimAndThisRole = Restrictions.conjunction()
-                                    .add(Restrictions.eq("this.insurer", Boolean.TRUE))
-                                    .add(Restrictions.eq("this.visibility", 1))
                                     .add(Restrictions.in("this.visibilityRole", visibilityRole4))
                                     .add(Restrictions.eq("c.insurer", user.getInsurer()));
 
@@ -690,12 +614,6 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                             .add(Restrictions.eq("this.visibility", 3))
                             .add(Restrictions.eq("c.insurer", user.getInsurer()));
 
-                    privTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
-                            .add(Restrictions.eq("this.insurer", Boolean.TRUE))
-                            .add(Restrictions.eq("this.visibility", 1))
-                            .add(Restrictions.eq("this.createdBy", user))
-                            .add(Restrictions.eq("c.insurer", user.getInsurer()));
-
                     if (claimOwnerIds != null && claimOwnerIds.size() > 0) {
                         intTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
                                 .add(intTskAssingedToClaimBelongsToUserInsurer)
@@ -703,10 +621,6 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
 
                         extTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
                                 .add(extTskAssingedToClaimBelongsToUserInsurer)
-                                .add(Restrictions.in("c.claimOwner.id", claimOwnerIds.toArray()));
-
-                        privTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
-                                .add(privTskAssingedToClaimBelongsToUserInsurer)
                                 .add(Restrictions.in("c.claimOwner.id", claimOwnerIds.toArray()));
                     }
 
@@ -718,22 +632,12 @@ public class TaskServiceImpl extends SecureDataService implements TaskService {
                         extTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
                                 .add(extTskAssingedToClaimBelongsToUserInsurer)
                                 .add(Restrictions.in("c.workgroup.id", workgroupIds.toArray()));
-
-                        privTskAssingedToClaimBelongsToUserInsurer = Restrictions.conjunction()
-                                .add(privTskAssingedToClaimBelongsToUserInsurer)
-                                .add(Restrictions.in("c.workgroup.id", workgroupIds.toArray()));
                     }
                 }
 
                 // add all Criterion together to make final query for insurer task.
                 criteria.add(Restrictions.disjunction()
-                        .add(privTskAssingedToClaimBelongsToUserInsurer)
-                        .add(privateTasksAssignedToThisRoleOnClaimsUserOwns)
-                        .add(privateTasksAssignedToThisRoleOnClaimsNobodyOwns)
-                        .add(privateTasksAssignedToThisRoleAndNoWorkgroup)
-                        .add(privateTaskesAssignedToThisRoleAndWorkgroup)
-                        .add(privTskAssignedToClaimAndThisRole)
-                        .add(privTskAssingedToClaimBelongsToUserInsurer)
+                        .add(privateTasks)
                         .add(internalTasksAssignedToThisRoleOnClaimsUserOwns)
                         .add(internalTasksAssignedToThisRoleOnClaimsNobodyOwns)
                         .add(externalTasksAssignedToThisRoleOnClaimsUserOwns)
