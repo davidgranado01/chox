@@ -55,7 +55,12 @@ public class AssignWorkgroup extends BaseActivity {
             throw e;
         }
 
-        if (claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)) {
+        if (claim.getStatus().equals(ClaimStatus.CLAIM_REJECTED) &&
+            ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED.equals(claim.getPreviousStatus()) &&
+            !claim.getInsurer().isClaimOwnershipEnable()) {
+
+            claimService.adjustStatusWhenAssignDirectRejectedClaim(claim, ClaimStatus.CLAIM_UNACKNOWLEDGED_ROUTED);
+        } else if (claim.getStatus().equals(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED)) {
             try {
                 if (claim.getInsurer().isClaimOwnershipEnable()) {
                     claim.setStatus(ClaimStatus.CLAIM_UNACKNOWLEDGED_UNASSIGNED);
@@ -66,7 +71,7 @@ public class AssignWorkgroup extends BaseActivity {
                 LOG.error("Exception thrown: {}", e.getMessage());
                 throw e;
             }
-        } 
+        }
 
     }
 
