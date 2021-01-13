@@ -611,5 +611,9 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return false;
     }
 
-
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Override
+    public void saveOrUpdateAuditTrail(AuditTrail auditTrail) {
+        this.save(auditTrail);
+    }
 }

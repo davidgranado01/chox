@@ -214,6 +214,22 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
         return claim;
     }
 
+    public void adjustStatusWhenAssignDirectRejectedClaim(Claim claim, String claimStatus) {
+        AuditTrail auditTrail = auditTrailService.getLastChange(claim.getId());
+        AuditTrail newAuditTrail = new AuditTrail(auditTrail);
+
+        // adjust last audit trail
+        auditTrail.setNewStatus(claimStatus);
+        auditTrailService.saveOrUpdateAuditTrail(auditTrail);
+
+        // add new audit trail with original values
+        newAuditTrail.setOriginalStatus(claimStatus);
+        auditTrailService.saveOrUpdateAuditTrail(newAuditTrail);
+
+        claim.setPreviousStatus(claimStatus);
+        super.save(claim);
+    }
+
     @Override
     public Boolean revertClaim(int id) {
         Boolean result = false;
