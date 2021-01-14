@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import idas.chox.core.model.Claim;
+import idas.chox.core.model.ClaimStatus;
 import idas.chox.core.model.LiabilityStatus;
 import idas.chox.core.model.QueuedTicket;
 import idas.chox.core.search.ClaimSearchCriteria;
@@ -150,5 +151,6 @@ public interface ClaimService extends DataService {
     boolean addOnHireTask(Claim claim);
 
     void setInitialPenaltyBand(Claim claim);
-    
+
+    void adjustStatusWhenAssignDirectRejectedClaim(Claim claim, String claimStatus);
 }
