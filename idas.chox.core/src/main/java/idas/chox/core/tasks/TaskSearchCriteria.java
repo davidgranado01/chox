@@ -12,7 +12,7 @@ public class TaskSearchCriteria implements Serializable {
     private int limit;
     private String sort;
     private String dir;
-    private boolean showAssignedTasksOnly;
+    private boolean showAssignedTasksOnly = true;
     private boolean loadFilterPanelSelectionFromSession;
 
     public Set<Integer> getSupplierClaimOwnerIds() {
@@ -139,7 +139,7 @@ public class TaskSearchCriteria implements Serializable {
         this.dir = dir;
     }
 
-    public boolean getShowAssignedTasksOnly() {
+    public boolean isShowAssignedTasksOnly() {
         return showAssignedTasksOnly;
     }
 

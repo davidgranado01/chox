@@ -201,7 +201,7 @@
                                 this.setText('Show All Tasks');
                             }
                         },
-                        pressed: showAssignedTasksOnly
+                        pressed: false
                     }
                     ,'->'
                     ,{
@@ -997,22 +997,9 @@
             buttonPanel.render(taskFilterButtonCHODiv);
         </s:if>
 
-        // if (loadFilterPanelSelectionFromSession === true) {
-        //     console.log("LOADING ON READY FROM SESSION");
-        //     applyFilter(true);
-        // } else {
-        //     console.log("LOADING ON READY FIRST TIME");
-        //     // Add tasks
-        //     taskTypeStore.load({params: {visibility: 1}}); // initially load with 'private' visibility tasks
-        //     loadTasks(true);
-        // }
-
-        if(showAssignedTasksOnly === false) {
-            applyFilter(true);
-        }
-
-        // taskTypeStore.load({params: {visibility: 1}}); // initially load with 'private' visibility tasks
-        // loadTasks(true);
+        taskTypeStore.load({params: {visibility: 1}});
+        // initially load with 'private' visibility tasks
+        loadTasks(true);
     });
 
     function clearForm() {
@@ -1035,7 +1022,6 @@
             selectedSuppClaimOwnerValues = null;
         }
 
-        // showAssignedTasksOnly = true;
         taskTypeStore.load({params:{visibility: 1}});
     }
 
@@ -1076,8 +1062,6 @@
         /*
          *  if canSearchForData is false then no data will be returned. this is mainly used to reset the search screen form.
          */
-
-        console.log("CAN SEARCH FOR DATA: " + canSearchForData);
         var searchBaseParam;
         if (canSearchForData) {
             loadFilterPanelSelectionFromSession = true;
@@ -1164,7 +1148,6 @@
             assignedTasksOnlyBtn.pressed = true;
             assignedTasksOnlyBtn.getClickEl().addClass('x-btn-pressed');
         }
-        console.log("APPLY FILTER TRIGGERED");
         loadTasks(canSearchForData);
     }
 </script>
