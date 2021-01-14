@@ -62,7 +62,7 @@ public interface AuditTrailService {
 
     /**
      * NOTE: this method is only intended to be used for very special case,
-     * abnormal adjustment of audit trail, please use with extreme care
+     * abnormal adjustment of audit trail, please use with extreme care.
      * @param auditTrail the audit trail to be update or saved directly
      */
     void saveOrUpdateAuditTrail(AuditTrail auditTrail);
