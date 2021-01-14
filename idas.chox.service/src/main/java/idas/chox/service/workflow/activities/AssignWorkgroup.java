@@ -55,7 +55,7 @@ public class AssignWorkgroup extends BaseActivity {
             throw e;
         }
 
-        if (claim.getStatus().equals(ClaimStatus.CLAIM_REJECTED) &&
+        if ((ClaimStatus.CLAIM_REJECTED.equals(claim.getStatus()) || ClaimStatus.SUBSCRIBER_CLAIM_REJECTED.equals(claim.getStatus())) &&
             ClaimStatus.CLAIM_UNACKNOWLEDGED_UNROUTED.equals(claim.getPreviousStatus()) &&
             !claim.getInsurer().isClaimOwnershipEnable()) {
 
