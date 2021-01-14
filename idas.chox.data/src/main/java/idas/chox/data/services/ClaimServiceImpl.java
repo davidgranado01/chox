@@ -216,7 +216,6 @@ public class ClaimServiceImpl extends SecureDataService implements ClaimService,
 
     public void adjustStatusWhenAssignDirectRejectedClaim(Claim claim, String claimStatus) {
         AuditTrail auditTrail = auditTrailService.getLastChange(claim.getId());
-
         AuditTrail newAuditTrail = new AuditTrail(auditTrail);
 
         // add new audit trail with original values, e.g.: reject
