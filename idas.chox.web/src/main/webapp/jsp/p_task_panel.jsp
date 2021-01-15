@@ -1003,7 +1003,7 @@
         supplierClaimOwnerCombo.render(supplierClaimOwnerComboDiv);
         </s:if>
 
-        <s:if test="isInsurer && isManage && (insurerIsWorkgroupEnabled || insurerIsClaimOwnershipEnabled)">
+        <s:if test="isInsurer && isManager && (insurerIsWorkgroupEnabled || insurerIsClaimOwnershipEnabled)">
         buttonPanel.render(taskFilterButtonInsurerDiv);
         </s:if>
 
