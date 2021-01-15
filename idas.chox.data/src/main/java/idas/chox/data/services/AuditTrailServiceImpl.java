@@ -611,5 +611,24 @@ public class AuditTrailServiceImpl extends SecureDataService implements AuditTra
         return false;
     }
 
+    /**
+     * NOTE: this method is only intended to be used for very special case,
+     * abnormal adjustment of audit trail, please use with extreme care.
+     * @param auditTrail the audit trail to be update or saved directly
+     */
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value="transactionManager")
+    @Override
+    public void saveOrUpdateAuditTrail(AuditTrail auditTrail) {
+        var createdBy = auditTrail.getCreatedBy();
+        var user = auditTrail.getUser();
+        Date createdDate = auditTrail.getCreatedDate();
 
+        this.save(auditTrail);
+        if (!auditTrail.getCreatedBy().getEmail().equalsIgnoreCase(createdBy.getEmail())) {
+            auditTrail.setCreatedBy(createdBy);
+            auditTrail.setUser(user);
+            auditTrail.setCreatedDate(createdDate);
+            this.save(auditTrail);
+        }
+    }
 }

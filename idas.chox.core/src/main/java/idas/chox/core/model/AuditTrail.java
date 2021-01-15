@@ -21,7 +21,24 @@ public class AuditTrail extends Entity implements Serializable {
     private ReasonOfRejection claimReasonOfRejection;
     private ReasonOfRejection invoiceReasonOfRejection;
     private boolean reverted = false;
-    private BigDecimal previousTotalToPay; 
+    private BigDecimal previousTotalToPay;
+
+    public AuditTrail() {
+        super();
+    }
+
+    public AuditTrail(AuditTrail auditTrail) {
+        super();
+        this.originalStatus = auditTrail.originalStatus;
+        this.newStatus = auditTrail.newStatus;
+        this.user = auditTrail.user;
+        this.claim = auditTrail.claim;
+        this.claimReasonOfRejection = auditTrail.claimReasonOfRejection;
+        this.invoiceReasonOfRejection = auditTrail.invoiceReasonOfRejection;
+        this.reverted = auditTrail.reverted;
+        this.previousTotalToPay = auditTrail.previousTotalToPay;
+        this.updateDate = auditTrail.updateDate;
+    }
 
     public Claim getClaim() {
         return claim;
