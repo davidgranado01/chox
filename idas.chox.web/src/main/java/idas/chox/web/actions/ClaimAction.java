@@ -1226,6 +1226,8 @@ public class ClaimAction extends BaseAction implements ModelDriven<Claim>, Prepa
                     accessRight = 0;
                 } // bug#2719 - disable update of workgrouup/owner if not already routed/assigned
                 else if (actionName.equals(ExtraAction.UPDATE_CLAIM_WORKGROUP_AND_OWNER)
+                        && !claim.getStatus().equals(ClaimStatus.CLAIM_PENDING) && !claim.getStatus().equals(ClaimStatus.CLAIM_REJECTED)
+                        && !claim.getStatus().equals(ClaimStatus.SUBSCRIBER_CLAIM_REJECTED)
                         && ((claim.getClaimType() != ClaimType.INSURER_INVOICE && (claim.getWorkgroup() == null || claim.getClaimOwner() == null))
                           || (claim.getClaimType() == ClaimType.INSURER_INVOICE && (!claim.getInsurer().isEnableManualInvoiceWorkgroups() || !claim.getInsurer().isEnableManualInvoiceOwnership())))) {
                     LOG.debug("4. Removing access to More action '{}'", actionName);
