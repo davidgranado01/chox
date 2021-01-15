@@ -38,6 +38,7 @@
     var workgroupComboNumberOfSelectedRecord = 0;
     var claimOwnerComboNumberOfSelectedRecord = 0;
     var supplierClaimOwnerComboNumberOfSelectedRecord = 0;
+    var autoload = true;
 
     Ext.onReady(function(){
 
@@ -736,7 +737,6 @@
                         if ('<s:property value="workgroupIdsAsString"/>') {
                             workgroupCombo.setValue('<s:property value="workgroupIdsAsString"/>');
                             workgroupComboNumberOfSelectedRecord = '<s:property value="workgroupIdsAsString"/>'.split(',').length;
-                            console.log("SET WORKGROUP COMBO");
                         }
                     }
                 });
@@ -840,7 +840,6 @@
                         if ('<s:property value="claimOwnerIdsAsString"/>') {
                             claimOwnerCombo.setValue('<s:property value="claimOwnerIdsAsString"/>');
                             claimOwnerComboNumberOfSelectedRecord = '<s:property value="claimOwnerIdsAsString"/>'.split(',').length;
-                            console.log("SET CLAIM OWNER COMBO");
                         }
                     }
                 });
@@ -982,13 +981,13 @@
         height : 50,
         buttonAlign : 'right',
         margins : {top : 0},
-        listeners:  {afterrender : function() {
-                if (<s:property value="loadFilterPanelSelectionFromSession"/>) {
-                    console.log("LOAD FILTER");
+        listeners:  {
+            afterrender: function () {
+                if (autoload) {
                     applyFilter(true);
+                    autoload = false;
                 }
-        }
-
+            }
         }
     });
 
@@ -1004,8 +1003,12 @@
         supplierClaimOwnerCombo.render(supplierClaimOwnerComboDiv);
         </s:if>
 
-        <s:if test="(isInsurer || isCHO) && isManager">
+        <s:if test="isInsurer && isManage && (insurerIsWorkgroupEnabled || insurerIsClaimOwnershipEnabled)">
         buttonPanel.render(taskFilterButtonInsurerDiv);
+        </s:if>
+
+        <s:if test="isCHO && isManager && choIsClaimOwnershipEnabled">
+        buttonPanel.render(taskFilterButtonCHODiv);
         </s:if>
 
         <s:if test="!isManager">
@@ -1068,7 +1071,6 @@
         <s:if test="isInsurer && isManager">
         params =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly, canLoadData : true, loadFilterPanelSelectionFromSession : true}, getSelectedWorkgroupIds(), getSelectedOwnerIds());
         </s:if>
-        console.log("PARAMS: ", params);
         return params
     }
 
@@ -1134,7 +1136,7 @@
     }
 
     function getSelectedWorkgroupIds() {
-        if (<s:property value="loadFilterPanelSelectionFromSession"/>) {
+        if (autoload) {
             return '<s:property value="workgroupIdsAsString"/>';
         } else
         if (Ext.getCmp('workgroupComboId')){
@@ -1144,7 +1146,7 @@
     }
 
     function getSelectedOwnerIds() {
-        if (<s:property value="loadFilterPanelSelectionFromSession"/>) {
+        if (autoload) {
             return '<s:property value="claimOwnerIdsAsString"/>';
         } else
          if (Ext.getCmp('claimOwnerComboId')){
@@ -1154,7 +1156,7 @@
     }
 
     function getSelectedSupplierClaimOwnerIds() {
-        if (<s:property value="loadFilterPanelSelectionFromSession"/>) {
+        if (autoload) {
             return '<s:property value="supplierClaimOwnerIdsAsString"/>';
         } else
         if (Ext.getCmp('SupplierClaimOwnerComboId')) {
