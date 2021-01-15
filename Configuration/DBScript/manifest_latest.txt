@@ -2,3 +2,4 @@ REC-7954.sql
 REC-9314.sql
 REC-9672.sql
 REC-9862.sql
+REC-9866.sql
