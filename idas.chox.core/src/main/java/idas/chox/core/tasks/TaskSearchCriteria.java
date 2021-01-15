@@ -10,8 +10,8 @@ public class TaskSearchCriteria implements Serializable {
     private Set<Integer> workgroupIds;
     private int start;
     private int limit;
-    private String sort;
-    private String dir;
+    private String sort = "dueDate";
+    private String dir = "asc";
     private boolean showAssignedTasksOnly = true;
     private boolean loadFilterPanelSelectionFromSession;
 
@@ -95,7 +95,7 @@ public class TaskSearchCriteria implements Serializable {
         return "";
     }
 
-    public boolean getLoadFilterPanelSelectionFromSession() {
+    public boolean isLoadFilterPanelSelectionFromSession() {
         return loadFilterPanelSelectionFromSession;
     }
 

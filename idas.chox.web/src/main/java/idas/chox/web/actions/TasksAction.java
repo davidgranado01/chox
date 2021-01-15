@@ -176,6 +176,7 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
         }
 
         synchronized (getSessionLock()) {
+            taskSearchCriteria.setLoadFilterPanelSelectionFromSession(true);
             getSession().put("taskSearchCriteria", taskSearchCriteria);
         }
 
@@ -247,6 +248,7 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
             }
 
             synchronized (getSessionLock()) {
+                taskSearchCriteria.setLoadFilterPanelSelectionFromSession(true);
                 getSession().put("taskSearchCriteria", taskSearchCriteria);
             }
 
