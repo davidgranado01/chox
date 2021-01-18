@@ -942,19 +942,6 @@
         }
     });
 
-    var resetButton = new Ext.Button({
-        text: 'Reset',
-        width: 100,
-        scale: 'small',
-        style: {
-            marginBottom: '0px',
-            marginTop: '0px'
-        },
-        handler: function(button, event) {
-            applyFilter(false);
-        }
-    });
-
     // Create the search and reset buttons
     var filterButton = new Ext.Button({
         text: 'Apply',
@@ -970,7 +957,7 @@
     });
 
     var buttonPanel = new Ext.Panel({
-        fbar : [filterButton, resetButton],
+        fbar : [filterButton],
         header : false,
         border: false,
         bodyStyle: 'background-color:transparent;height:0',
@@ -1017,29 +1004,6 @@
         </s:if>
     });
 
-    function clearForm() {
-        if (workgroupCombo && workgroupCombo.rendered) {
-            workgroupStore.load({ params : {"orgId": null}});
-            workgroupCombo.reset();
-            workgroupCombo.clearValue();
-            selectedWorkgroupValues = null;
-        }
-        if (claimOwnerCombo && claimOwnerCombo.rendered) {
-            claimOwnerStore.load({ params : {"workgroupId":-1,"insurerId": -1}});
-            claimOwnerCombo.reset();
-            claimOwnerCombo.clearValue();
-            selectedInsClaimOwnerValues = null;
-        }
-        if (supplierClaimOwnerCombo && supplierClaimOwnerCombo.rendered) {
-            supplierClaimOwnerStore.load({ params : {"supplierId": -1}});
-            supplierClaimOwnerCombo.reset();
-            supplierClaimOwnerCombo.clearValue();
-            selectedSuppClaimOwnerValues = null;
-        }
-
-        taskTypeStore.load({params:{visibility: 1}});
-    }
-
     function taskOnClick(grid, rowIndex, columnIndex){
         if (columnIndex === 4) {
             var task = tasksGrid.getStore().getAt(rowIndex);
@@ -1084,10 +1048,6 @@
             if (!hideCompleted || !showAssignedTasksOnly) {
                 updateTaskTab();
             }
-        } else { // when reset button clicked else condition is invoked
-            searchBaseParam = {canLoadData : canSearchForData, "gridTitle" : ''};
-            doDataLoad(searchBaseParam);
-            clearForm();
         }
     }
 
