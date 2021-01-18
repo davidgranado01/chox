@@ -116,11 +116,7 @@ public class TaskSearchCriteria implements Serializable {
     }
 
     public void setSort(String sort) {
-        if (sort != null && sort.equals("createdBy")) {
-            this.sort = "raisedBy";
-        } else {
-            this.sort = sort;
-        }
+        this.sort = sort;
     }
 
     public String getDir() {

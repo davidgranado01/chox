@@ -38,6 +38,7 @@
     var workgroupComboNumberOfSelectedRecord = 0;
     var claimOwnerComboNumberOfSelectedRecord = 0;
     var supplierClaimOwnerComboNumberOfSelectedRecord = 0;
+    var backToSearchResults = true;
 
     Ext.onReady(function(){
 
@@ -969,7 +970,7 @@
         margins : {top : 0},
         listeners:  {
             afterrender: function () {
-                    // debugger;
+                    debugger;
                 if (!loadingTaskPanelFirstTimeAfterLogin) {
                     applyFilter(true);
                 }
@@ -1004,6 +1005,7 @@
         </s:if>
 
         loadingTaskPanelFirstTimeAfterLogin = false;
+        backToSearchResults = false;
     });
 
     function taskOnClick(grid, rowIndex, columnIndex){
@@ -1095,7 +1097,8 @@
     }
 
     function getSelectedWorkgroupIds() {
-        if (loadingTaskPanelFirstTimeAfterLogin) {
+        debugger;
+        if (backToSearchResults && !loadingTaskPanelFirstTimeAfterLogin) {
             return '<s:property value="workgroupIdsAsString"/>';
         } else
         if (Ext.getCmp('workgroupComboId')){
@@ -1105,7 +1108,8 @@
     }
 
     function getSelectedOwnerIds() {
-        if (loadingTaskPanelFirstTimeAfterLogin) {
+        debugger;
+        if (backToSearchResults && !loadingTaskPanelFirstTimeAfterLogin) {
             return '<s:property value="claimOwnerIdsAsString"/>';
         } else
          if (Ext.getCmp('claimOwnerComboId')){
@@ -1115,7 +1119,8 @@
     }
 
     function getSelectedSupplierClaimOwnerIds() {
-        if (loadingTaskPanelFirstTimeAfterLogin) {
+        debugger;
+        if (backToSearchResults && !loadingTaskPanelFirstTimeAfterLogin) {
             return '<s:property value="supplierClaimOwnerIdsAsString"/>';
         } else
         if (Ext.getCmp('SupplierClaimOwnerComboId')) {
