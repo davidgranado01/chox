@@ -969,9 +969,9 @@
         margins : {top : 0},
         listeners:  {
             afterrender: function () {
+                    // debugger;
                 if (!loadingTaskPanelFirstTimeAfterLogin) {
                     applyFilter(true);
-                    loadingTaskPanelFirstTimeAfterLogin = false;
                 }
             }
         }
@@ -1002,6 +1002,8 @@
         // initially load with 'private' visibility tasks
         loadTasks(true);
         </s:if>
+
+        loadingTaskPanelFirstTimeAfterLogin = false;
     });
 
     function taskOnClick(grid, rowIndex, columnIndex){
@@ -1093,7 +1095,7 @@
     }
 
     function getSelectedWorkgroupIds() {
-        if (!loadingTaskPanelFirstTimeAfterLogin) {
+        if (loadingTaskPanelFirstTimeAfterLogin) {
             return '<s:property value="workgroupIdsAsString"/>';
         } else
         if (Ext.getCmp('workgroupComboId')){
@@ -1103,7 +1105,7 @@
     }
 
     function getSelectedOwnerIds() {
-        if (!loadingTaskPanelFirstTimeAfterLogin) {
+        if (loadingTaskPanelFirstTimeAfterLogin) {
             return '<s:property value="claimOwnerIdsAsString"/>';
         } else
          if (Ext.getCmp('claimOwnerComboId')){
@@ -1113,7 +1115,7 @@
     }
 
     function getSelectedSupplierClaimOwnerIds() {
-        if (!loadingTaskPanelFirstTimeAfterLogin) {
+        if (loadingTaskPanelFirstTimeAfterLogin) {
             return '<s:property value="supplierClaimOwnerIdsAsString"/>';
         } else
         if (Ext.getCmp('SupplierClaimOwnerComboId')) {
