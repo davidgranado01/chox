@@ -21,6 +21,7 @@
 
     var insurerId;
     var supplierId;
+    var loadFilterPanelSelectionFromSession;
 
     var workgroupCombo;
     var workgroupStore;
@@ -958,7 +959,7 @@
     });
 
     var buttonPanel = new Ext.Panel({
-        fbar : [filterButton],
+        fbar : [filterButton, resetButton],
         header : false,
         border: false,
         bodyStyle: 'background-color:transparent;height:0',
