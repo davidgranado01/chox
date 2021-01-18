@@ -451,7 +451,7 @@
             <result name="success">/jsp/p_searchClaim.jsp</result>
         </action>
                 
-        <action name="getTaskPanel" class="idas.chox.web.actions.TasksAction">
+        <action name="getTaskPanel" class="idas.chox.web.actions.TasksAction" method="loadTasks">
             <result>/jsp/p_task_panel.jsp</result>
         </action>
         

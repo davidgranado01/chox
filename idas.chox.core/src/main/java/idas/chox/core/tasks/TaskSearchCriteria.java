@@ -13,7 +13,6 @@ public class TaskSearchCriteria implements Serializable {
     private String sort = "dueDate";
     private String dir = "asc";
     private boolean showAssignedTasksOnly = true;
-    private boolean loadFilterPanelSelectionFromSession;
 
     public Set<Integer> getSupplierClaimOwnerIds() {
         return supplierClaimOwnerIds;
@@ -95,13 +94,6 @@ public class TaskSearchCriteria implements Serializable {
         return "";
     }
 
-    public boolean isLoadFilterPanelSelectionFromSession() {
-        return loadFilterPanelSelectionFromSession;
-    }
-
-    public void setLoadFilterPanelSelectionFromSession(boolean loadFilterPanelSelectionFromSession) {
-        this.loadFilterPanelSelectionFromSession = loadFilterPanelSelectionFromSession;
-    }
 
     public int getStart() {
         return start;
@@ -124,11 +116,7 @@ public class TaskSearchCriteria implements Serializable {
     }
 
     public void setSort(String sort) {
-        if (sort != null && sort.equals("createdBy")) {
-            this.sort = "raisedBy";
-        } else {
-            this.sort = sort;
-        }
+        this.sort = sort;
     }
 
     public String getDir() {
