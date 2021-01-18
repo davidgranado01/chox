@@ -971,7 +971,6 @@
         margins : {top : 0},
         listeners:  {
             afterrender: function () {
-                    debugger;
                 if (!loadingTaskPanelFirstTimeAfterLogin) {
                     applyFilter(true);
                 }
@@ -1098,7 +1097,6 @@
     }
 
     function getSelectedWorkgroupIds() {
-        debugger;
         if (backToSearchResults && !loadingTaskPanelFirstTimeAfterLogin) {
             return '<s:property value="workgroupIdsAsString"/>';
         } else
@@ -1109,7 +1107,6 @@
     }
 
     function getSelectedOwnerIds() {
-        debugger;
         if (backToSearchResults && !loadingTaskPanelFirstTimeAfterLogin) {
             return '<s:property value="claimOwnerIdsAsString"/>';
         } else
@@ -1120,7 +1117,6 @@
     }
 
     function getSelectedSupplierClaimOwnerIds() {
-        debugger;
         if (backToSearchResults && !loadingTaskPanelFirstTimeAfterLogin) {
             return '<s:property value="supplierClaimOwnerIdsAsString"/>';
         } else
