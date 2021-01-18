@@ -984,7 +984,7 @@
         listeners:  {
             afterrender: function () {
                 if (autoload) {
-                    applyFilter(true);
+                    applyFilter(true, true);
                     autoload = false;
                 }
             }
@@ -1074,7 +1074,7 @@
         return params
     }
 
-    function loadTasks(canSearchForData) {
+    function loadTasks(canSearchForData, autoLoad) {
         /*
          *  if canSearchForData is false then no data will be returned. this is mainly used to reset the search screen form.
          */
@@ -1082,6 +1082,7 @@
         if (canSearchForData) {
             loadFilterPanelSelectionFromSession = true;
             searchBaseParam = getTaskFilterParams();
+            searchBaseParam.autoLoad = !!autoLoad;
             doDataLoad(searchBaseParam);
             if (!hideCompleted || !showAssignedTasksOnly) {
                 updateTaskTab();
@@ -1165,15 +1166,17 @@
         }
     }
 
-    function applyFilter(canSearchForData) {
-        showAssignedTasksOnly = false;
-        var assignedTasksOnlyBtn = Ext.getCmp('assignedTasksOnlyButtonId');
-        if (assignedTasksOnlyBtn && assignedTasksOnlyBtn.rendered) {
-            assignedTasksOnlyBtn.setText('Show My Assigned Tasks Only');
-            assignedTasksOnlyBtn.pressed = true;
-            assignedTasksOnlyBtn.getClickEl().addClass('x-btn-pressed');
+    function applyFilter(canSearchForData, autoLoad) {
+        showAssignedTasksOnly = showAssignedTasksOnly && autoLoad;
+        if (!showAssignedTasksOnly) {
+            var assignedTasksOnlyBtn = Ext.getCmp('assignedTasksOnlyButtonId');
+            if (assignedTasksOnlyBtn && assignedTasksOnlyBtn.rendered) {
+                assignedTasksOnlyBtn.setText('Show My Assigned Tasks Only');
+                assignedTasksOnlyBtn.pressed = true;
+                assignedTasksOnlyBtn.getClickEl().addClass('x-btn-pressed');
+            }
+            loadTasks(canSearchForData, autoLoad);
         }
-        loadTasks(canSearchForData);
     }
 </script>
 

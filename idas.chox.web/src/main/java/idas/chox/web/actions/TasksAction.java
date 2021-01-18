@@ -83,6 +83,15 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
     private Date paymentDate;
     private TaskSearchCriteria taskSearchCriteria;
     private boolean canLoadData = true;
+    private boolean autoLoad;
+
+    public boolean isAutoLoad() {
+        return autoLoad;
+    }
+
+    public void setAutoLoad(boolean autoLoad) {
+        this.autoLoad = autoLoad;
+    }
 
     public void setSelectedTaskId(int selectedTaskId) {
         this.selectedTaskId = selectedTaskId;
@@ -159,6 +168,12 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
             showInsurerRole = true;
         }
 
+        if (autoLoad) {
+            if (getSession() != null && getSession().containsKey("taskSearchCriteria")) {
+                taskSearchCriteria = (TaskSearchCriteria) getSession().get("taskSearchCriteria");
+            }
+        }
+
         List<TaskViewData> viewData = new ArrayList<>();
         LOG.debug("Calling taskService to get all tasks");
         if (hideCompleted) {
@@ -200,6 +215,12 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
 
             if (getIsInsurer() || getIsChoxAdmin()) {
                 showInsurerRole = true;
+            }
+
+            if (autoLoad) {
+                if (getSession() != null && getSession().containsKey("taskSearchCriteria")) {
+                    taskSearchCriteria = (TaskSearchCriteria) getSession().get("taskSearchCriteria");
+                }
             }
 
             // if login user is not manager, will not allow user to filter by supplierClaimOwnerIds
@@ -279,6 +300,12 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
 
         if (getIsInsurer() || getIsChoxAdmin()) {
             showInsurerRole = true;
+        }
+
+        if (autoLoad) {
+            if (getSession() != null && getSession().containsKey("taskSearchCriteria")) {
+                taskSearchCriteria = (TaskSearchCriteria) getSession().get("taskSearchCriteria");
+            }
         }
 
         List<TaskViewData> viewData = new ArrayList<>();
@@ -881,11 +908,12 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
     @Override
     public void prepare() throws Exception {
         if (taskSearchCriteria == null) {
-            if (getSession() != null && getSession().containsKey("taskSearchCriteria")) {
-                taskSearchCriteria = (TaskSearchCriteria) getSession().get("taskSearchCriteria");
-            } else {
-                taskSearchCriteria = new TaskSearchCriteria();
-            }
+            taskSearchCriteria = new TaskSearchCriteria();
+//            if (getSession() != null && getSession().containsKey("taskSearchCriteria")) {
+//                taskSearchCriteria = (TaskSearchCriteria) getSession().get("taskSearchCriteria");
+//            } else {
+//                taskSearchCriteria = new TaskSearchCriteria();
+//            }
         }
     }
 }
