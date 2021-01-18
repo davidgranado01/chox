@@ -17,6 +17,7 @@
     var sort = '<s:property value="sort"/>';
     var dir = '<s:property value="dir"/>';
     var taskPanelRecordPerPage=20;
+    var loadingTaskPanelFirstTimeAfterLogin = <s:property value="loadingTaskPanelFirstTimeAfterLogin"/>;
 
     var insurerId;
     var supplierId;
@@ -38,7 +39,7 @@
     var workgroupComboNumberOfSelectedRecord = 0;
     var claimOwnerComboNumberOfSelectedRecord = 0;
     var supplierClaimOwnerComboNumberOfSelectedRecord = 0;
-    var autoload = true;
+    var backToSearchResults = true;
 
     Ext.onReady(function(){
 
@@ -943,19 +944,6 @@
         }
     });
 
-    var resetButton = new Ext.Button({
-        text: 'Reset',
-        width: 100,
-        scale: 'small',
-        style: {
-            marginBottom: '0px',
-            marginTop: '0px'
-        },
-        handler: function(button, event) {
-            applyFilter(false);
-        }
-    });
-
     // Create the search and reset buttons
     var filterButton = new Ext.Button({
         text: 'Apply',
@@ -983,9 +971,8 @@
         margins : {top : 0},
         listeners:  {
             afterrender: function () {
-                if (autoload) {
+                if (!loadingTaskPanelFirstTimeAfterLogin) {
                     applyFilter(true);
-                    autoload = false;
                 }
             }
         }
@@ -1016,30 +1003,10 @@
         // initially load with 'private' visibility tasks
         loadTasks(true);
         </s:if>
+
+        loadingTaskPanelFirstTimeAfterLogin = false;
+        backToSearchResults = false;
     });
-
-    function clearForm() {
-        if (workgroupCombo && workgroupCombo.rendered) {
-            workgroupStore.load({ params : {"orgId": null}});
-            workgroupCombo.reset();
-            workgroupCombo.clearValue();
-            selectedWorkgroupValues = null;
-        }
-        if (claimOwnerCombo && claimOwnerCombo.rendered) {
-            claimOwnerStore.load({ params : {"workgroupId":-1,"insurerId": -1}});
-            claimOwnerCombo.reset();
-            claimOwnerCombo.clearValue();
-            selectedInsClaimOwnerValues = null;
-        }
-        if (supplierClaimOwnerCombo && supplierClaimOwnerCombo.rendered) {
-            supplierClaimOwnerStore.load({ params : {"supplierId": -1}});
-            supplierClaimOwnerCombo.reset();
-            supplierClaimOwnerCombo.clearValue();
-            selectedSuppClaimOwnerValues = null;
-        }
-
-        taskTypeStore.load({params:{visibility: 1}});
-    }
 
     function taskOnClick(grid, rowIndex, columnIndex){
         if (columnIndex === 4) {
@@ -1064,12 +1031,12 @@
     }
 
     function getTaskFilterParams() {
-        var params = {hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly, canLoadData : true, loadFilterPanelSelectionFromSession : true};
+        var params = {hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly, canLoadData : true};
         <s:if test="isCHO && choIsClaimOwnershipEnabled && isManager">
-        params =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly, canLoadData : true, loadFilterPanelSelectionFromSession : true}, getSelectedSupplierClaimOwnerIds());
+        params =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly, canLoadData : true}, getSelectedSupplierClaimOwnerIds());
         </s:if>
         <s:if test="isInsurer && isManager">
-        params =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly, canLoadData : true, loadFilterPanelSelectionFromSession : true}, getSelectedWorkgroupIds(), getSelectedOwnerIds());
+        params =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly, canLoadData : true}, getSelectedWorkgroupIds(), getSelectedOwnerIds());
         </s:if>
         return params
     }
@@ -1080,17 +1047,11 @@
          */
         var searchBaseParam;
         if (canSearchForData) {
-            loadFilterPanelSelectionFromSession = true;
             searchBaseParam = getTaskFilterParams();
             doDataLoad(searchBaseParam);
             if (!hideCompleted || !showAssignedTasksOnly) {
                 updateTaskTab();
             }
-        } else { // when reset button clicked else condition is invoked
-            loadFilterPanelSelectionFromSession = false;
-            searchBaseParam = {canLoadData : canSearchForData, loadFilterPanelSelectionFromSession : loadFilterPanelSelectionFromSession, "gridTitle" : ''};
-            doDataLoad(searchBaseParam);
-            clearForm();
         }
     }
 
@@ -1136,7 +1097,7 @@
     }
 
     function getSelectedWorkgroupIds() {
-        if (autoload) {
+        if (backToSearchResults && !loadingTaskPanelFirstTimeAfterLogin) {
             return '<s:property value="workgroupIdsAsString"/>';
         } else
         if (Ext.getCmp('workgroupComboId')){
@@ -1146,7 +1107,7 @@
     }
 
     function getSelectedOwnerIds() {
-        if (autoload) {
+        if (backToSearchResults && !loadingTaskPanelFirstTimeAfterLogin) {
             return '<s:property value="claimOwnerIdsAsString"/>';
         } else
          if (Ext.getCmp('claimOwnerComboId')){
@@ -1156,7 +1117,7 @@
     }
 
     function getSelectedSupplierClaimOwnerIds() {
-        if (autoload) {
+        if (backToSearchResults && !loadingTaskPanelFirstTimeAfterLogin) {
             return '<s:property value="supplierClaimOwnerIdsAsString"/>';
         } else
         if (Ext.getCmp('SupplierClaimOwnerComboId')) {

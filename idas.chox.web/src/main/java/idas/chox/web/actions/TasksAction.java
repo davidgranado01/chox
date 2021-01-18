@@ -83,6 +83,15 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
     private Date paymentDate;
     private TaskSearchCriteria taskSearchCriteria;
     private boolean canLoadData = true;
+    private boolean loadingTaskPanelFirstTimeAfterLogin;
+
+    public boolean isLoadingTaskPanelFirstTimeAfterLogin() {
+        return loadingTaskPanelFirstTimeAfterLogin;
+    }
+
+    public void setLoadingTaskPanelFirstTimeAfterLogin(boolean loadingTaskPanelFirstTimeAfterLogin) {
+        this.loadingTaskPanelFirstTimeAfterLogin = loadingTaskPanelFirstTimeAfterLogin;
+    }
 
     public void setSelectedTaskId(int selectedTaskId) {
         this.selectedTaskId = selectedTaskId;
@@ -142,6 +151,19 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
         return SUCCESS;
     }
 
+    public String loadTasks() throws Exception {
+
+        if (getSession().containsKey("loadingTaskPanelFirstTimeAfterLogin")) {
+            loadingTaskPanelFirstTimeAfterLogin = false;
+        } else {
+            synchronized (getSessionLock()) {
+                getSession().put("loadingTaskPanelFirstTimeAfterLogin", true);
+            }
+            loadingTaskPanelFirstTimeAfterLogin = true;
+        }
+        return SUCCESS;
+    }
+
     public String getJsonArrayData() {
         String jsonString;
         if (jObject != null) {
@@ -176,7 +198,6 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
         }
 
         synchronized (getSessionLock()) {
-            taskSearchCriteria.setLoadFilterPanelSelectionFromSession(true);
             getSession().put("taskSearchCriteria", taskSearchCriteria);
         }
 
@@ -211,7 +232,6 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
                 taskSearchCriteria.setSort(null);
                 taskSearchCriteria.setStart(0);
                 taskSearchCriteria.setShowAssignedTasksOnly(true);
-                taskSearchCriteria.setLoadFilterPanelSelectionFromSession(false);
             }
 
             List<TaskViewData> viewData = new ArrayList<>();
@@ -248,7 +268,6 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
             }
 
             synchronized (getSessionLock()) {
-                taskSearchCriteria.setLoadFilterPanelSelectionFromSession(true);
                 getSession().put("taskSearchCriteria", taskSearchCriteria);
             }
 
