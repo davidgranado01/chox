@@ -959,7 +959,7 @@
     });
 
     var buttonPanel = new Ext.Panel({
-        fbar : [filterButton, resetButton],
+        fbar : [filterButton],
         header : false,
         border: false,
         bodyStyle: 'background-color:transparent;height:0',
