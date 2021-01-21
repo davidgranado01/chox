@@ -21,7 +21,6 @@
 
     var insurerId;
     var supplierId;
-    var loadFilterPanelSelectionFromSession;
 
     var workgroupCombo;
     var workgroupStore;
@@ -998,11 +997,11 @@
         buttonPanel.render(taskFilterButtonCHODiv);
         </s:if>
 
-        <s:if test="!isManager">
-        taskTypeStore.load({params: {visibility: 1}});
-        // initially load with 'private' visibility tasks
-        loadTasks(true);
-        </s:if>
+        if (loadingTaskPanelFirstTimeAfterLogin) {
+            taskTypeStore.load({params: {visibility: 1}});
+            // initially load with 'private' visibility tasks
+            loadTasks(true);
+        }
 
         loadingTaskPanelFirstTimeAfterLogin = false;
         backToSearchResults = false;
@@ -1041,6 +1040,33 @@
         return params
     }
 
+    function clearForm() {
+        if (workgroupCombo && workgroupCombo.rendered) {
+            workgroupStore.load({ params : {"orgId": null}});
+            workgroupCombo.reset();
+            workgroupCombo.clearValue();
+            selectedWorkgroupValues = null;
+        }
+        if (claimOwnerCombo && claimOwnerCombo.rendered) {
+            claimOwnerStore.load({ params : {"workgroupId":-1,"insurerId": -1}});
+            claimOwnerCombo.reset();
+            claimOwnerCombo.clearValue();
+            selectedInsClaimOwnerValues = null;
+        }
+        if (supplierClaimOwnerCombo && supplierClaimOwnerCombo.rendered) {
+            supplierClaimOwnerStore.load({ params : {"sup0lierId": -1}});
+            supplierClaimOwnerCombo.reset();
+            supplierClaimOwnerCombo.clearValue();
+            selectedSuppClaimOwnerValues = null;
+        }
+
+        start = 0;
+        sort = 'asc';
+        dir = 'dueDate';
+
+        taskTypeStore.load({params:{visibility: 1}});
+    }
+
     function loadTasks(canSearchForData) {
         /*
          *  if canSearchForData is false then no data will be returned. this is mainly used to reset the search screen form.
@@ -1052,6 +1078,11 @@
             if (!hideCompleted || !showAssignedTasksOnly) {
                 updateTaskTab();
             }
+        } else { // when reset button clicked else condition is invoked
+            clearForm();
+            searchBaseParam = {canLoadData : canSearchForData, "gridTitle" : ''};
+            doDataLoad(searchBaseParam);
+            updateTaskTab();
         }
     }
 
@@ -1093,6 +1124,9 @@
     
     function toggleShowAssignedTasksOnly(el) {
         showAssignedTasksOnly = !showAssignedTasksOnly;
+        if(showAssignedTasksOnly) {
+            loadTasks(false);
+        }
         loadTasks(true);
     }
 
