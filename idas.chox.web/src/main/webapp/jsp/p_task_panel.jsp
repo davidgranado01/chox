@@ -978,7 +978,6 @@
         margins : {top : 0},
         listeners:  {
             afterrender: function () {
-                debugger;
                 if (!loadingTaskPanelFirstTimeAfterLogin && !showAssignedTasksOnly) {
                     applyFilter(true);
                 }
@@ -1006,7 +1005,6 @@
         buttonPanel.render(taskFilterButtonCHODiv);
         </s:if>
 
-        debugger;
         if (loadingTaskPanelFirstTimeAfterLogin) {
             sort = "dueDate";
             dir = "asc";
