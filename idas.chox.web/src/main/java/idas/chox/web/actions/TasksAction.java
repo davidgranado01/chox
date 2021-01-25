@@ -230,10 +230,6 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
                 taskSearchCriteria.setSupplierClaimOwnerIds(null);
                 taskSearchCriteria.setClaimOwnerIds(null);
                 taskSearchCriteria.setWorkgroupIds(null);
-                taskSearchCriteria.setDir(null);
-                taskSearchCriteria.setSort(null);
-                taskSearchCriteria.setStart(0);
-                taskSearchCriteria.setShowAssignedTasksOnly(true);
             }
 
             List<TaskViewData> viewData = new ArrayList<>();
