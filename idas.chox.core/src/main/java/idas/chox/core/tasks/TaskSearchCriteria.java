@@ -1,8 +1,12 @@
 package idas.chox.core.tasks;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 import java.util.Set;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TaskSearchCriteria implements Serializable {
 
     private Set<Integer> supplierClaimOwnerIds;
@@ -19,7 +23,7 @@ public class TaskSearchCriteria implements Serializable {
     }
 
     public void setSupplierClaimOwnerIds(Set<Integer> supplierClaimOwnerIds) {
-        if (supplierClaimOwnerIds.contains(null) || supplierClaimOwnerIds.contains(0)) {
+        if (supplierClaimOwnerIds != null && (supplierClaimOwnerIds.contains(null) || supplierClaimOwnerIds.contains(0))) {
             this.supplierClaimOwnerIds = null;
         } else {
             this.supplierClaimOwnerIds = supplierClaimOwnerIds;
@@ -29,7 +33,7 @@ public class TaskSearchCriteria implements Serializable {
     public Set<Integer> getClaimOwnerIds() { return claimOwnerIds; }
 
     public void setClaimOwnerIds(Set<Integer> claimOwnerIds) {
-        if (claimOwnerIds.contains(null) || claimOwnerIds.contains(0)){
+        if (claimOwnerIds != null && (claimOwnerIds.contains(null) || claimOwnerIds.contains(0))) {
             this.claimOwnerIds = null;
         } else {
             this.claimOwnerIds = claimOwnerIds;
@@ -39,7 +43,7 @@ public class TaskSearchCriteria implements Serializable {
     public Set<Integer> getWorkgroupIds() { return workgroupIds; }
 
     public void setWorkgroupIds(Set<Integer> workgroupIds) {
-        if (workgroupIds.contains(null) || workgroupIds.contains(0)){
+        if (workgroupIds != null && (workgroupIds.contains(null) || workgroupIds.contains(0))) {
             this.workgroupIds = null;
         } else {
             this.workgroupIds = workgroupIds;
@@ -50,6 +54,7 @@ public class TaskSearchCriteria implements Serializable {
      * Please note this method will return only Workgroup Ids from the
      * loaded(model) claimSearchCriteria and not from available Workgroup Id.
      */
+    @JsonIgnore
     public String getWorkgroupIdsAsString() {
 
         if (getWorkgroupIds() != null && !getWorkgroupIds().isEmpty()) {
@@ -66,6 +71,7 @@ public class TaskSearchCriteria implements Serializable {
      * Please note this method will return only Supplier Claim owner Ids from the
      * loaded(model) claimSearchCriteria and not from available Supplier Claim owner Id.
      */
+    @JsonIgnore
     public String getSupplierClaimOwnerIdsAsString() {
 
         if (getSupplierClaimOwnerIds() != null && !getSupplierClaimOwnerIds().isEmpty()) {
@@ -82,6 +88,7 @@ public class TaskSearchCriteria implements Serializable {
      * Please note this method will return only Supplier Claim owner Ids from the
      * loaded(model) claimSearchCriteria and not from available Supplier Claim owner Id.
      */
+    @JsonIgnore
     public String getClaimOwnerIdsAsString() {
 
         if (getClaimOwnerIds() != null && !getClaimOwnerIds().isEmpty()) {
@@ -93,7 +100,6 @@ public class TaskSearchCriteria implements Serializable {
         }
         return "";
     }
-
 
     public int getStart() {
         return start;

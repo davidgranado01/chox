@@ -17,6 +17,15 @@
     var sort = '<s:property value="sort"/>';
     var dir = '<s:property value="dir"/>';
     var showAssignedTasksOnly = <s:property value="showAssignedTasksOnly"/>;
+
+    // below variable will hold selected Workgroup records and reapply to the same combo box when corresponding(insurer) combo box changed.
+    var selectedWorkgroupValues = '<s:property value="workgroupIds"/>';
+    // below variable will hold selected Supp. ClaimOwner records and reapply to the same combo box when corresponding(supplier) combo box changed.
+    var selectedSuppClaimOwnerValues = '<s:property value="supplierClaimOwnerIds"/>';
+    // below variable will hold selected Ins. ClaimOwner records and reapply to the same combo box when corresponding(Insurer,Workgroup) combo box changed.
+    var selectedInsClaimOwnerValues = '<s:property value="claimOwnerIds"/>';
+
+    debugger;
     var createNewTaskWindow;
     var visibilityCombo;
     var taskTypeStore;
