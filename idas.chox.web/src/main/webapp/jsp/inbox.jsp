@@ -416,7 +416,8 @@
                             updateTaskTabCount(-1, 'not used');
                         },
                         params: {
-                            hideCompleted : true
+                            hideCompleted : true,
+                            showAssignedTasksOnly : true
                         }
             });
         }

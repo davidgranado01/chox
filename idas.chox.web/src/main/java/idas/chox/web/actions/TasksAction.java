@@ -303,15 +303,15 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
         LOG.debug("Calling taskService to get visible task counts");
         if (hideCompleted) {
             if (this.getIsCHO()) {
-                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, true);
+                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, taskSearchCriteria.isShowAssignedTasksOnly());
             } else {
-                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), true);
+                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), taskSearchCriteria.isShowAssignedTasksOnly());
             }
         } else {
             if (this.getIsCHO()) {
-                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, true);
+                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, taskSearchCriteria.isShowAssignedTasksOnly());
             } else {
-                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), true);
+                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), taskSearchCriteria.isShowAssignedTasksOnly());
             }
         }
         return SUCCESS;

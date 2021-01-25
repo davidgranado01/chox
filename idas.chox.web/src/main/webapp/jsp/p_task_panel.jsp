@@ -25,7 +25,6 @@
     // below variable will hold selected Ins. ClaimOwner records and reapply to the same combo box when corresponding(Insurer,Workgroup) combo box changed.
     var selectedInsClaimOwnerValues = '<s:property value="claimOwnerIds"/>';
 
-    debugger;
     var createNewTaskWindow;
     var visibilityCombo;
     var taskTypeStore;
@@ -1088,7 +1087,6 @@
         /*
          *  if canSearchForData is false then no data will be returned. this is mainly used to reset the search screen form.
          */
-        // debugger;
         var searchBaseParam;
         if (canSearchForData) {
             searchBaseParam = getTaskFilterParams();
