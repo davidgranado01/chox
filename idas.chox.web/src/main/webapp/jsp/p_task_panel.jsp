@@ -734,7 +734,7 @@
             },
             specialkey:function (el, e) {
                 if(e.keyCode === e.ENTER) {
-                    applyFilter(true);
+                    applyTasksFilter(true);
                 }
             },
             afterrender : function(){
@@ -837,7 +837,7 @@
             listeners: {
             specialkey:function (el, e) {
                 if(e.keyCode === e.ENTER) {
-                    applyFilter(true);
+                    applyTasksFilter(true);
                 }
             },
             afterrender : function(){
@@ -869,7 +869,7 @@
         }
     });
 
-        var supplierClaimOwnerReader = new Ext.data.JsonReader({
+        var tasksSupplierClaimOwnerReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
             root: 'results',
             fields:
@@ -898,10 +898,10 @@
             <%--        </s:else>--%>
             <%--        if (selectedSuppClaimOwnerValues && supplierClaimOwnerCombo) {supplierClaimOwnerCombo.reset();supplierClaimOwnerCombo.setValue(selectedSuppClaimOwnerValues);}--%>
             <%--    }},--%>
-            reader : supplierClaimOwnerReader
+            reader : tasksSupplierClaimOwnerReader
         });
 
-        supplierClaimOwnerCombo = new Ext.ux.form.SuperBoxSelect({
+        tasksSupplierClaimOwnerCombo = new Ext.ux.form.SuperBoxSelect({
             store : supplierClaimOwnerStore,
             width: 250,
             fieldLabel: <s:property value="isCHO"/> ? 'Claim Owner' : 'Supplier Claim Owner',
@@ -920,7 +920,7 @@
             listeners: {
             specialkey:function (el, e) {
                 if(e.keyCode === e.ENTER) {
-                    applyFilter(true);
+                    applyTasksFilter(true);
                 }
             },
             afterrender : function(){
@@ -930,7 +930,7 @@
                     params : {"supplierId": supplierId},
                     callback: function() {
                         if ('<s:property value="supplierClaimOwnerIdsAsString"/>') {
-                            supplierClaimOwnerCombo.setValue('<s:property value="supplierClaimOwnerIdsAsString"/>');
+                            tasksSupplierClaimOwnerCombo.setValue('<s:property value="supplierClaimOwnerIdsAsString"/>');
                             supplierClaimOwnerComboNumberOfSelectedRecord = '<s:property value="supplierClaimOwnerIdsAsString"/>'.split(',').length;
                         }
                     }
@@ -952,7 +952,7 @@
     });
 
     // Create the search and reset buttons
-    var filterButton = new Ext.Button({
+    var tasksFilterButton = new Ext.Button({
         text: 'Apply',
         scale : 'small',
         width : 100,
@@ -961,12 +961,12 @@
             marginTop: '0px'
         },
         handler: function(button, event) {
-            applyFilter(true);
+            applyTasksFilter(true);
         }
     });
 
-    var buttonPanel = new Ext.Panel({
-        fbar : [filterButton],
+    var tasksButtonPanel = new Ext.Panel({
+        fbar : [tasksFilterButton],
         header : false,
         border: false,
         bodyStyle: 'background-color:transparent;height:0',
@@ -979,7 +979,7 @@
         listeners:  {
             afterrender: function () {
                 if (!loadingTaskPanelFirstTimeAfterLogin && !showAssignedTasksOnly) {
-                    applyFilter(true);
+                    applyTasksFilter(true);
                 }
             }
         }
@@ -994,15 +994,15 @@
         </s:if>
 
         <s:if test="isCHO && choIsClaimOwnershipEnabled && isManager">
-        supplierClaimOwnerCombo.render(supplierClaimOwnerComboDiv);
+        tasksSupplierClaimOwnerCombo.render(supplierClaimOwnerComboDiv);
         </s:if>
 
         <s:if test="isInsurer && isManager && (insurerIsWorkgroupEnabled || insurerIsClaimOwnershipEnabled)">
-        buttonPanel.render(taskFilterButtonInsurerDiv);
+        tasksButtonPanel.render(taskFilterButtonInsurerDiv);
         </s:if>
 
         <s:if test="isCHO && isManager && choIsClaimOwnershipEnabled">
-        buttonPanel.render(taskFilterButtonCHODiv);
+        tasksButtonPanel.render(taskFilterButtonCHODiv);
         </s:if>
 
         if (loadingTaskPanelFirstTimeAfterLogin) {
@@ -1054,7 +1054,7 @@
         return params
     }
 
-    function clearForm() {
+    function clearTasksForm() {
         if (workgroupCombo && workgroupCombo.rendered) {
             workgroupStore.load({ params : {"orgId": null}});
             workgroupCombo.reset();
@@ -1067,10 +1067,10 @@
             claimOwnerCombo.clearValue();
             selectedInsClaimOwnerValues = null;
         }
-        if (supplierClaimOwnerCombo && supplierClaimOwnerCombo.rendered) {
+        if (tasksSupplierClaimOwnerCombo && tasksSupplierClaimOwnerCombo.rendered) {
             supplierClaimOwnerStore.load({ params : {"sup0lierId": -1}});
-            supplierClaimOwnerCombo.reset();
-            supplierClaimOwnerCombo.clearValue();
+            tasksSupplierClaimOwnerCombo.reset();
+            tasksSupplierClaimOwnerCombo.clearValue();
             selectedSuppClaimOwnerValues = null;
         }
 
@@ -1082,25 +1082,27 @@
     }
 
     function loadTasks(canSearchForData) {
+        updateTasksButtonStatus(showAssignedTasksOnly);
+
         /*
          *  if canSearchForData is false then no data will be returned. this is mainly used to reset the search screen form.
          */
         var searchBaseParam;
         if (canSearchForData) {
             searchBaseParam = getTaskFilterParams();
-            doDataLoad(searchBaseParam);
+            doTasksDataLoad(searchBaseParam);
             if (!hideCompleted || !showAssignedTasksOnly) {
                 updateTaskTab();
             }
         } else { // when reset button clicked else condition is invoked
-            clearForm();
+            clearTasksForm();
             searchBaseParam = {canLoadData : canSearchForData, "gridTitle" : ''};
-            doDataLoad(searchBaseParam);
+            doTasksDataLoad(searchBaseParam);
             updateTaskTab();
         }
     }
 
-    function doDataLoad(baseParams) {
+    function doTasksDataLoad(baseParams) {
         tasksDataStore.baseParams = baseParams;
         tasksDataStore.load({params:{start:start, limit:taskPanelRecordPerPage}});
     }
@@ -1174,14 +1176,20 @@
         }
     }
 
-    function applyFilter(canSearchForData) {
-        showAssignedTasksOnly = false;
-        var assignedTasksOnlyBtn = Ext.getCmp('assignedTasksOnlyButtonId');
-        if (assignedTasksOnlyBtn && assignedTasksOnlyBtn.rendered) {
-            assignedTasksOnlyBtn.setText('Show My Assigned Tasks Only');
-            assignedTasksOnlyBtn.pressed = true;
-            assignedTasksOnlyBtn.getClickEl().addClass('x-btn-pressed');
+    function updateTasksButtonStatus(showAssignedTasksOnly) {
+        if (!showAssignedTasksOnly) {
+            var assignedTasksOnlyBtn = Ext.getCmp('assignedTasksOnlyButtonId');
+            if (assignedTasksOnlyBtn && assignedTasksOnlyBtn.rendered) {
+                assignedTasksOnlyBtn.setText('Show My Assigned Tasks Only');
+                assignedTasksOnlyBtn.pressed = true;
+                assignedTasksOnlyBtn.getClickEl().addClass('x-btn-pressed');
+            }
         }
+    }
+
+    function applyTasksFilter(canSearchForData) {
+        showAssignedTasksOnly = false;
+        updateTasksButtonStatus(showAssignedTasksOnly);
         loadTasks(canSearchForData);
     }
 </script>
