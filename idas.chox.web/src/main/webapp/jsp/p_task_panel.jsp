@@ -1014,7 +1014,7 @@
             showAssignedTasksOnly = true;
         }
 
-        if (loadingTaskPanelFirstTimeAfterLogin || (showAssignedTasksOnly && backToSearchResults)) {
+        if (loadingTaskPanelFirstTimeAfterLogin || backToSearchResults) {
             taskTypeStore.load({params: {visibility: 1}});
             // initially load with 'private' visibility tasks
             loadTasks(true);
