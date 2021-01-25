@@ -12,7 +12,7 @@ public class TaskSearchCriteria implements Serializable {
     private int limit;
     private String sort = "dueDate";
     private String dir = "asc";
-    private boolean showAssignedTasksOnly = true;
+    private boolean showAssignedTasksOnly;
 
     public Set<Integer> getSupplierClaimOwnerIds() {
         return supplierClaimOwnerIds;

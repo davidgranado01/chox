@@ -48,7 +48,7 @@
         <s:elseif test="isCHO" >
         supplierId = '<s:property value="UserOrganisationId"/>'.split(",");
         </s:elseif>
-        
+
         dateRenderer = Ext.util.Format.dateRenderer('d/m/Y');
         // LOAD RECORDS
         tasksJsonReader = new Ext.data.JsonReader({
@@ -143,7 +143,7 @@
             ,plugins: new Ext.ux.ProgressBarPager()
         });
 
-        
+
         var tbar = new Ext.Toolbar({
             items:[
                      {
@@ -159,7 +159,7 @@
                         enableToggle: true,
                         toggleHandler: function() {
                             toggleComplete(this);
-                            if (this.pressed) 
+                            if (this.pressed)
                             {
                                 this.setText('Hide Completed Tasks');
                             } else {
@@ -175,7 +175,7 @@
                         enableToggle: true,
                         toggleHandler: function() {
                             toggleShowAssignedTasksOnly(this);
-                            if (this.pressed) 
+                            if (this.pressed)
                             {
                                 this.setText('Show My Assigned Tasks Only');
                             } else {
@@ -217,7 +217,7 @@
                      }
                  ]
         });
-        
+
         tasksGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:taskOnClick},
             store: tasksDataStore,
@@ -310,7 +310,7 @@
         });
 
         isCHO = <s:property value="isCHO" />;
-        
+
         var paymentMethodCombo = new Ext.form.ComboBox({
             store: paymentMethodStore,
             fieldLabel: (isCHO) ? 'Requested Payment Method' : 'Actual Payment Method',
@@ -330,7 +330,7 @@
             emptyText: 'Please Select'
         });
 
-        
+
         taskTypeCombo.on('select', function(box, record, index) {
             var selection = box.getValue();
             if (selection === 'Total Loss Payment') {
@@ -351,7 +351,7 @@
                 createNewTaskForm.doLayout();
             }
         });
-        
+
 
         var visibilityRoleCombo;
         if (!isCHO) {
@@ -494,7 +494,7 @@
                                                     format: 'd/m/Y'
                                                 })
                                             ]
-                                }, 
+                                },
                                 {
                                     layout: 'form',
                                     height : 'auto',
@@ -609,7 +609,7 @@
                                                     taskTypeCombo,
                                                     paymentMethodCombo
                                         ]
-                                }, 
+                                },
                                 {
                                         layout: 'form',
                                         height : 'auto',
@@ -638,7 +638,7 @@
                                                         name: 'supplierRef',
                                                         id: 'supplierRefId',
                                                         allowBlank: false
-                                                    } 
+                                                    }
                                         ]
                                 }
                             ]
@@ -788,8 +788,8 @@
 
             </s:elseif>
         }
-        
-        
+
+
         // Add claim owner combo box
         var claimOwnerReader = new Ext.data.JsonReader({
             totalProperty: 'totalCount',
@@ -970,7 +970,8 @@
         margins : {top : 0},
         listeners:  {
             afterrender: function () {
-                if (!loadingTaskPanelFirstTimeAfterLogin) {
+                debugger;
+                if (!loadingTaskPanelFirstTimeAfterLogin && !showAssignedTasksOnly) {
                     applyFilter(true);
                 }
             }
@@ -997,7 +998,14 @@
         buttonPanel.render(taskFilterButtonCHODiv);
         </s:if>
 
+        debugger;
         if (loadingTaskPanelFirstTimeAfterLogin) {
+            sort = "dueDate";
+            dir = "asc";
+            showAssignedTasksOnly = true;
+        }
+
+        if (loadingTaskPanelFirstTimeAfterLogin || (showAssignedTasksOnly && backToSearchResults)) {
             taskTypeStore.load({params: {visibility: 1}});
             // initially load with 'private' visibility tasks
             loadTasks(true);
@@ -1071,6 +1079,7 @@
         /*
          *  if canSearchForData is false then no data will be returned. this is mainly used to reset the search screen form.
          */
+        // debugger;
         var searchBaseParam;
         if (canSearchForData) {
             searchBaseParam = getTaskFilterParams();
@@ -1092,7 +1101,7 @@
     }
 
     function markAsComplete() {
-       
+
         var selectedRecord = tasksGrid.getSelectionModel().getSelected();
         if (selectedRecord) {
             var selectedRecordId = selectedRecord.get('id');
@@ -1121,7 +1130,7 @@
         hideCompleted = !hideCompleted;
         loadTasks(true);
     }
-    
+
     function toggleShowAssignedTasksOnly(el) {
         showAssignedTasksOnly = !showAssignedTasksOnly;
         if(showAssignedTasksOnly) {

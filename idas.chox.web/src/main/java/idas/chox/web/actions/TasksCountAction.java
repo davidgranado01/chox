@@ -1,35 +1,9 @@
 package idas.chox.web.actions;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.opensymphony.xwork2.ModelDriven;
 import com.opensymphony.xwork2.Preparable;
-import idas.chox.core.tasks.TaskSearchCriteria;
-import org.apache.commons.text.StringEscapeUtils;
-import org.apache.struts2.ServletActionContext;
-
-import org.jxls.common.Context;
-import org.jxls.util.JxlsHelper;
-
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.security.access.annotation.Secured;
-
 import idas.chox.core.model.AuditTrail;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.Task;
@@ -39,18 +13,33 @@ import idas.chox.core.services.AuditTrailService;
 import idas.chox.core.services.ClaimService;
 import idas.chox.core.services.TaskService;
 import idas.chox.core.services.WebUserUserRoleService;
+import idas.chox.core.tasks.TaskSearchCriteria;
 import idas.chox.core.util.DateHelper;
 import idas.chox.core.util.DeleteOnCloseFileInputStream;
 import idas.chox.data.ExcelTask;
 import idas.chox.web.viewdata.TaskViewData;
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.struts2.ServletActionContext;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+import org.jxls.common.Context;
+import org.jxls.util.JxlsHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
+
+import java.io.*;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 /**
  *
  * @author John
  */
-public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCriteria>, Preparable {
+public class TasksCountAction extends BaseAction {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TasksAction.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TasksCountAction.class);
     private static final int MAX_EXPORT_SIZE = 65535;
     private TaskService taskService;
     private ClaimService claimService;
@@ -304,15 +293,15 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
         LOG.debug("Calling taskService to get visible task counts");
         if (hideCompleted) {
             if (this.getIsCHO()) {
-                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, true);
+                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, taskSearchCriteria.isShowAssignedTasksOnly());
             } else {
-                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), true);
+                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), taskSearchCriteria.isShowAssignedTasksOnly());
             }
         } else {
             if (this.getIsCHO()) {
-                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, true);
+                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, taskSearchCriteria.isShowAssignedTasksOnly());
             } else {
-                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), true);
+                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), taskSearchCriteria.isShowAssignedTasksOnly());
             }
         }
         return SUCCESS;
@@ -889,22 +878,6 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
     private boolean isExportTaskOperationCancelled() {
         synchronized (getSessionLock()) {
             return (Boolean) getSession().get("cancelExportOperation");
-        }
-    }
-
-    @Override
-    public TaskSearchCriteria getModel() {
-        return taskSearchCriteria;
-    }
-
-    @Override
-    public void prepare() throws Exception {
-        if (taskSearchCriteria == null) {
-            if (getSession() != null && getSession().containsKey("taskSearchCriteria")) {
-                taskSearchCriteria = (TaskSearchCriteria) getSession().get("taskSearchCriteria");
-            } else {
-                taskSearchCriteria = new TaskSearchCriteria();
-            }
         }
     }
 }
