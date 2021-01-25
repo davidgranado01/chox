@@ -7,15 +7,21 @@
     var tasksGrid;
     var dateRenderer;
     var hideCompleted = true;
+
+
+    var supplierClaimOwnerIds = '<s:property value="supplierClaimOwnerIdsAsString"/>';
+    var claimOwnerIds = '<s:property value="claimOwnerIdsAsString"/>';
+    var workgroupIds = '<s:property value="workgroupIdsAsString"/>';
+    var start = <s:property value="start"/>;
+    var limit = <s:property value="limit"/>;
+    var sort = '<s:property value="sort"/>';
+    var dir = '<s:property value="dir"/>';
     var showAssignedTasksOnly = <s:property value="showAssignedTasksOnly"/>;
     var createNewTaskWindow;
     var visibilityCombo;
     var taskTypeStore;
     var isCHO;
     var createNewTaskForm;
-    var start = <s:property value="start"/>;
-    var sort = '<s:property value="sort"/>';
-    var dir = '<s:property value="dir"/>';
     var taskPanelRecordPerPage=20;
     var loadingTaskPanelFirstTimeAfterLogin = <s:property value="loadingTaskPanelFirstTimeAfterLogin"/>;
 
@@ -29,12 +35,6 @@
     var claimOwnerStore;
     var supplierClaimOwnerCombo;
     var supplierClaimOwnerStore;
-    // below variable will hold selected Workgroup records and reapply to the same combo box when corresponding(insurer) combo box changed.
-    var selectedWorkgroupValues = '<s:property value="workgroupIds"/>';
-    // below variable will hold selected Supp. ClaimOwner records and reapply to the same combo box when corresponding(supplier) combo box changed.
-    var selectedSuppClaimOwnerValues = '<s:property value="supplierClaimOwnerIds"/>';
-    // below variable will hold selected Ins. ClaimOwner records and reapply to the same combo box when corresponding(Insurer,Workgroup) combo box changed.
-    var selectedInsClaimOwnerValues = '<s:property value="claimOwnerIds"/>';
     var workgroupComboNumberOfSelectedRecord = 0;
     var claimOwnerComboNumberOfSelectedRecord = 0;
     var supplierClaimOwnerComboNumberOfSelectedRecord = 0;

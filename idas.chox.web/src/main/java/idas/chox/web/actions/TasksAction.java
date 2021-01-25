@@ -161,6 +161,7 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
             }
             loadingTaskPanelFirstTimeAfterLogin = true;
         }
+
         return SUCCESS;
     }
 
@@ -174,7 +175,7 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
         return jsonString;
     }
 
-    public String getSortedTasks() {
+    public String getSortedTasks() throws JsonProcessingException {
         boolean showInsurerRole = false;
 
         if (getIsInsurer() || getIsChoxAdmin()) {
@@ -198,7 +199,8 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
         }
 
         synchronized (getSessionLock()) {
-            getSession().put("taskSearchCriteria", taskSearchCriteria);
+            ObjectMapper mapper = new ObjectMapper();
+            getSession().put("taskSearchCriteria", mapper.writeValueAsString(taskSearchCriteria));
         }
 
         LOG.debug("total task size is {}", totalCount);
@@ -214,7 +216,7 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
         return SUCCESS;
     }
 
-    public String getSortedVisibleTasks() {
+    public String getSortedVisibleTasks() throws JsonProcessingException {
 
         if (canLoadData) {
             boolean showInsurerRole = false;
@@ -268,7 +270,8 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
             }
 
             synchronized (getSessionLock()) {
-                getSession().put("taskSearchCriteria", taskSearchCriteria);
+                ObjectMapper mapper = new ObjectMapper();
+                getSession().put("taskSearchCriteria", mapper.writeValueAsString(taskSearchCriteria));
             }
 
             ObjectMapper mapper = new ObjectMapper();
@@ -901,7 +904,9 @@ public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCri
     public void prepare() throws Exception {
         if (taskSearchCriteria == null) {
             if (getSession() != null && getSession().containsKey("taskSearchCriteria")) {
-                taskSearchCriteria = (TaskSearchCriteria) getSession().get("taskSearchCriteria");
+                String taskSearchCriteriaStr = getSession().get("taskSearchCriteria").toString();
+                ObjectMapper mapper = new ObjectMapper();
+                taskSearchCriteria = mapper.readValue(taskSearchCriteriaStr, TaskSearchCriteria.class);
             } else {
                 taskSearchCriteria = new TaskSearchCriteria();
             }
