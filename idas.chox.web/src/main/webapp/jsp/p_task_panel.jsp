@@ -979,7 +979,7 @@
         listeners:  {
             afterrender: function () {
                 if (!loadingTaskPanelFirstTimeAfterLogin && !showAssignedTasksOnly) {
-                    applyTasksFilter(true);
+                    applyTasksFilter(true, true);
                 }
             }
         }
@@ -1187,8 +1187,12 @@
         }
     }
 
-    function applyTasksFilter(canSearchForData) {
+    function applyTasksFilter(canSearchForData, reserveStart) {
         showAssignedTasksOnly = false;
+        if (!reserveStart) {
+            start = 0;
+        }
+
         updateTasksButtonStatus(showAssignedTasksOnly);
         loadTasks(canSearchForData);
     }
