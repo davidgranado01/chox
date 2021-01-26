@@ -95,9 +95,9 @@ function getEmailReceivers {
 	    "DLG-Invoice_Notifications-ManualAuxillis-"* )
             ACTIVE=1
             EMAIL_RECEIVERS=tam.bedford@directlinegroup.co.uk;;
-	    "DLG-HireInvoiceUploadReport-"* )
-	        ACTIVE=0
-            EMAIL_RECEIVERS=tam.bedford@directlinegroup.co.uk,phil.room@directlinegroup.co.uk;;
+	 #   "DLG-HireInvoiceUploadReport-"* )
+	 #       ACTIVE=1
+   #         EMAIL_RECEIVERS=tam.bedford@directlinegroup.co.uk,phil.room@directlinegroup.co.uk;;
         "DLG-PrestigeClaimReport-"* )
 	        ACTIVE=1
             EMAIL_RECEIVERS=tam.bedford@directlinegroup.co.uk;;

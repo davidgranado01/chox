@@ -182,15 +182,15 @@ $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
 select * from prestige_claim_report(${INS_ID}, null, null, null, '${START_DATE}', '${END_DATE}');
 --EOF--
 
-/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
-/bin/rm ${DUMPFILE}
-
-echo 'Generating Hire Invoice Upload Report for DLG'
-DUMPFILE='DLG-HireInvoiceUploadReport-'`date +"%Y%m%d"`.txt
-INS_ID=6
-$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
-select * from hire_invoice_upload_report(array[${INS_ID}], array[1015, 1016, 1735], null::integer[], '${START_DATE}', '${END_DATE}');
---EOF--
+# /bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+# /bin/rm ${DUMPFILE}
+#
+# echo 'Generating Hire Invoice Upload Report for DLG'
+# DUMPFILE='DLG-HireInvoiceUploadReport-'`date +"%Y%m%d"`.txt
+# INS_ID=6
+# $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+# select * from hire_invoice_upload_report(array[${INS_ID}], array[1015, 1016, 1735], null::integer[], '${START_DATE}', '${END_DATE}');
+# --EOF--
 
 /bin/cp ${DUMPFILE} ${MI_DIRECTORY}
 /bin/rm ${DUMPFILE}
