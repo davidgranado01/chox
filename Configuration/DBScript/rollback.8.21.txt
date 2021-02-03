@@ -1,0 +1,36 @@
+2021.02.02
+
+--- REC-7954
+
+pre_uk_chox=> SELECT id FROM accessibility WHERE name = 'extraAction.updateClaimWorkgroupAndOwner.ClaimPending';
+ id
+----
+(0 rows)
+
+pre_uk_chox=> SELECT id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimPending';
+ id
+----
+(0 rows)
+
+pre_uk_chox=> SELECT id FROM accessibility WHERE name = 'extraAction.updateClaimWorkgroup.ClaimPending';
+ id
+----
+(0 rows)
+
+
+--- REC-9672
+
+pre_uk_chox=> SELECT id FROM accessibility WHERE name = 'extraAction.updateClaimWorkgroup.ClaimRejected';
+ id
+----
+(0 rows)
+
+pre_uk_chox=> SELECT id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimRejected';
+ id
+----
+(0 rows)
+
+pre_uk_chox=> SELECT id FROM accessibility WHERE name = 'extraAction.updateClaimWorkgroupAndOwner.ClaimRejected';
+ id
+----
+(0 rows)
