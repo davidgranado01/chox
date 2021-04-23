@@ -6,17 +6,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.opensymphony.xwork2.ModelDriven;
+import com.opensymphony.xwork2.Preparable;
+import idas.chox.core.tasks.TaskSearchCriteria;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.struts2.ServletActionContext;
 
@@ -49,7 +48,7 @@ import idas.chox.web.viewdata.TaskViewData;
  *
  * @author John
  */
-public class TasksAction extends BaseAction {
+public class TasksAction extends BaseAction implements ModelDriven<TaskSearchCriteria>, Preparable {
 
     private static final Logger LOG = LoggerFactory.getLogger(TasksAction.class);
     private static final int MAX_EXPORT_SIZE = 65535;
@@ -59,7 +58,6 @@ public class TasksAction extends BaseAction {
     private String jObject;
     private int jObjectSize;
     private boolean hideCompleted;
-    private boolean showAssignedTasksOnly;
     private int selectedTaskId;
     private String taskDescription;
     private String taskType;
@@ -68,10 +66,6 @@ public class TasksAction extends BaseAction {
     private String visibilityRole;
     private int visibility;
     private int claimId = -1;
-    private int start;
-    private int limit;
-    private String sort;
-    private String dir;
     private int totalCount;
     private String colorCode;
     private WebUserUserRoleService webUserUserRoleService;
@@ -87,41 +81,16 @@ public class TasksAction extends BaseAction {
     private boolean tooManyRows;
     private String paymentMethod;
     private Date paymentDate;
+    private TaskSearchCriteria taskSearchCriteria;
+    private boolean canLoadData = true;
+    private boolean loadingTaskPanelFirstTimeAfterLogin;
 
-    public String getSort() {
-        return sort;
+    public boolean isLoadingTaskPanelFirstTimeAfterLogin() {
+        return loadingTaskPanelFirstTimeAfterLogin;
     }
 
-    public void setSort(String sort) {
-        if (sort != null && sort.equals("createdBy")) {
-            this.sort = "raisedBy";
-        } else {
-            this.sort = sort;
-        }
-    }
-
-    public String getDir() {
-        return dir;
-    }
-
-    public void setDir(String dir) {
-        this.dir = dir;
-    }
-
-    public int getLimit() {
-        return limit;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
-    }
-
-    public int getStart() {
-        return start;
-    }
-
-    public void setStart(int start) {
-        this.start = start;
+    public void setLoadingTaskPanelFirstTimeAfterLogin(boolean loadingTaskPanelFirstTimeAfterLogin) {
+        this.loadingTaskPanelFirstTimeAfterLogin = loadingTaskPanelFirstTimeAfterLogin;
     }
 
     public void setSelectedTaskId(int selectedTaskId) {
@@ -130,10 +99,6 @@ public class TasksAction extends BaseAction {
 
     public void setHideCompleted(boolean hideCompleted) {
         this.hideCompleted = hideCompleted;
-    }
-
-    public void setShowAssignedTasksOnly(boolean showAssignedTasksOnly) {
-        this.showAssignedTasksOnly = showAssignedTasksOnly;
     }
 
     public void setChoReference(String choReference) {
@@ -173,8 +138,30 @@ public class TasksAction extends BaseAction {
         this.paymentDate = paymentDate;
     }
 
+    public boolean isCanLoadData() {
+        return canLoadData;
+    }
+
+    public void setCanLoadData(boolean canLoadData) {
+        this.canLoadData = canLoadData;
+    }
+
     @Override
     public String execute() throws Exception {
+        return SUCCESS;
+    }
+
+    public String loadTasks() throws Exception {
+
+        if (getSession().containsKey("loadingTaskPanelFirstTimeAfterLogin")) {
+            loadingTaskPanelFirstTimeAfterLogin = false;
+        } else {
+            synchronized (getSessionLock()) {
+                getSession().put("loadingTaskPanelFirstTimeAfterLogin", true);
+            }
+            loadingTaskPanelFirstTimeAfterLogin = true;
+        }
+
         return SUCCESS;
     }
 
@@ -188,7 +175,7 @@ public class TasksAction extends BaseAction {
         return jsonString;
     }
 
-    public String getSortedTasks() {
+    public String getSortedTasks() throws JsonProcessingException {
         boolean showInsurerRole = false;
 
         if (getIsInsurer() || getIsChoxAdmin()) {
@@ -198,17 +185,22 @@ public class TasksAction extends BaseAction {
         List<TaskViewData> viewData = new ArrayList<>();
         LOG.debug("Calling taskService to get all tasks");
         if (hideCompleted) {
-            SearchResult searchResult = taskService.getIncompleteTasks(start, limit, sort, dir);
+            SearchResult searchResult = taskService.getIncompleteTasks(taskSearchCriteria.getStart(), taskSearchCriteria.getLimit(), taskSearchCriteria.getSort(), taskSearchCriteria.getDir());
             tasks = searchResult.getResult();
             totalCount = searchResult.getTotalCount();
         } else {
-            SearchResult searchResult = taskService.getAllTasks(start, limit, sort, dir);
+            SearchResult searchResult = taskService.getAllTasks(taskSearchCriteria.getStart(), taskSearchCriteria.getLimit(), taskSearchCriteria.getSort(), taskSearchCriteria.getDir());
             tasks = searchResult.getResult();
             totalCount = searchResult.getTotalCount();
         }
 
         for (Task c : tasks) {
             viewData.add(new TaskViewData(c, showInsurerRole));
+        }
+
+        synchronized (getSessionLock()) {
+            ObjectMapper mapper = new ObjectMapper();
+            getSession().put("taskSearchCriteria", mapper.writeValueAsString(taskSearchCriteria));
         }
 
         LOG.debug("total task size is {}", totalCount);
@@ -224,53 +216,75 @@ public class TasksAction extends BaseAction {
         return SUCCESS;
     }
 
-    public String getSortedVisibleTasks() {
-        boolean showInsurerRole = false;
+    public String getSortedVisibleTasks() throws JsonProcessingException {
 
-        if (getIsInsurer() || getIsChoxAdmin()) {
-            showInsurerRole = true;
-        }
+        if (canLoadData) {
+            boolean showInsurerRole = false;
 
-        List<TaskViewData> viewData = new ArrayList<>();
-        LOG.debug("Calling taskService to get all visible tasks");
-        if (hideCompleted) {
-            if (this.getIsCHO()) {
-                SearchResult searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, start, limit, sort, dir, showAssignedTasksOnly);
-                tasks = searchResult.getResult();
-                totalCount = searchResult.getTotalCount();
-                colorCode = searchResult.getColorCode();
-            } else {
-                SearchResult searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), start, limit, sort, dir, showAssignedTasksOnly);
-                tasks = searchResult.getResult();
-                totalCount = searchResult.getTotalCount();
-                colorCode = searchResult.getColorCode();
+            if (getIsInsurer() || getIsChoxAdmin()) {
+                showInsurerRole = true;
             }
+
+            // if login user is not manager, will not allow user to filter by supplierClaimOwnerIds
+            if (!getIsManager()) {
+                taskSearchCriteria.setSupplierClaimOwnerIds(null);
+                taskSearchCriteria.setClaimOwnerIds(null);
+                taskSearchCriteria.setWorkgroupIds(null);
+            }
+
+            List<TaskViewData> viewData = new ArrayList<>();
+            LOG.debug("Calling taskService to get all visible tasks");
+            if (hideCompleted) {
+                if (this.getIsCHO()) {
+                    SearchResult searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), taskSearchCriteria.getSupplierClaimOwnerIds(), taskSearchCriteria.getClaimOwnerIds(), taskSearchCriteria.getWorkgroupIds(), this.getChoIsClaimOwnershipEnabled(), false, taskSearchCriteria.getStart(), taskSearchCriteria.getLimit(), taskSearchCriteria.getSort(), taskSearchCriteria.getDir(), taskSearchCriteria.isShowAssignedTasksOnly());
+                    tasks = searchResult.getResult();
+                    totalCount = searchResult.getTotalCount();
+                    colorCode = searchResult.getColorCode();
+                } else {
+                    SearchResult searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), taskSearchCriteria.getSupplierClaimOwnerIds(), taskSearchCriteria.getClaimOwnerIds(), taskSearchCriteria.getWorkgroupIds(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), taskSearchCriteria.getStart(), taskSearchCriteria.getLimit(), taskSearchCriteria.getSort(), taskSearchCriteria.getDir(), taskSearchCriteria.isShowAssignedTasksOnly());
+                    tasks = searchResult.getResult();
+                    totalCount = searchResult.getTotalCount();
+                    colorCode = searchResult.getColorCode();
+                }
+            } else {
+                if (this.getIsCHO()) {
+                    SearchResult searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), taskSearchCriteria.getSupplierClaimOwnerIds(), taskSearchCriteria.getClaimOwnerIds(), taskSearchCriteria.getWorkgroupIds(), this.getChoIsClaimOwnershipEnabled(), false, taskSearchCriteria.getStart(), taskSearchCriteria.getLimit(), taskSearchCriteria.getSort(), taskSearchCriteria.getDir(), taskSearchCriteria.isShowAssignedTasksOnly());
+                    tasks = searchResult.getResult();
+                    totalCount = searchResult.getTotalCount();
+                } else {
+                    SearchResult searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), taskSearchCriteria.getSupplierClaimOwnerIds(), taskSearchCriteria.getClaimOwnerIds(), taskSearchCriteria.getWorkgroupIds(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(),  taskSearchCriteria.getStart(), taskSearchCriteria.getLimit(), taskSearchCriteria.getSort(), taskSearchCriteria.getDir(), taskSearchCriteria.isShowAssignedTasksOnly());
+                    tasks = searchResult.getResult();
+                    totalCount = searchResult.getTotalCount();
+                }
+            }
+
+            for (Task c : tasks) {
+                if (c.getRaisedBy() != null) {
+                    c.setCreatedBy(c.getRaisedBy());
+                }
+                viewData.add(new TaskViewData(c, showInsurerRole));
+            }
+
+            synchronized (getSessionLock()) {
+                ObjectMapper mapper = new ObjectMapper();
+                getSession().put("taskSearchCriteria", mapper.writeValueAsString(taskSearchCriteria));
+            }
+
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonString = null;
+            try {
+                jObject = mapper.writeValueAsString(viewData);
+                jObjectSize = viewData.size();
+            } catch (JsonProcessingException ex) {
+                LOG.error("Error converting viewData for sorted visible tasks to json string.");
+            }
+
         } else {
-            if (this.getIsCHO()) {
-                SearchResult searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, start, limit, sort, dir, showAssignedTasksOnly);
-                tasks = searchResult.getResult();
-                totalCount = searchResult.getTotalCount();
-            } else {
-                SearchResult searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), start, limit, sort, dir, showAssignedTasksOnly);
-                tasks = searchResult.getResult();
-                totalCount = searchResult.getTotalCount();
-            }
-        }
 
-        for (Task c : tasks) {
-            if (c.getRaisedBy() != null) {
-                c.setCreatedBy(c.getRaisedBy());
+            synchronized (getSessionLock()) {
+                getSession().put("searchCriteria", null);
             }
-            viewData.add(new TaskViewData(c, showInsurerRole));
-        }
 
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = null;
-        try {
-            jObject = mapper.writeValueAsString(viewData);
-            jObjectSize = viewData.size();
-        } catch (JsonProcessingException ex) {
-            LOG.error("Error converting viewData for sorted visible tasks to json string.");
         }
         return SUCCESS;
     }
@@ -289,15 +303,15 @@ public class TasksAction extends BaseAction {
         LOG.debug("Calling taskService to get visible task counts");
         if (hideCompleted) {
             if (this.getIsCHO()) {
-                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, showAssignedTasksOnly);
+                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, taskSearchCriteria.isShowAssignedTasksOnly());
             } else {
-                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), showAssignedTasksOnly);
+                totalCount = taskService.getIncompleteVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), taskSearchCriteria.isShowAssignedTasksOnly());
             }
         } else {
             if (this.getIsCHO()) {
-                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, showAssignedTasksOnly);
+                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, taskSearchCriteria.isShowAssignedTasksOnly());
             } else {
-                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), showAssignedTasksOnly);
+                totalCount = taskService.getAllVisibleTaskCount(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), taskSearchCriteria.isShowAssignedTasksOnly());
             }
         }
         return SUCCESS;
@@ -534,20 +548,20 @@ public class TasksAction extends BaseAction {
                 SearchResult searchResult;
                 if (hideCompleted) {
                     if (this.getIsCHO()) {
-                        searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, 0, MAX_EXPORT_SIZE, sort, dir, showAssignedTasksOnly);
+                        searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(),  taskSearchCriteria.getSupplierClaimOwnerIds(), taskSearchCriteria.getClaimOwnerIds(), taskSearchCriteria.getWorkgroupIds(), this.getChoIsClaimOwnershipEnabled(), false, 0, MAX_EXPORT_SIZE, taskSearchCriteria.getSort(), taskSearchCriteria.getDir(), taskSearchCriteria.isShowAssignedTasksOnly());
                     } else if (this.getIsInsurer()) {
-                        searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), 0, MAX_EXPORT_SIZE, sort, dir, showAssignedTasksOnly);
+                        searchResult = taskService.getIncompleteVisibleTasks(this.getAuthenticatedUser().getId(),  taskSearchCriteria.getSupplierClaimOwnerIds(), taskSearchCriteria.getClaimOwnerIds(), taskSearchCriteria.getWorkgroupIds(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), 0, MAX_EXPORT_SIZE, taskSearchCriteria.getSort(), taskSearchCriteria.getDir(), taskSearchCriteria.isShowAssignedTasksOnly());
                     } else {
-                        searchResult = taskService.getIncompleteTasks(0, MAX_EXPORT_SIZE, sort, dir);
+                        searchResult = taskService.getIncompleteTasks(0, MAX_EXPORT_SIZE, taskSearchCriteria.getSort(), taskSearchCriteria.getDir());
                     }
 
                 } else {
                     if (this.getIsCHO()) {
-                        searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), this.getChoIsClaimOwnershipEnabled(), false, 0, MAX_EXPORT_SIZE, sort, dir, showAssignedTasksOnly);
+                        searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(),  taskSearchCriteria.getSupplierClaimOwnerIds(), taskSearchCriteria.getClaimOwnerIds(), taskSearchCriteria.getWorkgroupIds(), this.getChoIsClaimOwnershipEnabled(), false, 0, MAX_EXPORT_SIZE, taskSearchCriteria.getSort(), taskSearchCriteria.getDir(), taskSearchCriteria.isShowAssignedTasksOnly());
                     } else if (this.getIsInsurer()) {
-                        searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), 0, MAX_EXPORT_SIZE, sort, dir, showAssignedTasksOnly);
+                        searchResult = taskService.getAllVisibleTasks(this.getAuthenticatedUser().getId(),  taskSearchCriteria.getSupplierClaimOwnerIds(), taskSearchCriteria.getClaimOwnerIds(), taskSearchCriteria.getWorkgroupIds(), this.getInsurerIsClaimOwnershipEnabled(), this.getInsurerIsWorkgroupEnabled(), 0, MAX_EXPORT_SIZE, taskSearchCriteria.getSort(), taskSearchCriteria.getDir(), taskSearchCriteria.isShowAssignedTasksOnly());
                     } else {
-                        searchResult = taskService.getAllTasks(0, MAX_EXPORT_SIZE, sort, dir);
+                        searchResult = taskService.getAllTasks(0, MAX_EXPORT_SIZE, taskSearchCriteria.getSort(), taskSearchCriteria.getDir());
                     }
                 }
                 if (searchResult != null) {
@@ -874,6 +888,24 @@ public class TasksAction extends BaseAction {
     private boolean isExportTaskOperationCancelled() {
         synchronized (getSessionLock()) {
             return (Boolean) getSession().get("cancelExportOperation");
+        }
+    }
+
+    @Override
+    public TaskSearchCriteria getModel() {
+        return taskSearchCriteria;
+    }
+
+    @Override
+    public void prepare() throws Exception {
+        if (taskSearchCriteria == null) {
+            if (getSession() != null && getSession().containsKey("taskSearchCriteria")) {
+                String taskSearchCriteriaStr = getSession().get("taskSearchCriteria").toString();
+                ObjectMapper mapper = new ObjectMapper();
+                taskSearchCriteria = mapper.readValue(taskSearchCriteriaStr, TaskSearchCriteria.class);
+            } else {
+                taskSearchCriteria = new TaskSearchCriteria();
+            }
         }
     }
 }

@@ -7,16 +7,55 @@
     var tasksGrid;
     var dateRenderer;
     var hideCompleted = true;
-    var showAssignedTasksOnly = true;
+
+
+    var supplierClaimOwnerIds = '<s:property value="supplierClaimOwnerIdsAsString"/>';
+    var claimOwnerIds = '<s:property value="claimOwnerIdsAsString"/>';
+    var workgroupIds = '<s:property value="workgroupIdsAsString"/>';
+    var start = <s:property value="start"/>;
+    var limit = <s:property value="limit"/>;
+    var sort = '<s:property value="sort"/>';
+    var dir = '<s:property value="dir"/>';
+    var showAssignedTasksOnly = <s:property value="showAssignedTasksOnly"/>;
+
+    // below variable will hold selected Workgroup records and reapply to the same combo box when corresponding(insurer) combo box changed.
+    var selectedWorkgroupValues = '<s:property value="workgroupIds"/>';
+    // below variable will hold selected Supp. ClaimOwner records and reapply to the same combo box when corresponding(supplier) combo box changed.
+    var selectedSuppClaimOwnerValues = '<s:property value="supplierClaimOwnerIds"/>';
+    // below variable will hold selected Ins. ClaimOwner records and reapply to the same combo box when corresponding(Insurer,Workgroup) combo box changed.
+    var selectedInsClaimOwnerValues = '<s:property value="claimOwnerIds"/>';
+
     var createNewTaskWindow;
     var visibilityCombo;
     var taskTypeStore;
     var isCHO;
     var createNewTaskForm;
-    var start=0;
     var taskPanelRecordPerPage=20;
+    var loadingTaskPanelFirstTimeAfterLogin = <s:property value="loadingTaskPanelFirstTimeAfterLogin"/>;
+
+    var insurerId;
+    var supplierId;
+
+    var workgroupCombo;
+    var workgroupStore;
+    var workgroupId;
+    var claimOwnerCombo;
+    var claimOwnerStore;
+    var supplierClaimOwnerCombo;
+    var supplierClaimOwnerStore;
+    var workgroupComboNumberOfSelectedRecord = 0;
+    var claimOwnerComboNumberOfSelectedRecord = 0;
+    var supplierClaimOwnerComboNumberOfSelectedRecord = 0;
+    var backToSearchResults = true;
 
     Ext.onReady(function(){
+
+        <s:if test="isInsurer" >
+        insurerId = '<s:property value="UserOrganisationId"/>'.split(",");
+        </s:if>
+        <s:elseif test="isCHO" >
+        supplierId = '<s:property value="UserOrganisationId"/>'.split(",");
+        </s:elseif>
 
         dateRenderer = Ext.util.Format.dateRenderer('d/m/Y');
         // LOAD RECORDS
@@ -60,7 +99,7 @@
             });
         </s:else>
 
-        tasksDataStore.setDefaultSort('dueDate', 'asc');
+        tasksDataStore.setDefaultSort(sort, dir);
 
         // the check column is created using a custom plugin
         Ext.grid.CheckColumn = function(config){
@@ -112,7 +151,7 @@
             ,plugins: new Ext.ux.ProgressBarPager()
         });
 
-        
+
         var tbar = new Ext.Toolbar({
             items:[
                      {
@@ -128,7 +167,7 @@
                         enableToggle: true,
                         toggleHandler: function() {
                             toggleComplete(this);
-                            if (this.pressed) 
+                            if (this.pressed)
                             {
                                 this.setText('Hide Completed Tasks');
                             } else {
@@ -144,10 +183,32 @@
                         enableToggle: true,
                         toggleHandler: function() {
                             toggleShowAssignedTasksOnly(this);
-                            if (this.pressed) 
+                            if (this.pressed)
                             {
                                 this.setText('Show My Assigned Tasks Only');
                             } else {
+                                <s:if test="isCHO && choIsClaimOwnershipEnabled && isManager">
+                                var supplierClaimOwnerFilterCombo = Ext.getCmp('SupplierClaimOwnerComboId');
+                                if (supplierClaimOwnerFilterCombo && supplierClaimOwnerFilterCombo.rendered) {
+                                    supplierClaimOwnerFilterCombo.reset();
+                                    supplierClaimOwnerFilterCombo.clearValue();
+                                }
+                                </s:if>
+
+                                <s:if test="isInsurer && isManager">
+                                var workgroupFilterCombo = Ext.getCmp('workgroupComboId');
+                                if (workgroupFilterCombo && workgroupFilterCombo.rendered) {
+                                    workgroupFilterCombo.reset();
+                                    workgroupFilterCombo.clearValue();
+                                }
+
+                                var claimOwnerFilterCombo = Ext.getCmp('claimOwnerComboId');
+                                if (claimOwnerFilterCombo && claimOwnerFilterCombo.rendered) {
+                                    claimOwnerFilterCombo.reset();
+                                    claimOwnerFilterCombo.clearValue();
+                                }
+                                </s:if>
+
                                 this.setText('Show All Tasks');
                             }
                         },
@@ -157,11 +218,14 @@
                     ,{
                         text:'Export To Excel',
                         id : 'taskExportToExcelButtonId',
-                        handler : doTaskExportExcel
+                        handler : function() {
+                            var params = getTaskFilterParams();
+                            doTaskExportExcel(params);
+                        }
                      }
                  ]
         });
-        
+
         tasksGrid = new Ext.grid.GridPanel({
             listeners:  {cellclick:taskOnClick},
             store: tasksDataStore,
@@ -235,7 +299,6 @@
             emptyText: 'Please select a task type...'
         });
 
-
         var visibilityOptions = [
             [1, 'Private'],
             [2, 'Internal'],
@@ -255,7 +318,7 @@
         });
 
         isCHO = <s:property value="isCHO" />;
-        
+
         var paymentMethodCombo = new Ext.form.ComboBox({
             store: paymentMethodStore,
             fieldLabel: (isCHO) ? 'Requested Payment Method' : 'Actual Payment Method',
@@ -275,7 +338,7 @@
             emptyText: 'Please Select'
         });
 
-        
+
         taskTypeCombo.on('select', function(box, record, index) {
             var selection = box.getValue();
             if (selection === 'Total Loss Payment') {
@@ -296,7 +359,7 @@
                 createNewTaskForm.doLayout();
             }
         });
-        
+
 
         var visibilityRoleCombo;
         if (!isCHO) {
@@ -439,7 +502,7 @@
                                                     format: 'd/m/Y'
                                                 })
                                             ]
-                                }, 
+                                },
                                 {
                                     layout: 'form',
                                     height : 'auto',
@@ -504,7 +567,7 @@
                             ajax.loadJson2(url, param, function(data){
                                 if(data.resultType==='YesNo'){
                                     if(data.result==='yes'){
-                                        loadTasks();
+                                        loadTasks(true);
                                         createNewTaskForm.form.reset();
                                         Ext.getCmp('paymentMethodComboId').hide();
                                         Ext.getCmp('paymentDateId').hide();
@@ -554,7 +617,7 @@
                                                     taskTypeCombo,
                                                     paymentMethodCombo
                                         ]
-                                }, 
+                                },
                                 {
                                         layout: 'form',
                                         height : 'auto',
@@ -583,7 +646,7 @@
                                                         name: 'supplierRef',
                                                         id: 'supplierRefId',
                                                         allowBlank: false
-                                                    } 
+                                                    }
                                         ]
                                 }
                             ]
@@ -614,7 +677,7 @@
                             ajax.loadJson2(url, param, function(data){
                                 if(data.resultType==='YesNo'){
                                     if(data.result==='yes'){
-                                        loadTasks();
+                                        loadTasks(true);
                                         createNewTaskForm.form.reset();
                                         Ext.getCmp('paymentMethodComboId').hide();
                                         createNewTaskForm.doLayout();
@@ -628,8 +691,334 @@
             });
 
         }
-        taskTypeStore.load({params:{visibility: 1}}); // initially load with 'private' visibility tasks
-        loadTasks();
+
+        // Add Workgroup drop-down menu
+        var workgroupJsonReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                    {name:'text'},
+                    {name:'value'}
+                ]
+        });
+
+        workgroupStore = new choxDataStore({
+            url : "/prv/p/WorkgroupDropDownActionByInsurer2.action",
+            params : {"orgId": insurerId},
+            reader : workgroupJsonReader
+            ,listeners: {load: function() {/*this.insert(0, new Ext.data.Record(defaultDropdownValue));*/
+                    if(selectedWorkgroupValues && workgroupCombo) {workgroupCombo.reset();workgroupCombo.setValue(selectedWorkgroupValues);}
+                }}
+        });
+
+        workgroupCombo = new Ext.ux.form.SuperBoxSelect({
+                store : workgroupStore,
+                width: 250,
+                fieldLabel: 'Workgroup',
+                disabled : !((!<s:property value="isInsurer"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/>)),
+            hidden : !((!<s:property value="isInsurer"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsWorkgroupEnabled"/>)),
+        valueField : 'text', id : 'workgroupComboId',
+            displayField :'value',
+            typeAhead : true,
+            mode : 'local',
+            triggerAction : 'all',
+            emptyText: '--- ALL ---',
+            removeValuesFromStore : false,
+            selectOnFocus : true,
+            forceSelection : true,
+            listeners: {
+            blur: function () {
+                if(this.getValue() === "" ) {
+                }
+            },
+            specialkey:function (el, e) {
+                if(e.keyCode === e.ENTER) {
+                    applyTasksFilter(true);
+                }
+            },
+            afterrender : function(){
+                // Store not loaded yet? Set value when it *is* loaded.
+                this.store.load({
+                    params : {"orgId": insurerId},
+                    callback: function() {
+                        if ('<s:property value="workgroupIdsAsString"/>') {
+                            workgroupCombo.setValue('<s:property value="workgroupIdsAsString"/>');
+                            workgroupComboNumberOfSelectedRecord = '<s:property value="workgroupIdsAsString"/>'.split(',').length;
+                        }
+                    }
+                });
+                workgroupId = '<s:property value="workgroupIdsAsString" />'.split(",");
+            },
+            select : function(){
+                workgroupComboNumberOfSelectedRecord ++;
+                doSearchWorkgroupOnChange();
+                // doLayoutSearchPanel();
+            },
+            removeitem : function() {
+                if (!this.getValue() && workgroupComboNumberOfSelectedRecord >= 1) {
+                    workgroupComboNumberOfSelectedRecord = 0;
+                    this.reset();
+                    this.clearValue();
+                    doSearchWorkgroupOnChange();
+                } else if (workgroupComboNumberOfSelectedRecord >= 1) {
+                    workgroupComboNumberOfSelectedRecord --;
+                    doSearchWorkgroupOnChange();
+                }
+                // doLayoutSearchPanel();
+            }
+        }
+    });
+
+        function doSearchWorkgroupOnChange(){
+            if (workgroupCombo.getValue() !== null && workgroupCombo.getValue() !== '') {
+                workgroupId = workgroupCombo.getValue().split(",");
+            }else{
+                workgroupId = null;
+            }
+            doShowClaimHandler(workgroupId, insurerId);
+        }
+
+        function doShowClaimHandler(selectedWorkgroupId, selectedInsurerId){
+
+            <s:if test="isInsurer!=true">
+            claimOwnerStore.load({ params : {"workgroupId":selectedWorkgroupId,"insurerId":selectedInsurerId}});
+            selectedInsClaimOwnerValues = claimOwnerCombo.getValue();
+            </s:if>
+            <s:elseif test="isInsurer">
+            <s:if test="AuthenticatedUser.insurer.claimOwnershipEnable">
+            claimOwnerStore.load({ params : {"workgroupId":selectedWorkgroupId,"insurerId":selectedInsurerId}});
+            selectedInsClaimOwnerValues = claimOwnerCombo.getValue();
+            <s:if test="!isManager && isCH && selectedWorkgroupId == null" >
+            claimOwnerCombo.setValue(<s:property value="AuthenticatedUser.id"/>);
+            </s:if>
+            </s:if>
+
+            </s:elseif>
+        }
+
+
+        // Add claim owner combo box
+        var claimOwnerReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                    {name:'id'},
+                    {name:'name'}
+                ]
+        });
+
+        claimOwnerStore = new choxDataStore({
+            url : "/prv/p/SearchClaimHandlerRoleUserDropDownAction.action",
+            params : {"workgroupId": workgroupId,"insurerId": insurerId},
+            reader : claimOwnerReader,
+            listeners: {load: function() {/*this.insert(0, new Ext.data.Record(claimOwnerdefaultDropdownValue));*/
+                    if (selectedInsClaimOwnerValues && claimOwnerCombo) {claimOwnerCombo.reset();claimOwnerCombo.setValue(selectedInsClaimOwnerValues);}
+                }}
+        });
+
+        claimOwnerCombo = new Ext.ux.form.SuperBoxSelect({
+            store : claimOwnerStore,
+            width: 250,
+            fieldLabel: (<s:property value="isInsurer"/>) ? 'Claim Owner' : 'Insurer\'s Claim Owner',
+            disabled : !((!<s:property value="isInsurer"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
+            hidden : !((!<s:property value="isInsurer"/>) || (<s:property value="isInsurer"/> && <s:property value="insurerIsClaimOwnershipEnabled"/>)),
+            valueField : 'id',
+            id : 'claimOwnerComboId',
+            displayField :'name',
+            typeAhead : true,
+            mode : 'local',
+            triggerAction : 'all',
+            emptyText: '--- ALL ---',
+            removeValuesFromStore : false,
+            selectOnFocus : true,
+            forceSelection : true,
+            listeners: {
+            specialkey:function (el, e) {
+                if(e.keyCode === e.ENTER) {
+                    applyTasksFilter(true);
+                }
+            },
+            afterrender : function(){
+                // Store not loaded yet? Set value when it *is* loaded.
+                this.store.load({
+                    params : {"workgroupId": workgroupId,"insurerId": insurerId},
+                    callback: function() {
+                        if ('<s:property value="claimOwnerIdsAsString"/>') {
+                            claimOwnerCombo.setValue('<s:property value="claimOwnerIdsAsString"/>');
+                            claimOwnerComboNumberOfSelectedRecord = '<s:property value="claimOwnerIdsAsString"/>'.split(',').length;
+                        }
+                    }
+                });
+            },
+            select : function(){
+                claimOwnerComboNumberOfSelectedRecord ++;
+                // doLayoutSearchPanel();
+            },
+            removeitem : function() {
+                if (!this.getValue() && claimOwnerComboNumberOfSelectedRecord >=1) {
+                    claimOwnerComboNumberOfSelectedRecord = 0;
+                    this.reset();
+                    this.clearValue();
+                } else if (claimOwnerComboNumberOfSelectedRecord >= 1) {
+                    claimOwnerComboNumberOfSelectedRecord --;
+                }
+                // doLayoutSearchPanel();
+            }
+        }
+    });
+
+        var tasksSupplierClaimOwnerReader = new Ext.data.JsonReader({
+            totalProperty: 'totalCount',
+            root: 'results',
+            fields:
+                [
+                    {name:'id'},
+                    {name:'name'}
+                ]
+        });
+
+        supplierClaimOwnerStore = new choxDataStore({
+            url : "/prv/p/SearchSupplierClaimOwnerDropDownAction.action",
+            params : {"supplierId": supplierId},
+            // Don't know if this is neded (search code for this already exists
+            // - just uncomment this to add and it should work
+            <%--listeners: {load: function() {--%>
+            <%--        <s:if test="isCHO" >--%>
+            <%--        var notAssigned = new Array();--%>
+            <%--        // this next assignment is ugly and should be removed/refactored at some point--%>
+            <%--        notAssigned['id'] = '<%= ClaimSearchCriteria.CLAIM_OWNER_NOT_ASSIGNED%>';--%>
+            <%--        notAssigned['name'] = 'NOT ASSIGNED';--%>
+            <%--        this.insert(0, new Ext.data.Record(notAssigned));--%>
+
+            <%--        </s:if>--%>
+            <%--        <s:else >--%>
+
+            <%--        </s:else>--%>
+            <%--        if (selectedSuppClaimOwnerValues && supplierClaimOwnerCombo) {supplierClaimOwnerCombo.reset();supplierClaimOwnerCombo.setValue(selectedSuppClaimOwnerValues);}--%>
+            <%--    }},--%>
+            reader : tasksSupplierClaimOwnerReader
+        });
+
+        tasksSupplierClaimOwnerCombo = new Ext.ux.form.SuperBoxSelect({
+            store : supplierClaimOwnerStore,
+            width: 250,
+            fieldLabel: <s:property value="isCHO"/> ? 'Claim Owner' : 'Supplier Claim Owner',
+            disabled : !((!<s:property value="isCHO"/>) || (<s:property value="isCHO"/> && <s:property value="choIsClaimOwnershipEnabled"/>)),
+            hidden : !((!<s:property value="isCHO"/>) || (<s:property value="isCHO"/> && <s:property value="choIsClaimOwnershipEnabled"/>)),
+        valueField : 'id',
+            id : 'SupplierClaimOwnerComboId',
+            displayField :'name',
+            typeAhead : true,
+            mode : 'local',
+            triggerAction : 'all',
+            emptyText: '--- ALL ---',
+            removeValuesFromStore : false,
+            selectOnFocus : true,
+            forceSelection : true,
+            listeners: {
+            specialkey:function (el, e) {
+                if(e.keyCode === e.ENTER) {
+                    applyTasksFilter(true);
+                }
+            },
+            afterrender : function(){
+
+                // Store not loaded yet? Set value when it *is* loaded.
+                this.store.load({
+                    params : {"supplierId": supplierId},
+                    callback: function() {
+                        if ('<s:property value="supplierClaimOwnerIdsAsString"/>') {
+                            tasksSupplierClaimOwnerCombo.setValue('<s:property value="supplierClaimOwnerIdsAsString"/>');
+                            supplierClaimOwnerComboNumberOfSelectedRecord = '<s:property value="supplierClaimOwnerIdsAsString"/>'.split(',').length;
+                        }
+                    }
+                });
+            },
+            select : function(select){
+                supplierClaimOwnerComboNumberOfSelectedRecord ++;
+            },
+            removeitem : function(select) {
+                if (!this.getValue() && supplierClaimOwnerComboNumberOfSelectedRecord >=1) {
+                    supplierClaimOwnerComboNumberOfSelectedRecord = 0;
+                    this.reset();
+                    this.clearValue();
+                } else if (supplierClaimOwnerComboNumberOfSelectedRecord >=1) {
+                    supplierClaimOwnerComboNumberOfSelectedRecord --;
+                }
+            }
+        }
+    });
+
+    // Create the search and reset buttons
+    var tasksFilterButton = new Ext.Button({
+        text: 'Apply',
+        scale : 'small',
+        width : 100,
+        style: {
+            marginBottom: '0px',
+            marginTop: '0px'
+        },
+        handler: function(button, event) {
+            applyTasksFilter(true);
+        }
+    });
+
+    var tasksButtonPanel = new Ext.Panel({
+        fbar : [tasksFilterButton],
+        header : false,
+        border: false,
+        bodyStyle: 'background-color:transparent;height:0',
+        mainBody: false,
+        frame : false,
+        width : 1140,
+        height : 50,
+        buttonAlign : 'right',
+        margins : {top : 0},
+        listeners:  {
+            afterrender: function () {
+                if (!loadingTaskPanelFirstTimeAfterLogin && !showAssignedTasksOnly) {
+                    applyTasksFilter(true, true);
+                }
+            }
+        }
+    });
+
+        <s:if test="isInsurer && insurerIsWorkgroupEnabled && isManager">
+        workgroupCombo.render(workgroupComboDiv);
+        </s:if>
+
+        <s:if test="isInsurer && insurerIsClaimOwnershipEnabled && isManager">
+        claimOwnerCombo.render(claimOwnerComboDiv);
+        </s:if>
+
+        <s:if test="isCHO && choIsClaimOwnershipEnabled && isManager">
+        tasksSupplierClaimOwnerCombo.render(supplierClaimOwnerComboDiv);
+        </s:if>
+
+        <s:if test="isInsurer && isManager && (insurerIsWorkgroupEnabled || insurerIsClaimOwnershipEnabled)">
+        tasksButtonPanel.render(taskFilterButtonInsurerDiv);
+        </s:if>
+
+        <s:if test="isCHO && isManager && choIsClaimOwnershipEnabled">
+        tasksButtonPanel.render(taskFilterButtonCHODiv);
+        </s:if>
+
+        if (loadingTaskPanelFirstTimeAfterLogin) {
+            sort = "dueDate";
+            dir = "asc";
+            showAssignedTasksOnly = true;
+        }
+
+        if (loadingTaskPanelFirstTimeAfterLogin || backToSearchResults) {
+            taskTypeStore.load({params: {visibility: 1}});
+            // initially load with 'private' visibility tasks
+            loadTasks(true);
+        }
+
+        loadingTaskPanelFirstTimeAfterLogin = false;
+        backToSearchResults = false;
     });
 
     function taskOnClick(grid, rowIndex, columnIndex){
@@ -654,16 +1043,72 @@
         }
     }
 
-    function loadTasks(){
-        tasksDataStore.baseParams = {hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly};
-        tasksDataStore.load({params:{start:start, limit:taskPanelRecordPerPage}});
-        if (!hideCompleted || !showAssignedTasksOnly) {
+    function getTaskFilterParams() {
+        var params = {hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly, canLoadData : true};
+        <s:if test="isCHO && choIsClaimOwnershipEnabled && isManager">
+        params =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly, canLoadData : true}, getSelectedSupplierClaimOwnerIds());
+        </s:if>
+        <s:if test="isInsurer && isManager">
+        params =  Ext.apply({hideCompleted : hideCompleted, showAssignedTasksOnly : showAssignedTasksOnly, canLoadData : true}, getSelectedWorkgroupIds(), getSelectedOwnerIds());
+        </s:if>
+        return params
+    }
+
+    function clearTasksForm() {
+        if (workgroupCombo && workgroupCombo.rendered) {
+            workgroupStore.load({ params : {"orgId": null}});
+            workgroupCombo.reset();
+            workgroupCombo.clearValue();
+            selectedWorkgroupValues = null;
+        }
+        if (claimOwnerCombo && claimOwnerCombo.rendered) {
+            claimOwnerStore.load({ params : {"workgroupId":-1,"insurerId": -1}});
+            claimOwnerCombo.reset();
+            claimOwnerCombo.clearValue();
+            selectedInsClaimOwnerValues = null;
+        }
+        if (tasksSupplierClaimOwnerCombo && tasksSupplierClaimOwnerCombo.rendered) {
+            supplierClaimOwnerStore.load({ params : {"sup0lierId": -1}});
+            tasksSupplierClaimOwnerCombo.reset();
+            tasksSupplierClaimOwnerCombo.clearValue();
+            selectedSuppClaimOwnerValues = null;
+        }
+
+        start = 0;
+        sort = 'asc';
+        dir = 'dueDate';
+
+        taskTypeStore.load({params:{visibility: 1}});
+    }
+
+    function loadTasks(canSearchForData) {
+        updateTasksButtonStatus(showAssignedTasksOnly);
+
+        /*
+         *  if canSearchForData is false then no data will be returned. this is mainly used to reset the search screen form.
+         */
+        var searchBaseParam;
+        if (canSearchForData) {
+            searchBaseParam = getTaskFilterParams();
+            doTasksDataLoad(searchBaseParam);
+            if (!hideCompleted || !showAssignedTasksOnly) {
+                updateTaskTab();
+            }
+        } else { // when reset button clicked else condition is invoked
+            clearTasksForm();
+            searchBaseParam = {canLoadData : canSearchForData, "gridTitle" : ''};
+            doTasksDataLoad(searchBaseParam);
             updateTaskTab();
         }
     }
 
+    function doTasksDataLoad(baseParams) {
+        tasksDataStore.baseParams = baseParams;
+        tasksDataStore.load({params:{start:start, limit:taskPanelRecordPerPage}});
+    }
+
     function markAsComplete() {
-       
+
         var selectedRecord = tasksGrid.getSelectionModel().getSelected();
         if (selectedRecord) {
             var selectedRecordId = selectedRecord.get('id');
@@ -677,7 +1122,7 @@
                     Ext.MessageBox.alert('Error Marking Task As Complete', data.result);
                 }
             });
-            setTimeout("loadTasks()", 100);
+            setTimeout("loadTasks(true)", 100);
         } else {
             Ext.MessageBox.show({
                 msg: 'No task selected. Please select a task.',
@@ -690,16 +1135,117 @@
 
     function toggleComplete(el) {
         hideCompleted = !hideCompleted;
-        loadTasks();
+        loadTasks(true);
     }
-    
+
     function toggleShowAssignedTasksOnly(el) {
         showAssignedTasksOnly = !showAssignedTasksOnly;
-        loadTasks();
+        if(showAssignedTasksOnly) {
+            loadTasks(false);
+        }
+        loadTasks(true);
     }
-    
+
+    function getSelectedWorkgroupIds() {
+        if (backToSearchResults && !loadingTaskPanelFirstTimeAfterLogin) {
+            return '<s:property value="workgroupIdsAsString"/>';
+        } else
+        if (Ext.getCmp('workgroupComboId')){
+            var workgroupIds = Ext.getCmp('workgroupComboId').getValue().split(",");
+             return {workgroupIds : workgroupIds};
+        }
+    }
+
+    function getSelectedOwnerIds() {
+        if (backToSearchResults && !loadingTaskPanelFirstTimeAfterLogin) {
+            return '<s:property value="claimOwnerIdsAsString"/>';
+        } else
+         if (Ext.getCmp('claimOwnerComboId')){
+            var claimOwnerIds = Ext.getCmp('claimOwnerComboId').getValue().split(",");
+            return {claimOwnerIds : claimOwnerIds};
+        }
+    }
+
+    function getSelectedSupplierClaimOwnerIds() {
+        if (backToSearchResults && !loadingTaskPanelFirstTimeAfterLogin) {
+            return '<s:property value="supplierClaimOwnerIdsAsString"/>';
+        } else
+        if (Ext.getCmp('SupplierClaimOwnerComboId')) {
+            var supplierClaimOwnerIds = Ext.getCmp('SupplierClaimOwnerComboId').getValue().split(',');
+            return {supplierClaimOwnerIds : supplierClaimOwnerIds};
+        }
+    }
+
+    function updateTasksButtonStatus(showAssignedTasksOnly) {
+        if (!showAssignedTasksOnly) {
+            var assignedTasksOnlyBtn = Ext.getCmp('assignedTasksOnlyButtonId');
+            if (assignedTasksOnlyBtn && assignedTasksOnlyBtn.rendered) {
+                assignedTasksOnlyBtn.setText('Show My Assigned Tasks Only');
+                assignedTasksOnlyBtn.pressed = true;
+                assignedTasksOnlyBtn.getClickEl().addClass('x-btn-pressed');
+            }
+        }
+    }
+
+    function applyTasksFilter(canSearchForData, reserveStart) {
+        showAssignedTasksOnly = false;
+        if (!reserveStart) {
+            start = 0;
+        }
+
+        updateTasksButtonStatus(showAssignedTasksOnly);
+        loadTasks(canSearchForData);
+    }
 </script>
 
 <div id="tasksCreateWindow"></div>
+<s:if test="!isChoxAdmin && isManager">
+    <s:if test="(isInsurer && (insurerIsWorkgroupEnabled || insurerIsClaimOwnershipEnabled))">
+    <div class="x-panel-bwrap chox-form-container">
+        <fieldset class="x-fieldset">
+            <legend>Task Filter</legend>
+            <div class="taskpanel" class="form-container">
+                <table cellpadding="0" cellspacing="0" class="taskpanel" border="0">
+                        <s:if test="insurerIsWorkgroupEnabled">
+                            <tr>
+                                <th nowrap style="width:100%;"><label id="tipTitle1">Workgroup</label></th>
+                                <td>
+                                    <div id="workgroupComboDiv"></div>
+                                </td>
+                            </tr>
+                        </s:if>
+                        <s:if test="insurerIsClaimOwnershipEnabled">
+                            <tr>
+                                <th nowrap style="width:100%;"><label id="tipTitle2">Claim Owner</label></th>
+                                <td>
+                                    <div id="claimOwnerComboDiv"></div>
+                                </td>
+                            </tr>
+                        </s:if>
+                </table>
+                <div id="taskFilterButtonInsurerDiv"></div>
+            </div>
+        </fieldset>
+    </div>
+    </s:if>
+    <s:elseif test="(isCHO && choIsClaimOwnershipEnabled)">
+        <div class="x-panel-bwrap chox-form-container">
+            <fieldset class="x-fieldset">
+                <legend>Task Filter</legend>
+                <div class="taskpanel" class="form-container">
+                    <table cellpadding="0" cellspacing="0" class="taskpanel" border="0">
+                        <tr>
+                            <th nowrap style="width:100%;"><label id="tipTitle2">Supplier Claim Owner</label></th>
+                            <td>
+                                <div id="supplierClaimOwnerComboDiv"></div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="taskFilterButtonCHODiv"></div>
+                </div>
+            </fieldset>
+        </div>
+    </s:elseif>
+</s:if>
 <div id="tasksGridId"></div>
 

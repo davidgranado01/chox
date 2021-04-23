@@ -1,0 +1,80 @@
+2021.02.02
+
+--- REC-7954
+
+pre_uk_chox=> SELECT id FROM accessibility WHERE name = 'extraAction.updateClaimWorkgroupAndOwner.ClaimPending';
+ id
+----
+(0 rows)
+
+pre_uk_chox=> SELECT id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimPending';
+ id
+----
+(0 rows)
+
+pre_uk_chox=> SELECT id FROM accessibility WHERE name = 'extraAction.updateClaimWorkgroup.ClaimPending';
+ id
+----
+(0 rows)
+
+
+--- REC-9672
+
+pre_uk_chox=> SELECT id FROM accessibility WHERE name = 'extraAction.updateClaimWorkgroup.ClaimRejected';
+ id
+----
+(0 rows)
+
+pre_uk_chox=> SELECT id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.ClaimRejected';
+ id
+----
+(0 rows)
+
+pre_uk_chox=> SELECT id FROM accessibility WHERE name = 'extraAction.updateClaimWorkgroupAndOwner.ClaimRejected';
+ id
+----
+(0 rows)
+
+--- REC-9866
+
+pre_uk_chox=> SELECT id FROM accessibility_item WHERE accessibility_id IN (SELECT id FROM accessibility WHERE name = '' || 'extraAction.updateInsurerClaimOwner.SubscriberClaimRejected');
+ id
+----
+(0 rows)
+
+pre_uk_chox=> SELECT id FROM accessibility WHERE name = 'activity.AssignWorkgroup.SubscriberClaimRejected';
+ id
+----
+(0 rows)
+
+--- REC-9862
+
+pre_uk_chox=> SELECT id FROM accessibility_item WHERE accessibility_id IN (SELECT id FROM accessibility WHERE name = 'extraAction.updateClaimWorkgroup.SubscriberClaimRejected');
+ id
+----
+(0 rows)
+
+pre_uk_chox=> SELECT id FROM accessibility WHERE name = 'extraAction.updateClaimWorkgroup.SubscriberClaimRejected';
+ id
+----
+(0 rows)
+
+pre_uk_chox=> SELECT id FROM accessibility_item WHERE accessibility_id IN (SELECT id FROM accessibility WHERE name = '' || 'extraAction.updateInsurerClaimOwner.SubscriberClaimRejected');
+ id
+----
+(0 rows)
+
+pre_uk_chox=> SELECT id FROM accessibility WHERE name = 'extraAction.updateInsurerClaimOwner.SubscriberClaimRejected';
+ id
+----
+(0 rows)
+
+pre_uk_chox=> SELECT id FROM accessibility_item WHERE accessibility_id IN (SELECT id FROM accessibility WHERE name = 'extraAction.updateClaimWorkgroupAndOwner.SubscriberClaimRejected');
+ id
+----
+(0 rows)
+
+pre_uk_chox=> SELECT id FROM accessibility WHERE name = 'extraAction.updateClaimWorkgroupAndOwner.SubscriberClaimRejected';
+ id
+----
+(0 rows)

@@ -58,7 +58,7 @@ public class WorkgroupDropDownAction extends BaseAction {
 
     public void setOrgId(Set<Integer> orgId) {
         if (orgId.contains(null)) { 
-            this.orgId = null;
+            this.orgId = new HashSet<>();
         }
         else {
             this.orgId = orgId;
