@@ -309,6 +309,8 @@ Please find the attached csv report:
 	echo "Report not active: moving ${reportFile} to  ${CWD}/${PROCESSED_DIR}"
 	/bin/mv ${reportFile} ${CWD}/${PROCESSED_DIR}
     fi
+
+sleep #{DELAY_SEND_EMAILS}
 done
 
 for reportFile in $(ls *.txt);
@@ -382,6 +384,8 @@ If activated, this would be sent to the following addresses: ${EMAIL_RECEIVERS}.
     /bin/rm ${zipFile}
     fi
     popd
+
+sleep #{DELAY_SEND_EMAILS}
 done
 
 popd

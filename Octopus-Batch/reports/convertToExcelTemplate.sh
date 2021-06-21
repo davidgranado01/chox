@@ -124,6 +124,8 @@ Please find the attached excel report:
     fi
 #    /bin/rm ${zipFile}
     popd
+
+sleep #{DELAY_SEND_EMAILS}
 done
 
 popd
