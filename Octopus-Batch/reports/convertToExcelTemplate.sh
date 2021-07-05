@@ -7,7 +7,7 @@
 export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
 export PATH=${JAVA_HOME}/bin:/bin:${PATH}
 MODE=#{MODE} # EXPORT - send emails and transfer files, NOEMAIL - rports generated but not emailed but sftp ok, NOEXPORT - reports generated but not delivered via sftp or email
-
+DELAY_SEND_EMAIL_REPORTS=#{DELAY_SEND_EMAIL_REPORTS}
 
 function getPassword {
     REPORT_NAME=$1
@@ -108,6 +108,7 @@ do
     if [ "${ACTIVE}" -eq "1" ]; then
         if [ "${MODE}" == "EXPORT" ]; then
        RECIPIENTS=${EMAIL_RECEIVERS}
+sleep ${DELAY_SEND_EMAIL_REPORTS}
 /usr/bin/mutt -s "${SUBJECT}" -b ${BCC_RECIPIENTS} -a ${CWD}/${OUTPUT_DIR}/${xlsFile} -- ${RECIPIENTS}  <<  --EOF--
     Please find the attached excel report:
             ${attachedFile}
@@ -115,6 +116,7 @@ do
 --EOF--
         fi
     elif [ "${MODE}" == "EXPORT" ]; then
+sleep ${DELAY_SEND_EMAIL_REPORTS}
 /usr/bin/mutt -s "${SUBJECT}" -b ${BCC_RECIPIENTS} -a ${CWD}/${OUTPUT_DIR}/${xlsFile} -- ${RECIPIENTS}  <<  --EOF--
 Please find the attached excel report:
     ${attachedFile}
