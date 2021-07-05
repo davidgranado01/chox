@@ -6,24 +6,24 @@ DB=#{DB_NAME.CHOX} #dev_uk_chox
 
 DUMPFILE=RSA-Subscriber_Task_Export_Report-`date +"%F"`.txt
 DUMPFILE1=RSA-FixedFee_Task_Export_Report-`date +"%F"`.txt
-RECIPIENTS=rafael.garcia@solera.com,luis.valero@solera.com
+RECIPIENTS=elliot.roberts@sherwoodts.co.uk,ben.richmond@sherwoodts.co.uk
 MI_DIRECTORY=/home/chox/reports/
 
 
 echo '***********************************************************'
 echo `date`': Generating Daily Reports'
 echo '***********************************************************'
-echo 'Generating RSA Subscriber Task Export Report'
-$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
-SELECT * FROM taskExportReport('INS', 3, '{7,8,9}'::INT[]);
---EOF--
+echo 'Generating RSA Subscriber Task Export Report -- Deprecated (report not sent)'
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#SELECT * FROM taskExportReport('INS', 3, '{7,8,9}'::INT[]);
+#--EOF--
 
-$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE1} << --EOF--
-SELECT * FROM taskExportReport('INS', 3, '{11,12,13}'::INT[]);
---EOF--
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE1} << --EOF--
+#SELECT * FROM taskExportReport('INS', 3, '{11,12,13}'::INT[]);
+#--EOF--
 
-/bin/cp ${DUMPFILE} ${DUMPFILE1} ${MI_DIRECTORY}
-/bin/rm ${DUMPFILE} ${DUMPFILE1}
+#/bin/cp ${DUMPFILE} ${DUMPFILE1} ${MI_DIRECTORY}
+#/bin/rm ${DUMPFILE} ${DUMPFILE1}
 
 # Removed on 30/04/2014 at request of BR
 #DUMPFILE=RSA_SUBSCRIBER_TASK_REPORT-`date +"%F"`.txt
@@ -37,16 +37,16 @@ SELECT * FROM taskExportReport('INS', 3, '{11,12,13}'::INT[]);
 #/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
 #/bin/rm ${DUMPFILE}
 
-DUMPFILE=RSA-Default_Claims_Report-`date +"%F"`.txt
-END_DATE=`date +%F`
+#DUMPFILE=RSA-Default_Claims_Report-`date +"%F"`.txt
+#END_DATE=`date +%F`
 
-echo 'Generating Default Claims Report for RSA/Motability'
-$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
-select "Supplier Reference", "Insurer Claim Number", "Workgroup", "Insurer Claim Owner", "CHO Name", "Claim Type", "Insurer Name", "Date Claim Defaulted" from default_claims_reports(array[3,19], '2013-01-28', '${END_DATE}') order by defaulted_date desc;
---EOF--
+echo 'Generating Default Claims Report for RSA/Motability -- Deprecated (report not sent)'
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select "Supplier Reference", "Insurer Claim Number", "Workgroup", "Insurer Claim Owner", "CHO Name", "Claim Type", "Insurer Name", "Date Claim Defaulted" from default_claims_reports(array[3,19], '2013-01-28', '${END_DATE}') order by defaulted_date desc;
+#--EOF--
 
-/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
-/bin/rm ${DUMPFILE}
+#/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+#/bin/rm ${DUMPFILE}
 
 DUMPFILE=AccidentExchange-Processed_Notifications_Report_LV-`date +"%F"`.rpt
 CHO_ID=1125
@@ -103,14 +103,14 @@ select * from total_loss_liability_updates(array[${INS_ID}], array[${CHO_ID}], '
 /bin/cp ${DUMPFILE} ${MI_DIRECTORY}
 /bin/rm ${DUMPFILE}
 
-echo 'Generating Ultra-Prestige Report for RSA/Motability'
-DUMPFILE=RSA-Ultra_Prestige_Report-`date +"%F"`.txt
-$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
-select * from ultra_prestige_report(array[3,19], array[14,123,15], '${START_DATE}');
---EOF--
+echo 'Generating Ultra-Prestige Report for RSA/Motability -- Deprecated (report not sent)'
+#DUMPFILE=RSA-Ultra_Prestige_Report-`date +"%F"`.txt
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from ultra_prestige_report(array[3,19], array[14,123,15], '${START_DATE}');
+#--EOF--
 
-/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
-/bin/rm ${DUMPFILE}
+#/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+#/bin/rm ${DUMPFILE}
 
 # Claimfast Uploaded Claims Report
 /home/chox/bin/uploadedClaimsReport
@@ -165,15 +165,15 @@ $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
 /bin/cp ${DUMPFILE} ${MI_DIRECTORY}
 /bin/rm ${DUMPFILE}
 
-#echo 'Generating RSA Payment Bordereau'
-DUMPFILE='RSA-CHOXinvoice'`date +"%Y%m%d"`.csv
-INS_ID=3
-$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
-\copy (select * from paymentBordereau(${INS_ID}, null, '${START_DATE}', '${END_DATE}')) TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
---EOF--
+echo 'Generating RSA Payment Bordereau -- Deprecated (report not sent)'
+#DUMPFILE='RSA-CHOXinvoice'`date +"%Y%m%d"`.csv
+#INS_ID=3
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
+#\copy (select * from paymentBordereau(${INS_ID}, null, '${START_DATE}', '${END_DATE}')) TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
+#--EOF--
 
-/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
-/bin/rm ${DUMPFILE}
+#/bin/cp ${DUMPFILE} ${MI_DIRECTORY}
+#/bin/rm ${DUMPFILE}
 
 echo 'Generating Prestige Report for DLG'
 DUMPFILE='DLG-PrestigeClaimReport-'`date +"%Y%m%d"`.txt
