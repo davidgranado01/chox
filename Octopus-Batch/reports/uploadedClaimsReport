@@ -31,6 +31,7 @@ COUNT=`cat ${DUMPFILE} | grep row |cut -c 2-|cut -d" " -f1`
 if [ ${COUNT} -gt 0 ]
 then
     if [ "${MODE}" -eq "EXPORT" ]; then
+sleep #{DELAY_SEND_EMAIL_REPORTS}
 /usr/bin/mutt -s "${SUBJECT}" -a ${DUMPFILE} -- ${RECIPIENTS} <<  --EOF--
 ${COUNT} claims have been uploaded by ${CHO_NAME} from ${START_DATE} to ${END_DATE}.
 

@@ -108,6 +108,7 @@ do
     if [ "${ACTIVE}" -eq "1" ]; then
         if [ "${MODE}" == "EXPORT" ]; then
        RECIPIENTS=${EMAIL_RECEIVERS}
+sleep #{DELAY_SEND_EMAIL_REPORTS}
 /usr/bin/mutt -s "${SUBJECT}" -b ${BCC_RECIPIENTS} -a ${CWD}/${OUTPUT_DIR}/${xlsFile} -- ${RECIPIENTS}  <<  --EOF--
     Please find the attached excel report:
             ${attachedFile}
@@ -115,6 +116,7 @@ do
 --EOF--
         fi
     elif [ "${MODE}" == "EXPORT" ]; then
+sleep #{DELAY_SEND_EMAIL_REPORTS}
 /usr/bin/mutt -s "${SUBJECT}" -b ${BCC_RECIPIENTS} -a ${CWD}/${OUTPUT_DIR}/${xlsFile} -- ${RECIPIENTS}  <<  --EOF--
 Please find the attached excel report:
     ${attachedFile}
@@ -124,8 +126,6 @@ Please find the attached excel report:
     fi
 #    /bin/rm ${zipFile}
     popd
-
-sleep #{DELAY_SEND_EMAILS}
 done
 
 popd

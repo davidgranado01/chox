@@ -298,6 +298,7 @@ do
         /usr/bin/zip -P ${PASSWORD} ${zipFile} ${reportFile}
         RECIPIENTS=${EMAIL_RECEIVERS}
         if [ "${MODE}" == "EXPORT" ]; then
+sleep #{DELAY_SEND_EMAIL_REPORTS}
 /usr/bin/mutt -s "${SUBJECT}" -b ${BCC_RECIPIENTS} -a ${zipFile} -- ${RECIPIENTS}  <<  --EOF--
 Please find the attached csv report:
         ${zipFile}
@@ -309,8 +310,6 @@ Please find the attached csv report:
 	echo "Report not active: moving ${reportFile} to  ${CWD}/${PROCESSED_DIR}"
 	/bin/mv ${reportFile} ${CWD}/${PROCESSED_DIR}
     fi
-
-sleep #{DELAY_SEND_EMAILS}
 done
 
 for reportFile in $(ls *.txt);
@@ -324,6 +323,7 @@ do
     if [ "${ACTIVE}" -eq "3" ]; then
 # Email unzipped and without password
         if [ "${MODE}" == "EXPORT" ]; then
+sleep #{DELAY_SEND_EMAIL_REPORTS}
 /usr/bin/mutt -s "${SUBJECT}" -b ${BCC_RECIPIENTS} -a ${CWD}/${OUTPUT_DIR}/${xlsFile} -- ${RECIPIENTS}  <<  --EOF--
 Please find the attached excel report:
         ${xlsFile}
@@ -357,6 +357,7 @@ Please find the attached excel report:
 #   email zipped with password
         RECIPIENTS=${EMAIL_RECEIVERS}
         if [ "${MODE}" == "EXPORT" ]; then
+sleep #{DELAY_SEND_EMAIL_REPORTS}
 /usr/bin/mutt -s "${SUBJECT}" -b ${BCC_RECIPIENTS} -a ${CWD}/${OUTPUT_DIR}/${zipFile} -- ${RECIPIENTS}  <<  --EOF--
 Please find the attached excel report:
         ${zipFile}
@@ -372,6 +373,7 @@ Please find the attached excel report:
         RECIPIENTS=${BCC_RECIPIENTS}
 
         if [ "${MODE}" == "EXPORT" ]; then
+sleep #{DELAY_SEND_EMAIL_REPORTS}
 /usr/bin/mutt -s "${SUBJECT}" -a ${CWD}/${OUTPUT_DIR}/${zipFile} -- ${RECIPIENTS}  <<  --EOF--
 Please find the attached excel report:
     ${zipFile}
@@ -384,8 +386,6 @@ If activated, this would be sent to the following addresses: ${EMAIL_RECEIVERS}.
     /bin/rm ${zipFile}
     fi
     popd
-
-sleep #{DELAY_SEND_EMAILS}
 done
 
 popd
