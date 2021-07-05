@@ -229,20 +229,20 @@ select * from erac_repair_report_summary(array[]::integer[], ${CHO_ID}, '${START
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 /bin/rm ${FILE1} ${FILE2}
 
-echo 'Report generating for RSA Attachment Report'
-START_DATE=`date -d "last week" +%F`
-END_DATE=`date  +%F`
-DUMPFILE='RSA-Attachment_Report-'`date +"%F"`.txt
-$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
-select * from attachment_report(3, array[]::integer[], array['Engineer''s Reports']::varchar[], '${START_DATE}', '${END_DATE}',
- array['AwaitingCarHireInfo','ClaimUnacknowledgedUnrouted',
-       'ClaimUnacknowledgedRouted','ClaimUnacknowledgedUnassigned',
-       'ClaimPending','ClaimReferredToFNOL',
-       'ClaimReferredToEngineer','ClaimUpdatedByEngineer',
-       'ClaimRejectionContested']::varchar[]);
---EOF--
+echo 'Report generating for RSA Attachment Report -- Deprecated (report not sent)'
+#START_DATE=`date -d "last week" +%F`
+#END_DATE=`date  +%F`
+#DUMPFILE='RSA-Attachment_Report-'`date +"%F"`.txt
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from attachment_report(3, array[]::integer[], array['Engineer''s Reports']::varchar[], '${START_DATE}', '${END_DATE}',
+# array['AwaitingCarHireInfo','ClaimUnacknowledgedUnrouted',
+#       'ClaimUnacknowledgedRouted','ClaimUnacknowledgedUnassigned',
+#       'ClaimPending','ClaimReferredToFNOL',
+#       'ClaimReferredToEngineer','ClaimUpdatedByEngineer',
+#       'ClaimRejectionContested']::varchar[]);
+#--EOF--
 
-/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
 echo 'Report generating for DLG Audit Report'
 START_DATE=`date -d "last week" +%F`
@@ -273,21 +273,21 @@ select * from eracDataDump(null::integer[], array[1007], null::integer[], '2008-
 
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
-echo 'Report generating for RSA & Motability On Hire Report'
-DUMPFILE='RSA-On_Hire_Report-'`date +"%F"`.txt
-$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
-select * from on_hire_report(array[3, 19], null::int[], array[14,123,15]);
---EOF--
+echo 'Report generating for RSA & Motability On Hire Report -- Deprecated (report not sent)'
+#DUMPFILE='RSA-On_Hire_Report-'`date +"%F"`.txt
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from on_hire_report(array[3, 19], null::int[], array[14,123,15]);
+#--EOF--
 
-/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
-echo 'Report generating for RSA & Motability Insurer Penalty Charge Report'
-DUMPFILE='RSA-Insurer_Penalty_Charge_Report-'`date +"%F"`.txt
-$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
-select * from insurer_penalty_charge_report(array[3,19], array[14,123,15,134], 10, 3);
---EOF--
+echo 'Report generating for RSA & Motability Insurer Penalty Charge Report -- Deprecated (report not sent)'
+#DUMPFILE='RSA-Insurer_Penalty_Charge_Report-'`date +"%F"`.txt
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from insurer_penalty_charge_report(array[3,19], array[14,123,15,134], 10, 3);
+#--EOF--
 
-/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
 echo 'Report generating for LV Weekly dashboard report'
 DUMPFILE='LV-Weekly_Dashboard_Report-'`date +"%F"`.txt
