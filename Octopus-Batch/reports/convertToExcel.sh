@@ -121,24 +121,24 @@ function getEmailReceivers {
         "ERAC-Subscriber_Stats_Report-"* )
 	        ACTIVE=1
             EMAIL_RECEIVERS=Jordan.Hill@ehi.com;;
-        "Motability-Commercial_Area_Report-"* )
-            EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com;;
-        "RSA-Ultra_Prestige_Report-"* )
-	        ACTIVE=1
-            EMAIL_RECEIVERS=Kelly.cartman@uk.rsagroup.com,bec.jones@uk.rsagroup.com,fiona.odonnell@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,stevie.binns@uk.rsagroup.com;;
+ #       "Motability-Commercial_Area_Report-"* )
+ #           EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com;;
+ #       "RSA-Ultra_Prestige_Report-"* )
+ #          ACTIVE=1
+ #           EMAIL_RECEIVERS=Kelly.cartman@uk.rsagroup.com,bec.jones@uk.rsagroup.com,fiona.odonnell@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,stevie.binns@uk.rsagroup.com;;
 	    "QBE-On_Hire_Report-"*  |\
 	    "QBE-Defaulted_Claims_Report-"*  |\
 	    "QBE-Subscriber_SLA_Rejection_Report-"* )
             ACTIVE=1
             EMAIL_RECEIVERS=Paul.Bone@uk.qbe.com,Jacqueline.Britton@uk.qbe.com;;
-	    "RSA-On_Hire_Report-"*  )
-            ACTIVE=1
-            EMAIL_RECEIVERS=Kelly.cartman@uk.rsagroup.com,bec.jones@uk.rsagroup.com,neil.whittle@uk.rsagroup.com,fiona.odonnell@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,Theresa.bow@uk.rsagroup.com;;
-	    "RSA-Insurer_Penalty_Charge_Report-"* )
-	        ACTIVE=1
-            EMAIL_RECEIVERS=Kelly.cartman@uk.rsagroup.com,bec.jones@uk.rsagroup.com,neil.whittle@uk.rsagroup.com,fiona.odonnell@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,Theresa.bow@uk.rsagroup.com;;
-        "RSA-Commercial_Area_Report-"* )
-            EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com;;
+#	    "RSA-On_Hire_Report-"*  )
+#            ACTIVE=1
+#            EMAIL_RECEIVERS=Kelly.cartman@uk.rsagroup.com,bec.jones@uk.rsagroup.com,neil.whittle@uk.rsagroup.com,fiona.odonnell@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,Theresa.bow@uk.rsagroup.com;;
+#	    "RSA-Insurer_Penalty_Charge_Report-"* )
+#	        ACTIVE=1
+#            EMAIL_RECEIVERS=Kelly.cartman@uk.rsagroup.com,bec.jones@uk.rsagroup.com,neil.whittle@uk.rsagroup.com,fiona.odonnell@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,Theresa.bow@uk.rsagroup.com;;
+#        "RSA-Commercial_Area_Report-"* )
+#            EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com;;
         "Auxillis-Moved_To_InvoicePaymentLogged_Claim_Detail_Report-"* )
 	        ACTIVE=1
             EMAIL_RECEIVERS=cpt@albanyassistance.co.uk,susan.harker@albanyassistance.co.uk,protocol@albanyassistance.co.uk;;
@@ -156,16 +156,16 @@ function getEmailReceivers {
 	        ACTIVE=1
             EMAIL_RECEIVERS=David.Crown@tescobank.com,Simon.Lund@tescobank.com,Daniel.Robinson@tescobank.com,Ruth.Lawson@tescobank.com
             BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk;;
-        "RSA-Average_Time_To_Allocate_Work-"* )
-            EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com;;
+#        "RSA-Average_Time_To_Allocate_Work-"* )
+#            EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com;;
 #        "ERAC-Supplementary_Consolidation_Report-"* )
 #            EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com,ben.richmond@valexa.com;;
-        "RSA-FixedFee_Task_Export_Report-"* )
-	        ACTIVE=1
-            EMAIL_RECEIVERS=Kelly.cartman@uk.rsagroup.com,Stacie.Warrington@uk.rsagroup.com,Cheryl.pearson@uk.rsagroup.com,greg.wakeling@uk.rsagroup.com,linda.barr@uk.rsagroup.com,sue.jubb@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,steve.anderson@uk.rsagroup.com,christopher.cross@uk.rsagroup.com,bec.jones@uk.rsagroup.com,abdul.shahbaz@uk.rsagroup.com,fiona.odonnell@uk.rsagroup.com,Theresa.bow@uk.rsagroup.com;;
-        "RSA-Subscriber_Task_Export_Report-"* )
-	        ACTIVE=1
-            EMAIL_RECEIVERS=Kelly.cartman@uk.rsagroup.com,linda.barr@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,Stacie.Warrington@uk.rsagroup.com,steve.anderson@uk.rsagroup.com,christopher.cross@uk.rsagroup.com,greg.wakeling@uk.rsagroup.com,sue.jubb@uk.rsagroup.com,Cheryl.pearson@uk.rsagroup.com,bec.jones@uk.rsagroup.com,abdul.shahbaz@uk.rsagroup.com,fiona.odonnell@uk.rsagroup.com,Theresa.bow@uk.rsagroup.com;;
+#        "RSA-FixedFee_Task_Export_Report-"* )
+#	        ACTIVE=1
+#            EMAIL_RECEIVERS=Kelly.cartman@uk.rsagroup.com,Stacie.Warrington@uk.rsagroup.com,Cheryl.pearson@uk.rsagroup.com,greg.wakeling@uk.rsagroup.com,linda.barr@uk.rsagroup.com,sue.jubb@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,steve.anderson@uk.rsagroup.com,christopher.cross@uk.rsagroup.com,bec.jones@uk.rsagroup.com,abdul.shahbaz@uk.rsagroup.com,fiona.odonnell@uk.rsagroup.com,Theresa.bow@uk.rsagroup.com;;
+#        "RSA-Subscriber_Task_Export_Report-"* )
+#	        ACTIVE=1
+#            EMAIL_RECEIVERS=Kelly.cartman@uk.rsagroup.com,linda.barr@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,Stacie.Warrington@uk.rsagroup.com,steve.anderson@uk.rsagroup.com,christopher.cross@uk.rsagroup.com,greg.wakeling@uk.rsagroup.com,sue.jubb@uk.rsagroup.com,Cheryl.pearson@uk.rsagroup.com,bec.jones@uk.rsagroup.com,abdul.shahbaz@uk.rsagroup.com,fiona.odonnell@uk.rsagroup.com,Theresa.bow@uk.rsagroup.com;;
         "ERAC-TotalLoss_LiabilityUpdate_Report-"* )
 	        ACTIVE=1
             EMAIL_RECEIVERS=totallossteam@imsolutionslimited.co.uk,courtneyp@imsolutionslimited.co.uk;;
@@ -176,9 +176,9 @@ function getEmailReceivers {
         "ERAC-Audit_Report-"* )
 	        ACTIVE=1
             EMAIL_RECEIVERS=Lauren.D.Walker@ehi.com,Nicola.A.Imlach@ehi.com,Sam.Flynn@ehi.com;;
-        "RSA-Attachment_Report-"* )
-	        ACTIVE=1
-            EMAIL_RECEIVERS=benjamin.mills@uk.rsagroup.com,bec.jones@uk.rsagroup.com,Andrew.burton@uk.rsagroup.com,linda.barr@uk.rsagroup.com,Stacie.warrington@uk.rsagroup.com,fiona.odonnell@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,Theresa.bow@uk.rsagroup.com,stevie.binns@uk.rsagroup.com;;
+#        "RSA-Attachment_Report-"* )
+#	        ACTIVE=1
+#            EMAIL_RECEIVERS=benjamin.mills@uk.rsagroup.com,bec.jones@uk.rsagroup.com,Andrew.burton@uk.rsagroup.com,linda.barr@uk.rsagroup.com,Stacie.warrington@uk.rsagroup.com,fiona.odonnell@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,Theresa.bow@uk.rsagroup.com,stevie.binns@uk.rsagroup.com;;
         "ERS-Weekly_Action_Management_Report-"* )
             EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com,terry.joseph@ers.com;;
         "ERS-Last_ECD_Update_Report-"* )
@@ -190,9 +190,9 @@ function getEmailReceivers {
         "ERAC-Repair_Report-"* )
 	        ACTIVE=1
             EMAIL_RECEIVERS=chris@crashworth.co.uk,Aisling.L.Tuft@ehi.com,Lauren.D.Walker@ehi.com,odonnellj@uk.innovation-group.com;;
-        "RSA-Default_Claims_Report-"* )
-	        ACTIVE=1
-            EMAIL_RECEIVERS=Kelly.cartman@uk.rsagroup.com,linda.barr@uk.rsagroup.com,lee.price@uk.rsagroup.com,stacie.warrington@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,Theresa.bow@uk.rsagroup.com;;
+#        "RSA-Default_Claims_Report-"* )
+#	        ACTIVE=1
+#            EMAIL_RECEIVERS=Kelly.cartman@uk.rsagroup.com,linda.barr@uk.rsagroup.com,lee.price@uk.rsagroup.com,stacie.warrington@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,Theresa.bow@uk.rsagroup.com;;
         "ERAC-CHOX_Data_Dump-"* )
             ACTIVE=2
             FTP_CLIENT=EHI;;
