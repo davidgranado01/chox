@@ -19,10 +19,10 @@ function getPassword {
             PASSWORD="Octag0n";;
         "SGSM-"* )
             PASSWORD="5laterG0rd0n";;
-        "RSA-"* )
-            PASSWORD="Royal1";;
-        "Motability-"* )
-            PASSWORD="Mot1";;
+#       "RSA-"* )
+#           PASSWORD="Royal1";;
+#       "Motability-"* )
+#           PASSWORD="Mot1";;
         "Tesco-"* )
             PASSWORD="T3sc0UW";;
         "Auxillis-"* )
