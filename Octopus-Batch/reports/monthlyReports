@@ -237,33 +237,33 @@ DUMPFILE=DLG-Monthly_Manual_Chox_Cost_Report_By_Team-`date +"%F"`.txt
 #
 # Average Time To Allocate Work
 #
-echo 'Report generating for Average Time To Allocate Work'
-DUMPFILE=RSA-Average_Time_To_Allocate_Work-`date +"%F"`.txt
-SUBJECT='CHOX: Average Time To Allocate Work'
+echo 'Report generating for Average Time To Allocate Work -- Report for RSA -> Average_Time_To_Allocate_Work -- Deprecated (report not sent)'
+#DUMPFILE=RSA-Average_Time_To_Allocate_Work-`date +"%F"`.txt
+#SUBJECT='CHOX: Average Time To Allocate Work'
 
-$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
 
-SELECT
-    ins.name AS insurer,
-    to_char(now() - '1 month'::interval, 'TMMonth') AS Month,
-    AVG(date_part('epoch', a.created_date - c.created_date)/(60*60*24.0))::numeric(4,3) AS "Average Time To Allocate Work"
-FROM
-    claim c,
-    audit_trail a,
-    insurer ins
-WHERE
-    c.id = a.claim_id
-    AND a.new_status='ClaimUnacknowledgedRouted'
-    AND a.reverted = FALSE
-    AND NOT EXISTS (SELECT * FROM audit_trail a2 WHERE a2.claim_id = c.id AND a2.new_status='ClaimUnacknowledgedRouted'
-                     AND a2.created_date > a.created_date)
-    AND ins.id in (3,19) -- Insurer
-    AND a.created_date BETWEEN (now() - '1 month'::interval)::date AND now()::date -- Period
-    AND ins.id = c.insurer_id GROUP BY ins.name;
+#SELECT
+#    ins.name AS insurer,
+#    to_char(now() - '1 month'::interval, 'TMMonth') AS Month,
+#    AVG(date_part('epoch', a.created_date - c.created_date)/(60*60*24.0))::numeric(4,3) AS "Average Time To Allocate Work"
+#FROM
+#    claim c,
+#    audit_trail a,
+#    insurer ins
+#WHERE
+#    c.id = a.claim_id
+#    AND a.new_status='ClaimUnacknowledgedRouted'
+#    AND a.reverted = FALSE
+#    AND NOT EXISTS (SELECT * FROM audit_trail a2 WHERE a2.claim_id = c.id AND a2.new_status='ClaimUnacknowledgedRouted'
+#                     AND a2.created_date > a.created_date)
+#    AND ins.id in (3,19) -- Insurer
+#    AND a.created_date BETWEEN (now() - '1 month'::interval)::date AND now()::date -- Period
+#    AND ins.id = c.insurer_id GROUP BY ins.name;
 
---EOF--
+#--EOF--
 
-/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
 
 #
