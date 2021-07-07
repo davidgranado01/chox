@@ -34,25 +34,9 @@ function generateXML {
     OUTPUT_FILE1=$2
 
     $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${OUTPUT_FILE1} << --EOF--
-select query_to_xml(E'${QUERY1}', true, false, '');
+select query_to_xml('${QUERY1}', true, false, '');
 --EOF--
 }
-
-# Generate an XSD file from a query
-#    $1 - query
-#    $2 - output file
-function generateXSD {
-    QUERY2=$1
-    OUTPUT_FILE2=$2
-
-    if [ ! -z ${GENERATE_XSD} ]
-    then
-        $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${OUTPUT_FILE2}  << --EOF--
-select query_to_xmlschema(E'${QUERY2}', true, false, '');
---EOF--
-    fi
-}
-
 
 # Generate XML & XSD files from a query
 #    $1 - query
@@ -65,20 +49,13 @@ function generateOutput {
     # Generate XML
     generateXML "${QUERY3}" ${OUTPUT_FILE3}.tmp
     cleanOutput ${OUTPUT_FILE3}.tmp ${OUTPUT_FILE3}.XML
-
-    # Generate XSD
-    generateXSD "${QUERY3}" ${OUTPUT_FILE3}.tmp
-    cleanOutput ${OUTPUT_FILE3}.tmp ${OUTPUT_FILE3}.XSD
-
-
 }
 
 echo 'Generating LV Weekly Claim Details Dump XML export'
 DUMPFILE='LV-ClaimDetailsXMLDump-'`date +"%Y%m%d"`.xml
 START_DATE=`date -d "last week" +%F`
 OUTPUT_FILE=${MI_DIRECTORY}/${DUMPFILE}
-XML_QUERY='select * from claimDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], ''2016-01-01'', ''${START_DATE}'', ''INS'', array[''ClaimClosed'',''PaymentReceived'',''ManualInvoicePaid''
-,''ClaimRejectionAccepted'',''InvoiceRejectionAccepted''], array[''''])'
-generateOutput ${XML_QUERY} ${OUTPUT_FILE}
+XML_QUERY='select * from claimDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], ''2016-01-01'', ''${START_DATE}'', ''INS'', array[''ClaimClosed'',''PaymentReceived'',''ManualInvoicePaid'',''ClaimRejectionAccepted'',''InvoiceRejectionAccepted''], array[''''])'
+generateOutput "${XML_QUERY}" ${OUTPUT_FILE}
 
 exit 0
