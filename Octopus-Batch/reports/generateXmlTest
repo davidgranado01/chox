@@ -7,6 +7,24 @@ MI_DIRECTORY=/home/chox/reports/
 
 echo "Test xml generator"
 
+# Removes first 3 lines, last 3 lines, and strips trailing '+' and white space from intermediate lines
+#    $1 - input file
+#    $2 - output file
+function cleanOutput {
+    INFILE=$1
+    OUTFILE=$2
+
+    if [ -f ${INFILE} ]
+    then
+        if [ "${OS}" = "Darwin" ]
+        then
+            /bin/cat ${INFILE} | tail -n +3 | sed '$d' |  sed '$d'  | sed '$d' | sed s'/+$//' | sed -e's/[ \t]*$//' > ${OUTFILE}
+        else
+            /bin/cat ${INFILE} | tail -n +3 | head -n -2 | sed s'/+$//' | sed -e's/[ \t]*$//' > ${OUTFILE}
+        fi
+        /bin/rm ${INFILE}
+    fi
+}
 
 # Generate an XML file from a query
 #    $1 - query
