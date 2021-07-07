@@ -6,7 +6,8 @@ DB=#{DB_NAME.CHOX} #dev_uk_chox
 
 DUMPFILE=RSA-Subscriber_Task_Export_Report-`date +"%F"`.txt
 DUMPFILE1=RSA-FixedFee_Task_Export_Report-`date +"%F"`.txt
-RECIPIENTS=elliot.roberts@sherwoodts.co.uk,ben.richmond@sherwoodts.co.uk
+#RECIPIENTS=elliot.roberts@sherwoodts.co.uk,ben.richmond@sherwoodts.co.uk
+RECIPIENTS=#{RECIPIENTS_DAILYREPORTS}
 MI_DIRECTORY=/home/chox/reports/
 
 
