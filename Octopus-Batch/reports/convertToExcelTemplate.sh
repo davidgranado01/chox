@@ -49,10 +49,10 @@ function getEmailReceivers {
         "AccidentExchange-Processed_Notifications_Report_"* )
 	    ACTIVE=1
             #EMAIL_RECEIVERS=igp.unit@accidentexchange.com,kmartin@accidentexchange.com,ymiah@accidentexchange.com,proche@accidentexchange.com;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTET_ACCIDENTEXCHANGE_PROCESS_NOTIFICATION_0;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTET_ACCIDENTEXCHANGE_PROCESS_NOTIFICATION_0};;
         *)
             #EMAIL_RECEIVERS=unknown@nowhere.com;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTET_ACCIDENTEXCHANGE_PROCESS_NOTIFICATION_1;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTET_ACCIDENTEXCHANGE_PROCESS_NOTIFICATION_1};;
     esac
 
 }
@@ -66,9 +66,9 @@ then
 fi
 
 #BCC_RECIPIENTS=MichaelPaul.Kemp@valexa.com,Robert.Hon@audatex.co.uk
-BCC_RECIPIENTS=BCC_RECIPIENT_GENERAL
+BCC_RECIPIENTS=${BCC_RECIPIENT_GENERAL}
 #RECIPIENTS=DL-UKBR-Audatex-penguin-reporting@audatex.com
-RECIPIENTS=RECIPIENTS_DEV_TEAM_EMAIL
+RECIPIENTS=${RECIPIENTS_DEV_TEAM_EMAIL}
 
 REPORT_DIR=$1
 PROCESSED_DIR=$2
