@@ -41,7 +41,9 @@ RECIPIENTS_CTE_ACCIDENTEXCHANGE_INVOICE_NOTIFICATION = #{RECIPIENTS_CTE_ACCIDENT
 RECIPIENTS_CTE_LV_DASHBOARD_REPORT = #{RECIPIENTS_CTE_LV_DASHBOARD_REPORT}
 RECIPIENTS_CTE_LV_CLOSED_CLAIM_REPORT = #{RECIPIENTS_CTE_LV_CLOSED_CLAIM_REPORT}
 BCC_RECIPIENT_GENERAL = #{BCC_RECIPIENT_GENERAL}
+RECIPIENTS_CTE_KEOGHS_DAILY_REPORT = #{RECIPIENTS_CTE_KEOGHS_DAILY_REPORT}
 RECIPIENTS_DEV_TEAM_EMAIL = #{RECIPIENTS_DEV_TEAM_EMAIL}
+
 
 function getPassword {
     REPORT_NAME=$1
@@ -90,7 +92,7 @@ function getEmailReceivers {
 #    5 - the report is not password protected or zipped, and is sftp'ed to the FTP_CLIENT (using transferToGateway.sh script). txt/xls files only.
     ACTIVE=0
     #BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk
-    BCC_RECIPIENTS=BCC_RECIPIENT_GENERAL
+    BCC_RECIPIENTS=${BCC_RECIPIENT_GENERAL}
     unset -v FTP_CLIENT
     case "$REPORT_NAME" in
         "ERS-Monthly_Insurer_Cost_Report-"* |\
@@ -98,49 +100,49 @@ function getEmailReceivers {
         "ERS-Monthly_Manual_CHOX_Cost_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=Jonathan.Lee@ers.com,terry.joseph@ers.com;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_ERS_MONTHLY;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_ERS_MONTHLY};;
         "DLG-Monthly_Insurer_Cost_Report_By_AccidentDate-"* |\
         "DLG-Monthly_Cost_Report_By_Team_By_AccidentDate-"* |\
         "DLG-Monthly_Manual_CHOX_Cost_Report_By_AccidentDate-"* |\
         "DLG-Monthly_Manual_CHOX_Cost_Report_By_Team_By_AccidentDate-"* )
 	        ACTIVE=0
             #EMAIL_RECEIVERS=Steven.Talbot@directlinegroup.co.uk,stephen.hiscock@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk,Karen.Dean@nig-uk.com,claire.wills@directline.com,Angela.Kehoe@nig-uk.com,Simon.Holt@directlinegroup.co.uk,Claire.Ratcliffe@nig-uk.com,Annalise.Bartlett@nig-uk.com,tam.bedford@directlinegroup.co.uk;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_DLG_MONTHLY_0;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_DLG_MONTHLY_0};;
         "DLG-Monthly_Insurer_Cost_Report-"* )
             ACTIVE=1
             #EMAIL_RECEIVERS=Steven.Talbot@directlinegroup.co.uk,stephen.hiscock@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk,Karen.Dean@nig-uk.com,Claire.Ratcliffe@nig-uk.com,Annalise.Bartlett@nig-uk.com,tam.bedford@directlinegroup.co.uk;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_DLG_MONTHLY_1;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_DLG_MONTHLY_1};;
         "DLG-Monthly_Cost_Report_By_Team-"* |\
         "DLG-Monthly_Manual_CHOX_Cost_Report-"* |\
         "DLG-Monthly_Manual_CHOX_Cost_Report_By_Team-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=Steven.Talbot@directlinegroup.co.uk,stephen.hiscock@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk,Karen.Dean@nig-uk.com,claire.wills@directline.com,Angela.Kehoe@nig-uk.com,Simon.Holt@directlinegroup.co.uk,Claire.Ratcliffe@nig-uk.com,Annalise.Bartlett@nig-uk.com,tam.bedford@directlinegroup.co.uk;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_DLG_MONTHLY_0;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_DLG_MONTHLY_0};;
         "DLG-ClaimDetailsDump-"* |\
         "DLG-InvoiceDetailsDump-"* |\
         "DLG-ClaimCycleDump-"* |\
         "DLG-NotesDump-"* )
             ACTIVE=1
             #EMAIL_RECEIVERS=ClaimsAnalytics-motor@directlinegroup.co.uk;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_DLG_DUMPS;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_DLG_DUMPS};;
         "Octagon-Monthly_Insurer_Cost_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=carl.cripps@catalystcsl.co.uk,Terry.Clarke@catalystcsl.co.uk,tony.collins@horizon.gi;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_OCTAGON_MONTHLY;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_OCTAGON_MONTHLY};;
         "DLG-Monthly_BRE_Audit_Report-"* |\
         "DLG-Pilot_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=Tam.Bedford@directlinegroup.co.uk;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_DLG_MONTHLY_2;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_DLG_MONTHLY_2};;
         "DLG-BRE_Monthly_Review_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=Richard.e.brown@directlinegroup.co.uk,Tam.Bedford@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_DLG_MONTHLY_3;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_DLG_MONTHLY_3};;
         "DLG-Hire_Claimed_vs_Paid_Days-ERAC-"* |\
 	    "DLG-Invoice_Notifications-ManualAuxillis-"* )
             ACTIVE=1
             #EMAIL_RECEIVERS=tam.bedford@directlinegroup.co.uk;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_DLG_INVOICE_NOTIFICATIONS;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_DLG_INVOICE_NOTIFICATIONS};;
 	 #   "DLG-HireInvoiceUploadReport-"* )
 	 #       ACTIVE=1
    #         EMAIL_RECEIVERS=tam.bedford@directlinegroup.co.uk,phil.room@directlinegroup.co.uk;;
@@ -151,11 +153,11 @@ function getEmailReceivers {
 	    "DLG-AuditHistoryReport-ManualHelphire-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=tam.bedford@directlinegroup.co.uk;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_DLG_AUDIT_HISTORY_REPORT;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_DLG_AUDIT_HISTORY_REPORT};;
         "DLG-Monthly_Review_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=BICC.Production.Support@directlinegroup.co.uk,tom.stanuil@directlinegroup.co.uk;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_DLG_MONTHLY_4;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_DLG_MONTHLY_4};;
         "SGSM-CHO_PaymentProfile_Report-"* |\
         "SGSM-Review_Report-"* |\
         "SGSM-Contested_Count_Report-"* |\
@@ -163,14 +165,14 @@ function getEmailReceivers {
         "SGSM-Invoiced_Claims_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=peter.summers@slatergordonsolutions.co.uk,chantelle.carroll@slatergordonsolutions.co.uk,amy.delves@slatergordonsolutions.co.uk;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_SGSM_REPORT_0;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_SGSM_REPORT_0};;
         "MPK-SGSM-Insurer_Monthly_Cost_Report-"* )
             ACTIVE=0
             #EMAIL_RECEIVERS=toBeProvided@By.MPK;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_MPK_SGSM_REPORT;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_MPK_SGSM_REPORT};;
         "ERAC-Subscriber_Stats_Report-"* )
 	        ACTIVE=1
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_ERAC_SUBSCRIBER_REPORT;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_ERAC_SUBSCRIBER_REPORT};;
  #       "Motability-Commercial_Area_Report-"* )
  #           EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com;;
  #       "RSA-Ultra_Prestige_Report-"* )
@@ -181,7 +183,7 @@ function getEmailReceivers {
 	    "QBE-Subscriber_SLA_Rejection_Report-"* )
             ACTIVE=1
             #EMAIL_RECEIVERS=Paul.Bone@uk.qbe.com,Jacqueline.Britton@uk.qbe.com;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_QBE_REPORTS_0;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_QBE_REPORTS_0};;
 #	    "RSA-On_Hire_Report-"*  )
 #            ACTIVE=1
 #            EMAIL_RECEIVERS=Kelly.cartman@uk.rsagroup.com,bec.jones@uk.rsagroup.com,neil.whittle@uk.rsagroup.com,fiona.odonnell@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,Theresa.bow@uk.rsagroup.com;;
@@ -193,27 +195,27 @@ function getEmailReceivers {
         "Auxillis-Moved_To_InvoicePaymentLogged_Claim_Detail_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=cpt@albanyassistance.co.uk,susan.harker@albanyassistance.co.uk,protocol@albanyassistance.co.uk;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_AUXILIS_REPORT_0;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_AUXILIS_REPORT_0};;
 	    "Auxillis-FNOL_Notifications_Report_DLG-"* )
 	        ACTIVE=1
 	        #EMAIL_RECEIVERS=DLGclaimupdate@auxillis.com,Emma.Howe@auxillis.com;;
-	        EMAIL_RECEIVERS=RECIPIENTS_CTE_AUXILIS_REPORT_1;;
+	        EMAIL_RECEIVERS=${RECIPIENTS_CTE_AUXILIS_REPORT_1};;
 	    "Auxillis-Invoice_Notifications_Report_DLG-"* )
 	        ACTIVE=1
 	        #EMAIL_RECEIVERS=protocol@albanyassistance.co.uk;;
-	        EMAIL_RECEIVERS=RECIPIENTS_CTE_AUXILIS_REPORT_2;;
+	        EMAIL_RECEIVERS=${RECIPIENTS_CTE_AUXILIS_REPORT_2};;
         "DLG-Insurer_User_State_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=tam.bedford@directlinegroup.co.uk,Andy.A.Cooper@directlinegroup.co.uk,Jonathan.Clarke@directlinegroup.co.uk,UAC.Governance@directlinegroup.co.uk
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_DLG_INSURER_USER_REPORT
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_DLG_INSURER_USER_REPORT}
             #BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk--> chox@audatex.co.uk,David.Hayes@audatex.co.uk;;
-            BCC_RECIPIENTS=BCC_CTE_DLG_INSURER_USER_REPORT;;
+            BCC_RECIPIENTS=${BCC_CTE_DLG_INSURER_USER_REPORT};;
         "Tesco-Underwriting-Insurer_User_State_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=David.Crown@tescobank.com,Simon.Lund@tescobank.com,Daniel.Robinson@tescobank.com,Ruth.Lawson@tescobank.com
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_TESCO_INSURER_USER_REPORT
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_TESCO_INSURER_USER_REPORT}
             #BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk--> chox@audatex.co.uk;;
-            BCC_RECIPIENTS=BCC_CTE_TESCO_INSURER_USER_REPORT;;
+            BCC_RECIPIENTS=${BCC_CTE_TESCO_INSURER_USER_REPORT};;
 #        "RSA-Average_Time_To_Allocate_Work-"* )
 #            EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com;;
 #        "ERAC-Supplementary_Consolidation_Report-"* )
@@ -227,34 +229,34 @@ function getEmailReceivers {
         "ERAC-TotalLoss_LiabilityUpdate_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=totallossteam@imsolutionslimited.co.uk,courtneyp@imsolutionslimited.co.uk;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_ERAC_TOTAL_LOSS_REPORT;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_ERAC_TOTAL_LOSS_REPORT};;
         "DLG-Audit_Facility_Report-"* |\
         "DLG-Audit_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=Tam.Bedford@directlinegroup.co.uk;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_DLG_AUDIT_REPORT;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_DLG_AUDIT_REPORT};;
         "ERAC-Audit_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=Lauren.D.Walker@ehi.com,Nicola.A.Imlach@ehi.com,Sam.Flynn@ehi.com;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_ERAC_AUDIT_REPORT;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_ERAC_AUDIT_REPORT};;
 #        "RSA-Attachment_Report-"* )
 #	        ACTIVE=1
 #            EMAIL_RECEIVERS=benjamin.mills@uk.rsagroup.com,bec.jones@uk.rsagroup.com,Andrew.burton@uk.rsagroup.com,linda.barr@uk.rsagroup.com,Stacie.warrington@uk.rsagroup.com,fiona.odonnell@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,Theresa.bow@uk.rsagroup.com,stevie.binns@uk.rsagroup.com;;
         "ERS-Weekly_Action_Management_Report-"* )
             #EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com,terry.joseph@ers.com;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_ERS_WEEKLY_MANAGEMENT_REPORT;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_ERS_WEEKLY_MANAGEMENT_REPORT};;
         "ERS-Last_ECD_Update_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=jonathan.lee@ers.com,terry.joseph@ers.com;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_ERS_LAST_ECD_REPORT;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_ERS_LAST_ECD_REPORT};;
         "ERAC-User_State_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=andrew.r.findlay@ehi.com;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_ERAC_INSURER_USER_REPORT;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_ERAC_INSURER_USER_REPORT};;
         "ERAC-Repair_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=chris@crashworth.co.uk,Aisling.L.Tuft@ehi.com,Lauren.D.Walker@ehi.com,odonnellj@uk.innovation-group.com;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_ERAC_REPAIR_REPORT;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_ERAC_REPAIR_REPORT};;
 #        "RSA-Default_Claims_Report-"* )
 #	        ACTIVE=1
 #            EMAIL_RECEIVERS=Kelly.cartman@uk.rsagroup.com,linda.barr@uk.rsagroup.com,lee.price@uk.rsagroup.com,stacie.warrington@uk.rsagroup.com,andrew.burton@uk.rsagroup.com,Theresa.bow@uk.rsagroup.com;;
@@ -279,15 +281,15 @@ function getEmailReceivers {
         "AccidentExchange-Invoice_Notifications_Report_"* )
             ACTIVE=1
             #EMAIL_RECEIVERS=kmartin@accidentexchange.com,ymiah@accidentexchange.com,proche@accidentexchange.com,ltrueman@accidentexchange.com;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_ACCIDENTEXCHANGE_INVOICE_NOTIFICATION;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_ACCIDENTEXCHANGE_INVOICE_NOTIFICATION};;
         "LV-Monthly_Dashboard_Report-"* |\
         "LV-Weekly_Dashboard_Report-"* )
             ACTIVE=1
             #EMAIL_RECEIVERS=Neil.Garrett@audatex.co.uk,Dominic.Czechak@audatex.co.uk;;
-            EMAIL_RECEIVERS=RECIPIENTS_CTE_LV_DASHBOARD_REPORT;;
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_LV_DASHBOARD_REPORT};;
 	    "LV-Closed_Claim_Report-"* )
 	        ACTIVE=1
-	        EMAIL_RECEIVERS=RECIPIENTS_CTE_LV_CLOSED_CLAIM_REPORT;;
+	        EMAIL_RECEIVERS=${RECIPIENTS_CTE_LV_CLOSED_CLAIM_REPORT};;
 	    "LV-ClaimDetailsDump-"* )
             ACTIVE=4
             FTP_CLIENT=LV;;
@@ -305,10 +307,10 @@ function getEmailReceivers {
 	    "Keoghs-DailyReport-"* )
 	        ACTIVE=1
 	        #EMAIL_RECEIVERS=alane@keoghs.co.uk,lkearsley@keoghs.co.uk;;
-	        EMAIL_RECEIVERS=RECIPIENTS_CTE_KEOGHS_DAILY_REPORT;;
+	        EMAIL_RECEIVERS=${RECIPIENTS_CTE_KEOGHS_DAILY_REPORT};;
         *)
             #EMAIL_RECEIVERS=DL-UKBR-Audatex-penguin-reporting@audatex.com;;
-            EMAIL_RECEIVERS=RECIPIENTS_DEV_TEAM_EMAIL;;
+            EMAIL_RECEIVERS=${RECIPIENTS_DEV_TEAM_EMAIL};;
     esac
 
 }
@@ -327,7 +329,7 @@ fi
 #BCC_RECIPIENT may have been initialised already, otherwise just use a catch all
 if [[ -z "${BCC_RECIPIENTS}" ]]; then
    #BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk --> chox@audatex.co.uk
-   BCC_RECIPIENTS=BCC_RECIPIENT_GENERAL
+   BCC_RECIPIENTS=${BCC_RECIPIENT_GENERAL}
 fi
 
 REPORT_DIR=$1
