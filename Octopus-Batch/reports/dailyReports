@@ -39,7 +39,8 @@ echo 'Generating RSA Subscriber Task Export Report -- Deprecated (report not sen
 #/bin/rm ${DUMPFILE}
 
 #DUMPFILE=RSA-Default_Claims_Report-`date +"%F"`.txt
-#END_DATE=`date +%F`
+
+END_DATE=`date +%F`
 
 echo 'Generating Default Claims Report for RSA/Motability -- Deprecated (report not sent)'
 #$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
@@ -62,7 +63,6 @@ else
 fi
 
 echo 'Generating Accident Exchange Processed Notifications Report for LV / Manual Accident Exchange'
-echo "Query to run: select * from processedNotificationsReport(${CHO_ID}, ${INS_ID}, '${START_DATE}'::varchar, '${END_DATE}'::varchar);"
 
 $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
 select * from processedNotificationsReport(${CHO_ID}, ${INS_ID}, '${START_DATE}'::varchar, '${END_DATE}'::varchar);
