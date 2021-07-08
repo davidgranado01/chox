@@ -55,7 +55,11 @@ echo 'Generating LV Weekly Claim Details Dump XML export'
 DUMPFILE='LV-ClaimDetailsXMLDump-'`date +"%Y%m%d"`.xml
 START_DATE=`date -d "last week" +%F`
 OUTPUT_FILE=${MI_DIRECTORY}/${DUMPFILE}
-XML_QUERY='select * from claimDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], ''2016-01-01'', ''2021-07-01'', ''INS'', array[''ClaimClosed'',''PaymentReceived'',''ManualInvoicePaid'',''ClaimRejectionAccepted'',''InvoiceRejectionAccepted''], array[''''])'
-generateOutput "${XML_QUERY}" ${OUTPUT_FILE}
+#XML_QUERY='select * from claimDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], ''2016-01-01'', ''2021-07-01'', ''INS'', array[''ClaimClosed'',''PaymentReceived'',''ManualInvoicePaid'',''ClaimRejectionAccepted'',''InvoiceRejectionAccepted''], array[''''])'
+#generateOutput "${XML_QUERY}" ${OUTPUT_FILE}
+
+$PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE1}" << --EOF--
+select query_to_xml(E'select * from claimDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], '2016-01-01', '${DATE}', 'INS', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array[''])', true, false, '');
+--EOF--
 
 exit 0
