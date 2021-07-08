@@ -432,7 +432,7 @@ $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
 
 
 echo 'Generating LV Weekly Invoice Details Dump XML export'
-DUMPFILE='LV-ClaimDetailsXMLDump-'`date +"%Y%m%d"`.xml
+DUMPFILE='LV-InvoiceDetailsDump-'`date +"%Y%m%d"`.xml
 OUTPUT_FILE=${MI_DIRECTORY}${DUMPFILE}
 #XML_QUERY="select * from invoiceDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], '2016-01-01', ${START_DATE}, array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array[''])"
 #generateOutput "${XML_QUERY}" ${OUTPUT_FILE}
