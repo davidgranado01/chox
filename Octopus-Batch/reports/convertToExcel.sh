@@ -372,6 +372,7 @@ do
         RECIPIENTS=${EMAIL_RECEIVERS}
         if [ "${MODE}" == "EXPORT" ]; then
 sleep ${DELAY_SEND_EMAIL_REPORTS}
+echo "sending email to: ${RECIPIENTS} and BCC: ${BCC_RECIPIENTS}"
 /usr/bin/mutt -s "${SUBJECT}" -b ${BCC_RECIPIENTS} -a ${zipFile} -- ${RECIPIENTS}  <<  --EOF--
 Please find the attached csv report:
         ${zipFile}
@@ -397,6 +398,7 @@ do
 # Email unzipped and without password
         if [ "${MODE}" == "EXPORT" ]; then
 sleep ${DELAY_SEND_EMAIL_REPORTS}
+echo "sending email to: ${RECIPIENTS} and BCC: ${BCC_RECIPIENTS}"
 /usr/bin/mutt -s "${SUBJECT}" -b ${BCC_RECIPIENTS} -a ${CWD}/${OUTPUT_DIR}/${xlsFile} -- ${RECIPIENTS}  <<  --EOF--
 Please find the attached excel report:
         ${xlsFile}
@@ -431,6 +433,7 @@ Please find the attached excel report:
         RECIPIENTS=${EMAIL_RECEIVERS}
         if [ "${MODE}" == "EXPORT" ]; then
 sleep ${DELAY_SEND_EMAIL_REPORTS}
+echo "sending email to: ${RECIPIENTS} and BCC: ${BCC_RECIPIENTS}"
 /usr/bin/mutt -s "${SUBJECT}" -b ${BCC_RECIPIENTS} -a ${CWD}/${OUTPUT_DIR}/${zipFile} -- ${RECIPIENTS}  <<  --EOF--
 Please find the attached excel report:
         ${zipFile}
@@ -447,6 +450,7 @@ Please find the attached excel report:
 
         if [ "${MODE}" == "EXPORT" ]; then
 sleep ${DELAY_SEND_EMAIL_REPORTS}
+echo "sending email to: ${RECIPIENTS} and BCC: ${BCC_RECIPIENTS}"
 /usr/bin/mutt -s "${SUBJECT}" -a ${CWD}/${OUTPUT_DIR}/${zipFile} -- ${RECIPIENTS}  <<  --EOF--
 Please find the attached excel report:
     ${zipFile}
