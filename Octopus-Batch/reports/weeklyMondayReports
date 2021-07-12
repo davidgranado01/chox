@@ -421,7 +421,7 @@ echo "Cleaning the file"
 cat ${OUTPUT_FILE} | tail -n +3 | head -n -2 | sed s'/+$//' | sed -e's/[ \t]*$//' > ${OUTPUT_FILE_AUX}
 cat ${OUTPUT_FILE_AUX} | sed -e "s/_x00[0-9][0-9]//g" | sed -e "s/_x00[0-9][A-Z]//g" > ${OUTPUT_FILE}
 cat ${OUTPUT_FILE} | sed -e "s/_>/>/g;s/__>/>/g" > ${OUTPUT_FILE_AUX}
-cat ${OUTPUT_FILE_AUX} | sed -e "s/___/_/g;s/__/_/g" > ${OUTPUT_FILE}
+cat ${OUTPUT_FILE_AUX} | sed -e "s/___/_/g;s/__/_/g;s/_ / /g;s/_>/>/g" > ${OUTPUT_FILE}
 rm -f ${OUTPUT_FILE_AUX}
 
 echo "Moving Weekly Claim Details Dump XML to SFTP -> ${OUTPUT_FILE}"
@@ -457,7 +457,9 @@ echo "Cleaning the file"
 cat ${OUTPUT_FILE} | tail -n +3 | head -n -2 | sed s'/+$//' | sed -e's/[ \t]*$//' > ${OUTPUT_FILE_AUX}
 cat ${OUTPUT_FILE_AUX} | sed -e "s/_x00[0-9][0-9]//g" | sed -e "s/_x00[0-9][A-Z]//g" > ${OUTPUT_FILE}
 cat ${OUTPUT_FILE} | sed -e "s/_>/>/g" > ${OUTPUT_FILE_AUX}
-cat ${OUTPUT_FILE_AUX} | sed -e "s/__>/>/g;s/_ //g" > ${OUTPUT_FILE}
+cat ${OUTPUT_FILE_AUX} | sed -e "s/__>/>/g;s/_ / /g" > ${OUTPUT_FILE}
+cat ${OUTPUT_FILE} | sed -e "s/_>/>/g" > ${OUTPUT_FILE_AUX}
+cat ${OUTPUT_FILE_AUX} | sed -e "s/_ / /g" > ${OUTPUT_FILE}
 rm -f ${OUTPUT_FILE_AUX}
 
 echo "Moving Weekly Invoice Details Dump XML to SFTP -> ${OUTPUT_FILE}"
