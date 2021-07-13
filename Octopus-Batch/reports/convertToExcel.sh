@@ -293,8 +293,14 @@ function getEmailReceivers {
 	    "LV-ClaimDetailsDump-"* )
             ACTIVE=4
             FTP_CLIENT=LV;;
+        "LV-ClaimDetailsXMLDump-"* )
+          ACTIVE=5
+          FTP_CLIENT=LV;;
         "LV-InvoiceDetailsDump-"* )
             ACTIVE=4
+            FTP_CLIENT=LV;;
+        "LV-InvoiceDetailsXMLDump-"* )
+            ACTIVE=5
             FTP_CLIENT=LV;;
 	    "Kindertons-Invoice_Upload_Report-"* )
 	        ACTIVE=5
@@ -383,6 +389,18 @@ Please find the attached csv report:
     else
 	echo "Report not active: moving ${reportFile} to  ${CWD}/${PROCESSED_DIR}"
 	/bin/mv ${reportFile} ${CWD}/${PROCESSED_DIR}
+    fi
+done
+
+echo "Getting xml to process"
+for reportFile in $(ls *.xml);
+do
+    getEmailReceivers ${reportFile}
+    if [ "${ACTIVE}" -eq "5" ]; then
+        if [ "${MODE}" == "EXPORT" -o "${MODE}" == "NOEMAIL" ]; then
+            /home/chox/bin/transferToGateway.sh ${FTP_CLIENT} ${reportFile}
+        fi
+        /bin/mv ${reportFile} ${CWD}/${PROCESSED_DIR}/${reportFile}
     fi
 done
 
