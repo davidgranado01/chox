@@ -424,11 +424,11 @@ cat ${OUTPUT_FILE} | sed -e "s/_>/>/g;s/__>/>/g" > ${OUTPUT_FILE_AUX}
 cat ${OUTPUT_FILE_AUX} | sed -e "s/___/_/g;s/__/_/g;s/_ / /g;s/_>/>/g" > ${OUTPUT_FILE}
 rm -f ${OUTPUT_FILE_AUX}
 
-echo "Moving Weekly Claim Details Dump XML to SFTP -> ${OUTPUT_FILE}"
-/home/chox/bin/transferToGateway.sh LV ${OUTPUT_FILE}
+#echo "Moving Weekly Claim Details Dump XML to SFTP -> ${OUTPUT_FILE}"
+#/home/chox/bin/transferToGateway.sh LV ${OUTPUT_FILE}
 
-echo "Moving file to processed folder -> ${OUTPUT_FILE}"
-mv ${OUTPUT_FILE} ${MI_DIRECTORY}/processed
+#echo "Moving file to processed folder -> ${OUTPUT_FILE}"
+#mv ${OUTPUT_FILE} ${MI_DIRECTORY}/processed
 
 
 echo 'Generating LV Weekly Invoice Details Dump CSV export'
@@ -462,11 +462,11 @@ cat ${OUTPUT_FILE} | sed -e "s/_>/>/g" > ${OUTPUT_FILE_AUX}
 cat ${OUTPUT_FILE_AUX} | sed -e "s/_ / /g" > ${OUTPUT_FILE}
 rm -f ${OUTPUT_FILE_AUX}
 
-echo "Moving Weekly Invoice Details Dump XML to SFTP -> ${OUTPUT_FILE}"
-/home/chox/bin/transferToGateway.sh LV ${OUTPUT_FILE}
+#echo "Moving Weekly Invoice Details Dump XML to SFTP -> ${OUTPUT_FILE}"
+#/home/chox/bin/transferToGateway.sh LV ${OUTPUT_FILE}
 
-echo "Moving file to processed folder -> ${OUTPUT_FILE}"
-mv ${OUTPUT_FILE} ${MI_DIRECTORY}/processed
+#echo "Moving file to processed folder -> ${OUTPUT_FILE}"
+#mv ${OUTPUT_FILE} ${MI_DIRECTORY}/processed
 
 
 echo 'Generating User State Report for Tesco Underwriting'
