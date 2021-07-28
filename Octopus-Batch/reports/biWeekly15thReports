@@ -8,7 +8,8 @@ MI_DIRECTORY=/home/chox/reports/
 
 echo 'Subscriber Stats Report generating for ERAC'
 DUMPFILE=ERAC-Subscriber_Stats_Report-`date +"%F"`.txt
-RECIPIENTS=elliot.roberts@sherwoodts.co.uk,ben.richmond@sherwoodts.co.uk
+#RECIPIENTS=elliot.roberts@sherwoodts.co.uk,ben.richmond@sherwoodts.co.uk
+RECIPIENTS=#{RECIPIENTS_BW15_REPORT}
 END_DATE=`date -d "yesterday" +%F`
 REPORT_END_DATE=`date +%F`
 START_DATE=`date +%Y-%m-01`

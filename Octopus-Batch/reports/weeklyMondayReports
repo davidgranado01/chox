@@ -111,6 +111,52 @@ END_DATE=`date +"%F"`
 START_DATE=`date -d "last week" +%F`
 INS_ID=25
 
+
+# Removes first 3 lines, last 3 lines, and strips trailing '+' and white space from intermediate lines
+#    $1 - input file
+#    $2 - output file
+function cleanOutput {
+    INFILE=$1
+    OUTFILE=$2
+
+    if [ -f ${INFILE} ]
+    then
+        if [ "${OS}" = "Darwin" ]
+        then
+            /bin/cat ${INFILE} | tail -n +3 | sed '$d' |  sed '$d'  | sed '$d' | sed s'/+$//' | sed -e's/[ \t]*$//' > ${OUTFILE}
+        else
+            /bin/cat ${INFILE} | tail -n +3 | head -n -2 | sed s'/+$//' | sed -e's/[ \t]*$//' > ${OUTFILE}
+        fi
+        /bin/rm ${INFILE}
+    fi
+}
+
+# Generate an XML file from a query
+#    $1 - query
+#    $2 - output file
+function generateXML {
+    QUERY1=$1
+    OUTPUT_FILE1=$2
+
+    $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${OUTPUT_FILE1} << --EOF--
+select query_to_xml(E'${QUERY1}', true, false, '');
+--EOF--
+}
+
+# Generate XML file from a query
+#    $1 - query
+#    $2 - output file base: '.xml' will be appended to this to
+#         generate the output file names
+function generateOutput {
+    QUERY3=$1
+    OUTPUT_FILE3=$2
+
+    # Generate XML
+    generateXML "${QUERY3}" ${OUTPUT_FILE3}.tmp
+    cleanOutput ${OUTPUT_FILE3}.tmp ${OUTPUT_FILE3}.XML
+}
+
+
 /home/chox/bin/slaRejectionReport.sh Subscriber ${INS_ID} ${START_DATE} ${END_DATE}
 
 #
@@ -229,20 +275,20 @@ select * from erac_repair_report_summary(array[]::integer[], ${CHO_ID}, '${START
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 /bin/rm ${FILE1} ${FILE2}
 
-echo 'Report generating for RSA Attachment Report'
-START_DATE=`date -d "last week" +%F`
-END_DATE=`date  +%F`
-DUMPFILE='RSA-Attachment_Report-'`date +"%F"`.txt
-$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
-select * from attachment_report(3, array[]::integer[], array['Engineer''s Reports']::varchar[], '${START_DATE}', '${END_DATE}',
- array['AwaitingCarHireInfo','ClaimUnacknowledgedUnrouted',
-       'ClaimUnacknowledgedRouted','ClaimUnacknowledgedUnassigned',
-       'ClaimPending','ClaimReferredToFNOL',
-       'ClaimReferredToEngineer','ClaimUpdatedByEngineer',
-       'ClaimRejectionContested']::varchar[]);
---EOF--
+echo 'Report generating for RSA Attachment Report -- Deprecated (report not sent)'
+#START_DATE=`date -d "last week" +%F`
+#END_DATE=`date  +%F`
+#DUMPFILE='RSA-Attachment_Report-'`date +"%F"`.txt
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from attachment_report(3, array[]::integer[], array['Engineer''s Reports']::varchar[], '${START_DATE}', '${END_DATE}',
+# array['AwaitingCarHireInfo','ClaimUnacknowledgedUnrouted',
+#       'ClaimUnacknowledgedRouted','ClaimUnacknowledgedUnassigned',
+#       'ClaimPending','ClaimReferredToFNOL',
+#       'ClaimReferredToEngineer','ClaimUpdatedByEngineer',
+#       'ClaimRejectionContested']::varchar[]);
+#--EOF--
 
-/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
 echo 'Report generating for DLG Audit Report'
 START_DATE=`date -d "last week" +%F`
@@ -273,21 +319,21 @@ select * from eracDataDump(null::integer[], array[1007], null::integer[], '2008-
 
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
-echo 'Report generating for RSA & Motability On Hire Report'
-DUMPFILE='RSA-On_Hire_Report-'`date +"%F"`.txt
-$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
-select * from on_hire_report(array[3, 19], null::int[], array[14,123,15]);
---EOF--
+echo 'Report generating for RSA & Motability On Hire Report -- Deprecated (report not sent)'
+#DUMPFILE='RSA-On_Hire_Report-'`date +"%F"`.txt
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from on_hire_report(array[3, 19], null::int[], array[14,123,15]);
+#--EOF--
 
-/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
-echo 'Report generating for RSA & Motability Insurer Penalty Charge Report'
-DUMPFILE='RSA-Insurer_Penalty_Charge_Report-'`date +"%F"`.txt
-$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
-select * from insurer_penalty_charge_report(array[3,19], array[14,123,15,134], 10, 3);
---EOF--
+echo 'Report generating for RSA & Motability Insurer Penalty Charge Report -- Deprecated (report not sent)'
+#DUMPFILE='RSA-Insurer_Penalty_Charge_Report-'`date +"%F"`.txt
+#$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+#select * from insurer_penalty_charge_report(array[3,19], array[14,123,15,134], 10, 3);
+#--EOF--
 
-/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+#/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
 echo 'Report generating for LV Weekly dashboard report'
 DUMPFILE='LV-Weekly_Dashboard_Report-'`date +"%F"`.txt
@@ -349,7 +395,7 @@ select * from auditHistoryReport(${INS_ID}, ${CHO_ID}, array[array[112,113,118,1
 
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
-echo 'Generating LV Weekly Claim Details Dump'
+echo 'Generating LV Weekly Claim Details Dump CSV export'
 START_DATE=`date -d "last week" +%F`
 DUMPFILE='LV-ClaimDetailsDump-'`date +"%Y%m%d"`.csv
 $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
@@ -358,7 +404,34 @@ $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
 
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
-echo 'Generating LV Weekly Invoice Details Dump'
+echo 'Generating LV Weekly Claim Details Dump XML export'
+DUMPFILE='LV-ClaimDetailsXMLDump-'`date +"%Y%m%d"`.xml
+DUMPFILE_AUX='LV-ClaimDetailsXMLDump-'`date +"%Y%m%d"`_2.xml
+START_DATE=`date -d "last week" +%F`
+OUTPUT_FILE=${MI_DIRECTORY}${DUMPFILE}
+OUTPUT_FILE_AUX=${MI_DIRECTORY}${DUMPFILE_AUX}
+#XML_QUERY='select * from claimDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], ''2016-01-01'', ''${START_DATE}'', ''INS'', array[''ClaimClosed'',''PaymentReceived'',''ManualInvoicePaid'',''ClaimRejectionAccepted'',''InvoiceRejectionAccepted''], array[''''])'
+#generateOutput "${XML_QUERY}" ${OUTPUT_FILE}
+
+$PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE}" << --EOF--
+select query_to_xml(E'select * from claimDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], ''2016-01-01'', ''${START_DATE}'', ''INS'', array[''ClaimClosed'',''PaymentReceived'',''ManualInvoicePaid'',''ClaimRejectionAccepted'',''InvoiceRejectionAccepted''], array[''''])', true, false, '');
+--EOF--
+
+echo "Cleaning the file"
+cat ${OUTPUT_FILE} | tail -n +3 | head -n -2 | sed s'/+$//' | sed -e's/[ \t]*$//' > ${OUTPUT_FILE_AUX}
+cat ${OUTPUT_FILE_AUX} | sed -e "s/_x00[0-9][0-9]//g" | sed -e "s/_x00[0-9][A-Z]//g" > ${OUTPUT_FILE}
+cat ${OUTPUT_FILE} | sed -e "s/_>/>/g;s/__>/>/g" > ${OUTPUT_FILE_AUX}
+cat ${OUTPUT_FILE_AUX} | sed -e "s/___/_/g;s/__/_/g;s/_ / /g;s/_>/>/g" > ${OUTPUT_FILE}
+rm -f ${OUTPUT_FILE_AUX}
+
+#echo "Moving Weekly Claim Details Dump XML to SFTP -> ${OUTPUT_FILE}"
+#/home/chox/bin/transferToGateway.sh LV ${OUTPUT_FILE}
+
+#echo "Moving file to processed folder -> ${OUTPUT_FILE}"
+#mv ${OUTPUT_FILE} ${MI_DIRECTORY}/processed
+
+
+echo 'Generating LV Weekly Invoice Details Dump CSV export'
 START_DATE=`date -d "last week" +%F`
 DUMPFILE='LV-InvoiceDetailsDump-'`date +"%Y%m%d"`.csv
 $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
@@ -366,6 +439,35 @@ $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
 --EOF--
 
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
+
+echo "Generating LV Weekly Invoice Details Dump XML export"
+DUMPFILE='LV-InvoiceDetailsXMLDump-'`date +"%Y%m%d"`.xml
+DUMPFILE_AUX='LV-InvoiceDetailsXMLDump-'`date +"%Y%m%d"`_2.xml
+OUTPUT_FILE=${MI_DIRECTORY}${DUMPFILE}
+OUTPUT_FILE_AUX=${MI_DIRECTORY}${DUMPFILE_AUX}
+#XML_QUERY="select * from invoiceDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], '2016-01-01', ${START_DATE}, array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array[''])"
+#generateOutput "${XML_QUERY}" ${OUTPUT_FILE}
+
+$PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE}" << --EOF--
+select query_to_xml(E'select * from invoiceDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], ''2016-01-01'', ''${START_DATE}'', array[''ClaimClosed'',''PaymentReceived'',''ManualInvoicePaid'',''ClaimRejectionAccepted'',''InvoiceRejectionAccepted''], array[''''])', true, false, '');
+--EOF--
+
+echo "Cleaning the file"
+cat ${OUTPUT_FILE} | tail -n +3 | head -n -2 | sed s'/+$//' | sed -e's/[ \t]*$//' > ${OUTPUT_FILE_AUX}
+cat ${OUTPUT_FILE_AUX} | sed -e "s/_x00[0-9][0-9]//g" | sed -e "s/_x00[0-9][A-Z]//g" > ${OUTPUT_FILE}
+cat ${OUTPUT_FILE} | sed -e "s/_>/>/g" > ${OUTPUT_FILE_AUX}
+cat ${OUTPUT_FILE_AUX} | sed -e "s/__>/>/g;s/_ / /g" > ${OUTPUT_FILE}
+cat ${OUTPUT_FILE} | sed -e "s/_>/>/g" > ${OUTPUT_FILE_AUX}
+cat ${OUTPUT_FILE_AUX} | sed -e "s/_ / /g" > ${OUTPUT_FILE}
+rm -f ${OUTPUT_FILE_AUX}
+
+#echo "Moving Weekly Invoice Details Dump XML to SFTP -> ${OUTPUT_FILE}"
+#/home/chox/bin/transferToGateway.sh LV ${OUTPUT_FILE}
+
+#echo "Moving file to processed folder -> ${OUTPUT_FILE}"
+#mv ${OUTPUT_FILE} ${MI_DIRECTORY}/processed
+
 
 echo 'Generating User State Report for Tesco Underwriting'
 INS_ID=27

@@ -6,8 +6,7 @@ DB=#{DB_NAME.CHOX} #dev_uk_chox
 
 DUMPFILE=RSA-Subscriber_Task_Export_Report-`date +"%F"`.txt
 DUMPFILE1=RSA-FixedFee_Task_Export_Report-`date +"%F"`.txt
-#RECIPIENTS=elliot.roberts@sherwoodts.co.uk,ben.richmond@sherwoodts.co.uk
-RECIPIENTS=#{RECIPIENTS_DAILYREPORTS}
+RECIPIENTS=rafael.garcia@solera.com,luis.valero@solera.com
 MI_DIRECTORY=/home/chox/reports/
 
 
@@ -39,8 +38,7 @@ echo 'Generating RSA Subscriber Task Export Report -- Deprecated (report not sen
 #/bin/rm ${DUMPFILE}
 
 #DUMPFILE=RSA-Default_Claims_Report-`date +"%F"`.txt
-
-END_DATE=`date +%F`
+#END_DATE=`date +%F`
 
 echo 'Generating Default Claims Report for RSA/Motability -- Deprecated (report not sent)'
 #$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
@@ -63,7 +61,6 @@ else
 fi
 
 echo 'Generating Accident Exchange Processed Notifications Report for LV / Manual Accident Exchange'
-
 $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
 select * from processedNotificationsReport(${CHO_ID}, ${INS_ID}, '${START_DATE}'::varchar, '${END_DATE}'::varchar);
 --EOF--

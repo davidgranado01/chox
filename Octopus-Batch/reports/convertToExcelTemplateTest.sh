@@ -9,12 +9,6 @@ export PATH=${JAVA_HOME}/bin:/bin:${PATH}
 MODE=#{MODE} # EXPORT - send emails and transfer files, NOEMAIL - rports generated but not emailed but sftp ok, NOEXPORT - reports generated but not delivered via sftp or email
 DELAY_SEND_EMAIL_REPORTS=#{DELAY_SEND_EMAIL_REPORTS}
 
-#BCC/RECIPIENTS
-RECIPIENTS_CTET_ACCIDENTEXCHANGE_PROCESS_NOTIFICATION_0=#{RECIPIENTS_CTET_ACCIDENTEXCHANGE_PROCESS_NOTIFICATION_0}
-RECIPIENTS_CTET_ACCIDENTEXCHANGE_PROCESS_NOTIFICATION_1=#{RECIPIENTS_CTET_ACCIDENTEXCHANGE_PROCESS_NOTIFICATION_1}
-BCC_RECIPIENT_GENERAL=#{BCC_RECIPIENT_GENERAL}
-RECIPIENTS_DEV_TEAM_EMAIL=#{RECIPIENTS_DEV_TEAM_EMAIL}
-
 function getPassword {
     REPORT_NAME=$1
     case "$REPORT_NAME" in
@@ -48,11 +42,9 @@ function getEmailReceivers {
     case "$REPORT_NAME" in
         "AccidentExchange-Processed_Notifications_Report_"* )
 	    ACTIVE=1
-            #EMAIL_RECEIVERS=igp.unit@accidentexchange.com,kmartin@accidentexchange.com,ymiah@accidentexchange.com,proche@accidentexchange.com;;
-            EMAIL_RECEIVERS=${RECIPIENTS_CTET_ACCIDENTEXCHANGE_PROCESS_NOTIFICATION_0};;
+            EMAIL_RECEIVERS=rafael.garcia@solera.com,luis.valero@solera.com;;
         *)
-            #EMAIL_RECEIVERS=unknown@nowhere.com;;
-            EMAIL_RECEIVERS=${RECIPIENTS_CTET_ACCIDENTEXCHANGE_PROCESS_NOTIFICATION_1};;
+            EMAIL_RECEIVERS=unknown@nowhere.com;;
     esac
 
 }
@@ -66,9 +58,7 @@ then
 fi
 
 #BCC_RECIPIENTS=MichaelPaul.Kemp@valexa.com,Robert.Hon@audatex.co.uk
-BCC_RECIPIENTS=${BCC_RECIPIENT_GENERAL}
-#RECIPIENTS=DL-UKBR-Audatex-penguin-reporting@audatex.com
-RECIPIENTS=${RECIPIENTS_DEV_TEAM_EMAIL}
+RECIPIENTS=rafael.garcia@solera.com,luis.valero@solera.com
 
 REPORT_DIR=$1
 PROCESSED_DIR=$2
