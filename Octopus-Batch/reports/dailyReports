@@ -165,6 +165,9 @@ $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
 \copy (select * from paymentBordereau(${INS_ID}, null, '${START_DATE}', '${END_DATE}')) TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
 --EOF--
 
+zip -j /home/chox/reports/LVCHOXinvoice-`date +"%Y%m%d"`.zip /home/chox/reports/LVCHOXinvoice`date +"%Y%m%d"`.csv
+echo "LV CHOX Payment Bordereau" | mail -r chox@chox.com -a /home/chox/reports/LVCHOXinvoice-`date +"%Y%m%d"`.zip -s "LV CHOX Payment Bordereau `date +"%Y%m%d"`"  michaelpaul.kemp@audatex.co.uk richard.lee2@lv.co.uk otilla.dacosta@lv.co.uk susan.tyler@lv.co.uk
+
 /bin/cp ${DUMPFILE} ${MI_DIRECTORY}
 /bin/rm ${DUMPFILE}
 

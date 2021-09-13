@@ -446,6 +446,7 @@ DUMPFILE='LV-InvoiceDetailsXMLDump-'`date +"%Y%m%d"`.xml
 DUMPFILE_AUX='LV-InvoiceDetailsXMLDump-'`date +"%Y%m%d"`_2.xml
 OUTPUT_FILE=${MI_DIRECTORY}${DUMPFILE}
 OUTPUT_FILE_AUX=${MI_DIRECTORY}${DUMPFILE_AUX}
+CURRENT_DATE=`date +"%Y%m%d"`
 #XML_QUERY="select * from invoiceDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], '2016-01-01', ${START_DATE}, array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array[''])"
 #generateOutput "${XML_QUERY}" ${OUTPUT_FILE}
 
@@ -462,11 +463,17 @@ cat ${OUTPUT_FILE} | sed -e "s/_>/>/g" > ${OUTPUT_FILE_AUX}
 cat ${OUTPUT_FILE_AUX} | sed -e "s/_ / /g" > ${OUTPUT_FILE}
 rm -f ${OUTPUT_FILE_AUX}
 
+
 #echo "Moving Weekly Invoice Details Dump XML to SFTP -> ${OUTPUT_FILE}"
 #/home/chox/bin/transferToGateway.sh LV ${OUTPUT_FILE}
 
 #echo "Moving file to processed folder -> ${OUTPUT_FILE}"
 #mv ${OUTPUT_FILE} ${MI_DIRECTORY}/processed
+
+#Zipping and sending email
+zip -j /home/chox/reports/LV-ClaimInvoiceDump-`date +"%Y%m%d"`.zip /home/chox/reports/LV-InvoiceDetailsDump-`date +"%Y%m%d"`.csv /home/chox/reports/LV-InvoiceDetailsXMLDump-`date +"%Y%m%d"`.xml /home/chox/reports/LV-ClaimDetailsDump-`date +"%Y%m%d"`.csv /home/chox/reports/LV-ClaimDetailsXMLDump-`date +"%Y%m%d"`.xml
+echo "Daily reports from CHOX" | mail -r chox@chox.com -a /home/chox/reports/LV-ClaimInvoiceDump-`date +"%Y%m%d"`.zip -s "LV CHOX Reports `date +"%Y%m%d"`" michaelpaul.kemp@audatex.co.uk richard.lee2@lv.co.uk otilla.dacosta@lv.co.uk susan.tyler@lv.co.uk
+
 
 
 echo 'Generating User State Report for Tesco Underwriting'
