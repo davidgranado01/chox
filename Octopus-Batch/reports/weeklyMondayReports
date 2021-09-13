@@ -339,7 +339,7 @@ echo 'Report generating for LV Weekly dashboard report'
 DUMPFILE='LV-Weekly_Dashboard_Report-'`date +"%F"`.txt
 START_DATE=`date -d "last week" +%F`
 END_DATE=`date +"%F"`
-INS_ID=26
+INS_ID=25
 #CHO_ID='array[1007, 1123, 1341]'
 CHO_ID=null
 $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
@@ -354,7 +354,7 @@ select * from summary_revenue_dashboard(${INS_ID}, ${CHO_ID}, '${START_DATE}', '
 
 echo 'Generating Accident Exchange Invoice Notifications Report for LV / Manual Accident Exchange'
 DUMPFILE=AccidentExchange-Invoice_Notifications_Report_LV-`date +"%F"`.txt
-INS_ID=array[26]
+INS_ID=array[25]
 CHO_ID=1125
 
 $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
@@ -365,7 +365,7 @@ select * from invoice_notifications_report(${INS_ID}, ${CHO_ID}, '${START_DATE}'
 
 echo 'Generating Closed Claim Report for LV'
 DUMPFILE=LV-Closed_Claim_Report-`date +"%F"`.txt
-INS_ID=array[26]
+INS_ID=array[25]
 
 $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
 select * from closed_claim_report(${INS_ID}, null::integer[], '${START_DATE}'::varchar, '${END_DATE}'::varchar);
@@ -399,7 +399,7 @@ echo 'Generating LV Weekly Claim Details Dump CSV export'
 START_DATE=`date -d "last week" +%F`
 DUMPFILE='LV-ClaimDetailsDump-'`date +"%Y%m%d"`.csv
 $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
-\copy (select * from claimDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], '2016-01-01', '${START_DATE}', 'INS', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['']))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
+\copy (select * from claimDetailsReport(array[25], array[1022,1021,1024,1023], null::integer[], '2016-01-01', '${START_DATE}', 'INS', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['']))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
 --EOF--
 
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
@@ -414,7 +414,7 @@ OUTPUT_FILE_AUX=${MI_DIRECTORY}${DUMPFILE_AUX}
 #generateOutput "${XML_QUERY}" ${OUTPUT_FILE}
 
 $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE}" << --EOF--
-select query_to_xml(E'select * from claimDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], ''2016-01-01'', ''${START_DATE}'', ''INS'', array[''ClaimClosed'',''PaymentReceived'',''ManualInvoicePaid'',''ClaimRejectionAccepted'',''InvoiceRejectionAccepted''], array[''''])', true, false, '');
+select query_to_xml(E'select * from claimDetailsReport(array[25], array[1022,1021,1024,1023], null::integer[], ''2016-01-01'', ''${START_DATE}'', ''INS'', array[''ClaimClosed'',''PaymentReceived'',''ManualInvoicePaid'',''ClaimRejectionAccepted'',''InvoiceRejectionAccepted''], array[''''])', true, false, '');
 --EOF--
 
 echo "Cleaning the file"
@@ -435,7 +435,7 @@ echo 'Generating LV Weekly Invoice Details Dump CSV export'
 START_DATE=`date -d "last week" +%F`
 DUMPFILE='LV-InvoiceDetailsDump-'`date +"%Y%m%d"`.csv
 $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
-\copy (select * from invoiceDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], '2016-01-01', '${START_DATE}', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['']))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
+\copy (select * from invoiceDetailsReport(array[25], array[1022,1021,1024,1023], null::integer[], '2016-01-01', '${START_DATE}', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['']))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
 --EOF--
 
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
@@ -450,7 +450,7 @@ OUTPUT_FILE_AUX=${MI_DIRECTORY}${DUMPFILE_AUX}
 #generateOutput "${XML_QUERY}" ${OUTPUT_FILE}
 
 $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE}" << --EOF--
-select query_to_xml(E'select * from invoiceDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], ''2016-01-01'', ''${START_DATE}'', array[''ClaimClosed'',''PaymentReceived'',''ManualInvoicePaid'',''ClaimRejectionAccepted'',''InvoiceRejectionAccepted''], array[''''])', true, false, '');
+select query_to_xml(E'select * from invoiceDetailsReport(array[25], array[1022,1021,1024,1023], null::integer[], ''2016-01-01'', ''${START_DATE}'', array[''ClaimClosed'',''PaymentReceived'',''ManualInvoicePaid'',''ClaimRejectionAccepted'',''InvoiceRejectionAccepted''], array[''''])', true, false, '');
 --EOF--
 
 echo "Cleaning the file"

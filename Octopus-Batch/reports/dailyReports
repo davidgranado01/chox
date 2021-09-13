@@ -52,7 +52,7 @@ echo 'Generating Default Claims Report for RSA/Motability -- Deprecated (report 
 
 DUMPFILE=AccidentExchange-Processed_Notifications_Report_LV-`date +"%F"`.rpt
 CHO_ID=1125
-INS_ID=array[26]
+INS_ID=array[25]
 DayOfWeek=`date +%a`
 
 # If its Monday, the start date will be the previous Friday, else yesterday.
@@ -160,7 +160,7 @@ select * from liability_update_report(${CHO_ID}, null, '${START_DATE}', '${END_D
 
 #echo 'Generating LV Payment Bordereau'
 DUMPFILE='LVCHOXinvoice'`date +"%Y%m%d"`.csv
-INS_ID=26
+INS_ID=25
 $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
 \copy (select * from paymentBordereau(${INS_ID}, null, '${START_DATE}', '${END_DATE}')) TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
 --EOF--
