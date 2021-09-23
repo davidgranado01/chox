@@ -158,18 +158,32 @@ select * from liability_update_report(${CHO_ID}, null, '${START_DATE}', '${END_D
 /bin/cp ${DUMPFILE} ${MI_DIRECTORY}
 /bin/rm ${DUMPFILE}
 
-#echo 'Generating LV Payment Bordereau'
+echo "##############################################################"
+echo "##############################################################"
+echo "##############################################################"
+echo 'Generating LV Payment Bordereau'
 DUMPFILE='LVCHOXinvoice'`date +"%Y%m%d"`.csv
 INS_ID=25
 $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
-\copy (select * from paymentBordereau(${INS_ID}, null, '${START_DATE}', '${END_DATE}')) TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
+\copy (select * from paymentBordereau(${INS_ID}, null, '${START_DATE}', '${END_DATE}')) TO '/home/chox/reports/${DUMPFILE}' DELIMITER ',' CSV HEADER;
 --EOF--
 
-zip -j /home/chox/reports/LVCHOXinvoice-`date +"%Y%m%d"`.zip /home/chox/reports/LVCHOXinvoice`date +"%Y%m%d"`.csv
-echo "LV CHOX Payment Bordereau" | mail -r chox@chox.com -a /home/chox/reports/LVCHOXinvoice-`date +"%Y%m%d"`.zip -s "LV CHOX Payment Bordereau `date +"%Y%m%d"`"  michaelpaul.kemp@audatex.co.uk richard.lee2@lv.co.uk otilla.dacosta@lv.co.uk susan.tyler@lv.co.uk
+echo "Dumping file -> zip -j /home/chox/reports/LVCHOXinvoice`date +"%Y%m%d"`.zip /home/chox/reports/${DUMPFILE}"
+#zip -j /home/chox/reports/LVCHOXinvoice`date +"%Y%m%d"`.zip /home/chox/reports/${DUMPFILE}
 
+while [ ! -f /home/chox/reports/${DUMPFILE} ]; do sleep 1; done
+
+echo "Sending the email..."
+#echo "LV CHOX Payment Bordereau" | mail -r chox@chox.com -a /home/chox/reports/LVCHOXinvoice-`date +"%Y%m%d"`.zip -s "LV CHOX Payment Bordereau `date +"%Y%m%d"`" rafael.garcia@solera.com
+/home/chox/bin/dailyReportsTest
+
+echo "removing file"
 /bin/cp ${DUMPFILE} ${MI_DIRECTORY}
 /bin/rm ${DUMPFILE}
+echo "##############################################################"
+echo "##############################################################"
+echo "##############################################################"
+
 
 echo 'Generating RSA Payment Bordereau -- Deprecated (report not sent)'
 #DUMPFILE='RSA-CHOXinvoice'`date +"%Y%m%d"`.csv
