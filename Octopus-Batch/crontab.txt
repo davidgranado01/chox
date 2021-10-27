@@ -18,7 +18,7 @@
 ##
 ## Generate dashboard stats
 ##
-#{USE_CRONTAB_ENTRY}15 01 * * * /home/chox/bin/generateDashboardStats.sh true >> /home/chox/logs/generateDashboardStats-`date +\%Y\%U`.log 2>&1
+##{USE_CRONTAB_ENTRY}15 01 * * * /home/chox/bin/generateDashboardStats.sh true >> /home/chox/logs/generateDashboardStats-`date +\%Y\%U`.log 2>&1
 
 ## Convert reports to excel and email
 #{USE_CRONTAB_ENTRY}20 07 * * * /home/chox/bin/convertToExcelTemplate.sh reports reports/processed reports/excel  >> /home/chox/logs/convertToExcelTemplate-`date +\%Y\%U`.log 2>&1
