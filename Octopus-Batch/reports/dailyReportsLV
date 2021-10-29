@@ -1,0 +1,48 @@
+#!/bin/bash
+PSQL_COMMAND=/usr/bin/psql
+HOST=#{DB_HOST} #dev-ukre-pgs28.dc.solera-uk.com
+USER=#{DB_USER.CHOX} #chox
+DB=#{DB_NAME.CHOX} #dev_uk_chox
+MI_DIRECTORY=/home/chox/reports/
+
+echo '***********************************************************'
+echo `date`': Generating Daily LV Reports'
+echo '***********************************************************'
+
+echo 'Generating LV Daily Claim Details Dump XML export'
+DUMPFILE='LV-ClaimDetailsXMLDump-'`date +"%Y%m%d"`.xml
+DUMPFILE_AUX='LV-ClaimDetailsXMLDump-'`date +"%Y%m%d"`_2.xml
+START_DATE=`date -d "yesterday" +%F`
+OUTPUT_FILE=${MI_DIRECTORY}${DUMPFILE}
+OUTPUT_FILE_AUX=${MI_DIRECTORY}${DUMPFILE_AUX}
+
+$PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE}" << --EOF--
+select query_to_xml(E'select * from claimDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], ''2016-01-01'', ''${START_DATE}'', ''INS'', array[''ClaimClosed'',''PaymentReceived'',''ManualInvoicePaid'',''ClaimRejectionAccepted'',''InvoiceRejectionAccepted''], array[''''])', true, false, '');
+--EOF--
+
+echo "Cleaning the file"
+cat ${OUTPUT_FILE} | tail -n +3 | head -n -2 | sed s'/+$//' | sed -e's/[ \t]*$//' > ${OUTPUT_FILE_AUX}
+cat ${OUTPUT_FILE_AUX} | sed -e "s/_x00[0-9][0-9]//g" | sed -e "s/_x00[0-9][A-Z]//g" > ${OUTPUT_FILE}
+cat ${OUTPUT_FILE} | sed -e "s/_>/>/g;s/__>/>/g" > ${OUTPUT_FILE_AUX}
+cat ${OUTPUT_FILE_AUX} | sed -e "s/___/_/g;s/__/_/g;s/_ / /g;s/_>/>/g" > ${OUTPUT_FILE}
+rm -f ${OUTPUT_FILE_AUX}
+
+
+echo "Generating LV Daily Invoice Details Dump XML export"
+DUMPFILE='LV-InvoiceDetailsXMLDump-'`date +"%Y%m%d"`.xml
+DUMPFILE_AUX='LV-InvoiceDetailsXMLDump-'`date +"%Y%m%d"`_2.xml
+OUTPUT_FILE=${MI_DIRECTORY}${DUMPFILE}
+OUTPUT_FILE_AUX=${MI_DIRECTORY}${DUMPFILE_AUX}
+
+$PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE}" << --EOF--
+select query_to_xml(E'select * from invoiceDetailsReport(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], ''2016-01-01'', ''${START_DATE}'', array[''ClaimClosed'',''PaymentReceived'',''ManualInvoicePaid'',''ClaimRejectionAccepted'',''InvoiceRejectionAccepted''], array[''''])', true, false, '');
+--EOF--
+
+echo "Cleaning the file"
+cat ${OUTPUT_FILE} | tail -n +3 | head -n -2 | sed s'/+$//' | sed -e's/[ \t]*$//' > ${OUTPUT_FILE_AUX}
+cat ${OUTPUT_FILE_AUX} | sed -e "s/_x00[0-9][0-9]//g" | sed -e "s/_x00[0-9][A-Z]//g" > ${OUTPUT_FILE}
+cat ${OUTPUT_FILE} | sed -e "s/_>/>/g" > ${OUTPUT_FILE_AUX}
+cat ${OUTPUT_FILE_AUX} | sed -e "s/__>/>/g;s/_ / /g" > ${OUTPUT_FILE}
+cat ${OUTPUT_FILE} | sed -e "s/_>/>/g" > ${OUTPUT_FILE_AUX}
+cat ${OUTPUT_FILE_AUX} | sed -e "s/_ / /g" > ${OUTPUT_FILE}
+rm -f ${OUTPUT_FILE_AUX}
