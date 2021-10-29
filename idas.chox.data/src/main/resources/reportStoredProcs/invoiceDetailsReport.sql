@@ -121,7 +121,7 @@ BEGIN
 RETURN QUERY
 
 select c.status, c.cho_reference, cho.name, ins.name, c.claim_number,
-    to_char(i.created_date, 'dd/mm/yyyy hh:mm') as createddate, to_char(i.auto_penalty_start, 'dd/mm/yyyy hh:mm') as autopenaltystart,
+    to_char(i.created_date, 'dd/mm/yyyy hh24:mm') as createddate, to_char(i.auto_penalty_start, 'dd/mm/yyyy hh24:mm') as autopenaltystart,
     i.collaboration_fee as collaborationfee, i.collaboration_qty as collaborationqty, i.miscellaneous_fee as miscellaneousfee,
     i.automatic_fee as automaticfee, i.automatic_qty as automaticqty, i.additional_driver_fee as additionaldriverfee,
     i.additional_driver_qty as additionaldriverqty, i.sat_nav_fee as satnavfee, i.sat_nav_qty as satnavqty,
