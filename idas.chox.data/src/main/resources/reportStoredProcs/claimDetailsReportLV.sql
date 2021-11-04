@@ -252,7 +252,7 @@ select
     to_char(hmd.inspection_booked_date, 'dd/mm/yyyy hh24:mm') as hmd_inspection_booked_date,
     to_char(hmd.inspection_date, 'dd/mm/yyyy hh24:mm') as hmd_inspection_date,
     hmd.name_of_ime as hmd_name_of_ime,
-    to_char(hmd.repair_completion_date as hmd_repair_completion_date,
+    to_char(hmd.repair_completion_date, 'dd/mm/yyyy hh24:mm') as hmd_repair_completion_date,
     case when hmd.is_total_lost_check is null then '' else case when hmd.is_total_lost_check then 'Yes' else 'No' end end as hmd_is_total_lost_check,
     to_char(hmd.total_loss_offer_made, 'dd/mm/yyyy hh24:mm') as hmd_total_loss_offer_made,
     to_char(hmd.total_loss_offer_accepted, 'dd/mm/yyyy hh24:mm') as hmd_total_loss_offer_accepted,
