@@ -1,9 +1,9 @@
 /*
- * CHOX-725: Invoice Details Report
+ *  REC-11546: Invoice Details Report LV
  *  Example usage:
- *      select * from invoiceDetailsReport(array[6], null::integer[], null::integer[], '2017-01-01', '2017-01-01', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['ClaimRejected']);
+ *      select * from invoiceDetailsReportLV(array[6], null::integer[], null::integer[], '2017-01-01', '2017-01-01', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['ClaimRejected']);
  */
-DROP FUNCTION invoiceDetailsReport(
+DROP FUNCTION invoiceDetailsReportLV(
     IN insIds INTEGER[],
     IN choIds INTEGER[],
     IN claimTypes INTEGER[],
@@ -13,7 +13,7 @@ DROP FUNCTION invoiceDetailsReport(
     IN openClaimStatuses VARCHAR[]);
 
 
-CREATE OR REPLACE FUNCTION invoiceDetailsReport(
+CREATE OR REPLACE FUNCTION invoiceDetailsReportLV(
     IN insIds INTEGER[],
     IN choIds INTEGER[],
     IN claimTypes INTEGER[],
@@ -27,8 +27,8 @@ RETURNS TABLE(
                 "CHO Name" VARCHAR,
                 "Insurer Name" VARCHAR,
                 "Claim Number" VARCHAR,
-		"Invoice Upload Date" timestamp without time zone,
-		"Penalty Charge Start Date" timestamp without time zone,
+		"Invoice Upload Date" text,
+		"Penalty Charge Start Date" text,
 		"Collaboration Protocol Fee" numeric(8,2),
 		"Collaboration Protocol Quantity" smallint,
 		"Miscellaneous Costs" numeric(8,2),
@@ -102,7 +102,7 @@ RETURNS TABLE(
 		"Original Total To Pay" numeric(10,2),
 		"Interim Payment Made" numeric(10,2),
 		"Interim Payment Received" numeric(10,2),
-		"Date Invoiced" timestamp without time zone,
+		"Date Invoiced" text,
 		"Hire Gross Paid" numeric(10,2),
 		"Repair Gross Paid" numeric(10,2),
 		"Engineer Fee Gross Paid" numeric(10,2),
@@ -121,7 +121,7 @@ BEGIN
 RETURN QUERY
 
 select c.status, c.cho_reference, cho.name, ins.name, c.claim_number,
-    i.created_date as createddate, i.auto_penalty_start as autopenaltystart,
+    to_char(i.created_date, 'dd/mm/yyyy hh24:mm') as createddate, to_char(i.auto_penalty_start, 'dd/mm/yyyy hh24:mm') as autopenaltystart,
     i.collaboration_fee as collaborationfee, i.collaboration_qty as collaborationqty, i.miscellaneous_fee as miscellaneousfee,
     i.automatic_fee as automaticfee, i.automatic_qty as automaticqty, i.additional_driver_fee as additionaldriverfee,
     i.additional_driver_qty as additionaldriverqty, i.sat_nav_fee as satnavfee, i.sat_nav_qty as satnavqty,
@@ -150,7 +150,8 @@ select c.status, c.cho_reference, cho.name, ins.name, c.claim_number,
     i.gta_discount,
     i.full_total_to_pay as fulltotaltopay, io.full_total_to_pay as original_fulltotaltopay,
     i.total_to_pay as totaltopay, io.total_to_pay as original_totaltopay, i.interim_payment_made as interimpaymentmade,
-    i.interim_payment_received as interimpaymentreceived, i.date_invoiced as dateinvoiced, i.hire_gross_paid as hiregrosspaid,
+    i.interim_payment_received as interimpaymentreceived,
+    to_char(i.date_invoiced, 'dd/mm/yyyy hh24:mm') as dateinvoiced, i.hire_gross_paid as hiregrosspaid,
     i.repair_gross_paid as repairgrosspaid, i.engineer_fee_gross_paid as engineerfeegrosspaid, i.total_loss_fee_gross_paid as totallossfeegrosspaid,
     i.storage_recovery_gross_paid as storagerecoverygrosspaid,
     i.hire_penalty_charge_paid as hirepenaltychargepaid, i.repair_penalty_charge_paid as repairpenaltychargepaid, i.claim_handler_charge_paid as claimhandlerchargepaid,
@@ -176,7 +177,7 @@ $BODY$
   COST 100;
 
 
-GRANT EXECUTE ON FUNCTION invoiceDetailsReport(
+GRANT EXECUTE ON FUNCTION invoiceDetailsReportLV(
                             IN insIds INTEGER[],
                             IN choIds INTEGER[],
                             IN claimTypes INTEGER[],
@@ -185,7 +186,7 @@ GRANT EXECUTE ON FUNCTION invoiceDetailsReport(
                             IN closedClaimStatuses VARCHAR[],
                             IN openClaimStatuses VARCHAR[])
 TO chox_user;
-GRANT EXECUTE ON FUNCTION invoiceDetailsReport(
+GRANT EXECUTE ON FUNCTION invoiceDetailsReportLV(
                             IN insIds INTEGER[],
                             IN choIds INTEGER[],
                             IN claimTypes INTEGER[],
