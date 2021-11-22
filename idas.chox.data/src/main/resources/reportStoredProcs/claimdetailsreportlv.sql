@@ -1,8 +1,9 @@
-/**
-REC-11448
-**/
-
-DROP FUNCTION IF EXISTS claimdetailsreportlv(
+/*
+ *  REC-11546: Claim Details Report LV
+ *  Example usage:
+ *      select * from claimDetailsReportLV(array[6], null::integer[], null::integer[], '2017-01-01', '2017-01-01', 'INS', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['ClaimRejected']);
+ */
+DROP FUNCTION if exists claimDetailsReportLV(
     IN insIds INTEGER[],
     IN choIds INTEGER[],
     IN claimTypes INTEGER[],
@@ -12,10 +13,138 @@ DROP FUNCTION IF EXISTS claimdetailsreportlv(
     IN closedClaimStatuses VARCHAR[],
     IN openClaimStatuses VARCHAR[]);
 
-CREATE OR REPLACE FUNCTION public.claimdetailsreportlv(insids integer[], choids integer[], claimtypes integer[], claimuploaddate character varying, closedclaimdate character varying, insorcho character, closedclaimstatuses character varying[], openclaimstatuses character varying[])
- RETURNS TABLE("Claim Status" character varying, "Claim Type" text, "SLA Days Remaining" character varying, "Supplier Reference" character varying, "CHO Name" character varying, "Insurer Name" character varying, "Workgroup" character varying, "Last Review Date" text, "Invoice Review Required?" text, "Invoice Review Reason" character varying, "Status Modified Date" text, "Reserve Value" numeric, "Liability Status" text, "Final Review?" text, "Liability % Agreed (CHO)" numeric, "Liability % Agreed (Insurer)" numeric, "Liability % Applied to Total to Pay" numeric, "Indemnity Stance" character varying, "CHO Managing Repair?" text, "Customer Contact Date" text, "Credit Agreement Signed by Customer Date" text, "GTA 4.1 Notice Date" text, "Claim Number" character varying, "Insurer Claim Owner" text, "Supplier Claim Owner" text, "Customer Policy Usage" character varying, "Customer Insurer" character varying, "Customer Policy Number" character varying, "Customer Reference" character varying, "Comprehensive?" text, "Customer Postcode" character varying, "Customer Vehicle Manufacturer" character varying, "Customer Vehicle Model" character varying, "Customer Vehicle Registration" character varying, "Customer Vehicle Year" character varying, "Customer Vehicle Class" character varying, "Customer Vehicle Location" character varying, "Customer HPI Vehicle Manufacturer" character varying, "Customer HPI Vehicle Model" character varying, "Customer HPI Vehicle Year" character varying, "Customer HPI Vehicle First Registration" text, "Customer HPI Vehicle Capacity" character varying, "Customer HPI Vehicle Doorplan" character varying, "Customer HPI Vehicle Transmission" character varying, "Customer Can Access Other Vehicle?" text, "Customer Other Vehicle Used?" text, "Customer Other Vehicle" character varying, "Customer Courtesy Car?" text, "Customer Specific Vehicle Required" text, "Customer Specific Vehicle Reason" character varying, "Customer Vehicle Type Required" character varying, "Customer Special Requirements" character varying, "Customer Average Daily Milage" character varying, "Third Party Insurer" character varying, "Third Party Policy Number" character varying, "Third Party Postcode" character varying, "Third Party Vehicle Manufacturer" character varying, "Third Party Vehicle Model" character varying, "Third Party Vehicle Registration" character varying, "Third Party Vehicle Class" character varying, "Customer Vehicle Damage" character varying, "Customer Vehicle Is Usable?" text, "Customer Is Total Loss?" text, "Initial ECD" text, "Incident Date/Time" text, "Incident Location" text, "Police Involved?" text, "Incident Description" text, "Engineer Report Labour Amount" numeric, "Engineer Report Repair Amount" numeric, "Engineer Report Estimated Days Under Repair" numeric, "Engineer Report Is Usable?" text, "Engineer Report Name" character varying, "Engineer Report Company" character varying, "Engineer Report Address1" character varying, "Engineer Report Address2" character varying, "Engineer Report Address3" character varying, "Engineer Report Address4" character varying, "Engineer Report Address5" character varying, "Engineer Report Postcode" character varying, "Engineer Report Telephone" character varying, "Engineer Report Email" character varying, "Hire Vehicle Manufacturer" character varying, "Hire Vehicle Model" character varying, "Hire Vehicle Registration" character varying, "Hire Vehicle Class" character varying, "Hire Vehicle Rental Start" text, "Hire Vehicle Rental End" text, "Hire Vehicle Days Hire" numeric, "Hire Vehicle Collection Reason" character varying, "Hire Vehicle HPI Manufacturer" character varying, "Hire Vehicle HPI Model" character varying, "Hire Vehicle HPI Year" character varying, "Hire Vehicle HPI First Registration" date, "Hire Vehicle HPI Capacity" character varying, "Hire Vehicle HPI Door Plan" character varying, "Hire Vehicle HPI Transmission" character varying, "Name of Repairer" character varying, "Repair Booked-in Date" text, "Repair Authorised Date" text, "Repair Commenced Date" text, "Inspection Booked Date" text, "Inspection Date" text, "Name of IME" character varying, "Repair Completion Date" text, "Is Total Loss?" text, "Date Total Loss Offer Made" text, "Date Total Loss Offer Accepted" text, "Date Total Loss Cheque Issued " text, "Date Total Loss Cheque Received " text, "Labour Rate (per Hour)" numeric, "Labour Hours" numeric, "Total Labour Cost" numeric, "Labour Information Non-Provision Reason" character varying, "Is Repair Only (No Hire)?" text, "Is Non-Fault Insurer Managing Repair?" text, "Is The Vehicle Owner VAT Registered?" text, "Next Review Date" text, "Has Copley Offer been made?" text, "Copley Offer Made Date" text)
- LANGUAGE plpgsql
-AS $function$
+
+CREATE OR REPLACE FUNCTION claimDetailsReportLV(
+    IN insIds INTEGER[],
+    IN choIds INTEGER[],
+    IN claimTypes INTEGER[],
+    IN claimUploadDate VARCHAR,
+    IN closedClaimDate VARCHAR,
+    IN insOrCHO char(3),
+    IN closedClaimStatuses VARCHAR[],
+    IN openClaimStatuses VARCHAR[])
+RETURNS TABLE(
+                "Claim Status" VARCHAR,
+                "Claim Type" text,
+                "SLA Days Remaining" VARCHAR(5),
+                "Supplier Reference" VARCHAR,
+                "CHO Name" VARCHAR,
+                "Insurer Name" VARCHAR,
+                "Workgroup" VARCHAR,
+                "Last Review Date" text,
+                "Invoice Review Required?" text,
+                "Invoice Review Reason" VARCHAR,
+                "Status Modified Date" text,
+                "Reserve Value" numeric,
+                "Liability Status" text,
+                "Final Review?" text,
+                "Liability % Agreed (CHO)" numeric(8,1),
+                "Liability % Agreed (Insurer)" numeric(8,1),
+                "Liability % Applied to Total to Pay" numeric(8,1),
+                "Indemnity Stance" VARCHAR,
+                "CHO Managing Repair?" text,
+                "Customer Contact Date" text,
+                "Credit Agreement Signed by Customer Date" text,
+                "GTA 4.1 Notice Date" text,
+                "Claim Number" VARCHAR,
+                "Insurer Claim Owner" text,
+                "Supplier Claim Owner" text,
+                "Customer Policy Usage" VARCHAR,
+                "Customer Insurer" VARCHAR,
+                "Customer Policy Number" VARCHAR,
+                "Customer Reference" VARCHAR,
+                "Comprehensive?" text,
+                "Customer Postcode" VARCHAR,
+                "Customer Vehicle Manufacturer" VARCHAR,
+                "Customer Vehicle Model" VARCHAR,
+                "Customer Vehicle Registration" VARCHAR,
+                "Customer Vehicle Year" VARCHAR,
+                "Customer Vehicle Class" VARCHAR,
+                "Customer Vehicle Location" VARCHAR,
+                "Customer HPI Vehicle Manufacturer" VARCHAR,
+                "Customer HPI Vehicle Model" VARCHAR,
+                "Customer HPI Vehicle Year" VARCHAR,
+                "Customer HPI Vehicle First Registration" text,
+                "Customer HPI Vehicle Capacity" VARCHAR,
+                "Customer HPI Vehicle Doorplan" VARCHAR,
+                "Customer HPI Vehicle Transmission" VARCHAR,
+                "Customer Can Access Other Vehicle?" text,
+                "Customer Other Vehicle Used?" text,
+                "Customer Other Vehicle" VARCHAR,
+                "Customer Courtesy Car?" text,
+                "Customer Specific Vehicle Required" text,
+                "Customer Specific Vehicle Reason" VARCHAR,
+                "Customer Vehicle Type Required" VARCHAR,
+                "Customer Special Requirements" VARCHAR,
+                "Customer Average Daily Milage" VARCHAR,
+                "Third Party Insurer" VARCHAR,
+                "Third Party Policy Number" VARCHAR,
+                "Third Party Postcode" VARCHAR(16),
+                "Third Party Vehicle Manufacturer" VARCHAR,
+                "Third Party Vehicle Model" VARCHAR,
+                "Third Party Vehicle Registration" VARCHAR,
+                "Third Party Vehicle Class" VARCHAR,
+                "Customer Vehicle Damage" VARCHAR,
+                "Customer Vehicle Is Usable?" text,
+                "Customer Is Total Loss?" text,
+                "Initial ECD" text,
+                "Incident Date/Time" text,
+                "Incident Location" text,
+                "Police Involved?" text,
+                "Incident Description" text,
+                "Engineer Report Labour Amount" numeric(8,2),
+                "Engineer Report Repair Amount" numeric(8,2),
+                "Engineer Report Estimated Days Under Repair" numeric,
+                "Engineer Report Is Usable?" text,
+                "Engineer Report Name" VARCHAR,
+                "Engineer Report Company" VARCHAR,
+                "Engineer Report Address1" VARCHAR,
+                "Engineer Report Address2" VARCHAR,
+                "Engineer Report Address3" VARCHAR,
+                "Engineer Report Address4" VARCHAR,
+                "Engineer Report Address5" VARCHAR,
+                "Engineer Report Postcode" VARCHAR,
+                "Engineer Report Telephone" VARCHAR,
+                "Engineer Report Email" VARCHAR,
+                "Hire Vehicle Manufacturer" VARCHAR,
+                "Hire Vehicle Model" VARCHAR,
+                "Hire Vehicle Registration" VARCHAR,
+                "Hire Vehicle Class" VARCHAR,
+                "Hire Vehicle Rental Start" text,
+                "Hire Vehicle Rental End" text,
+                "Hire Vehicle Days Hire" numeric,
+                "Hire Vehicle Collection Reason" VARCHAR,
+                "Hire Vehicle HPI Manufacturer" VARCHAR,
+                "Hire Vehicle HPI Model" VARCHAR,
+                "Hire Vehicle HPI Year" VARCHAR,
+                "Hire Vehicle HPI First Registration" date,
+                "Hire Vehicle HPI Capacity" VARCHAR,
+                "Hire Vehicle HPI Door Plan" VARCHAR,
+                "Hire Vehicle HPI Transmission" VARCHAR,
+                "Name of Repairer" VARCHAR,
+                "Repair Booked-in Date" text,
+                "Repair Authorised Date" text,
+                "Repair Commenced Date" text,
+                "Inspection Booked Date" text,
+                "Inspection Date" text,
+                "Name of IME" VARCHAR,
+                "Repair Completion Date" text,
+                "Is Total Loss?" text,
+                "Date Total Loss Offer Made" text,
+                "Date Total Loss Offer Accepted" text,
+                "Date Total Loss Cheque Issued " text,
+                "Date Total Loss Cheque Received " text,
+                "Labour Rate (per Hour)" numeric,
+                "Labour Hours" numeric,
+                "Total Labour Cost" numeric(10,2),
+                "Labour Information Non-Provision Reason" VARCHAR,
+                "Is Repair Only (No Hire)?" text,
+                "Is Non-Fault Insurer Managing Repair?" text,
+                "Is The Vehicle Owner VAT Registered?" text,
+                "Next Review Date" text,
+                "Has Copley Offer been made?" text,
+                "Copley Offer Made Date" text
+) AS $BODY$
 BEGIN
 RETURN QUERY
 
@@ -161,10 +290,33 @@ where (insIds is null or c.insurer_id = ANY(insIds))
     and (choIds is null or c.chorganisation_id = ANY(choIds))
     and (claimTypes is null or c.claim_type = ANY(claimTypes))
     and c.created_date >= claimUploadDate::Date
-    and ((c.status!=ALL(closedClaimStatuses) and c.status!=ALL(openClaimStatuses))
+    and ((c.status!=ALL(closedClaimStatuses) and (openClaimStatuses is null or c.status!=ALL(openClaimStatuses)))
             or ((c.status=ANY(closedClaimStatuses) or (openClaimStatuses is not null and c.status=ANY(openClaimStatuses))) and c.status_modified_date >= closedClaimDate::Date))
 order by c.created_date, c.cho_reference;
 
 END;
-$function$
-;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+
+
+GRANT EXECUTE ON FUNCTION claimDetailsReportLV(
+                            IN insIds INTEGER[],
+                            IN choIds INTEGER[],
+                            IN claimTypes INTEGER[],
+                            IN claimUploadDate VARCHAR,
+                            IN closedClaimDate VARCHAR,
+                            IN insOrCHO char(3),
+                            IN closedClaimStatuses VARCHAR[],
+                            IN openClaimStatuses VARCHAR[])
+TO chox_user;
+GRANT EXECUTE ON FUNCTION claimDetailsReportLV(
+                            IN insIds INTEGER[],
+                            IN choIds INTEGER[],
+                            IN claimTypes INTEGER[],
+                            IN claimUploadDate VARCHAR,
+                            IN closedClaimDate VARCHAR,
+                            IN insOrCHO char(3),
+                            IN closedClaimStatuses VARCHAR[],
+                            IN openClaimStatuses VARCHAR[])
+TO chox_mi;
