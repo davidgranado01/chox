@@ -2,7 +2,7 @@
 REC-11448
 **/
 
-DROP FUNCTION claimdetailsreportlv(
+DROP FUNCTION IF EXISTS claimdetailsreportlv(
     IN insIds INTEGER[],
     IN choIds INTEGER[],
     IN claimTypes INTEGER[],
