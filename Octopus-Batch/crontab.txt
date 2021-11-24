@@ -13,12 +13,13 @@
 #{USE_CRONTAB_ENTRY}21 03 * * 4 /home/chox/bin/weeklyThursdayReports >> /home/chox/logs/weeklyThursdayReports-`date +\%Y\%U`.log 2>&1
 #{USE_CRONTAB_ENTRY}21 03 * * 5 /home/chox/bin/weeklyFridayReports >> /home/chox/logs/weeklyFridayReports-`date +\%Y\%U`.log 2>&1
 #{USE_CRONTAB_ENTRY}45 03 * * 1-5 /home/chox/bin/dailyReports >> /home/chox/logs/dailyReports-`date +\%Y\%U`.log 2>&1
+#{USE_CRONTAB_ENTRY}45 03 * * * /home/chox/bin/dailyReportsLV >> /home/chox/logs/dailyReportsLV-`date +\%Y\%U`.log 2>&1
 55 05-16 * * 1-5 /home/chox/bin/unacknowledgedClaimsReport.sh >> /home/chox/logs/unacknowledgedClaimsReport-`date +\%Y\%U`.log 2>&1
 
 ##
 ## Generate dashboard stats
 ##
-#{USE_CRONTAB_ENTRY}15 01 * * * /home/chox/bin/generateDashboardStats.sh true >> /home/chox/logs/generateDashboardStats-`date +\%Y\%U`.log 2>&1
+# #{USE_CRONTAB_ENTRY}15 01 * * * /home/chox/bin/generateDashboardStats.sh true >> /home/chox/logs/generateDashboardStats-`date +\%Y\%U`.log 2>&1
 
 ## Convert reports to excel and email
 #{USE_CRONTAB_ENTRY}20 07 * * * /home/chox/bin/convertToExcelTemplate.sh reports reports/processed reports/excel  >> /home/chox/logs/convertToExcelTemplate-`date +\%Y\%U`.log 2>&1

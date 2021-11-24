@@ -1,9 +1,9 @@
 /*
- * CHOX-724: Claim Details Report
+ *  REC-11546: Claim Details Report LV
  *  Example usage:
- *      select * from claimDetailsReport(array[6], null::integer[], null::integer[], '2017-01-01', '2017-01-01', 'INS', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['ClaimRejected']);
+ *      select * from claimDetailsReportLV(array[6], null::integer[], null::integer[], '2017-01-01', '2017-01-01', 'INS', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['ClaimRejected']);
  */
-DROP FUNCTION claimDetailsReport(
+DROP FUNCTION if exists claimDetailsReportLV(
     IN insIds INTEGER[],
     IN choIds INTEGER[],
     IN claimTypes INTEGER[],
@@ -14,7 +14,7 @@ DROP FUNCTION claimDetailsReport(
     IN openClaimStatuses VARCHAR[]);
 
 
-CREATE OR REPLACE FUNCTION claimDetailsReport(
+CREATE OR REPLACE FUNCTION claimDetailsReportLV(
     IN insIds INTEGER[],
     IN choIds INTEGER[],
     IN claimTypes INTEGER[],
@@ -34,7 +34,7 @@ RETURNS TABLE(
                 "Last Review Date" text,
                 "Invoice Review Required?" text,
                 "Invoice Review Reason" VARCHAR,
-                "Status Modified Date" timestamp without time zone,
+                "Status Modified Date" text,
                 "Reserve Value" numeric,
                 "Liability Status" text,
                 "Final Review?" text,
@@ -43,9 +43,9 @@ RETURNS TABLE(
                 "Liability % Applied to Total to Pay" numeric(8,1),
                 "Indemnity Stance" VARCHAR,
                 "CHO Managing Repair?" text,
-                "Customer Contact Date" timestamp without time zone,
-                "Credit Agreement Signed by Customer Date" timestamp without time zone,
-                "GTA 4.1 Notice Date" timestamp without time zone,
+                "Customer Contact Date" text,
+                "Credit Agreement Signed by Customer Date" text,
+                "GTA 4.1 Notice Date" text,
                 "Claim Number" VARCHAR,
                 "Insurer Claim Owner" text,
                 "Supplier Claim Owner" text,
@@ -87,8 +87,8 @@ RETURNS TABLE(
                 "Customer Vehicle Damage" VARCHAR,
                 "Customer Vehicle Is Usable?" text,
                 "Customer Is Total Loss?" text,
-                "Initial ECD" timestamp without time zone,
-                "Incident Date/Time" timestamp without time zone,
+                "Initial ECD" text,
+                "Incident Date/Time" text,
                 "Incident Location" text,
                 "Police Involved?" text,
                 "Incident Description" text,
@@ -110,8 +110,8 @@ RETURNS TABLE(
                 "Hire Vehicle Model" VARCHAR,
                 "Hire Vehicle Registration" VARCHAR,
                 "Hire Vehicle Class" VARCHAR,
-                "Hire Vehicle Rental Start" timestamp without time zone,
-                "Hire Vehicle Rental End" timestamp without time zone,
+                "Hire Vehicle Rental Start" text,
+                "Hire Vehicle Rental End" text,
                 "Hire Vehicle Days Hire" numeric,
                 "Hire Vehicle Collection Reason" VARCHAR,
                 "Hire Vehicle HPI Manufacturer" VARCHAR,
@@ -122,18 +122,18 @@ RETURNS TABLE(
                 "Hire Vehicle HPI Door Plan" VARCHAR,
                 "Hire Vehicle HPI Transmission" VARCHAR,
                 "Name of Repairer" VARCHAR,
-                "Repair Booked-in Date" timestamp without time zone,
-                "Repair Authorised Date" timestamp without time zone,
-                "Repair Commenced Date" timestamp without time zone,
-                "Inspection Booked Date" timestamp without time zone,
-                "Inspection Date" timestamp without time zone,
+                "Repair Booked-in Date" text,
+                "Repair Authorised Date" text,
+                "Repair Commenced Date" text,
+                "Inspection Booked Date" text,
+                "Inspection Date" text,
                 "Name of IME" VARCHAR,
-                "Repair Completion Date" timestamp without time zone,
+                "Repair Completion Date" text,
                 "Is Total Loss?" text,
-                "Date Total Loss Offer Made" timestamp without time zone,
-                "Date Total Loss Offer Accepted" timestamp without time zone,
-                "Date Total Loss Cheque Issued " timestamp without time zone,
-                "Date Total Loss Cheque Received " timestamp without time zone,
+                "Date Total Loss Offer Made" text,
+                "Date Total Loss Offer Accepted" text,
+                "Date Total Loss Cheque Issued " text,
+                "Date Total Loss Cheque Received " text,
                 "Labour Rate (per Hour)" numeric,
                 "Labour Hours" numeric,
                 "Total Labour Cost" numeric(10,2),
@@ -141,9 +141,9 @@ RETURNS TABLE(
                 "Is Repair Only (No Hire)?" text,
                 "Is Non-Fault Insurer Managing Repair?" text,
                 "Is The Vehicle Owner VAT Registered?" text,
-                "Next Review Date" timestamp without time zone,
+                "Next Review Date" text,
                 "Has Copley Offer been made?" text,
-                "Copley Offer Made Date" timestamp without time zone
+                "Copley Offer Made Date" text
 ) AS $BODY$
 BEGIN
 RETURN QUERY
@@ -156,10 +156,10 @@ select
     cho.name,
     ins.name,
     w.name,
-    to_char(c.last_review_date, 'dd/mm/yyyy'),
+    to_char(c.last_review_date, 'dd/mm/yyyy hh24:mm'),
     case when insOrCHO = 'INS' then case when c.is_invoice_review_required then 'Yes' else 'No' end else '' end,
     case when insOrCHO = 'INS' then c.invoice_review_reason else '' end,
-    c.status_modified_date,
+    to_char(c.status_modified_date, 'dd/mm/yyyy hh:mm'),
     c.indeminty_amount,
     getLiabilityStatus(c.liability_status),
     case when insOrCHO = 'INS' then case when c.final_review_ins then 'Yes' else 'No' end else case when c.final_review_cho then 'Yes' else 'No' end end,
@@ -168,9 +168,9 @@ select
     round(c.applied_liability, 1),
     c.indemnity_stance,
     case when c.managing_repair then 'Yes' else 'No' end,
-    c.policy_holder_contact_date,
-    c.credit_agreement_date,
-    c.gta_notice_date,
+    to_char(c.policy_holder_contact_date, 'dd/mm/yyyy hh24:mm'),
+    to_char(c.credit_agreement_date, 'dd/mm/yyyy hh24:mm'),
+    to_char(c.gta_notice_date, 'dd/mm/yyyy hh24:mm'),
     c.claim_number,
     case when wu.hashed then 'GDPR: Data Removed' else wu.last_name || ', ' || wu.first_name end as claim_owner,
     case when wuc.hashed then 'GDPR: Data Removed' else wuc.last_name || ', ' || wuc.first_name end as claim_supplier_owner,
@@ -211,8 +211,8 @@ select
     cust.damage as customer_damage,
     case when cust.is_usable is null then '' else case when cust.is_usable then 'Yes' else 'No' end end as customer_is_usable,
     case when cust.is_total_loss is null then '' else case when cust.is_total_loss then 'Yes' else 'No' end end as customer_is_total_loss,
-    cust.initial_ecd as customer_initial_ecd,
-    inc. date as incident_date,
+    to_char(cust.initial_ecd, 'dd/mm/yyyy hh24:mm') as customer_initial_ecd,
+    to_char(inc. date, 'dd/mm/yyyy hh24:mm') as incident_date,
     inc.location as incident_location,
     case when inc.is_police_involved is null then '' else case when inc.is_police_involved then 'Yes' else 'No' end end as incident_is_police_involved,
     regexp_replace(inc.incident_description, E'[\\n\\r]+', ' ', 'g' ) as incident_description,
@@ -230,27 +230,44 @@ select
     er.postcode as er_postcode,
     er.telephone as er_telephone,
     er.email as er_email,
-    vh.vehicle_manufacturer as vh_vehicle_manufacturer, vh.vehicle_model as vh_vehicle_model, vh.vehicle_registration as vh_vehicle_registration,
-    vh_vc.name as vh_vehicle_class_name, vh.rental_start as vh_rental_start, vh.rental_end as vh_rental_end, vh.days as vh_days,
-    vh.collection_reason as vh_collection_reason, vh.hpi_vehicle_manufacturer as vh_hpi_vehicle_manufacturer, vh.hpi_vehicle_model as vh_hpi_vehicle_model,
-    vh.hpi_vehicle_year as vh_hpi_vehicle_year, vh.hpi_first_registration as vh_hpi_vehicle_first_registration,
-    vh.hpi_vehicle_capacity as vh_hpi_vehicle_capacity, vh.hpi_vehicle_doorplan as vh_hpi_vehicle_doorplan,
-    vh.hpi_vehicle_transmission as vh_hpi_vehicle_transmission, hmd.name_of_repairer as hmd_name_of_repairer, hmd.repair_book_in_date as hmd_repair_book_in_date,
-    hmd.repair_authorised_date as hmd_repair_authorised_date, hmd.repair_commenced_date as hmd_repair_commenced_date,
-    hmd.inspection_booked_date as hmd_inspection_booked_date, hmd.inspection_date as hmd_inspection_date, hmd.name_of_ime as hmd_name_of_ime,
-    hmd.repair_completion_date as hmd_repair_completion_date,
+    vh.vehicle_manufacturer as vh_vehicle_manufacturer,
+    vh.vehicle_model as vh_vehicle_model,
+    vh.vehicle_registration as vh_vehicle_registration,
+    vh_vc.name as vh_vehicle_class_name,
+    to_char(vh.rental_start, 'dd/mm/yyyy hh24:mm') as vh_rental_start,
+    to_char(vh.rental_end, 'dd/mm/yyyy hh24:mm') as vh_rental_end,
+    vh.days as vh_days,
+    vh.collection_reason as vh_collection_reason,
+    vh.hpi_vehicle_manufacturer as vh_hpi_vehicle_manufacturer,
+    vh.hpi_vehicle_model as vh_hpi_vehicle_model,
+    vh.hpi_vehicle_year as vh_hpi_vehicle_year,
+    vh.hpi_first_registration as vh_hpi_vehicle_first_registration,
+    vh.hpi_vehicle_capacity as vh_hpi_vehicle_capacity,
+    vh.hpi_vehicle_doorplan as vh_hpi_vehicle_doorplan,
+    vh.hpi_vehicle_transmission as vh_hpi_vehicle_transmission,
+    hmd.name_of_repairer as hmd_name_of_repairer,
+    to_char(hmd.repair_book_in_date, 'dd/mm/yyyy hh24:mm') as hmd_repair_book_in_date,
+    to_char(hmd.repair_authorised_date, 'dd/mm/yyyy hh24:mm') as hmd_repair_authorised_date,
+    to_char(hmd.repair_commenced_date, 'dd/mm/yyyy hh24:mm') as hmd_repair_commenced_date,
+    to_char(hmd.inspection_booked_date, 'dd/mm/yyyy hh24:mm') as hmd_inspection_booked_date,
+    to_char(hmd.inspection_date, 'dd/mm/yyyy hh24:mm') as hmd_inspection_date,
+    hmd.name_of_ime as hmd_name_of_ime,
+    to_char(hmd.repair_completion_date, 'dd/mm/yyyy hh24:mm') as hmd_repair_completion_date,
     case when hmd.is_total_lost_check is null then '' else case when hmd.is_total_lost_check then 'Yes' else 'No' end end as hmd_is_total_lost_check,
-    hmd.total_loss_offer_made as hmd_total_loss_offer_made,
-    hmd.total_loss_offer_accepted as hmd_total_loss_offer_accepted, hmd.total_loss_check_issued as hmd_total_loss_check_issued,
-    hmd.total_loss_check_received as hmd_total_loss_check_received, hmd.labour_rate as hmd_labour_rate, hmd.labour_hour as hmd_labour_hour,
+    to_char(hmd.total_loss_offer_made, 'dd/mm/yyyy hh24:mm') as hmd_total_loss_offer_made,
+    to_char(hmd.total_loss_offer_accepted, 'dd/mm/yyyy hh24:mm') as hmd_total_loss_offer_accepted,
+    to_char(hmd.total_loss_check_issued, 'dd/mm/yyyy hh24:mm') as hmd_total_loss_check_issued,
+    to_char(hmd.total_loss_check_received, 'dd/mm/yyyy hh24:mm') as hmd_total_loss_check_received,
+    hmd.labour_rate as hmd_labour_rate,
+    hmd.labour_hour as hmd_labour_hour,
     hmd.labour_cost as hmd_labour_cost,
     hmd.non_provision_reason as hmd_non_provision_reason,
     case when hmd.is_repair_only_check is null then '' else case when hmd.is_repair_only_check then 'Yes' else 'No' end end as claim_repair_only_check,
     case when hmd.is_non_fault_insurer_managing_repair is null then '' else case when hmd.is_non_fault_insurer_managing_repair then 'Yes' else 'No' end end as claim_non_fault_insurer_repair,
     case when hmd.client_vat_registered is null then '' else case when hmd.client_vat_registered then 'Yes' else 'No' end end as claim_client_vat_registered,
-    hmd.next_review_date as hmd_next_review_date,
+    to_char(hmd.next_review_date, 'dd/mm/yyyy hh24:mm') as hmd_next_review_date,
     case when c.copley_offer_made is null then '' else case when c.copley_offer_made then 'Yes' else 'No' end end as claim_copley_offer,
-    c.copley_offer_made_date
+    to_char(c.copley_offer_made_date, 'dd/mm/yyyy hh24:mm')
 from claim c
     join chorganisation cho on (c.chorganisation_id = cho.id)
     join insurer ins on (c.insurer_id = ins.id)
@@ -283,7 +300,7 @@ $BODY$
   COST 100;
 
 
-GRANT EXECUTE ON FUNCTION claimDetailsReport(
+GRANT EXECUTE ON FUNCTION claimDetailsReportLV(
                             IN insIds INTEGER[],
                             IN choIds INTEGER[],
                             IN claimTypes INTEGER[],
@@ -293,7 +310,7 @@ GRANT EXECUTE ON FUNCTION claimDetailsReport(
                             IN closedClaimStatuses VARCHAR[],
                             IN openClaimStatuses VARCHAR[])
 TO chox_user;
-GRANT EXECUTE ON FUNCTION claimDetailsReport(
+GRANT EXECUTE ON FUNCTION claimDetailsReportLV(
                             IN insIds INTEGER[],
                             IN choIds INTEGER[],
                             IN claimTypes INTEGER[],
