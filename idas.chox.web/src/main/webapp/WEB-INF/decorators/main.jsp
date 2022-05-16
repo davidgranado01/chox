@@ -50,7 +50,7 @@
                                     <img src="<%= request.getContextPath()%>/images/erac.jpg" style="display: inline; float: left; width: 175px; height: 35px" alt="ERAC Logo" />
                                 </s:if>
                                 <s:else>
-                                    <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left; width: 77px; height: 22px" alt="CHOX Logo" />
+                                    <img src="<%= request.getContextPath()%>/images/SoleraAudatex_logo_new.png" style="display: inline; float: left; width: 150px; height: 22px" alt="CHOX Logo" />
                                 </s:else>
                             </td>
                             <td width="100%" align="right">

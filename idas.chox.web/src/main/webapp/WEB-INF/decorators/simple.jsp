@@ -36,7 +36,7 @@
                     <table cellpadding="0" cellspacing="0" border="0" width="100%">
                         <tr valign="middle">
                             <td>
-                                <img src="<%= request.getContextPath()%>/images/chox_logo_small.jpg" style="display: inline; float: left; width: 77px; height: 22px" alt="CHOX Logo"/>
+                                <img src="<%= request.getContextPath()%>/images/SoleraAudatex_logo_new.png" style="display: inline; float: left; width: 77px; height: 22px" alt="CHOX Logo"/>
                             </td>
                             <td width="100%" align="right">
                                 <div class="top-menu">
