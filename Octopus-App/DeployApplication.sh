@@ -8,6 +8,8 @@
 ####################################################
 
 HOST=`hostname`
+SERVER_NUMBER=#{APP_SERVER_NUMBER}
+SERVER_NAME=#{APP_SERVER_NAME}
 
 echo "Deploying CHOX application to "${HOST}": "`date`
 echo "Current working directory: "`pwd`
@@ -152,11 +154,11 @@ fi
 if [ -f crontab.txt ]; then
     cp crontab.txt /home/chox/crontab.txt
     chown -R chox:chox /home/chox/crontab.txt
-    if [[ ${HOST} =~ "app01" && ${HOST} =~ "-rdg-" ]]; then
+    if [[ ${HOST} =~ "${SERVER_NUMBER}" && ${HOST} =~ "${SERVER_NAME}" ]]; then
         su - chox -c '/usr/bin/crontab crontab.txt'
         echo 'Crontab file installed'
     else
-        echo 'Crontab not installed as not on app01 or not at rdg'
+        echo 'Crontab not installed as not on app01 or not at hgt'
     fi
 fi
 
@@ -167,11 +169,11 @@ chmod +x /home/chox/bin/*
 sleep 10
 
 ## Start newly installed App
-if [[ ${HOST} =~ "app01" && ${HOST} =~ "-rdg-" ]]; then
+if [[ ${HOST} =~ "${SERVER_NUMBER}" && ${HOST} =~ "${SERVER_NAME}" ]]; then
     echo 'Starting tomcat...'
     su - chox -c '/home/chox/bin/restartTomcat'
 else
-    echo 'Tomcat not started as not on app01 or not at rdg'
+    echo 'Tomcat not started as not on app01 or not at hgt'
 fi
 echo "Finished deploying CHOX application: "`date`
 
