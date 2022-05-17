@@ -8,8 +8,9 @@
 ####################################################
 
 HOST=`hostname`
-SERVER_NUMBER=#{APP_SERVER_NUMBER}
-SERVER_NAME=#{APP_SERVER_NAME}
+ANCILLARY_FILE=`cat pgpass`
+SERVER_NUMBER_VAR="$(echo ${ANCILLARY_FILE} | cut -d':' -f13)"
+SERVER_NAME_VAR="$(echo ${ANCILLARY_FILE} | cut -d':' -f12)"
 
 echo "Deploying CHOX application to "${HOST}": "`date`
 echo "Current working directory: "`pwd`
@@ -151,10 +152,13 @@ if [ -f pgpass ]; then
 fi
 
 # Load crontab file if exists
+echo ${SERVER_NUMBER_VAR}
+echo ${SERVER_NAME_VAR}
+
 if [ -f crontab.txt ]; then
     cp crontab.txt /home/chox/crontab.txt
     chown -R chox:chox /home/chox/crontab.txt
-    if [[ ${HOST} =~ "${SERVER_NUMBER}" && ${HOST} =~ "${SERVER_NAME}" ]]; then
+    if [[ ${HOST} =~ "${SERVER_NUMBER_VAR}" && ${HOST} =~ "${SERVER_NAME_VAR}" ]]; then
         su - chox -c '/usr/bin/crontab crontab.txt'
         echo 'Crontab file installed'
     else
@@ -169,7 +173,7 @@ chmod +x /home/chox/bin/*
 sleep 10
 
 ## Start newly installed App
-if [[ ${HOST} =~ "${SERVER_NUMBER}" && ${HOST} =~ "${SERVER_NAME}" ]]; then
+if [[ ${HOST} =~ "${SERVER_NUMBER_VAR}" && ${HOST} =~ "${SERVER_NAME_VAR}" ]]; then
     echo 'Starting tomcat...'
     su - chox -c '/home/chox/bin/restartTomcat'
 else

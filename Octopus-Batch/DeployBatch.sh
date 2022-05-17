@@ -6,8 +6,8 @@
 ####################################################
 
 HOST=`hostname`
-SERVER_NUMBER=#{BATCH_SERVER_NUMBER}
-SERVER_NAME=#{BATCH_SERVER_NAME}
+SERVER_NUMBER=`cat /home/deploy/PACKAGES/chox/reports/batch-server-number.txt`
+SERVER_NAME=`cat /home/deploy/PACKAGES/chox/reports/batch-server-name.txt`
 
 echo "Deploying CHOX application to "${HOST}": "`date`
 echo "Current working directory: "`pwd`
@@ -77,6 +77,9 @@ if [ -f pgpass ]; then
 fi
 
 # Load crontab file if exists
+echo ${SERVER_NUMBER}
+echo ${SERVER_NAME}
+
 if [ -f crontab.txt ]; then
     cp crontab.txt /home/chox/crontab.txt
     chown -R chox:chox /home/chox/crontab.txt
