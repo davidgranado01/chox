@@ -212,7 +212,7 @@ select
     case when cust.is_usable is null then '' else case when cust.is_usable then 'Yes' else 'No' end end as customer_is_usable,
     case when cust.is_total_loss is null then '' else case when cust.is_total_loss then 'Yes' else 'No' end end as customer_is_total_loss,
     to_char(cust.initial_ecd, 'dd/mm/yyyy hh24:mm') as customer_initial_ecd,
-    to_char(inc. date, 'dd/mm/yyyy hh24:mm') as incident_date,
+    to_char(inc. date, 'yyyy-mm-ddThh24:mm:ss') as incident_date,
     inc.location as incident_location,
     case when inc.is_police_involved is null then '' else case when inc.is_police_involved then 'Yes' else 'No' end end as incident_is_police_involved,
     regexp_replace(inc.incident_description, E'[\\n\\r]+', ' ', 'g' ) as incident_description,
