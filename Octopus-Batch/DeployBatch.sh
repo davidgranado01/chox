@@ -6,6 +6,8 @@
 ####################################################
 
 HOST=`hostname`
+SERVER_NUMBER=`cat /home/deploy/PACKAGES/chox/reports/batch-server-number.txt`
+SERVER_NAME=`cat /home/deploy/PACKAGES/chox/reports/batch-server-name.txt`
 
 echo "Deploying CHOX application to "${HOST}": "`date`
 echo "Current working directory: "`pwd`
@@ -75,14 +77,17 @@ if [ -f pgpass ]; then
 fi
 
 # Load crontab file if exists
+echo ${SERVER_NUMBER}
+echo ${SERVER_NAME}
+
 if [ -f crontab.txt ]; then
     cp crontab.txt /home/chox/crontab.txt
     chown -R chox:chox /home/chox/crontab.txt
-    if [[ ${HOST} =~ "bat01" && ${HOST} =~ "-rdg-" ]]; then
+    if [[ ${HOST} =~ "${SERVER_NUMBER}" && ${HOST} =~ "${SERVER_NAME}" ]]; then
         su - chox -c '/usr/bin/crontab crontab.txt'
         echo 'Crontab file installed'
     else
-        echo 'Crontab not installed as not on bat01 or not at rdg'
+        echo 'Crontab not installed as not on bat01 or not at hgt'
     fi
 fi
 
