@@ -110,7 +110,8 @@ public class VehicleClassPriceAction extends BaseAction {
             actionResponseString = "Successfully uploaded " + gtaRatesList.size() + " rates of " + gtaRateStrings.length + ":" + String.join(",", failedRows);
             return SUCCESS;
         } catch (Exception ex) {
-            actionResponseString = "Failed to upload the supplier rates";
+            actionResponseString = "Failed to upload the gta rates";
+            ex.printStackTrace();
             LOG.error("Exception creating jsonArray: {} ", ex.getMessage());
             return ERROR;
         }
