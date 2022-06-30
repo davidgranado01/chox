@@ -7,9 +7,7 @@ import java.util.List;
 
 import idas.chox.core.search.SearchResult;
 import org.hibernate.Criteria;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Order;
+import org.hibernate.criterion.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -156,6 +154,30 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
     public void saveGTARates(List<VehicleClassPrice> gtaRates) {
         saveCollections(gtaRates);
+    }
+
+
+    /**
+     * Here we are checking if any existing gta rate is being present with same class and same age and startDate equals or less than given start date
+     * @param gtaRate
+     * @return
+     */
+    @Override
+    public VehicleClassPrice isDataWithSameOrLessThanStartDatePresentOrNot(VehicleClassPrice gtaRate,VehicleClass vehicleClass) {
+        VehicleClassPrice vehicleClassPriceItem = null;
+        try {
+            vehicleClassPriceItem = (VehicleClassPrice) getCurrentSession().createCriteria(VehicleClassPrice.class)
+                    .add(Restrictions.conjunction()
+                            .add(Restrictions.ge("startDate", gtaRate.getStartDate()))
+                            .add(Restrictions.eq("vehicleClass.id", vehicleClass.getId()))
+                            .add(Restrictions.eq("price", gtaRate.getPrice()))
+                            .add(Restrictions.eq("age", gtaRate.getAge()))).setMaxResults(1).uniqueResult();
+        }catch (Exception ex){
+            LOG.debug("Exception in VehicleClassPriceServiceImpl | method : isDataWithSameOrLessThanStartDatePresentOrNot ",ex);
+            ex.printStackTrace();
+        }
+
+        return vehicleClassPriceItem;
     }
 
 }
