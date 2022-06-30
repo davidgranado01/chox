@@ -163,6 +163,12 @@ public class VehicleClassPriceAction extends BaseAction {
         gtaRate.setLastModifiedBy(getChoxSystemUser());
         gtaRate.setLastModifiedDate(now);
 
+        VehicleClassPrice vehicleClassPrice = vehicleClassPriceService.isDataWithSameOrLessThanStartDatePresentOrNot(gtaRate,vehicleClass);
+
+        if(vehicleClassPrice!=null) {
+            return null;
+        }
+
         return gtaRate;
     }
 

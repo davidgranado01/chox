@@ -22,4 +22,6 @@ public interface VehicleClassPriceService {
    void deleteVehicleClassPriceRate(int id) throws Exception;
 
    void saveGTARates(List<VehicleClassPrice> gtaRates);
+
+   VehicleClassPrice isDataWithSameOrLessThanStartDatePresentOrNot(VehicleClassPrice gtaRate, VehicleClass vehicleClass);
 }
