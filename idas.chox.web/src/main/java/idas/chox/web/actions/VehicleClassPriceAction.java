@@ -122,15 +122,19 @@ public class VehicleClassPriceAction extends BaseAction {
 
     private VehicleClassPrice parseGtaRate(String rateString) {
         VehicleClassPrice gtaRate = new VehicleClassPrice();
+        long age =0;
         String[] rate = rateString.split(",");
         if (rate.length < 4) {
             return null;
         }
-
-        long age = Integer.parseInt(rate[3]);
-        if (age == 0) {
+        try{
+            age = Integer.parseInt(rate[3]);
+        }catch (Exception ex) {
+            ex.printStackTrace();
             return null;
         }
+
+
         try {
             Date startDate = dateFormat.parse(rate[2]);
             gtaRate.setStartDate(startDate);
@@ -144,7 +148,7 @@ public class VehicleClassPriceAction extends BaseAction {
             String price = rawprice.split("£")[1];
             BigDecimal newPrice = BigDecimal.valueOf(Double.valueOf(price));
             gtaRate.setPrice(newPrice);
-        } catch (NumberFormatException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
