@@ -102,7 +102,10 @@ public class VehicleClassPriceAction extends BaseAction {
                 if (null == gtaRate) {
                     failedRows.add(gtaRateString.substring(gtaRateString.lastIndexOf(",")));
                 } else {
-                    gtaRates.add(gtaRate);
+                    if (!gtaRates.stream().anyMatch(rate -> (rate.getVehicleClass().getName().toLowerCase(Locale.ROOT).equals(gtaRate.getVehicleClass().getName().toLowerCase(Locale.ROOT)) && rate.getStartDate().equals(gtaRate.getStartDate()) && rate.getAge().equals(gtaRate.getAge()))))
+                        gtaRates.add(gtaRate);
+                    else
+                        failedRows.add(gtaRateString.substring(gtaRateString.lastIndexOf(",")));
                 }
             }
             List<VehicleClassPrice> gtaRatesList = new ArrayList<>(gtaRates);
