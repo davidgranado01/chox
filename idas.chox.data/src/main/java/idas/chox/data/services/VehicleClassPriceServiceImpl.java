@@ -170,7 +170,6 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
                     .add(Restrictions.conjunction()
                             .add(Restrictions.ge("startDate", gtaRate.getStartDate()))
                             .add(Restrictions.eq("vehicleClass.id", vehicleClass.getId()))
-                            .add(Restrictions.eq("price", gtaRate.getPrice()))
                             .add(Restrictions.eq("age", gtaRate.getAge()))).setMaxResults(1).uniqueResult();
         }catch (Exception ex){
             LOG.debug("Exception in VehicleClassPriceServiceImpl | method : isDataWithSameOrLessThanStartDatePresentOrNot ",ex);
