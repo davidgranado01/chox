@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class VehicleClassPriceAction extends BaseAction {
 
@@ -188,8 +189,19 @@ public class VehicleClassPriceAction extends BaseAction {
             LOG.debug("Converting results to view data");
             List<VehicleClassPriceViewData> viewData = new ArrayList<>(vehicleClassPriceRates.size());
             for (VehicleClassPrice vehicleClassPriceRate : vehicleClassPriceRates) {
+
+                boolean showDelete = false;
+
+                Stream<VehicleClassPrice> filteredGtaRates = vehicleClassPriceRates.stream().filter((rate) -> rate.getVehicleClass().getName().toLowerCase(Locale.ROOT).equals(vehicleClassPriceRate.getVehicleClass().getName().toLowerCase(Locale.ROOT)));
+
+                VehicleClassPrice vehicleClassPriceRateHigh = filteredGtaRates.max((rate1, rate2) -> rate1.getStartDate().after(rate2.getStartDate()) ? 1: 0).get();
+
+                if (vehicleClassPriceRate.getStartDate().equals(vehicleClassPriceRateHigh.getStartDate())) {
+                    showDelete = true;
+                }
+
                 //LOG.debug("Adding VehicleClassPriceSpecialRateViewData to view data: CHO={}, Insurer={}, VehicleClass={}", vehicleClassPriceSpecialRate.getChorganisation().getName(), vehicleClassPriceSpecialRate.getInsurer().getName(), vehicleClassPriceSpecialRate.getVehicleClass().getName());
-                viewData.add(new VehicleClassPriceViewData(vehicleClassPriceRate));
+                viewData.add(new VehicleClassPriceViewData(vehicleClassPriceRate, showDelete));
             }
             try {
                 jsonString = mapper.writeValueAsString(viewData);

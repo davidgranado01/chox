@@ -51,7 +51,8 @@
                     {name: 'createdBy'},
                     {name: 'createdDate'},
                     {name: 'age'},
-                    {name: 'id'}
+                    {name: 'id'},
+                    {name: 'showDeleteLink'}
                 ]
         });
 
@@ -97,8 +98,9 @@
                 {header: "Created By", width: 112, dataIndex: 'createdBy', sortable: false, resizable: true},
                 {header: "Age", width: 66, dataIndex: 'age', sortable: false, resizable: true},
                 {
-                    header: "", width: 56, dataIndex: 'id', sortable: false, renderer: function (value, p, r) {
-                        return "<a href='#' class='high-light-item'> Delete</a>";
+                    header: "", width: 56, dataIndex: 'showDeleteLink', sortable: false, renderer: function (value, p, r) {
+                        if (value)
+                            return "<a href='#' class='high-light-item'> Delete</a>";
                     }
                 }
             ],
@@ -140,6 +142,10 @@
     function deleteRecord(grid, rowIndex, columnIndex, e) {
 
         var gridView = gtaRateGridPanel.getStore().getAt(rowIndex);
+
+        if (!gridView.data.showDeleteLink)
+            return;
+
         var gridViewId = gridView.get("id");
 
         var url = "/prv/p/deleteVehicleClassPriceRate.action";
