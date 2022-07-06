@@ -177,7 +177,15 @@
         }, {
             header: 'Class', dataIndex: 'Class', sortable: true, resizable: true
         }, {
-            header: 'Rate', dataIndex: 'Rate', sortable: true, resizable: true
+            header: 'Rate', dataIndex: 'Rate', sortable: true, resizable: true,
+            renderer: function(value,p,r) {
+                if (value.charAt(0) == 'Â' && value.charAt(1) == '£')
+                    return value.slice(2);
+                else if (value.charAt(0) == '£')
+                    return value.slice(1);
+                else
+                    return value;
+            }
         }, {
             header: 'Start Date',
             dataIndex: 'StartDate',
