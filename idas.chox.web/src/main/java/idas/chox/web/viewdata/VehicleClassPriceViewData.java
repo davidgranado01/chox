@@ -14,9 +14,10 @@ public class VehicleClassPriceViewData {
     private String createdBy;
     private String createdDate;
     private int age;
+    private boolean showDeleteLink;
 
 
-    public VehicleClassPriceViewData(VehicleClassPrice object) {
+    public VehicleClassPriceViewData(VehicleClassPrice object, boolean showDelete) {
         this.id = object.getId();
         this.vehicleClassName = object.getVehicleClass().getName();
         this.rate = object.getPrice();
@@ -24,6 +25,7 @@ public class VehicleClassPriceViewData {
         this.createdBy = object.getCreatedBy().getDisplayName();
         this.createdDate = DateHelper.getLocalDateTimeFormat().format(object.getCreatedDate());
         this.age = object.getAge().intValue();
+        this.showDeleteLink = showDelete;
     }
 
     public int getId() {
@@ -81,4 +83,13 @@ public class VehicleClassPriceViewData {
     public void setAge(int age) {
         this.age = age;
     }
+
+    public boolean getShowDeleteLink() {
+        return showDeleteLink;
+    }
+
+    public void setShowDeleteLink(boolean showDeleteLink) {
+        this.showDeleteLink = showDeleteLink;
+    }
+
 }
