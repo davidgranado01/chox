@@ -148,7 +148,8 @@ public class VehicleClassPriceAction extends BaseAction {
         try {
             String rawprice = new String(rate[1]);
             //here their is a chance that they can upload with currency symbol
-            String price = rawprice.split("£")[1];
+            String[] priceString = rawprice.split("£");
+            String price = priceString.length == 2 ? priceString[1] : priceString[0];
             BigDecimal newPrice = BigDecimal.valueOf(Double.valueOf(price));
             gtaRate.setPrice(newPrice);
         } catch (Exception ex) {
