@@ -31,6 +31,7 @@ public class VehicleClassPriceAction extends BaseAction {
 
     private VehicleClassService vehicleClassService;
     protected List<VehicleClassPrice> vehicleClassPriceRates;
+    protected List<VehicleClassPrice> vehicleClassPriceRatesFullList;
     private UserService userService;
 
     private int start;
@@ -68,6 +69,7 @@ public class VehicleClassPriceAction extends BaseAction {
         try {
             SearchResult searchResult = vehicleClassPriceService.getVehicleClassPriceRatesPagination(start, limit, sort, dir);
             this.vehicleClassPriceRates = searchResult.getResult();
+            this.vehicleClassPriceRatesFullList = vehicleClassPriceService.getVehicleClassPriceRatesPagination(0, -1, sort, dir).getResult();
             this.totalCount = searchResult.getTotalCount();
             return SUCCESS;
         } catch (Exception ex) {
@@ -190,15 +192,7 @@ public class VehicleClassPriceAction extends BaseAction {
             List<VehicleClassPriceViewData> viewData = new ArrayList<>(vehicleClassPriceRates.size());
             for (VehicleClassPrice vehicleClassPriceRate : vehicleClassPriceRates) {
 
-                boolean showDelete = false;
-
-                Stream<VehicleClassPrice> filteredGtaRates = vehicleClassPriceRates.stream().filter((rate) -> rate.getVehicleClass().getName().toLowerCase(Locale.ROOT).equals(vehicleClassPriceRate.getVehicleClass().getName().toLowerCase(Locale.ROOT)));
-
-                VehicleClassPrice vehicleClassPriceRateHigh = filteredGtaRates.max((rate1, rate2) -> rate1.getStartDate().after(rate2.getStartDate()) ? 1: 0).get();
-
-                if (vehicleClassPriceRate.getStartDate().equals(vehicleClassPriceRateHigh.getStartDate())) {
-                    showDelete = true;
-                }
+                boolean showDelete = showDeleteLink(vehicleClassPriceRate);
 
                 //LOG.debug("Adding VehicleClassPriceSpecialRateViewData to view data: CHO={}, Insurer={}, VehicleClass={}", vehicleClassPriceSpecialRate.getChorganisation().getName(), vehicleClassPriceSpecialRate.getInsurer().getName(), vehicleClassPriceSpecialRate.getVehicleClass().getName());
                 viewData.add(new VehicleClassPriceViewData(vehicleClassPriceRate, showDelete));
@@ -224,6 +218,20 @@ public class VehicleClassPriceAction extends BaseAction {
         }
 
         return choxSystemUser;
+    }
+
+    private boolean showDeleteLink(VehicleClassPrice vehicleClassPriceRate) {
+        boolean showDelete = false;
+
+        Stream<VehicleClassPrice> filteredGtaRates = vehicleClassPriceRatesFullList.stream().filter((rate) -> rate.getVehicleClass().getName().toLowerCase(Locale.ROOT).equals(vehicleClassPriceRate.getVehicleClass().getName().toLowerCase(Locale.ROOT)));
+
+        VehicleClassPrice vehicleClassPriceRateHigh = filteredGtaRates.max((rate1, rate2) -> rate1.getStartDate().after(rate2.getStartDate()) ? 1: 0).get();
+
+        if (vehicleClassPriceRate.getStartDate().equals(vehicleClassPriceRateHigh.getStartDate())) {
+            showDelete = true;
+        }
+
+        return showDelete;
     }
 
     public int getStart() {
