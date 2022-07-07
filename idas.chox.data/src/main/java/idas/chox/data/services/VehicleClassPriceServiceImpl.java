@@ -117,6 +117,7 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
         Integer totalCount = totalCount(criteria);
 
         criteria.setFirstResult(start);
+        if (limit != -1)
         criteria.setMaxResults(limit);
         if (!sort.isEmpty() && !dir.isEmpty()) {
             if (sort.equalsIgnoreCase("startDate")) {
