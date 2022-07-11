@@ -122,11 +122,14 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
         if (!sort.isEmpty() && !dir.isEmpty()) {
             if (sort.equalsIgnoreCase("startDate")) {
                 addSort(criteria, "startDate", dir);
+                addSort(criteria,"id","asc");
             } else if (sort.equalsIgnoreCase("createdDate")) {
                 addSort(criteria, "createdDate", dir);
+                addSort(criteria,"id","asc");
             }
         } else {
             criteria.addOrder(Order.desc("startDate"));
+            criteria.addOrder(Order.asc("id"));
         }
 
         List<VehicleClassPrice> vehicleClassPrices = criteria.list();
