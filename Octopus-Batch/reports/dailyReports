@@ -210,6 +210,21 @@ select * from keoghs_daily_report(${CHO_ID}, array[${INS_ID}], 'AwaitingCarHireI
 --EOF--
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
+# Using same keoghs_daily_report stored procedure for DWF since both have exact
+# same functionality -> changing only CHO_ID
+
+echo 'Generating DWF Daily Report'
+DUMPFILE='DWF-DailyReport-'`date +"%Y%m%d"`.txt
+INS_ID=26
+CHO_ID=`$PSQL_COMMAND -h ${HOST} -d ${DB} -U ${USER} -AXqtc "SELECT id FROM chorganisation WHERE name='DWF'"`
+$PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} -o ${DUMPFILE} << --EOF--
+select 'Rejected Claims' as tab_name;
+select * from keoghs_daily_report(${CHO_ID}, array[${INS_ID}], 'ClaimRejected', '${START_DATE}', '${END_DATE}');
+select 'Acknowledged Claims' as tab_name;
+select * from keoghs_daily_report(${CHO_ID}, array[${INS_ID}], 'AwaitingCarHireInfo', '${START_DATE}', '${END_DATE}');
+--EOF--
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
 echo 'Generating DLG Daily Claim Details Dump'
 DUMPFILE='DLG-ClaimDetailsDump-'`date +"%Y%m%d"`.csv
 $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
