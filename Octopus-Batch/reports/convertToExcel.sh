@@ -320,7 +320,7 @@ function getEmailReceivers {
 	        EMAIL_RECEIVERS=${RECIPIENTS_CTE_KEOGHS_DAILY_REPORT};;
 	    "DWF-DailyReport-"* )
 	        ACTIVE=1
-          EMAIL_RECEIVERS=${RECIPIENTS_DWF_DAILY_REPORT};;
+	        EMAIL_RECEIVERS=${RECIPIENTS_DWF_DAILY_REPORT};;
         *)
             #EMAIL_RECEIVERS=DL-UKBR-Audatex-penguin-reporting@audatex.com;;
             EMAIL_RECEIVERS=${RECIPIENTS_DEV_TEAM_EMAIL};;
