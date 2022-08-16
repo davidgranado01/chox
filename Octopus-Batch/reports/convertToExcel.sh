@@ -79,7 +79,7 @@ function getPassword {
         "Keoghs-"* )
             PASSWORD="K30ghsPa33";;
         "DWF-"* )
-            PASSWORD="C0mpliance";;
+            PASSWORD="DWFchox2022";;
         *)
             PASSWORD="C0mpliance";;
     esac
