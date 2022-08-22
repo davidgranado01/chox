@@ -166,7 +166,7 @@ public class ExcelGeneratorAction extends BaseAction {
                 SearchResult searchResult = claimService.searchClaims(c);
                 List<Claim> claims = searchResult.getResult();
                 LOG.debug("Total No of Claims : '{}'", claims.size());
-                if (claims.size() > 0 && claims.size() <= 10000) {
+                if (claims.size() > 0 && claims.size() <= MAX_EXPORT_SIZE) {
                     List<Integer> claimIds = new ArrayList<>(claims.size());
                     claims.forEach((claim) -> {
                         claimIds.add(claim.getId());
@@ -190,8 +190,8 @@ public class ExcelGeneratorAction extends BaseAction {
                         }
                         return rtnStr;
                     }
-                } else if (claims.size() > 10000) {
-                    setErrorMessage("The Export To Excel feature is restricted to exporting a maximum of 10,000 claims, please refine your search.");
+                } else if (claims.size() > MAX_EXPORT_SIZE) {
+                    setErrorMessage("The Export To Excel feature is restricted to exporting a maximum of" + MAX_EXPORT_SIZE + "claims, please refine your search.");
                 }
             }
         }
