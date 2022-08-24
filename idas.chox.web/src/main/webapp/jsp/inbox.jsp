@@ -179,9 +179,18 @@
                     handler : function() {
                         doExportExcel();
                     }
-                }]
+                },
+                {
+                    text:'Excel 2',
+                    id : 'claimsExportToExcelButtonId2',
+                    disabled : !<s:property value="canExportGrid" />,
+                    handler : function() {
+                        doExportExcel2();
+                    }
+                }
+            ]
             });
-           
+
 
             claimsGrid = new Ext.grid.GridPanel({
                 id : 'inboxClaimsGridId',
