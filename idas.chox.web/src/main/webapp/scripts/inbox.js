@@ -179,9 +179,11 @@ function cancelExportToExcel(btn){
 var loadLiveExportToExcelClaimCount = function updateExportedClaim(timeOut){
 
     var timeoutSeconds = timeOut;
+    console.log("Ankit" + timeoutSeconds)
     choxExtAjaxRequest({
         url: '/prv/p/updateExportClaimsCount.action',
         callback : function(options,success,response  ){
+            console.log(response);
             if(response.responseText){
                 var resp = Ext.util.JSON.decode(response.responseText);
                 if(!cancelled && resp.isExportProcessFinished){
