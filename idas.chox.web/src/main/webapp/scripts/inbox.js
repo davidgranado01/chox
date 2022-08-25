@@ -93,7 +93,7 @@ function doExportExcel(){
                     closable     : false,
                     fn           : cancelExportToExcel
                 });
-                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 1000);
+                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount(1000), 1000);
             }
         } else {
             Ext.Msg.alert('', 'The Export To Excel feature is restricted to exporting a maximum of 6,000 claims, please refine your search.');
@@ -107,7 +107,6 @@ function doExportExcel2(){
     }else{
         if( claimStore.getTotalCount()>0){
             if ( find_MSIE_version() > 0 && find_MSIE_version() < 9  ){
-                alert("1")
                 Ext.MessageBox.show({
                     title        : 'Exporting Claims...',
                     msg          : "Please wait...",
@@ -117,7 +116,7 @@ function doExportExcel2(){
                 window.location = contextPath+"/prv/doExportExcel.action?directDownload="+true;
                 directExportToExcelStatusIntervelId = setTimeout(loadDirectExportToExcelStatus, 1000);
             }else{
-                var timeoutSeconds = (claimStore.getTotalCount()/6000) * 3600000;
+                var timeoutSeconds = (claimStore.getTotalCount()/6000 +1 ) * 3600000;
 
                 cancelled = false;
                 choxExtAjaxRequest({
@@ -136,7 +135,7 @@ function doExportExcel2(){
                     closable     : false,
                     fn           : cancelExportToExcel
                 });
-                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 8000);
+                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount(10000), 1000 );
             }
         }
         else{
@@ -177,8 +176,9 @@ function cancelExportToExcel(btn){
     }
 }
         
-var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
-                
+var loadLiveExportToExcelClaimCount = function updateExportedClaim(timeOut){
+
+    var timeoutSeconds = timeOut;
     choxExtAjaxRequest({
         url: '/prv/p/updateExportClaimsCount.action',
         callback : function(options,success,response  ){
@@ -213,7 +213,7 @@ var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
                     }else{
                         Ext.MessageBox.updateProgress(i, (i*100).toFixed(0) + '% complete', resp.exportedClaimCount+' claims exported');
                     }
-                    exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 1000);
+                    exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, timeoutSeconds);
                 }
             }
         }
