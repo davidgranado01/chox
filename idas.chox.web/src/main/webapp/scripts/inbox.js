@@ -107,19 +107,20 @@ function doExportExcel2(){
     }else{
         if( claimStore.getTotalCount()>0){
             if ( find_MSIE_version() > 0 && find_MSIE_version() < 9  ){
+                alert("1")
                 Ext.MessageBox.show({
                     title        : 'Exporting Claims...',
                     msg          : "Please wait...",
                     width        : 300,
                     closable     : false
                 });
-                window.location = contextPath+"/prv/doExportExcel.action?directDownload="+true+"newVersion="+true;
-                directExportToExcelStatusIntervelId = setTimeout(loadDirectExportToExcelStatus, 100000);
+                window.location = contextPath+"/prv/doExportExcel.action?directDownload="+true;
+                directExportToExcelStatusIntervelId = setTimeout(loadDirectExportToExcelStatus, 1000);
             }else{
                 cancelled = false;
                 choxExtAjaxRequest({
-                    url: '/prv/p/generateExportFile.action',
-                    timeout : 360000000000,
+                    url: '/prv/p/generateExportFile.action?newVersion='+true,
+                    timeout : 10800000,
                     callback : function(options,success,response  ){
                     }
                 });
@@ -133,7 +134,7 @@ function doExportExcel2(){
                     closable     : false,
                     fn           : cancelExportToExcel
                 });
-                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 100000);
+                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 2000);
             }
         }
         else{
