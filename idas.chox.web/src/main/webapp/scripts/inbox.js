@@ -93,7 +93,7 @@ function doExportExcel(){
                     closable     : false,
                     fn           : cancelExportToExcel
                 });
-                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount(1000), 1000);
+                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 1000);
             }
         } else {
             Ext.Msg.alert('', 'The Export To Excel feature is restricted to exporting a maximum of 6,000 claims, please refine your search.');
@@ -135,7 +135,7 @@ function doExportExcel2(){
                     closable     : false,
                     fn           : cancelExportToExcel
                 });
-                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount(10000), 10000 );
+                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 10000 );
             }
         }
         else{
@@ -176,10 +176,8 @@ function cancelExportToExcel(btn){
     }
 }
         
-var loadLiveExportToExcelClaimCount = function updateExportedClaim(timeOut){
+var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
 
-    var timeoutSeconds = timeOut;
-    console.log("Ankit" + timeoutSeconds)
     choxExtAjaxRequest({
         url: '/prv/p/updateExportClaimsCount.action',
         callback : function(options,success,response  ){
@@ -215,7 +213,7 @@ var loadLiveExportToExcelClaimCount = function updateExportedClaim(timeOut){
                     }else{
                         Ext.MessageBox.updateProgress(i, (i*100).toFixed(0) + '% complete', resp.exportedClaimCount+' claims exported');
                     }
-                    exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, timeoutSeconds);
+                    exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 10000);
                 }
             }
         }
