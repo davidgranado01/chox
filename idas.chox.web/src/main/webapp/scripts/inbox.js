@@ -117,10 +117,12 @@ function doExportExcel2(){
                 window.location = contextPath+"/prv/doExportExcel.action?directDownload="+true;
                 directExportToExcelStatusIntervelId = setTimeout(loadDirectExportToExcelStatus, 1000);
             }else{
+                var timeoutSeconds = (claimStore.getTotalCount()/6000) * 3600000;
+
                 cancelled = false;
                 choxExtAjaxRequest({
                     url: '/prv/p/generateExportFile.action?newVersion='+true,
-                    timeout : 10800000,
+                    timeout : timeoutSeconds,
                     callback : function(options,success,response  ){
                     }
                 });
@@ -134,7 +136,7 @@ function doExportExcel2(){
                     closable     : false,
                     fn           : cancelExportToExcel
                 });
-                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 2000);
+                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 8000);
             }
         }
         else{
