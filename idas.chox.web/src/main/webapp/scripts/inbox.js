@@ -135,7 +135,7 @@ function doExportExcel2(){
                     closable     : false,
                     fn           : cancelExportToExcel
                 });
-                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount(10000), 1000 );
+                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount(10000), 10000 );
             }
         }
         else{
