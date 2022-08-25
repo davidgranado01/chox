@@ -47,6 +47,7 @@ public class ExcelGeneratorAction extends BaseAction {
     private boolean exceptionThrown;
     private boolean tooManyRows;
     private boolean directDownload;
+    private boolean newVersion;
     private SecureDataService dataService;
     private ReportDataService reportDataService;
 
@@ -62,6 +63,13 @@ public class ExcelGeneratorAction extends BaseAction {
         return directDownload;
     }
 
+    public boolean isNewVersion() {
+        return newVersion;
+    }
+
+    public void setNewVersion(boolean newVersion) {
+        this.newVersion = newVersion;
+    }
     public void setDirectDownload(boolean directDownload) {
         this.directDownload = directDownload;
     }
@@ -323,7 +331,8 @@ public class ExcelGeneratorAction extends BaseAction {
         excelMap.put("comments", comments);
         excelMap.put("cycle", claimCycle);
 
-        final String templateFilePath = getIsInsurer() ? (isInsurerLouDatesEnabled() ? getReportTemplatePath("claimTemplateInsurerHireMon.xls") : getReportTemplatePath("claimTemplateInsurer.xls")) : getReportTemplatePath("claimTemplate.xls");
+        final String templateFilePath = getIsInsurer() ? (isInsurerLouDatesEnabled() ? getReportTemplatePath("claimTemplateInsurerHireMon.xls") : getReportTemplatePath("claimTemplateInsurer.xls")) : isNewVersion() ? getReportTemplatePath("claimAndInvoiceTemplate.xls"):getReportTemplatePath("claimTemplate.xls");
+
         final File reportFile = File.createTempFile("excel_report", ".xls");
         reportFile.deleteOnExit();
         LOG.info("'Export to Excel' report file will be written to the following location: {}", reportFile.getAbsolutePath());

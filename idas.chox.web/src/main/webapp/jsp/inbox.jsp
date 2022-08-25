@@ -173,7 +173,7 @@
             
             var claimsExportToExcelTbar = new Ext.Toolbar({
             items:[{
-                    text:'Export To Excel',
+                    text:'Full Claim Data Export',
                     id : 'claimsExportToExcelButtonId',
                     disabled : !<s:property value="canExportGrid" />,
                     handler : function() {
@@ -181,7 +181,7 @@
                     }
                 },
                 {
-                    text:'Excel 2',
+                    text:'Claim and Invoice Data Export',
                     id : 'claimsExportToExcelButtonId2',
                     disabled : !<s:property value="canExportGrid" />,
                     handler : function() {

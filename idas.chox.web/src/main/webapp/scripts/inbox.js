@@ -113,13 +113,13 @@ function doExportExcel2(){
                     width        : 300,
                     closable     : false
                 });
-                window.location = contextPath+"/prv/doExportExcel.action?directDownload="+true;
-                directExportToExcelStatusIntervelId = setTimeout(loadDirectExportToExcelStatus, 1000);
+                window.location = contextPath+"/prv/doExportExcel.action?directDownload="+true+"newVersion="+true;
+                directExportToExcelStatusIntervelId = setTimeout(loadDirectExportToExcelStatus, 100000);
             }else{
                 cancelled = false;
                 choxExtAjaxRequest({
                     url: '/prv/p/generateExportFile.action',
-                    timeout : 3600000,
+                    timeout : 360000000000,
                     callback : function(options,success,response  ){
                     }
                 });
@@ -133,7 +133,7 @@ function doExportExcel2(){
                     closable     : false,
                     fn           : cancelExportToExcel
                 });
-                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 1000);
+                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 100000);
             }
         }
         else{
