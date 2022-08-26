@@ -248,63 +248,68 @@ public class ExcelGeneratorAction extends BaseAction {
         synchronized (getSessionLock()) {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
+        List<ExcelHistory> histories = new ArrayList<>();
+        List<ExcelComment> comments = new ArrayList<>();
+        List<ExcelClaimCycle> claimCycle = new ArrayList<>();
 
-        List<ExcelHistory> histories = gridExportReport.getExcelHistory(claimIds);
-        processedClaim += claimIds.size() / 5;
-        if (isExportClaimOperationCancelled()) {
-            synchronized (getSessionLock()) {
-                getSession().put("numberOfClaimsProcessed", null);
+        if(!isNewVersion())
+        {
+            histories = gridExportReport.getExcelHistory(claimIds);
+            processedClaim += claimIds.size() / 5;
+            if (isExportClaimOperationCancelled()) {
+                synchronized (getSessionLock()) {
+                    getSession().put("numberOfClaimsProcessed", null);
+                }
+                return false;
+            } else if (histories.size() > MAX_EXPORT_SIZE) {
+                synchronized (getSessionLock()) {
+                    getSession().put("numberOfClaimsProcessed", null);
+                    getSession().put("tooManyRows", true);
+                }
+                return false;
             }
-            return false;
-        } else if (histories.size() > MAX_EXPORT_SIZE) {
-            synchronized (getSessionLock()) {
-                getSession().put("numberOfClaimsProcessed", null);
-                getSession().put("tooManyRows", true);
-            }
-            return false;
-        }
 
-        synchronized (getSessionLock()) {
-            getSession().put("numberOfClaimsProcessed", processedClaim);
-        }
-
-        List<ExcelComment> comments = gridExportReport.getExcelComments(claimIds);
-        processedClaim += claimIds.size() / 5;
-        if (isExportClaimOperationCancelled()) {
             synchronized (getSessionLock()) {
-                getSession().put("numberOfClaimsProcessed", null);
+                getSession().put("numberOfClaimsProcessed", processedClaim);
             }
-            return false;
-        } else if (comments.size() > MAX_EXPORT_SIZE) {
-            synchronized (getSessionLock()) {
-                getSession().put("numberOfClaimsProcessed", null);
-                getSession().put("tooManyRows", true);
-            }
-            return false;
-        }
 
-        synchronized (getSessionLock()) {
-            getSession().put("numberOfClaimsProcessed", processedClaim);
-        }
-        List<ExcelClaimCycle> claimCycle = gridExportReport.getExcelClaimCycle(claimIds);
-        processedClaim += claimIds.size() / 5;
-        if (isExportClaimOperationCancelled()) {
-            synchronized (getSessionLock()) {
-                getSession().put("numberOfClaimsProcessed", null);
+            comments = gridExportReport.getExcelComments(claimIds);
+            processedClaim += claimIds.size() / 5;
+            if (isExportClaimOperationCancelled()) {
+                synchronized (getSessionLock()) {
+                    getSession().put("numberOfClaimsProcessed", null);
+                }
+                return false;
+            } else if (comments.size() > MAX_EXPORT_SIZE) {
+                synchronized (getSessionLock()) {
+                    getSession().put("numberOfClaimsProcessed", null);
+                    getSession().put("tooManyRows", true);
+                }
+                return false;
             }
-            return false;
-        } else if (claimCycle.size() > MAX_EXPORT_SIZE) {
+
             synchronized (getSessionLock()) {
-                getSession().put("numberOfClaimsProcessed", null);
-                getSession().put("tooManyRows", true);
+                getSession().put("numberOfClaimsProcessed", processedClaim);
             }
-            return false;
-        }
+            claimCycle = gridExportReport.getExcelClaimCycle(claimIds);
+            processedClaim += claimIds.size() / 5;
+            if (isExportClaimOperationCancelled()) {
+                synchronized (getSessionLock()) {
+                    getSession().put("numberOfClaimsProcessed", null);
+                }
+                return false;
+            } else if (claimCycle.size() > MAX_EXPORT_SIZE) {
+                synchronized (getSessionLock()) {
+                    getSession().put("numberOfClaimsProcessed", null);
+                    getSession().put("tooManyRows", true);
+                }
+                return false;
+            }
 
-        synchronized (getSessionLock()) {
-            getSession().put("numberOfClaimsProcessed", processedClaim);
+            synchronized (getSessionLock()) {
+                getSession().put("numberOfClaimsProcessed", processedClaim);
+            }
         }
-
         List<ExcelInvoice> invoices = gridExportReport.getExcelInvoices(claimIds);
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
@@ -327,9 +332,12 @@ public class ExcelGeneratorAction extends BaseAction {
         final Map<String, Object> excelMap = new HashMap();
         excelMap.put("excelclaims", excelClaims);
         excelMap.put("excelinvoices", invoices);
-        excelMap.put("claimHistories", histories);
-        excelMap.put("comments", comments);
-        excelMap.put("cycle", claimCycle);
+        if(!isNewVersion())
+        {
+            excelMap.put("claimHistories", histories);
+            excelMap.put("comments", comments);
+            excelMap.put("cycle", claimCycle);
+        }
 
         final String templateFilePath = getIsInsurer() ? (isInsurerLouDatesEnabled() ? getReportTemplatePath("claimTemplateInsurerHireMon.xls") : getReportTemplatePath("claimTemplateInsurer.xls")) : isNewVersion() ? getReportTemplatePath("claimAndInvoiceTemplate.xls"):getReportTemplatePath("claimTemplate.xls");
 
