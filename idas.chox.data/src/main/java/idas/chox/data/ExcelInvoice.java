@@ -55,7 +55,7 @@ public class ExcelInvoice {
     private String handlingInvoiceNo;
     private BigDecimal claimsHandlingInvoiceAmount;
     private String claimInvoiceNo;
-    private String hireRateOriginalRateChargedPerDay;
+    private BigDecimal hireRateOriginalRateChargedPerDay;
     private BigDecimal hireRateChargedPerDay;
     private BigDecimal originalhireNet;
     private BigDecimal originalhireVat;
@@ -173,7 +173,7 @@ public class ExcelInvoice {
         handlingInvoiceNo = (String) data.get("handlinginvoiceno");
         claimsHandlingInvoiceAmount = (BigDecimal) data.get("claimshandlinginvoiceamount");
         claimInvoiceNo = (String) data.get("claiminvoiceno");
-        hireRateOriginalRateChargedPerDay = (String) data.get("originalhireratechargedperday");
+        hireRateOriginalRateChargedPerDay = (BigDecimal) data.get("originalhireratechargedperday");
         hireRateChargedPerDay = (BigDecimal) data.get("hireratechargedperday");
         originalhireNet = (BigDecimal) data.get("originalhirenet");
         originalhireVat = (BigDecimal) data.get("originalhirevat");
@@ -337,7 +337,7 @@ public class ExcelInvoice {
         return claimInvoiceNo;
     }
 
-    public String getHireRateOriginalRateChargedPerDay() {
+    public BigDecimal getHireRateOriginalRateChargedPerDay() {
         return hireRateOriginalRateChargedPerDay;
     }
 
