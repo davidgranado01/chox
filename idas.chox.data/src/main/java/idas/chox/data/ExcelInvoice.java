@@ -174,7 +174,7 @@ public class ExcelInvoice {
         handlingInvoiceNo = (String) data.get("handlinginvoiceno");
         claimsHandlingInvoiceAmount = (BigDecimal) data.get("claimshandlinginvoiceamount");
         claimInvoiceNo = (String) data.get("claiminvoiceno");
-        Integer temphireRateOriginalDays = (Integer) data.get("orignaldays");
+        BigDecimal temphireRateOriginalDays = (BigDecimal) data.get("orignaldays");
         if (temphireRateOriginalDays == null) {
             hireRateOriginalDays = null;
         } else {
