@@ -427,7 +427,7 @@ public class ExcelClaim {
             claimVehicleHireRentalStart = (Date) data.get("vh_rental_start");
             claimVehicleHireRentalEnd = (Date) data.get("vh_rental_end");
             BigDecimal claimVehicleODaysHire = (BigDecimal) data.get("vh_original_no_days_hire");
-            if (days == null) {
+            if (claimVehicleODaysHire == null) {
                 claimVehicleOriginalDaysHire = null;
             } else {
                 claimVehicleOriginalDaysHire = claimVehicleODaysHire.intValue();
