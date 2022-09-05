@@ -151,9 +151,11 @@ public class ExcelClaim {
     private String claimVehicleHireVehicleManufacturer;
     private String claimVehicleHireVehicleModel;
     private String claimVehicleHireVehicleRegistration;
+    private String claimVehicleHireVehicleOriginalClassName;
     private String claimVehicleHireVehicleClassName;
     private Date claimVehicleHireRentalStart;
     private Date claimVehicleHireRentalEnd;
+    private Integer claimVehicleOriginalDaysHire;
     private Integer claimVehicleHireDays;
     private String claimVehicleHireCollectionReason;
     private String claimVehicleHireHpiVehicleManufacturer;
@@ -420,9 +422,16 @@ public class ExcelClaim {
             claimVehicleHireVehicleManufacturer = (String) data.get("vh_vehicle_manufacturer");
             claimVehicleHireVehicleModel = (String) data.get("vh_vehicle_model");
             claimVehicleHireVehicleRegistration = ((String) data.get("vh_vehicle_registration")) != null && ((String) data.get("vh_vehicle_registration")).startsWith("~~") ? "GDPR: data removed" : (String) data.get("vh_vehicle_registration");
+            claimVehicleHireVehicleOriginalClassName = (String) data.get("vhn_vehicle_original_class");
             claimVehicleHireVehicleClassName = (String) data.get("vh_vehicle_class_name");
             claimVehicleHireRentalStart = (Date) data.get("vh_rental_start");
             claimVehicleHireRentalEnd = (Date) data.get("vh_rental_end");
+            BigDecimal claimVehicleOrigDaysHire = (BigDecimal) data.get("vh_original_no_days_hire");
+            if (claimVehicleOrigDaysHire == null) {
+                claimVehicleOriginalDaysHire = null;
+            } else {
+                claimVehicleOriginalDaysHire = claimVehicleOrigDaysHire.intValue();
+            }
             days = (BigDecimal) data.get("vh_days");
             if (days == null) {
                 claimVehicleHireDays = null;
@@ -1093,11 +1102,17 @@ public class ExcelClaim {
     public Date getClaimVehicleHireRentalStart() {
         return claimVehicleHireRentalStart;
     }
-    
+
+    public Integer getClaimVehicleOriginalDaysHire() {
+        return claimVehicleOriginalDaysHire;
+    }
+
     public String getClaimVehicleHireVehicleClassName() {
         return claimVehicleHireVehicleClassName;
     }
-    
+
+    public String getClaimVehicleHireVehicleOriginalClassName() {return claimVehicleHireVehicleOriginalClassName; }
+
     public String getClaimVehicleHireVehicleManufacturer() {
         return claimVehicleHireVehicleManufacturer;
     }

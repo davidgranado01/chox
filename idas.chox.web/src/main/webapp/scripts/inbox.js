@@ -95,13 +95,55 @@ function doExportExcel(){
                 });
                 exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 1000);
             }
-        }
-        else{
-            Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 6,000 claims, please refine your search.');
+        } else {
+            Ext.Msg.alert('', 'The Export To Excel feature is restricted to exporting a maximum of 6,000 claims, please refine your search.');
         }
     }
 }
-            
+
+function doExportExcel2(){
+    if(!claimStore.getCount()){
+        Ext.Msg.alert('','No record found, Please try again');
+    }else{
+        if( claimStore.getTotalCount()<65534 ){
+            if ( find_MSIE_version() > 0 && find_MSIE_version() < 9  ){
+                Ext.MessageBox.show({
+                    title        : 'Exporting Claims...',
+                    msg          : "Please wait...",
+                    width        : 300,
+                    closable     : false
+                });
+                window.location = contextPath+"/prv/doExportExcel.action?directDownload="+true;
+                directExportToExcelStatusIntervelId = setTimeout(loadDirectExportToExcelStatus, 1000);
+            }else{
+                var timeoutSeconds = (claimStore.getTotalCount()/6000 +1 ) * 3600000;
+
+                cancelled = false;
+                choxExtAjaxRequest({
+                    url: '/prv/p/generateExportFile.action?newVersion='+true,
+                    timeout : timeoutSeconds,
+                    callback : function(options,success,response  ){
+                    }
+                });
+                Ext.MessageBox.show({
+                    title        : 'Generating Report...',
+                    buttons      :  Ext.Msg.CANCEL,
+                    msg          : "0 claims exported",
+                    progressText : 'Export process started...',
+                    width        : 300,
+                    progress     : true,
+                    closable     : false,
+                    fn           : cancelExportToExcel
+                });
+                exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 10000 );
+            }
+        }
+        else{
+            Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 65534 claims, please refine your search.');
+        }
+    }
+}
+
 function cancelExportToExcel(btn){
     if (btn === 'cancel'){
         cancelled = true;
@@ -135,10 +177,11 @@ function cancelExportToExcel(btn){
 }
         
 var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
-                
+
     choxExtAjaxRequest({
         url: '/prv/p/updateExportClaimsCount.action',
         callback : function(options,success,response  ){
+            console.log(response);
             if(response.responseText){
                 var resp = Ext.util.JSON.decode(response.responseText);
                 if(!cancelled && resp.isExportProcessFinished){
@@ -170,7 +213,7 @@ var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
                     }else{
                         Ext.MessageBox.updateProgress(i, (i*100).toFixed(0) + '% complete', resp.exportedClaimCount+' claims exported');
                     }
-                    exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 1000);
+                    exportToExcelIntervelId = setTimeout(loadLiveExportToExcelClaimCount, 10000);
                 }
             }
         }
