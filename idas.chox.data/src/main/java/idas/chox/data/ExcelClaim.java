@@ -426,11 +426,11 @@ public class ExcelClaim {
             claimVehicleHireVehicleClassName = (String) data.get("vh_vehicle_class_name");
             claimVehicleHireRentalStart = (Date) data.get("vh_rental_start");
             claimVehicleHireRentalEnd = (Date) data.get("vh_rental_end");
-            BigDecimal claimVehicleODaysHire = (BigDecimal) data.get("vh_original_no_days_hire");
-            if (claimVehicleODaysHire == null) {
+            BigDecimal claimVehicleOrigDaysHire = (BigDecimal) data.get("vh_original_no_days_hire");
+            if (claimVehicleOrigDaysHire == null) {
                 claimVehicleOriginalDaysHire = null;
             } else {
-                claimVehicleOriginalDaysHire = claimVehicleODaysHire.intValue();
+                claimVehicleOriginalDaysHire = claimVehicleOrigDaysHire.intValue();
             }
             days = (BigDecimal) data.get("vh_days");
             if (days == null) {
