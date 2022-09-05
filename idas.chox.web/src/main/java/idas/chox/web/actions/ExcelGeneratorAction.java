@@ -252,8 +252,8 @@ public class ExcelGeneratorAction extends BaseAction {
         List<ExcelComment> comments = new ArrayList<>();
         List<ExcelClaimCycle> claimCycle = new ArrayList<>();
 
-        if(!isNewVersion())
-        {
+//        if(!isNewVersion())
+//        {
             histories = gridExportReport.getExcelHistory(claimIds);
             processedClaim += claimIds.size() / 5;
             if (isExportClaimOperationCancelled()) {
@@ -309,7 +309,7 @@ public class ExcelGeneratorAction extends BaseAction {
             synchronized (getSessionLock()) {
                 getSession().put("numberOfClaimsProcessed", processedClaim);
             }
-        }
+//        }
         List<ExcelInvoice> invoices = gridExportReport.getExcelInvoices(claimIds);
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
@@ -332,12 +332,12 @@ public class ExcelGeneratorAction extends BaseAction {
         final Map<String, Object> excelMap = new HashMap();
         excelMap.put("excelclaims", excelClaims);
         excelMap.put("excelinvoices", invoices);
-        if(!isNewVersion())
-        {
+//        if(!isNewVersion())
+//        {
             excelMap.put("claimHistories", histories);
             excelMap.put("comments", comments);
             excelMap.put("cycle", claimCycle);
-        }
+//        }
 
         final String templateFilePath = getIsInsurer() ? (isInsurerLouDatesEnabled() ? getReportTemplatePath("claimTemplateInsurerHireMon.xls") : getReportTemplatePath("claimTemplateInsurer.xls")) : isNewVersion() ? getReportTemplatePath("claimAndInvoiceTemplate.xls"):getReportTemplatePath("claimTemplate.xls");
 
