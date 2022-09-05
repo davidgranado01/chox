@@ -287,16 +287,6 @@ public class ExcelInvoice {
         finalPayment = (BigDecimal) data.get("finalpayment");
         paymentsTeam = (Boolean) data.get("paymentsteam");
         choName = (String) data.get("choname");
-
-        Log.info("Value of hirePenaltyChargePaid" + hirePenaltyChargePaid);
-        Log.info("Value of repairPenaltyChargePaid" + repairPenaltyChargePaid);
-        Log.info("Value of claimHandlerChargePaid" + claimHandlerChargePaid);
-        Log.info("Value of deductionClaimHandlerFeePaid" + deductionClaimHandlerFeePaid);
-        Log.info("Value of choDiscountFeePaid" + choDiscountFeePaid);
-        Log.info("Value of insurerDiscountFeePaid" + insurerDiscountFeePaid);
-        Log.info("Value of finalPayment" + finalPayment);
-        Log.info("Value of paymentsTeamDesc" + paymentsTeam);
-
     }
 
     public String getChoName() {
