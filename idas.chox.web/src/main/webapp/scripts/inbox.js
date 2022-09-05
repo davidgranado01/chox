@@ -105,7 +105,7 @@ function doExportExcel2(){
     if(!claimStore.getCount()){
         Ext.Msg.alert('','No record found, Please try again');
     }else{
-        if( claimStore.getTotalCount()>0){
+        if( claimStore.getTotalCount()<65534 ){
             if ( find_MSIE_version() > 0 && find_MSIE_version() < 9  ){
                 Ext.MessageBox.show({
                     title        : 'Exporting Claims...',
@@ -139,7 +139,7 @@ function doExportExcel2(){
             }
         }
         else{
-            Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 6,000 claims, please refine your search.');
+            Ext.Msg.alert('','The Export To Excel feature is restricted to exporting a maximum of 65534 claims, please refine your search.');
         }
     }
 }

@@ -36,7 +36,7 @@ import idas.chox.service.reports.ClaimsGridExportReport;
 public class ExcelGeneratorAction extends BaseAction {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExcelGeneratorAction.class);
-    private static final int MAX_EXPORT_SIZE = Integer.MAX_VALUE; // Cannot generate an Excel file with more lines than this
+    private static final int MAX_EXPORT_SIZE = 65533; // Cannot generate an Excel file with more lines than this
     private InputStream excelStream;
     private ClaimService claimService;
     private String errorMessage;
