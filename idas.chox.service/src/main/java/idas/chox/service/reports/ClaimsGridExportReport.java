@@ -174,7 +174,7 @@ public class ClaimsGridExportReport {
             .append(" i.delivery_collection_qty as deliverycollectionqty, i.excess_amount_collected as excessamountcollected,")
             .append(" i.vat_amount_collected as vatamountcollected, i.handling_invoice_no as handlinginvoiceno,")
             .append(" i.claims_handling_invoice_amount as  claimshandlinginvoiceamount, i.claim_invoice_no as claiminvoiceno,")
-            .append(" vh.days_original as orignaldays, io.hire_rate_charged_per_day as originalhireratechargedperday, i.hire_rate_charged_per_day as hireratechargedperday,io.hire_net as originalhirenet, io.hire_vat as originalhirevat,io.hire_gross as originalhiregross, i.hire_net as hirenet, i.hire_vat as hirevat,")
+            .append(" vh.days_original as orignaldays,vh.days as days, io.hire_rate_charged_per_day as originalhireratechargedperday, i.hire_rate_charged_per_day as hireratechargedperday,io.hire_net as originalhirenet, io.hire_vat as originalhirevat,io.hire_gross as originalhiregross, i.hire_net as hirenet, i.hire_vat as hirevat,")
             .append(" i.hire_gross as hiregross,io.repair_net as originalrepairnet, io.repair_vat as originalrepairvat, io.repair_gross as originalrepairgross, i.repair_net as repairnet, i.repair_vat as repairvat, i.repair_gross as repairgross,")
             .append(" i.engineer_fee_net as engineerfeenet, i.engineer_fee_vat as engineerfeevat, i.engineer_fee_gross as engineerfeegross,")
             .append(" i.total_loss_net as totallossfeenet, i.total_loss_vat as totallossfeevat, i.total_loss_gross as totallossfeegross,")

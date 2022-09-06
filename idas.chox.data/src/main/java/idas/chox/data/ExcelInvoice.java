@@ -176,8 +176,9 @@ public class ExcelInvoice {
         claimsHandlingInvoiceAmount = (BigDecimal) data.get("claimshandlinginvoiceamount");
         claimInvoiceNo = (String) data.get("claiminvoiceno");
         BigDecimal temphireRateOriginalDays = (BigDecimal) data.get("orignaldays");
+        BigDecimal tempActualDays = (BigDecimal) data.get("days");
         if (temphireRateOriginalDays == null) {
-            hireRateOriginalDays = null;
+            hireRateOriginalDays = tempActualDays.intValue();
         } else {
             hireRateOriginalDays = temphireRateOriginalDays.intValue();
         }

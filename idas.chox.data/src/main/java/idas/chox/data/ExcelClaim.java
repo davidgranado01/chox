@@ -422,21 +422,25 @@ public class ExcelClaim {
             claimVehicleHireVehicleManufacturer = (String) data.get("vh_vehicle_manufacturer");
             claimVehicleHireVehicleModel = (String) data.get("vh_vehicle_model");
             claimVehicleHireVehicleRegistration = ((String) data.get("vh_vehicle_registration")) != null && ((String) data.get("vh_vehicle_registration")).startsWith("~~") ? "GDPR: data removed" : (String) data.get("vh_vehicle_registration");
-            claimVehicleHireVehicleOriginalClassName = (String) data.get("vhn_vehicle_original_class");
             claimVehicleHireVehicleClassName = (String) data.get("vh_vehicle_class_name");
+            claimVehicleHireVehicleOriginalClassName = (String) data.get("vhn_vehicle_original_class");
+            if(claimVehicleHireVehicleOriginalClassName == null) {
+                claimVehicleHireVehicleOriginalClassName = claimVehicleHireVehicleClassName;
+            }
             claimVehicleHireRentalStart = (Date) data.get("vh_rental_start");
             claimVehicleHireRentalEnd = (Date) data.get("vh_rental_end");
-            BigDecimal claimVehicleOrigDaysHire = (BigDecimal) data.get("vh_original_no_days_hire");
-            if (claimVehicleOrigDaysHire == null) {
-                claimVehicleOriginalDaysHire = null;
-            } else {
-                claimVehicleOriginalDaysHire = claimVehicleOrigDaysHire.intValue();
-            }
+
             days = (BigDecimal) data.get("vh_days");
             if (days == null) {
                 claimVehicleHireDays = null;
             } else {
                 claimVehicleHireDays = days.intValue();
+            }
+            BigDecimal claimVehicleOrigDaysHire = (BigDecimal) data.get("vh_original_no_days_hire");
+            if (claimVehicleOrigDaysHire == null) {
+                claimVehicleOriginalDaysHire = claimVehicleHireDays;
+            } else {
+                claimVehicleOriginalDaysHire = claimVehicleOrigDaysHire.intValue();
             }
 //        claimVehicleHireDays = ((BigDecimal) data.get("vh_days")).intValue();
             claimVehicleHireCollectionReason = (String) data.get("vh_collection_reason");
