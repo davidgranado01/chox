@@ -339,7 +339,9 @@ public class ExcelGeneratorAction extends BaseAction {
             excelMap.put("cycle", claimCycle);
         }
 
-        final String templateFilePath = getIsInsurer() ? (isInsurerLouDatesEnabled() ? getReportTemplatePath("claimTemplateInsurerHireMon.xls") : getReportTemplatePath("claimTemplateInsurer.xls")) : isNewVersion() ? getReportTemplatePath("claimAndInvoiceTemplate.xls"):getReportTemplatePath("claimTemplate.xls");
+        final String templateFilePath = getIsInsurer() ?
+                ( isNewVersion() ? getReportTemplatePath("claimAndInvoiceTemplate.xls") : (isInsurerLouDatesEnabled() ? getReportTemplatePath("claimTemplateInsurerHireMon.xls") : getReportTemplatePath("claimTemplateInsurer.xls")) )
+        : isNewVersion() ? getReportTemplatePath("claimAndInvoiceTemplate.xls"):getReportTemplatePath("claimTemplate.xls");
 
         final File reportFile = File.createTempFile("excel_report", ".xls");
         reportFile.deleteOnExit();
