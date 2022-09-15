@@ -29,7 +29,7 @@ $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE_ONE}" << --
 select cho.name as "Supplier Name",c.cho_reference as "Supplier Reference" ,i."name" as "Insurer Name" ,
 case when c.workgroup_id_original is null then w."name"
 else wo."name"
-end as "Original WorkGroup",
+end as "Original Insurer WorkGroup",
 c.claim_type as "Claim Type",inc."date" as "Incident Date", c.created_date as "Claim Upload Date",
 (select * from (select
 el.created_date
@@ -73,7 +73,7 @@ $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE_TWO}" << --
 select cho.name as "Supplier Name",c.cho_reference as "Supplier Reference" ,i."name" as "Insurer Name" ,
 case when c.workgroup_id_original is null then w."name"
 else wo."name"
-end as "Original WorkGroup",
+end as "Original Insurer WorkGroup",
 c.claim_type as "Claim Type",inc."date" as "Incident Date", c.created_date as "Claim Upload Date",
 (select * from (select
 el.created_date
@@ -117,7 +117,7 @@ $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE_THREE}" << 
 select cho.name as "Supplier Name",c.cho_reference as "Supplier Reference" ,i."name" as "Insurer Name" ,
 case when c.workgroup_id_original is null then w."name"
 else wo."name"
-end as "Original WorkGroup",
+end as "Original Insurer WorkGroup",
 c.claim_type as "Claim Type",inc."date" as "Incident Date", c.created_date as "Claim Upload Date",
 (select * from (select
 el.created_date
