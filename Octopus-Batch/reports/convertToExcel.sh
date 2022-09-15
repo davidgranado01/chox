@@ -45,6 +45,7 @@ RECIPIENTS_CTE_KEOGHS_DAILY_REPORT=#{RECIPIENTS_CTE_KEOGHS_DAILY_REPORT}
 RECIPIENTS_DWF_DAILY_REPORT=#{RECIPIENTS_DWF_DAILY_REPORT}
 RECIPIENTS_DEV_TEAM_EMAIL=#{RECIPIENTS_DEV_TEAM_EMAIL}
 RECIPIENTS_CTE_DLG_PRESTIGE_CLAIM_REPORT=#{RECIPIENTS_CTE_DLG_PRESTIGE_CLAIM_REPORT}
+RECIPIENTS_CTE_DLG_WEEKLY_MONTHLY_REPORT=#{RECIPIENTS_CTE_DLG_WEEKLY_MONTHLY_REPORT}
 
 
 function getPassword {
@@ -129,6 +130,10 @@ function getEmailReceivers {
             ACTIVE=1
             #EMAIL_RECEIVERS=ClaimsAnalytics-motor@directlinegroup.co.uk;;
             EMAIL_RECEIVERS=${RECIPIENTS_CTE_DLG_DUMPS};;
+        "WeeklyReportDataDump-"* |\
+        "MonthlyReportDataDump-"* )
+          ACTIVE=1
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_DLG_WEEKLY_MONTHLY_REPORT};;
         "Octagon-Monthly_Insurer_Cost_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=carl.cripps@catalystcsl.co.uk,Terry.Clarke@catalystcsl.co.uk,tony.collins@horizon.gi;;
