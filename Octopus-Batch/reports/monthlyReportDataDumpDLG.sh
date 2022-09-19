@@ -26,9 +26,9 @@ OUTPUT_FILE_TWO_AUX=${MI_DIRECTORY}${DUMPFILE_TWO_AUX}
 OUTPUT_FILE_THREE_AUX=${MI_DIRECTORY}${DUMPFILE_THREE_AUX}
 
 $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE_ONE}" << --EOF--
-select x."Supplier Name", x."Supplier Reference",x."Insurer Reference",x."Original Insurer Workgroup",x."Claim Type",to_char(x."Incident Date",'dd/mm/yyyy hh24:mi'),to_char(x."Claim Upload Date",'dd/mm/yyyy hh24:mi'),to_char(x."Invoice Upload Date",'dd/mm/yyyy hh24:mi'),to_char(x."Date Paid",'dd/mm/yyyy hh24:mi'),
-x."Repair Manager", x."Original Hire Gross", x."Current Hire Gross", x."Original Repair Gross", x."Current Repair Gross", x."Hire Gross (Inc LPPs)", "Repair Gross (Inc LPPs)",
-x."Current Storage and Recovery", x."Current Hire Days",x."Paid Daily Rate",x."Original Hire Vehicle Class",x."Current Hire Vehicle Class"
+select "Supplier Name", "Supplier Reference","Insurer Reference","Original Insurer Workgroup","Claim Type",to_char("Incident Date",'dd/mm/yyyy hh24:mi'),to_char("Claim Upload Date",'dd/mm/yyyy hh24:mi'),to_char("Invoice Upload Date",'dd/mm/yyyy hh24:mi'),to_char("Date Paid",'dd/mm/yyyy hh24:mi'),
+       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Original Repair Gross", "Current Repair Gross", "Hire Gross (Inc LPPs)", "Repair Gross (Inc LPPs)",
+       "Current Storage and Recovery", "Current Hire Days","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
 from (select cho."name"  as "Supplier Name", c.cho_reference as "Supplier Reference", ins."name" as "Insurer Reference",
 case when c.workgroup_id_original is null then w."name"
 else wo."name"
@@ -65,7 +65,7 @@ where  el.status in ('InvoicePaymentLogged','ManualInvoicePaid') and event_name=
 and el.created_date > current_date - interval '13 month'
 and ins."name" = 'Direct Line Group'
 and w."name" not in ('Birmingham Credit Hire Team 3', 'Birmingham Credit Hire Team 5', 'Birmingham Credit Hire Team 6', 'Birmingham Credit Hire Team 9', 'Private Insurance Team 9')
-) x where rn=1
+) reporttable where rn=1
 --EOF--
 
 echo "Cleaning the file"
@@ -75,9 +75,9 @@ rm -rf "${OUTPUT_FILE_ONE_AUX}"
 
 
 $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE_TWO}" << --EOF--
-select x."Supplier Name", x."Supplier Reference",x."Insurer Reference",x."Original Insurer Workgroup",x."Claim Type",to_char(x."Incident Date",'dd/mm/yyyy hh24:mi'),to_char(x."Claim Upload Date",'dd/mm/yyyy hh24:mi'),to_char(x."Invoice Upload Date",'dd/mm/yyyy hh24:mi'),to_char(x."Date Paid",'dd/mm/yyyy hh24:mi'),
-x."Repair Manager", x."Original Hire Gross", x."Current Hire Gross", x."Original Repair Gross", x."Current Repair Gross", x."Hire Gross (Inc LPPs)", "Repair Gross (Inc LPPs)",
-x."Current Storage and Recovery", x."Current Hire Days",x."Paid Daily Rate",x."Original Hire Vehicle Class",x."Current Hire Vehicle Class"
+select "Supplier Name", "Supplier Reference","Insurer Reference","Original Insurer Workgroup","Claim Type",to_char("Incident Date",'dd/mm/yyyy hh24:mi'),to_char("Claim Upload Date",'dd/mm/yyyy hh24:mi'),to_char("Invoice Upload Date",'dd/mm/yyyy hh24:mi'),to_char("Date Paid",'dd/mm/yyyy hh24:mi'),
+       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Original Repair Gross", "Current Repair Gross", "Hire Gross (Inc LPPs)", "Repair Gross (Inc LPPs)",
+       "Current Storage and Recovery", "Current Hire Days","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
 from (select cho."name"  as "Supplier Name", c.cho_reference as "Supplier Reference", ins."name" as "Insurer Reference",
 case when c.workgroup_id_original is null then w."name"
 else wo."name"
@@ -115,7 +115,7 @@ and el.created_date > current_date - interval '13 month'
 and ins."name" = 'Direct Line Group'
 and date_part('year',inc."date") = date_part('month', now())
 and w."name" not in ('Birmingham Credit Hire Team 3', 'Birmingham Credit Hire Team 5', 'Birmingham Credit Hire Team 6', 'Birmingham Credit Hire Team 9', 'Private Insurance Team 9')
-) x where rn=1
+) reporttable where rn=1
 --EOF--
 
 echo "Cleaning the file"
@@ -125,9 +125,9 @@ rm -rf "${OUTPUT_FILE_TWO_AUX}"
 
 
 $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE_THREE}" << --EOF--
-select x."Supplier Name", x."Supplier Reference",x."Insurer Reference",x."Original Insurer Workgroup",x."Claim Type",to_char(x."Incident Date",'dd/mm/yyyy hh24:mi'),to_char(x."Claim Upload Date",'dd/mm/yyyy hh24:mi'),to_char(x."Invoice Upload Date",'dd/mm/yyyy hh24:mi'),to_char(x."Date Paid",'dd/mm/yyyy hh24:mi'),
-x."Repair Manager", x."Original Hire Gross", x."Current Hire Gross", x."Original Repair Gross", x."Current Repair Gross", x."Hire Gross (Inc LPPs)", "Repair Gross (Inc LPPs)",
-x."Current Storage and Recovery", x."Current Hire Days",x."Paid Daily Rate",x."Original Hire Vehicle Class",x."Current Hire Vehicle Class"
+select "Supplier Name", "Supplier Reference","Insurer Reference","Original Insurer Workgroup","Claim Type",to_char("Incident Date",'dd/mm/yyyy hh24:mi'),to_char("Claim Upload Date",'dd/mm/yyyy hh24:mi'),to_char("Invoice Upload Date",'dd/mm/yyyy hh24:mi'),to_char("Date Paid",'dd/mm/yyyy hh24:mi'),
+       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Original Repair Gross", "Current Repair Gross", "Hire Gross (Inc LPPs)", "Repair Gross (Inc LPPs)",
+       "Current Storage and Recovery", "Current Hire Days","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
 from (select cho."name"  as "Supplier Name", c.cho_reference as "Supplier Reference", ins."name" as "Insurer Reference",
 case when c.workgroup_id_original is null then w."name"
 else wo."name"
@@ -165,7 +165,7 @@ and el.created_date > current_date - interval '13 month'
 and ins."name" = 'Direct Line Group'
 and date_part('year',inc."date") = date_part('month', now()) - 1
 and w."name" not in ('Birmingham Credit Hire Team 3', 'Birmingham Credit Hire Team 5', 'Birmingham Credit Hire Team 6', 'Birmingham Credit Hire Team 9', 'Private Insurance Team 9')
-) x where rn=1
+) reporttable where rn=1
 --EOF--
 
 echo "Cleaning the file"
