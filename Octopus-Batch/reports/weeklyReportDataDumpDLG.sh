@@ -26,26 +26,25 @@ OUTPUT_FILE_TWO_AUX=${MI_DIRECTORY}${DUMPFILE_TWO_AUX}
 OUTPUT_FILE_THREE_AUX=${MI_DIRECTORY}${DUMPFILE_THREE_AUX}
 
 $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE_ONE}" << --EOF--
-select "Supplier Name", "Supplier Reference","Insurer Reference","Original Insurer Workgroup","Claim Type",to_char("Incident Date",'dd/mm/yyyy hh24:mi'),to_char("Claim Upload Date",'dd/mm/yyyy hh24:mi'),to_char("Invoice Upload Date",'dd/mm/yyyy hh24:mi'),to_char("Date Paid",'dd/mm/yyyy hh24:mi'),
-       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Original Repair Gross", "Current Repair Gross", "Hire Gross (Inc LPPs)", "Repair Gross (Inc LPPs)",
+select "Supplier Name", "Supplier Reference","Insurer Reference","Original Insurer Workgroup","Claim Type","Incident Date","Claim Upload Date","Invoice Upload Date","Date Paid",
+       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Original Repair Gross", "Current Repair Gross", "Hire LPPs Paid", "Repair LPPs Paid",
        "Current Storage and Recovery", "Current Hire Days","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
 from (select cho."name"  as "Supplier Name", c.cho_reference as "Supplier Reference", ins."name" as "Insurer Reference",
 case when c.workgroup_id_original is null then w."name"
 else wo."name"
 end as "Original Insurer Workgroup",
-ct.claim_type_string as "Claim Type",inc."date" as "Incident Date", c.created_date as "Claim Upload Date",
-inv.created_date as "Invoice Upload Date",
-row_number() over (partition by c.id order by el.created_date desc) as "rn",
-el.created_date as "Date Paid",
+ct.claim_type_string as "Claim Type",
+to_char(inc."date",'dd/mm/yyyy hh24:mi') as "Incident Date", to_char(c.created_date,'dd/mm/yyyy hh24:mi') as "Claim Upload Date",to_char(inv.created_date,'dd/mm/yyyy hh24:mi') as "Invoice Upload Date",
+row_number() over (partition by c.id order by el.created_date desc) as "rn",el.created_date as "Date Paid",
 case when c.insurer_hire_monitoring_detail_id is not null then ihmd."who_managed_repair"
 else NULL end as "Repair Manager",
-io.hire_gross as "Original Hire Gross", inv.hire_gross as "Current Hire Gross",
-io.repair_gross as "Original Repair Gross", inv.repair_gross as "Current Repair Gross",
-((inv.hire_gross + inv.hire_penalty_charge) * c.percentage_liability_accepted/100.0) as "Hire Gross (Inc LPPs)",
-((inv.repair_gross + inv.repair_penalty_charge + inv.engineer_fee_gross)*c.percentage_liability_accepted/100.0) as "Repair Gross (Inc LPPs)",
-io.storage_recovery_net as "Original Storage and Recovery", inv.storage_recovery_net as "Current Storage and Recovery",
+io.hire_gross::numeric(8,2) as "Original Hire Gross", inv.hire_gross::numeric(8,2) as "Current Hire Gross",
+io.repair_gross::numeric(8,2) as "Original Repair Gross", inv.repair_gross::numeric(8,2) as "Current Repair Gross",
+((inv.hire_gross_paid + inv.hire_penalty_charge_paid))::numeric(8,2) as "Hire LPPs Paid",
+((inv.repair_gross_paid + inv.repair_penalty_charge_paid + inv.engineer_fee_gross_paid))::numeric(8,2) as "Repair LPPs Paid",
+io.storage_recovery_net::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_net::numeric(8,2) as "Current Storage and Recovery",
 vh.days_original as "Original Hire Days", vh.days as "Current Hire Days",
-io.hire_rate_charged_per_day as "Original Daily Rate", inv.hire_rate_charged_per_day as "Paid Daily Rate",
+io.hire_rate_charged_per_day as "Original Daily Rate", inv.hire_rate_charged_per_day::numeric(8,2) as "Paid Daily Rate",
 vc."name" as "Original Hire Vehicle Class", vhn."name" as "Current Hire Vehicle Class"
 from claim c
 join event_log el on el.claim_id = c.id
@@ -75,26 +74,25 @@ rm -rf "${OUTPUT_FILE_ONE_AUX}"
 
 
 $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE_TWO}" << --EOF--
-select "Supplier Name", "Supplier Reference","Insurer Reference","Original Insurer Workgroup","Claim Type",to_char("Incident Date",'dd/mm/yyyy hh24:mi'),to_char("Claim Upload Date",'dd/mm/yyyy hh24:mi'),to_char("Invoice Upload Date",'dd/mm/yyyy hh24:mi'),to_char("Date Paid",'dd/mm/yyyy hh24:mi'),
-       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Original Repair Gross", "Current Repair Gross", "Hire Gross (Inc LPPs)", "Repair Gross (Inc LPPs)",
+select "Supplier Name", "Supplier Reference","Insurer Reference","Original Insurer Workgroup","Claim Type","Incident Date","Claim Upload Date","Invoice Upload Date","Date Paid",
+       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Original Repair Gross", "Current Repair Gross", "Hire LPPs Paid", "Repair LPPs Paid",
        "Current Storage and Recovery", "Current Hire Days","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
 from (select cho."name"  as "Supplier Name", c.cho_reference as "Supplier Reference", ins."name" as "Insurer Reference",
 case when c.workgroup_id_original is null then w."name"
 else wo."name"
 end as "Original Insurer Workgroup",
-ct.claim_type_string as "Claim Type",inc."date" as "Incident Date", c.created_date as "Claim Upload Date",
-inv.created_date as "Invoice Upload Date",
-row_number() over (partition by c.id order by el.created_date desc) as "rn",
-el.created_date as "Date Paid",
+ct.claim_type_string as "Claim Type",
+to_char(inc."date",'dd/mm/yyyy hh24:mi') as "Incident Date", to_char(c.created_date,'dd/mm/yyyy hh24:mi') as "Claim Upload Date",to_char(inv.created_date,'dd/mm/yyyy hh24:mi') as "Invoice Upload Date",
+row_number() over (partition by c.id order by el.created_date desc) as "rn",el.created_date as "Date Paid",
 case when c.insurer_hire_monitoring_detail_id is not null then ihmd."who_managed_repair"
 else NULL end as "Repair Manager",
-io.hire_gross as "Original Hire Gross", inv.hire_gross as "Current Hire Gross",
-io.repair_gross as "Original Repair Gross", inv.repair_gross as "Current Repair Gross",
-((inv.hire_gross + inv.hire_penalty_charge) * c.percentage_liability_accepted/100.0) as "Hire Gross (Inc LPPs)",
-((inv.repair_gross + inv.repair_penalty_charge + inv.engineer_fee_gross)*c.percentage_liability_accepted/100.0) as "Repair Gross (Inc LPPs)",
-io.storage_recovery_net as "Original Storage and Recovery", inv.storage_recovery_net as "Current Storage and Recovery",
+io.hire_gross::numeric(8,2) as "Original Hire Gross", inv.hire_gross::numeric(8,2) as "Current Hire Gross",
+io.repair_gross::numeric(8,2) as "Original Repair Gross", inv.repair_gross::numeric(8,2) as "Current Repair Gross",
+((inv.hire_gross_paid + inv.hire_penalty_charge_paid))::numeric(8,2) as "Hire LPPs Paid",
+((inv.repair_gross_paid + inv.repair_penalty_charge_paid + inv.engineer_fee_gross_paid))::numeric(8,2) as "Repair LPPs Paid",
+io.storage_recovery_net::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_net::numeric(8,2) as "Current Storage and Recovery",
 vh.days_original as "Original Hire Days", vh.days as "Current Hire Days",
-io.hire_rate_charged_per_day as "Original Daily Rate", inv.hire_rate_charged_per_day as "Paid Daily Rate",
+io.hire_rate_charged_per_day as "Original Daily Rate", inv.hire_rate_charged_per_day::numeric(8,2) as "Paid Daily Rate",
 vc."name" as "Original Hire Vehicle Class", vhn."name" as "Current Hire Vehicle Class"
 from claim c
 join event_log el on el.claim_id = c.id
@@ -125,26 +123,25 @@ rm -rf "${OUTPUT_FILE_TWO_AUX}"
 
 
 $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE_THREE}" << --EOF--
-select "Supplier Name", "Supplier Reference","Insurer Reference","Original Insurer Workgroup","Claim Type",to_char("Incident Date",'dd/mm/yyyy hh24:mi'),to_char("Claim Upload Date",'dd/mm/yyyy hh24:mi'),to_char("Invoice Upload Date",'dd/mm/yyyy hh24:mi'),to_char("Date Paid",'dd/mm/yyyy hh24:mi'),
-       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Original Repair Gross", "Current Repair Gross", "Hire Gross (Inc LPPs)", "Repair Gross (Inc LPPs)",
+select "Supplier Name", "Supplier Reference","Insurer Reference","Original Insurer Workgroup","Claim Type","Incident Date","Claim Upload Date","Invoice Upload Date","Date Paid",
+       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Original Repair Gross", "Current Repair Gross", "Hire LPPs Paid", "Repair LPPs Paid",
        "Current Storage and Recovery", "Current Hire Days","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
 from (select cho."name"  as "Supplier Name", c.cho_reference as "Supplier Reference", ins."name" as "Insurer Reference",
 case when c.workgroup_id_original is null then w."name"
 else wo."name"
 end as "Original Insurer Workgroup",
-ct.claim_type_string as "Claim Type",inc."date" as "Incident Date", c.created_date as "Claim Upload Date",
-inv.created_date as "Invoice Upload Date",
-row_number() over (partition by c.id order by el.created_date desc) as "rn",
-el.created_date as "Date Paid",
+ct.claim_type_string as "Claim Type",
+to_char(inc."date",'dd/mm/yyyy hh24:mi') as "Incident Date", to_char(c.created_date,'dd/mm/yyyy hh24:mi') as "Claim Upload Date",to_char(inv.created_date,'dd/mm/yyyy hh24:mi') as "Invoice Upload Date",
+row_number() over (partition by c.id order by el.created_date desc) as "rn",el.created_date as "Date Paid",
 case when c.insurer_hire_monitoring_detail_id is not null then ihmd."who_managed_repair"
 else NULL end as "Repair Manager",
-io.hire_gross as "Original Hire Gross", inv.hire_gross as "Current Hire Gross",
-io.repair_gross as "Original Repair Gross", inv.repair_gross as "Current Repair Gross",
-((inv.hire_gross + inv.hire_penalty_charge) * c.percentage_liability_accepted/100.0) as "Hire Gross (Inc LPPs)",
-((inv.repair_gross + inv.repair_penalty_charge + inv.engineer_fee_gross)*c.percentage_liability_accepted/100.0) as "Repair Gross (Inc LPPs)",
-io.storage_recovery_net as "Original Storage and Recovery", inv.storage_recovery_net as "Current Storage and Recovery",
+io.hire_gross::numeric(8,2) as "Original Hire Gross", inv.hire_gross::numeric(8,2) as "Current Hire Gross",
+io.repair_gross::numeric(8,2) as "Original Repair Gross", inv.repair_gross::numeric(8,2) as "Current Repair Gross",
+((inv.hire_gross_paid + inv.hire_penalty_charge_paid))::numeric(8,2) as "Hire LPPs Paid",
+((inv.repair_gross_paid + inv.repair_penalty_charge_paid + inv.engineer_fee_gross_paid))::numeric(8,2) as "Repair LPPs Paid",
+io.storage_recovery_net::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_net::numeric(8,2) as "Current Storage and Recovery",
 vh.days_original as "Original Hire Days", vh.days as "Current Hire Days",
-io.hire_rate_charged_per_day as "Original Daily Rate", inv.hire_rate_charged_per_day as "Paid Daily Rate",
+io.hire_rate_charged_per_day as "Original Daily Rate", inv.hire_rate_charged_per_day::numeric(8,2) as "Paid Daily Rate",
 vc."name" as "Original Hire Vehicle Class", vhn."name" as "Current Hire Vehicle Class"
 from claim c
 join event_log el on el.claim_id = c.id
