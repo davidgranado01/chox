@@ -45,7 +45,10 @@ io.repair_gross::numeric(8,2) as "Original Repair Gross", inv.repair_gross::nume
 io.storage_recovery_net::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_net::numeric(8,2) as "Current Storage and Recovery",
 vh.days_original as "Original Hire Days", vh.days as "Current Hire Days",
 io.hire_rate_charged_per_day as "Original Daily Rate", inv.hire_rate_charged_per_day::numeric(8,2) as "Paid Daily Rate",
-vc."name" as "Original Hire Vehicle Class", vhn."name" as "Current Hire Vehicle Class"
+case when vhn."name" is null then vc."name"
+else vhn."name"
+end as "Original Hire Vehicle Class",
+vc."name" as "Current Hire Vehicle Class"
 from claim c
 join event_log el on el.claim_id = c.id
 join chorganisation cho on cho.id = c.chorganisation_id
@@ -93,7 +96,10 @@ io.repair_gross::numeric(8,2) as "Original Repair Gross", inv.repair_gross::nume
 io.storage_recovery_net::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_net::numeric(8,2) as "Current Storage and Recovery",
 vh.days_original as "Original Hire Days", vh.days as "Current Hire Days",
 io.hire_rate_charged_per_day as "Original Daily Rate", inv.hire_rate_charged_per_day::numeric(8,2) as "Paid Daily Rate",
-vc."name" as "Original Hire Vehicle Class", vhn."name" as "Current Hire Vehicle Class"
+case when vhn."name" is null then vc."name"
+else vhn."name"
+end as "Original Hire Vehicle Class",
+vc."name" as "Current Hire Vehicle Class"
 from claim c
 join event_log el on el.claim_id = c.id
 join chorganisation cho on cho.id = c.chorganisation_id
@@ -142,7 +148,10 @@ io.repair_gross::numeric(8,2) as "Original Repair Gross", inv.repair_gross::nume
 io.storage_recovery_net::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_net::numeric(8,2) as "Current Storage and Recovery",
 vh.days_original as "Original Hire Days", vh.days as "Current Hire Days",
 io.hire_rate_charged_per_day as "Original Daily Rate", inv.hire_rate_charged_per_day::numeric(8,2) as "Paid Daily Rate",
-vc."name" as "Original Hire Vehicle Class", vhn."name" as "Current Hire Vehicle Class"
+case when vhn."name" is null then vc."name"
+else vhn."name"
+end as "Original Hire Vehicle Class",
+vc."name" as "Current Hire Vehicle Class"
 from claim c
 join event_log el on el.claim_id = c.id
 join chorganisation cho on cho.id = c.chorganisation_id
