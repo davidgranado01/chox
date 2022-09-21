@@ -27,8 +27,8 @@ OUTPUT_FILE_THREE_AUX=${MI_DIRECTORY}${DUMPFILE_THREE_AUX}
 
 $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE_ONE}" << --EOF--
 select "Supplier Name", "Supplier Reference","Insurer Reference","Original Insurer Workgroup","Claim Type","Incident Date","Claim Upload Date","Invoice Upload Date","Date Paid",
-       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Original Repair Gross", "Current Repair Gross", "Hire LPPs Paid", "Repair LPPs Paid",
-       "Current Storage and Recovery", "Current Hire Days","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
+       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Hire LPPs Paid", "Original Repair Gross", "Current Repair Gross", "Repair LPPs Paid", "Original Storage and Recovery",
+       "Current Storage and Recovery", "Original Hire Days", "Current Hire Days","Original Daily Rate","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
 from (select cho."name"  as "Supplier Name", c.cho_reference as "Supplier Reference", ins."name" as "Insurer Reference",
 case when c.workgroup_id_original is null then w."name"
 else wo."name"
@@ -42,8 +42,11 @@ io.hire_gross::numeric(8,2) as "Original Hire Gross", inv.hire_gross::numeric(8,
 io.repair_gross::numeric(8,2) as "Original Repair Gross", inv.repair_gross::numeric(8,2) as "Current Repair Gross",
 ((inv.hire_gross_paid + inv.hire_penalty_charge_paid))::numeric(8,2) as "Hire LPPs Paid",
 ((inv.repair_gross_paid + inv.repair_penalty_charge_paid + inv.engineer_fee_gross_paid))::numeric(8,2) as "Repair LPPs Paid",
-io.storage_recovery_net::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_net::numeric(8,2) as "Current Storage and Recovery",
-vh.days_original as "Original Hire Days", vh.days as "Current Hire Days",
+io.storage_recovery_gross::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_gross::numeric(8,2) as "Current Storage and Recovery",
+case when vh.days_original is null then vh.days
+else vh.days_original
+end as "Original Hire Days",
+vh.days as "Current Hire Days",
 io.hire_rate_charged_per_day as "Original Daily Rate", inv.hire_rate_charged_per_day::numeric(8,2) as "Paid Daily Rate",
 case when vhn."name" is null then vc."name"
 else vhn."name"
@@ -78,8 +81,8 @@ rm -rf "${OUTPUT_FILE_ONE_AUX}"
 
 $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE_TWO}" << --EOF--
 select "Supplier Name", "Supplier Reference","Insurer Reference","Original Insurer Workgroup","Claim Type","Incident Date","Claim Upload Date","Invoice Upload Date","Date Paid",
-       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Original Repair Gross", "Current Repair Gross", "Hire LPPs Paid", "Repair LPPs Paid",
-       "Current Storage and Recovery", "Current Hire Days","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
+       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Hire LPPs Paid", "Original Repair Gross", "Current Repair Gross", "Repair LPPs Paid", "Original Storage and Recovery",
+       "Current Storage and Recovery", "Original Hire Days", "Current Hire Days","Original Daily Rate","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
 from (select cho."name"  as "Supplier Name", c.cho_reference as "Supplier Reference", ins."name" as "Insurer Reference",
 case when c.workgroup_id_original is null then w."name"
 else wo."name"
@@ -93,8 +96,11 @@ io.hire_gross::numeric(8,2) as "Original Hire Gross", inv.hire_gross::numeric(8,
 io.repair_gross::numeric(8,2) as "Original Repair Gross", inv.repair_gross::numeric(8,2) as "Current Repair Gross",
 ((inv.hire_gross_paid + inv.hire_penalty_charge_paid))::numeric(8,2) as "Hire LPPs Paid",
 ((inv.repair_gross_paid + inv.repair_penalty_charge_paid + inv.engineer_fee_gross_paid))::numeric(8,2) as "Repair LPPs Paid",
-io.storage_recovery_net::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_net::numeric(8,2) as "Current Storage and Recovery",
-vh.days_original as "Original Hire Days", vh.days as "Current Hire Days",
+io.storage_recovery_gross::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_gross::numeric(8,2) as "Current Storage and Recovery",
+case when vh.days_original is null then vh.days
+else vh.days_original
+end as "Original Hire Days",
+vh.days as "Current Hire Days",
 io.hire_rate_charged_per_day as "Original Daily Rate", inv.hire_rate_charged_per_day::numeric(8,2) as "Paid Daily Rate",
 case when vhn."name" is null then vc."name"
 else vhn."name"
@@ -130,8 +136,8 @@ rm -rf "${OUTPUT_FILE_TWO_AUX}"
 
 $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE_THREE}" << --EOF--
 select "Supplier Name", "Supplier Reference","Insurer Reference","Original Insurer Workgroup","Claim Type","Incident Date","Claim Upload Date","Invoice Upload Date","Date Paid",
-       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Original Repair Gross", "Current Repair Gross", "Hire LPPs Paid", "Repair LPPs Paid",
-       "Current Storage and Recovery", "Current Hire Days","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
+       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Hire LPPs Paid", "Original Repair Gross", "Current Repair Gross", "Repair LPPs Paid", "Original Storage and Recovery",
+       "Current Storage and Recovery", "Original Hire Days", "Current Hire Days","Original Daily Rate","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
 from (select cho."name"  as "Supplier Name", c.cho_reference as "Supplier Reference", ins."name" as "Insurer Reference",
 case when c.workgroup_id_original is null then w."name"
 else wo."name"
@@ -145,8 +151,11 @@ io.hire_gross::numeric(8,2) as "Original Hire Gross", inv.hire_gross::numeric(8,
 io.repair_gross::numeric(8,2) as "Original Repair Gross", inv.repair_gross::numeric(8,2) as "Current Repair Gross",
 ((inv.hire_gross_paid + inv.hire_penalty_charge_paid))::numeric(8,2) as "Hire LPPs Paid",
 ((inv.repair_gross_paid + inv.repair_penalty_charge_paid + inv.engineer_fee_gross_paid))::numeric(8,2) as "Repair LPPs Paid",
-io.storage_recovery_net::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_net::numeric(8,2) as "Current Storage and Recovery",
-vh.days_original as "Original Hire Days", vh.days as "Current Hire Days",
+io.storage_recovery_gross::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_gross::numeric(8,2) as "Current Storage and Recovery",
+case when vh.days_original is null then vh.days
+else vh.days_original
+end as "Original Hire Days",
+vh.days as "Current Hire Days",
 io.hire_rate_charged_per_day as "Original Daily Rate", inv.hire_rate_charged_per_day::numeric(8,2) as "Paid Daily Rate",
 case when vhn."name" is null then vc."name"
 else vhn."name"
