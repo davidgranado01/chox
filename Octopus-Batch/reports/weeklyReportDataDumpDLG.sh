@@ -40,8 +40,8 @@ case when c.insurer_hire_monitoring_detail_id is not null then ihmd."who_managed
 else NULL end as "Repair Manager",
 io.hire_gross::numeric(8,2) as "Original Hire Gross", inv.hire_gross::numeric(8,2) as "Current Hire Gross",
 io.repair_gross::numeric(8,2) as "Original Repair Gross", inv.repair_gross::numeric(8,2) as "Current Repair Gross",
-((inv.hire_gross_paid + inv.hire_penalty_charge_paid))::numeric(8,2) as "Hire LPPs Paid",
-((inv.repair_gross_paid + inv.repair_penalty_charge_paid + inv.engineer_fee_gross_paid))::numeric(8,2) as "Repair LPPs Paid",
+inv.hire_penalty_charge::numeric(8,2) as "Hire LPPs Paid",
+inv.repair_penalty_charge::numeric(8,2) as "Repair LPPs Paid",
 io.storage_recovery_gross::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_gross::numeric(8,2) as "Current Storage and Recovery",
 case when vh.days_original is null then vh.days
 else vh.days_original
@@ -94,8 +94,8 @@ case when c.insurer_hire_monitoring_detail_id is not null then ihmd."who_managed
 else NULL end as "Repair Manager",
 io.hire_gross::numeric(8,2) as "Original Hire Gross", inv.hire_gross::numeric(8,2) as "Current Hire Gross",
 io.repair_gross::numeric(8,2) as "Original Repair Gross", inv.repair_gross::numeric(8,2) as "Current Repair Gross",
-((inv.hire_gross_paid + inv.hire_penalty_charge_paid))::numeric(8,2) as "Hire LPPs Paid",
-((inv.repair_gross_paid + inv.repair_penalty_charge_paid + inv.engineer_fee_gross_paid))::numeric(8,2) as "Repair LPPs Paid",
+inv.hire_penalty_charge::numeric(8,2) as "Hire LPPs Paid",
+inv.repair_penalty_charge::numeric(8,2) as "Repair LPPs Paid",
 io.storage_recovery_gross::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_gross::numeric(8,2) as "Current Storage and Recovery",
 case when vh.days_original is null then vh.days
 else vh.days_original
@@ -149,8 +149,8 @@ case when c.insurer_hire_monitoring_detail_id is not null then ihmd."who_managed
 else NULL end as "Repair Manager",
 io.hire_gross::numeric(8,2) as "Original Hire Gross", inv.hire_gross::numeric(8,2) as "Current Hire Gross",
 io.repair_gross::numeric(8,2) as "Original Repair Gross", inv.repair_gross::numeric(8,2) as "Current Repair Gross",
-((inv.hire_gross_paid + inv.hire_penalty_charge_paid))::numeric(8,2) as "Hire LPPs Paid",
-((inv.repair_gross_paid + inv.repair_penalty_charge_paid + inv.engineer_fee_gross_paid))::numeric(8,2) as "Repair LPPs Paid",
+inv.hire_penalty_charge::numeric(8,2) as "Hire LPPs Paid",
+inv.repair_penalty_charge::numeric(8,2) as "Repair LPPs Paid",
 io.storage_recovery_gross::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_gross::numeric(8,2) as "Current Storage and Recovery",
 case when vh.days_original is null then vh.days
 else vh.days_original
