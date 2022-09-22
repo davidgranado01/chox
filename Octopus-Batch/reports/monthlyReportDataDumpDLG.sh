@@ -123,7 +123,7 @@ left join insurer_hire_monitoring_detail ihmd on ihmd.id = c.insurer_hire_monito
 where  el.status in ('InvoicePaymentLogged','ManualInvoicePaid') and event_name='InvoicePaidEvent'
 and el.created_date > current_date - interval '13 month'
 and ins."name" = 'Direct Line Group'
-and date_part('year',inc."date") = date_part('month', now())
+and date_part('year',inc."date") = date_part('year', now())
 and w."name" not in ('Birmingham Credit Hire Team 3', 'Birmingham Credit Hire Team 5', 'Birmingham Credit Hire Team 6', 'Birmingham Credit Hire Team 9', 'Private Insurance Team 9')
 ) reporttable where rn=1
 --EOF--
@@ -178,7 +178,7 @@ left join insurer_hire_monitoring_detail ihmd on ihmd.id = c.insurer_hire_monito
 where  el.status in ('InvoicePaymentLogged','ManualInvoicePaid') and event_name='InvoicePaidEvent'
 and el.created_date > current_date - interval '13 month'
 and ins."name" = 'Direct Line Group'
-and date_part('year',inc."date") = date_part('month', now()) - 1
+and date_part('year',inc."date") = date_part('year', now()) - 1
 and w."name" not in ('Birmingham Credit Hire Team 3', 'Birmingham Credit Hire Team 5', 'Birmingham Credit Hire Team 6', 'Birmingham Credit Hire Team 9', 'Private Insurance Team 9')
 ) reporttable where rn=1
 --EOF--
