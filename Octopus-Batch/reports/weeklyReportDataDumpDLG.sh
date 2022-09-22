@@ -27,8 +27,9 @@ OUTPUT_FILE_THREE_AUX=${MI_DIRECTORY}${DUMPFILE_THREE_AUX}
 
 $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE_ONE}" << --EOF--
 select "Supplier Name", "Supplier Reference","Insurer Reference","Original Insurer Workgroup","Claim Type","Incident Date","Claim Upload Date","Invoice Upload Date","Date Paid",
-       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Hire LPPs Paid", "Original Repair Gross", "Current Repair Gross", "Repair LPPs Paid", "Original Storage and Recovery",
-       "Current Storage and Recovery", "Original Hire Days", "Current Hire Days","Original Daily Rate","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
+       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Hire Gross Paid", "Original Hire LPPs", "Current Hire LPPs", "Hire LPPs Paid", "Original Repair Gross",
+       "Current Repair Gross", "Repair Gross Paid", "Original Repair LPPs", "Current Repair LPPs", "Repair LPPs Paid", "Original Storage and Recovery",
+       "Current Storage and Recovery", "Storage and Recovery Paid", "Original Hire Days", "Current Hire Days","Original Daily Rate","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
 from (select cho."name"  as "Supplier Name", c.cho_reference as "Supplier Reference", ins."name" as "Insurer Reference",
 case when c.workgroup_id_original is null then w."name"
 else wo."name"
@@ -40,9 +41,14 @@ case when c.insurer_hire_monitoring_detail_id is not null then ihmd."who_managed
 else NULL end as "Repair Manager",
 io.hire_gross::numeric(8,2) as "Original Hire Gross", inv.hire_gross::numeric(8,2) as "Current Hire Gross",
 io.repair_gross::numeric(8,2) as "Original Repair Gross", inv.repair_gross::numeric(8,2) as "Current Repair Gross",
-inv.hire_penalty_charge::numeric(8,2) as "Hire LPPs Paid",
-inv.repair_penalty_charge::numeric(8,2) as "Repair LPPs Paid",
 io.storage_recovery_gross::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_gross::numeric(8,2) as "Current Storage and Recovery",
+inv.storage_recovery_gross_paid ::numeric(8,2) as "Storage and Recovery Paid",
+inv.hire_gross_paid ::numeric(8,2) as "Hire Gross Paid",
+inv.repair_gross_paid ::numeric(8,2) as "Repair Gross Paid",
+io.hire_penalty_charge ::numeric(8,2) as "Original Hire LPPs",inv.hire_penalty_charge ::numeric(8,2) as "Current Hire LPPs",
+inv.hire_penalty_charge_paid ::numeric(8,2) as "Hire LPPs Paid",
+io.repair_penalty_charge ::numeric(8,2) as "Original Repair LPPs",inv.repair_penalty_charge ::numeric(8,2) as "Current Repair LPPs",
+inv.repair_penalty_charge_paid ::numeric(8,2) as "Repair LPPs Paid",
 case when vh.days_original is null then vh.days
 else vh.days_original
 end as "Original Hire Days",
@@ -81,8 +87,9 @@ rm -rf "${OUTPUT_FILE_ONE_AUX}"
 
 $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE_TWO}" << --EOF--
 select "Supplier Name", "Supplier Reference","Insurer Reference","Original Insurer Workgroup","Claim Type","Incident Date","Claim Upload Date","Invoice Upload Date","Date Paid",
-       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Hire LPPs Paid", "Original Repair Gross", "Current Repair Gross", "Repair LPPs Paid", "Original Storage and Recovery",
-       "Current Storage and Recovery", "Original Hire Days", "Current Hire Days","Original Daily Rate","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
+       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Hire Gross Paid", "Original Hire LPPs", "Current Hire LPPs", "Hire LPPs Paid", "Original Repair Gross",
+       "Current Repair Gross", "Repair Gross Paid", "Original Repair LPPs", "Current Repair LPPs", "Repair LPPs Paid", "Original Storage and Recovery",
+       "Current Storage and Recovery", "Storage and Recovery Paid", "Original Hire Days", "Current Hire Days","Original Daily Rate","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
 from (select cho."name"  as "Supplier Name", c.cho_reference as "Supplier Reference", ins."name" as "Insurer Reference",
 case when c.workgroup_id_original is null then w."name"
 else wo."name"
@@ -94,9 +101,14 @@ case when c.insurer_hire_monitoring_detail_id is not null then ihmd."who_managed
 else NULL end as "Repair Manager",
 io.hire_gross::numeric(8,2) as "Original Hire Gross", inv.hire_gross::numeric(8,2) as "Current Hire Gross",
 io.repair_gross::numeric(8,2) as "Original Repair Gross", inv.repair_gross::numeric(8,2) as "Current Repair Gross",
-inv.hire_penalty_charge::numeric(8,2) as "Hire LPPs Paid",
-inv.repair_penalty_charge::numeric(8,2) as "Repair LPPs Paid",
 io.storage_recovery_gross::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_gross::numeric(8,2) as "Current Storage and Recovery",
+inv.storage_recovery_gross_paid ::numeric(8,2) as "Storage and Recovery Paid",
+inv.hire_gross_paid ::numeric(8,2) as "Hire Gross Paid",
+inv.repair_gross_paid ::numeric(8,2) as "Repair Gross Paid",
+io.hire_penalty_charge ::numeric(8,2) as "Original Hire LPPs",inv.hire_penalty_charge ::numeric(8,2) as "Current Hire LPPs",
+inv.hire_penalty_charge_paid ::numeric(8,2) as "Hire LPPs Paid",
+io.repair_penalty_charge ::numeric(8,2) as "Original Repair LPPs",inv.repair_penalty_charge ::numeric(8,2) as "Current Repair LPPs",
+inv.repair_penalty_charge_paid ::numeric(8,2) as "Repair LPPs Paid",
 case when vh.days_original is null then vh.days
 else vh.days_original
 end as "Original Hire Days",
@@ -136,8 +148,9 @@ rm -rf "${OUTPUT_FILE_TWO_AUX}"
 
 $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE_THREE}" << --EOF--
 select "Supplier Name", "Supplier Reference","Insurer Reference","Original Insurer Workgroup","Claim Type","Incident Date","Claim Upload Date","Invoice Upload Date","Date Paid",
-       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Hire LPPs Paid", "Original Repair Gross", "Current Repair Gross", "Repair LPPs Paid", "Original Storage and Recovery",
-       "Current Storage and Recovery", "Original Hire Days", "Current Hire Days","Original Daily Rate","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
+       "Repair Manager", "Original Hire Gross", "Current Hire Gross", "Hire Gross Paid", "Original Hire LPPs", "Current Hire LPPs", "Hire LPPs Paid", "Original Repair Gross",
+       "Current Repair Gross", "Repair Gross Paid", "Original Repair LPPs", "Current Repair LPPs", "Repair LPPs Paid", "Original Storage and Recovery",
+       "Current Storage and Recovery", "Storage and Recovery Paid", "Original Hire Days", "Current Hire Days","Original Daily Rate","Paid Daily Rate","Original Hire Vehicle Class","Current Hire Vehicle Class"
 from (select cho."name"  as "Supplier Name", c.cho_reference as "Supplier Reference", ins."name" as "Insurer Reference",
 case when c.workgroup_id_original is null then w."name"
 else wo."name"
@@ -149,9 +162,14 @@ case when c.insurer_hire_monitoring_detail_id is not null then ihmd."who_managed
 else NULL end as "Repair Manager",
 io.hire_gross::numeric(8,2) as "Original Hire Gross", inv.hire_gross::numeric(8,2) as "Current Hire Gross",
 io.repair_gross::numeric(8,2) as "Original Repair Gross", inv.repair_gross::numeric(8,2) as "Current Repair Gross",
-inv.hire_penalty_charge::numeric(8,2) as "Hire LPPs Paid",
-inv.repair_penalty_charge::numeric(8,2) as "Repair LPPs Paid",
 io.storage_recovery_gross::numeric(8,2) as "Original Storage and Recovery", inv.storage_recovery_gross::numeric(8,2) as "Current Storage and Recovery",
+inv.storage_recovery_gross_paid ::numeric(8,2) as "Storage and Recovery Paid",
+inv.hire_gross_paid ::numeric(8,2) as "Hire Gross Paid",
+inv.repair_gross_paid ::numeric(8,2) as "Repair Gross Paid",
+io.hire_penalty_charge ::numeric(8,2) as "Original Hire LPPs",inv.hire_penalty_charge ::numeric(8,2) as "Current Hire LPPs",
+inv.hire_penalty_charge_paid ::numeric(8,2) as "Hire LPPs Paid",
+io.repair_penalty_charge ::numeric(8,2) as "Original Repair LPPs",inv.repair_penalty_charge ::numeric(8,2) as "Current Repair LPPs",
+inv.repair_penalty_charge_paid ::numeric(8,2) as "Repair LPPs Paid",
 case when vh.days_original is null then vh.days
 else vh.days_original
 end as "Original Hire Days",
