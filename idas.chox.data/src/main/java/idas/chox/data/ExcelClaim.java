@@ -11,7 +11,6 @@ import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.LiabilityStatus;
 
 /**
- *
  * @author John
  */
 public class ExcelClaim {
@@ -1294,12 +1293,20 @@ public class ExcelClaim {
         return claimInvoiceReviewReason;
     }
 
-    public Date getClaimInsHMDTpReportedIncidentToTPI() { return claimInsHMDTpReportedIncidentToTPI; }
+    public Date getClaimInsHMDTpReportedIncidentToTPI() {
+        return claimInsHMDTpReportedIncidentToTPI;
+    }
 
-    public Date getClaimInsHMDTotalLossReportSentToUs() { return claimInsHMDTotalLossReportSentToUs; }
+    public Date getClaimInsHMDTotalLossReportSentToUs() {
+        return claimInsHMDTotalLossReportSentToUs;
+    }
 
-    public Date getClaimInsHMDPartsReceived() { return claimInsHMDPartsReceived; }
+    public Date getClaimInsHMDPartsReceived() {
+        return claimInsHMDPartsReceived;
+    }
 
-    public Date getClaimInsHMDRentalEnd() { return claimInsHMDRentalEnd; }
+    public Date getClaimInsHMDRentalEnd() {
+        return claimInsHMDRentalEnd;
+    }
 
 }

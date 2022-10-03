@@ -12,7 +12,6 @@ import idas.chox.data.*;
 import idas.chox.data.services.SecureDataService;
 
 /**
- *
  * @author seeni
  */
 public class ClaimsGridExportReport {
@@ -50,8 +49,7 @@ public class ClaimsGridExportReport {
         for (Integer id : ids) {
             if (!first) {
                 sb.append(", ").append(id.toString());
-            }
-            else {
+            } else {
                 sb.append(id.toString());
                 first = false;
             }
@@ -93,8 +91,7 @@ public class ClaimsGridExportReport {
         for (Integer id : ids) {
             if (!first) {
                 sb.append(", ").append(id.toString());
-            }
-            else {
+            } else {
                 sb.append(id.toString());
                 first = false;
             }
@@ -135,8 +132,7 @@ public class ClaimsGridExportReport {
         for (Integer id : ids) {
             if (!first) {
                 sb.append(", ").append(id.toString());
-            }
-            else {
+            } else {
                 sb.append(id.toString());
                 first = false;
             }
@@ -150,7 +146,7 @@ public class ClaimsGridExportReport {
         LOG.debug("Got BRE history details - building data objects");
 
         List<ExcelHistory> results = new ArrayList<>(result.size());
-        result.stream().map((obj) -> new ExcelHistory(obj)).filter((history) -> (!dataService.getCurrentUser().isCHO() ||  history.isVisibleToCHO())).forEachOrdered((history) -> {
+        result.stream().map((obj) -> new ExcelHistory(obj)).filter((history) -> (!dataService.getCurrentUser().isCHO() || history.isVisibleToCHO())).forEachOrdered((history) -> {
             results.add(history);
         });
 
@@ -323,8 +319,7 @@ public class ClaimsGridExportReport {
         for (Integer id : ids) {
             if (!first) {
                 sb.append(", ").append(id.toString());
-            }
-            else {
+            } else {
                 sb.append(id.toString());
                 first = false;
             }
