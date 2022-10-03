@@ -36,7 +36,7 @@ import idas.chox.service.reports.ClaimsGridExportReport;
 public class ExcelGeneratorAction extends BaseAction {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExcelGeneratorAction.class);
-    private static final int MAX_EXPORT_SIZE = 65533; // Cannot generate an Excel file with more lines than this
+    private static final int MAX_EXPORT_SIZE = 65536; // Cannot generate an Excel file with more lines than this
     private InputStream excelStream;
     private ClaimService claimService;
     private String errorMessage;
@@ -47,7 +47,6 @@ public class ExcelGeneratorAction extends BaseAction {
     private boolean exceptionThrown;
     private boolean tooManyRows;
     private boolean directDownload;
-    private boolean newVersion;
     private SecureDataService dataService;
     private ReportDataService reportDataService;
 
@@ -63,13 +62,6 @@ public class ExcelGeneratorAction extends BaseAction {
         return directDownload;
     }
 
-    public boolean isNewVersion() {
-        return newVersion;
-    }
-
-    public void setNewVersion(boolean newVersion) {
-        this.newVersion = newVersion;
-    }
     public void setDirectDownload(boolean directDownload) {
         this.directDownload = directDownload;
     }
@@ -174,7 +166,7 @@ public class ExcelGeneratorAction extends BaseAction {
                 SearchResult searchResult = claimService.searchClaims(c);
                 List<Claim> claims = searchResult.getResult();
                 LOG.debug("Total No of Claims : '{}'", claims.size());
-                if (claims.size() > 0 && claims.size() <= MAX_EXPORT_SIZE) {
+                if (claims.size() > 0 && claims.size() <= 10000) {
                     List<Integer> claimIds = new ArrayList<>(claims.size());
                     claims.forEach((claim) -> {
                         claimIds.add(claim.getId());
@@ -198,8 +190,8 @@ public class ExcelGeneratorAction extends BaseAction {
                         }
                         return rtnStr;
                     }
-                } else if (claims.size() > MAX_EXPORT_SIZE) {
-                    setErrorMessage("The Export To Excel feature is restricted to exporting a maximum of" + MAX_EXPORT_SIZE + "claims, please refine your search.");
+                } else if (claims.size() > 10000) {
+                    setErrorMessage("The Export To Excel feature is restricted to exporting a maximum of 10,000 claims, please refine your search.");
                 }
             }
         }
@@ -248,68 +240,63 @@ public class ExcelGeneratorAction extends BaseAction {
         synchronized (getSessionLock()) {
             getSession().put("numberOfClaimsProcessed", processedClaim);
         }
-        List<ExcelHistory> histories = new ArrayList<>();
-        List<ExcelComment> comments = new ArrayList<>();
-        List<ExcelClaimCycle> claimCycle = new ArrayList<>();
 
-        if(!isNewVersion())
-        {
-            histories = gridExportReport.getExcelHistory(claimIds);
-            processedClaim += claimIds.size() / 5;
-            if (isExportClaimOperationCancelled()) {
-                synchronized (getSessionLock()) {
-                    getSession().put("numberOfClaimsProcessed", null);
-                }
-                return false;
-            } else if (histories.size() > MAX_EXPORT_SIZE) {
-                synchronized (getSessionLock()) {
-                    getSession().put("numberOfClaimsProcessed", null);
-                    getSession().put("tooManyRows", true);
-                }
-                return false;
-            }
-
+        List<ExcelHistory> histories = gridExportReport.getExcelHistory(claimIds);
+        processedClaim += claimIds.size() / 5;
+        if (isExportClaimOperationCancelled()) {
             synchronized (getSessionLock()) {
-                getSession().put("numberOfClaimsProcessed", processedClaim);
+                getSession().put("numberOfClaimsProcessed", null);
             }
-
-            comments = gridExportReport.getExcelComments(claimIds);
-            processedClaim += claimIds.size() / 5;
-            if (isExportClaimOperationCancelled()) {
-                synchronized (getSessionLock()) {
-                    getSession().put("numberOfClaimsProcessed", null);
-                }
-                return false;
-            } else if (comments.size() > MAX_EXPORT_SIZE) {
-                synchronized (getSessionLock()) {
-                    getSession().put("numberOfClaimsProcessed", null);
-                    getSession().put("tooManyRows", true);
-                }
-                return false;
-            }
-
+            return false;
+        } else if (histories.size() > MAX_EXPORT_SIZE) {
             synchronized (getSessionLock()) {
-                getSession().put("numberOfClaimsProcessed", processedClaim);
+                getSession().put("numberOfClaimsProcessed", null);
+                getSession().put("tooManyRows", true);
             }
-            claimCycle = gridExportReport.getExcelClaimCycle(claimIds);
-            processedClaim += claimIds.size() / 5;
-            if (isExportClaimOperationCancelled()) {
-                synchronized (getSessionLock()) {
-                    getSession().put("numberOfClaimsProcessed", null);
-                }
-                return false;
-            } else if (claimCycle.size() > MAX_EXPORT_SIZE) {
-                synchronized (getSessionLock()) {
-                    getSession().put("numberOfClaimsProcessed", null);
-                    getSession().put("tooManyRows", true);
-                }
-                return false;
-            }
-
-            synchronized (getSessionLock()) {
-                getSession().put("numberOfClaimsProcessed", processedClaim);
-            }
+            return false;
         }
+
+        synchronized (getSessionLock()) {
+            getSession().put("numberOfClaimsProcessed", processedClaim);
+        }
+
+        List<ExcelComment> comments = gridExportReport.getExcelComments(claimIds);
+        processedClaim += claimIds.size() / 5;
+        if (isExportClaimOperationCancelled()) {
+            synchronized (getSessionLock()) {
+                getSession().put("numberOfClaimsProcessed", null);
+            }
+            return false;
+        } else if (comments.size() > MAX_EXPORT_SIZE) {
+            synchronized (getSessionLock()) {
+                getSession().put("numberOfClaimsProcessed", null);
+                getSession().put("tooManyRows", true);
+            }
+            return false;
+        }
+
+        synchronized (getSessionLock()) {
+            getSession().put("numberOfClaimsProcessed", processedClaim);
+        }
+        List<ExcelClaimCycle> claimCycle = gridExportReport.getExcelClaimCycle(claimIds);
+        processedClaim += claimIds.size() / 5;
+        if (isExportClaimOperationCancelled()) {
+            synchronized (getSessionLock()) {
+                getSession().put("numberOfClaimsProcessed", null);
+            }
+            return false;
+        } else if (claimCycle.size() > MAX_EXPORT_SIZE) {
+            synchronized (getSessionLock()) {
+                getSession().put("numberOfClaimsProcessed", null);
+                getSession().put("tooManyRows", true);
+            }
+            return false;
+        }
+
+        synchronized (getSessionLock()) {
+            getSession().put("numberOfClaimsProcessed", processedClaim);
+        }
+
         List<ExcelInvoice> invoices = gridExportReport.getExcelInvoices(claimIds);
         processedClaim += claimIds.size() / 5;
         if (isExportClaimOperationCancelled()) {
@@ -332,53 +319,47 @@ public class ExcelGeneratorAction extends BaseAction {
         final Map<String, Object> excelMap = new HashMap();
         excelMap.put("excelclaims", excelClaims);
         excelMap.put("excelinvoices", invoices);
-        if(!isNewVersion())
-        {
-            excelMap.put("claimHistories", histories);
-            excelMap.put("comments", comments);
-            excelMap.put("cycle", claimCycle);
-        }
+        excelMap.put("claimHistories", histories);
+        excelMap.put("comments", comments);
+        excelMap.put("cycle", claimCycle);
 
-        final String templateFilePath = getIsInsurer() ?
-                ( isNewVersion() ? getReportTemplatePath("claimAndInvoiceTemplate.xls") : (isInsurerLouDatesEnabled() ? getReportTemplatePath("claimTemplateInsurerHireMon.xls") : getReportTemplatePath("claimTemplateInsurer.xls")) )
-        : isNewVersion() ? getReportTemplatePath("claimAndInvoiceTemplate.xls"):getReportTemplatePath("claimTemplate.xls");
-
+        final String templateFilePath = getIsInsurer() ? (isInsurerLouDatesEnabled() ? getReportTemplatePath("claimTemplateInsurerHireMon.xls") : getReportTemplatePath("claimTemplateInsurer.xls")) : getReportTemplatePath("claimTemplate.xls");
         final File reportFile = File.createTempFile("excel_report", ".xls");
         reportFile.deleteOnExit();
         LOG.info("'Export to Excel' report file will be written to the following location: {}", reportFile.getAbsolutePath());
 
         Runnable r = () -> {
-        try {
-            // Hide Copley columns where applicable
-            if (getIsInsurer()) {
-                if (!getAuthenticatedUser().getInsurer().isCopleyQuestion()) {
+            try {
+                // Hide Copley columns where applicable
+                if (getIsInsurer()) {
+                    if (!getAuthenticatedUser().getInsurer().isCopleyQuestion()) {
 //                        transformer.setColumnsToHide(new short[]{ (short)117, (short)118} );
-                }
-            }
-            LOG.debug("XLS transform operation called with seperate thread {}", Thread.currentThread().getId());
-            try (InputStream is = new FileInputStream(templateFilePath)) {
-                try (OutputStream os = new FileOutputStream(reportFile)) {
-                    Context context = new Context();
-                    for (Map.Entry<String, Object> entry : excelMap.entrySet()) {
-                        context.putVar(entry.getKey(), entry.getValue());
                     }
-                    LOG.info("Transformming....");
-                    JxlsHelper.getInstance().processTemplate(is, os, context);
-                    LOG.debug("Workbook created - writing to file '{}'...", reportFile.getAbsolutePath());
-                    os.flush();
-                    LOG.info("Transformming done");
-                } catch (Exception ex) {
-                    LOG.error("Exception transforminmg: {}", ex.getMessage(), ex);
-                    throw ex;
+                }
+                LOG.debug("XLS transform operation called with seperate thread {}", Thread.currentThread().getId());
+                try (InputStream is = new FileInputStream(templateFilePath)) {
+                    try (OutputStream os = new FileOutputStream(reportFile)) {
+                        Context context = new Context();
+                        for (Map.Entry<String, Object> entry : excelMap.entrySet()) {
+                            context.putVar(entry.getKey(), entry.getValue());
+                        }
+                        LOG.info("Transformming....");
+                        JxlsHelper.getInstance().processTemplate(is, os, context);
+                        LOG.debug("Workbook created - writing to file '{}'...", reportFile.getAbsolutePath());
+                        os.flush();
+                        LOG.info("Transformming done");
+                    } catch (Exception ex) {
+                        LOG.error("Exception transforminmg: {}", ex.getMessage(), ex);
+                        throw ex;
+                    }
+                }
+            } catch (Exception ex) {
+                LOG.error("Exception thrown transforming report: {}", ex.getMessage());
+                LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
+                synchronized (getSessionLock()) {
+                    getSession().put("exceptionThrown", true);
                 }
             }
-        } catch (Exception ex) {
-            LOG.error("Exception thrown transforming report: {}", ex.getMessage());
-            LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-            synchronized (getSessionLock()) {
-                getSession().put("exceptionThrown", true);
-            }
-        }
         };
         ExecutorService executor = (ExecutorService )ServletActionContext.getServletContext().getAttribute("CHOX_EXECUTOR");
 
