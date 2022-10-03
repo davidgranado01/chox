@@ -4,7 +4,7 @@
 
 <head>
     <title>CHOX</title>
-    
+
     <script type="text/javascript">
 
         var defaultDropdownValue={'value':-1,'text':'--- ALL ---'};
@@ -26,7 +26,7 @@
         var title;
         var actionMenu;
         var batchUpdateSelectionModel;
-        
+
         Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
         Ext.BLANK_IMAGE_URL = '<%= request.getContextPath()%>/images/default/s.gif';
 
@@ -37,53 +37,53 @@
             setupDashboardActionName();
             loadDataFromSession();
             // Need to comes before setupTabPanel method so that we can hide or show the grid depends on the tab selected.
-            setupGrid(); 
+            setupGrid();
             setupTabPanels();
             setupActivityMonitor();
             showBrowserWarningIfNeeded();
         });
-        
+
         function setupDashboardActionName() {
             <s:if test="isInsurer">
-                dashboardActionName = "showInsurerBoardHeader";
+            dashboardActionName = "showInsurerBoardHeader";
             </s:if>
             <s:if test="isCHO">
-                dashboardActionName = "showChoBoardHeader";
-            </s:if>
-        }
-        
-        function showBrowserWarningIfNeeded() {
-            <s:if test="showSplash" >
-                    onShowBrowserWarning();
-            </s:if>
-        }
-        
-        function setupActivityMonitor() {
-            <s:if test="isChoxAdmin!=true && enableActivityMonitor">
-                var pingServerUrl = '/p/activityMonitoringAction.action';
-                var checkStatusIUrl = '/p/checkViewingStatus.action';
-                activityMonitor.setup(pingServerUrl, checkStatusIUrl,  <s:property value="activityMonitorRequestInterval"/>);
+            dashboardActionName = "showChoBoardHeader";
             </s:if>
         }
 
-        function loadDataFromSession() {  
-            <s:if test="loadingInboxPageFirstTimeAfterLogin"> 
-                Ext.state.Manager.set("claims_grid_baseParams", null);
-                Ext.state.Manager.set("xml_upload_grid_baseParams", null);
-                Ext.state.Manager.set("recentlyClickedQueueRowNumber", null);
-                Ext.state.Manager.set("recentlyClickedXmlUploadRowNumber", null);
-                Ext.state.Manager.set("isClaimSearchMade", false);
-                Ext.state.Manager.set("currentTabIndex", <s:property value="preSelectedActiveTab"/>);
-                Ext.state.Manager.set("uploaded_files_grid_title", 'Files Uploaded Today');
-                manualInvoiceFilter = false;
+        function showBrowserWarningIfNeeded() {
+            <s:if test="showSplash" >
+            onShowBrowserWarning();
+            </s:if>
+        }
+
+        function setupActivityMonitor() {
+            <s:if test="isChoxAdmin!=true && enableActivityMonitor">
+            var pingServerUrl = '/p/activityMonitoringAction.action';
+            var checkStatusIUrl = '/p/checkViewingStatus.action';
+            activityMonitor.setup(pingServerUrl, checkStatusIUrl,  <s:property value="activityMonitorRequestInterval"/>);
+            </s:if>
+        }
+
+        function loadDataFromSession() {
+            <s:if test="loadingInboxPageFirstTimeAfterLogin">
+            Ext.state.Manager.set("claims_grid_baseParams", null);
+            Ext.state.Manager.set("xml_upload_grid_baseParams", null);
+            Ext.state.Manager.set("recentlyClickedQueueRowNumber", null);
+            Ext.state.Manager.set("recentlyClickedXmlUploadRowNumber", null);
+            Ext.state.Manager.set("isClaimSearchMade", false);
+            Ext.state.Manager.set("currentTabIndex", <s:property value="preSelectedActiveTab"/>);
+            Ext.state.Manager.set("uploaded_files_grid_title", 'Files Uploaded Today');
+            manualInvoiceFilter = false;
             </s:if>
             <s:else > // The below line need to be investigated
-                manualInvoiceFilter = Ext.state.Manager.get("manualInvoiceFilter");
+            manualInvoiceFilter = Ext.state.Manager.get("manualInvoiceFilter");
             </s:else>
         }
 
         function setupGrid() {
-            
+
             var claimReader = new Ext.data.JsonReader({
                 totalProperty: 'totalCount',
                 root: 'results',
@@ -99,12 +99,12 @@
                     {name:'claimNumber'},
                     {name:'claimType'},
                     {name:'statusModifiedDate', type: 'string', dateFormat:'timestamp'},
-<s:if test="isInsurer" >
+                    <s:if test="isInsurer" >
                     {name:'lastReviewDate', type: 'string', dateFormat:'timestamp'},
-</s:if>
-<s:else>
+                    </s:if>
+                    <s:else>
                     {name:'reviewDate', type: 'string', dateFormat:'timestamp'},
-</s:else>
+                    </s:else>
                     {name:'insurer'},
                     {name:'cho'},
                     {name:'choBranding'},
@@ -115,7 +115,7 @@
                     {name:'noAttachments'}
                 ]
             });
-            
+
             claimStore = new choxDataStore({
                 url: '/prv/p/doSearchClaim.action',
                 autoLoad:false,
@@ -127,9 +127,9 @@
                         var baseParams = Ext.apply({}, options.params, store.baseParams);
                         options.params.queueCount = null;
                         options.params.queueNumber = null;
-                        
-//                        if (baseParams.canLoadData !== false && typeof baseParams.canLoadData !== 'undefined') { 
-                        // This is used as key(when rendering the grid) weather to load the empty grid or load grid with previos search criteria. 
+
+//                        if (baseParams.canLoadData !== false && typeof baseParams.canLoadData !== 'undefined') {
+                        // This is used as key(when rendering the grid) weather to load the empty grid or load grid with previos search criteria.
                         if (baseParams.canLoadData === true) {
                             Ext.state.Manager.set("isClaimSearchMade", true);
                         } else {
@@ -142,22 +142,22 @@
                         }
                     }
                     ,load: function(store, records, options) {
-                            // If the queue count does not match with the claims count result upon clicking the queue button, then update the queue total.
-                            if (typeof queueGrid !== 'undefined' && typeof store.baseParams.queueNumber !== 'undefined' 
-                                    && queueGrid.getStore().getTotalCount() > 0 && store.baseParams.queueCount !== store.getTotalCount()) {
-                                var queueRecord = queueGrid.getStore().getAt(store.baseParams.queueNumber);
-                                queueRecord.set('queueNameWithCount', queueRecord.get('queueName') + ' (' +store.getTotalCount() + ')');
-                                queueRecord.commit();
-                            }
-                          if (options.params.gridTitle !== '') {
-                              claimsGrid.setTitle('<div class="claims-grid-title-text">'+options.params.gridTitle +" ("+store.getTotalCount()+")"+'</div>');
-                          }
+                        // If the queue count does not match with the claims count result upon clicking the queue button, then update the queue total.
+                        if (typeof queueGrid !== 'undefined' && typeof store.baseParams.queueNumber !== 'undefined'
+                            && queueGrid.getStore().getTotalCount() > 0 && store.baseParams.queueCount !== store.getTotalCount()) {
+                            var queueRecord = queueGrid.getStore().getAt(store.baseParams.queueNumber);
+                            queueRecord.set('queueNameWithCount', queueRecord.get('queueName') + ' (' +store.getTotalCount() + ')');
+                            queueRecord.commit();
+                        }
+                        if (options.params.gridTitle !== '') {
+                            claimsGrid.setTitle('<div class="claims-grid-title-text">'+options.params.gridTitle +" ("+store.getTotalCount()+")"+'</div>');
+                        }
                     }
                 }
             });
-            
+
             claimStore.setDefaultSort('created', 'desc');
-            
+
             batchUpdateSelectionModel = new Ext.grid.CheckboxSelectionModel();
 
             pagingBar = new Ext.PagingToolbar({
@@ -170,25 +170,16 @@
             });
 
             renderBatchUpdate();
-            
+
             var claimsExportToExcelTbar = new Ext.Toolbar({
-            items:[{
-                    text:'Full Claim Data Export',
+                items:[{
+                    text:'Export To Excel',
                     id : 'claimsExportToExcelButtonId',
                     disabled : !<s:property value="canExportGrid" />,
                     handler : function() {
                         doExportExcel();
                     }
-                },
-                {
-                    text:'Claim and Invoice Data Export',
-                    id : 'claimsExportToExcelButtonId2',
-                    disabled : !<s:property value="canExportGrid" />,
-                    handler : function() {
-                        doExportExcel2();
-                    }
-                }
-            ]
+                }]
             });
 
 
@@ -198,14 +189,14 @@
                 ds: claimStore,
                 renderTo : 'gridHolder',
                 listeners:  {
-                                cellclick: maskInboxScreen,
-                                afterrender : function(grid) {
-                                    if (Ext.state.Manager.get("isClaimSearchMade")) {
-                                        claimStore.baseParams = Ext.state.Manager.get("claims_grid_baseParams");
-                                        claimStore.load();
-                                    }
-                                }
-                            },
+                    cellclick: maskInboxScreen,
+                    afterrender : function(grid) {
+                        if (Ext.state.Manager.get("isClaimSearchMade")) {
+                            claimStore.baseParams = Ext.state.Manager.get("claims_grid_baseParams");
+                            claimStore.load();
+                        }
+                    }
+                },
                 width: 1190,
                 enableColumnMove: false,
                 columns: [
@@ -220,24 +211,24 @@
                     {header: "Status", width: 100, sortable: true, dataIndex: 'status'},
                     {header: "Total To Pay", width: 60, sortable: true, dataIndex: 'invoiceAmount', align: 'right'},
                     {header: "Workgroup", width: 100, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsWorkgroupEnabled"/>) , dataIndex: 'workgroup'},
-                    {header: "Ins Owner", width: 50, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/> ), dataIndex: 'ownerName'},
-                    {header: "CHO Owner", width: 50, sortable: true,hidden: (<s:property value="isCHO"/> && !<s:property value="choIsClaimOwnershipEnabled"/>), dataIndex: 'choOwnerName'},
-                    {header: "Status Modified Date", width: 40, sortable: true, dataIndex: 'statusModifiedDate'},
-<s:if test="isInsurer" >
-                    {header: "Last Review Date", width: 40, sortable: true, dataIndex: 'lastReviewDate'},
-</s:if>
-<s:else>
-                    {header: "Review Date", width: 40, sortable: true, dataIndex: 'reviewDate'},
-</s:else>
-                    {header: "CHO", width: 80, sortable: true, dataIndex: 'cho'},
-                    {header: "Insurer", width: 80, sortable: true, dataIndex: 'insurer'},
-                    {header: "Viewing", width: 30, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
-                            return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '">-</label>';}},
-                    {header: "", width : 40, sortable : true, dataIndex: 'noAttachments', renderer : function(value, metaData, record, rowIndex, colIndex, store){
-                            if(value > 0){metaData.css = 'paperClip';} 
-                        }}
-                ],
-                stateId:'chox_claim_grid',
+            {header: "Ins Owner", width: 50, sortable: true,hidden: (<s:property value="isInsurer"/> && !<s:property value="insurerIsClaimOwnershipEnabled"/> ), dataIndex: 'ownerName'},
+            {header: "CHO Owner", width: 50, sortable: true,hidden: (<s:property value="isCHO"/> && !<s:property value="choIsClaimOwnershipEnabled"/>), dataIndex: 'choOwnerName'},
+            {header: "Status Modified Date", width: 40, sortable: true, dataIndex: 'statusModifiedDate'},
+            <s:if test="isInsurer" >
+            {header: "Last Review Date", width: 40, sortable: true, dataIndex: 'lastReviewDate'},
+            </s:if>
+            <s:else>
+            {header: "Review Date", width: 40, sortable: true, dataIndex: 'reviewDate'},
+            </s:else>
+            {header: "CHO", width: 80, sortable: true, dataIndex: 'cho'},
+            {header: "Insurer", width: 80, sortable: true, dataIndex: 'insurer'},
+            {header: "Viewing", width: 30, sortable: false, dataIndex: 'id',renderer:function(value,p,r){
+                return '<input type="hidden" name="viewingId" value="' + value + '" /><label id="viewingLabel_' + value + '">-</label>';}},
+            {header: "", width : 40, sortable : true, dataIndex: 'noAttachments', renderer : function(value, metaData, record, rowIndex, colIndex, store){
+                if(value > 0){metaData.css = 'paperClip';}
+            }}
+        ],
+            stateId:'chox_claim_grid',
                 stateful:true,
                 sm:batchUpdateSelectionModel,
                 stripeRows:true,
@@ -246,16 +237,16 @@
                 enableHdMenu:false,
                 title:' ',
                 viewConfig:{
-                    forceFit:true
+                forceFit:true
                     ,getRowClass: function(record, rowIndex, rp, ds){ // rp = rowParams
-                        if (isPartialBranding && (record.get('choBranding').indexOf("Full") > -1 || <s:property value='isCHO'/>)) {
-                            return 'branding-grid-row';
-                        }
+                    if (isPartialBranding && (record.get('choBranding').indexOf("Full") > -1 || <s:property value='isCHO'/>)) {
+                        return 'branding-grid-row';
                     }
-                },
-                bbar: pagingBar,
+                }
+            },
+            bbar: pagingBar,
                 tbar:[actionMenu, '->', claimsExportToExcelTbar]
-            });
+        });
         }
 
         function maskInboxScreen(grid, rowIndex, columnIndex){
@@ -273,7 +264,7 @@
             var allInsurerInvoice = true;
             for(var i =0;i<selectedCount;i++) {
                 if (selectedRecords[i].get('claimType') !== 'Insurer Invoice'
-                        && (selectedRecords[i].get('claimType') !== 'Insurer Claim' || selectedRecords[i].get('status') === 'ClaimUnacknowledgedUnrouted')){
+                    && (selectedRecords[i].get('claimType') !== 'Insurer Claim' || selectedRecords[i].get('status') === 'ClaimUnacknowledgedUnrouted')){
                     allInsurerInvoice = false;
                 }
             }
@@ -288,98 +279,98 @@
 
         function setupTabPanels() {
 
-            var taskTab = { 
-                            contentEl:'taskPanelTab', 
-                            id:'taskPanelTabId', 
-                            tabCls : 'noti_Container',
-                            title: taskTabTitle, 
-                            autoHeight:'true', 
-                            listeners: {activate: handleActivate}, 
-                            autoLoad: choxUpdateEl({url:'/prv/p/getTaskPanel.action'})
+            var taskTab = {
+                contentEl:'taskPanelTab',
+                id:'taskPanelTabId',
+                tabCls : 'noti_Container',
+                title: taskTabTitle,
+                autoHeight:'true',
+                listeners: {activate: handleActivate},
+                autoLoad: choxUpdateEl({url:'/prv/p/getTaskPanel.action'})
             };
-            var inboxTab = { 
-                            contentEl:'searchPanelTab', 
-                            id:'searchPanelTabId', 
-                            title:'Inbox',
-                            listeners: {activate: handleActivate}, 
-                            autoLoad: choxUpdateEl({url:'/prv/p/searchClaim.action', params : {loadSearchPanelSelectionFromSession : (Ext.state.Manager.get("isClaimSearchMade")) ? true : false}})
+            var inboxTab = {
+                contentEl:'searchPanelTab',
+                id:'searchPanelTabId',
+                title:'Inbox',
+                listeners: {activate: handleActivate},
+                autoLoad: choxUpdateEl({url:'/prv/p/searchClaim.action', params : {loadSearchPanelSelectionFromSession : (Ext.state.Manager.get("isClaimSearchMade")) ? true : false}})
             };
-            var reportTab = { 
-                            contentEl:'reportPanelTab', 
-                            id:'reportPanelTabId', 
-                            title:'Reports',
-                            listeners: {activate: handleActivate}, 
-                            autoLoad: choxUpdateEl({url:'/prv/p/buildReport.action'})
+            var reportTab = {
+                contentEl:'reportPanelTab',
+                id:'reportPanelTabId',
+                title:'Reports',
+                listeners: {activate: handleActivate},
+                autoLoad: choxUpdateEl({url:'/prv/p/buildReport.action'})
             };
-            var adminTab = { 
-                            contentEl:'adminPanelTab', 
-                            id:'adminPanelTabId', 
-                            title:'Admin<sup>'+' '+'</sup>', 
-                            listeners: {activate: handleActivate}, 
-                            autoLoad: choxUpdateEl({url:'/prv/p/adminFunction.action'})
+            var adminTab = {
+                contentEl:'adminPanelTab',
+                id:'adminPanelTabId',
+                title:'Admin<sup>'+' '+'</sup>',
+                listeners: {activate: handleActivate},
+                autoLoad: choxUpdateEl({url:'/prv/p/adminFunction.action'})
             };
-            var dashboardTab = { 
-                                contentEl:'boardPanelTab', 
-                                id:'boardPanelTabId', 
-                                title:'Overview<sup>'+' '+'</sup>', 
-                                listeners: {activate: handleActivate}, 
-                                autoLoad: choxUpdateEl({url:'/prv/p/'+dashboardActionName+'.action'})
+            var dashboardTab = {
+                contentEl:'boardPanelTab',
+                id:'boardPanelTabId',
+                title:'Overview<sup>'+' '+'</sup>',
+                listeners: {activate: handleActivate},
+                autoLoad: choxUpdateEl({url:'/prv/p/'+dashboardActionName+'.action'})
             };
-            var kbbsDashboardTab = { 
-                                contentEl:'kbbsPanelTab', 
-                                id:'kbbsPanelTabId', 
-                                title:'Dashboard<sup>'+' '+'</sup>', 
-                                listeners: {activate: handleActivate}, 
-                                autoLoad: choxUpdateEl({url:'/prv/p/showKbbsBoard.action'})
+            var kbbsDashboardTab = {
+                contentEl:'kbbsPanelTab',
+                id:'kbbsPanelTabId',
+                title:'Dashboard<sup>'+' '+'</sup>',
+                listeners: {activate: handleActivate},
+                autoLoad: choxUpdateEl({url:'/prv/p/showKbbsBoard.action'})
             };
-            var xmlUploadTab = { 
-                                contentEl:'xmlUploadTab', 
-                                id:'xmlUploadTabId', 
-                                title:'Claim/Invoice Upload<sup>'+' '+'</sup>', 
-                                listeners: {activate: handleActivate}, 
-                                autoLoad: choxUpdateEl({url:'/prv/p/XmlUpload.action'})
+            var xmlUploadTab = {
+                contentEl:'xmlUploadTab',
+                id:'xmlUploadTabId',
+                title:'Claim/Invoice Upload<sup>'+' '+'</sup>',
+                listeners: {activate: handleActivate},
+                autoLoad: choxUpdateEl({url:'/prv/p/XmlUpload.action'})
             };
-            
+
             var tabItems = [];
-            
+
             <s:if test="taskManagementEnabled">
-                tabItems.push(taskTab);
+            tabItems.push(taskTab);
             </s:if>
 
             <s:if test="menuAccessibility.isSearchMenuAccessibility">
-                tabItems.push(inboxTab);
+            tabItems.push(inboxTab);
             </s:if>
 
             <s:if test="menuAccessibility.isReportMenuAccessibility">
-                tabItems.push(reportTab);
+            tabItems.push(reportTab);
             </s:if>
 
             <s:if test="menuAccessibility.isAdminMenuAccessibility">
-                tabItems.push(adminTab);
+            tabItems.push(adminTab);
             </s:if>
 
             <s:if test="menuAccessibility.isDashBoardMenuAccessibility">
-                <s:if test="isComUser || isScrUser">
-                    tabItems.push(dashboardTab);
-                </s:if>
-                <s:else >
-                    tabItems.splice(0, 0, dashboardTab);
-                </s:else>
+            <s:if test="isComUser || isScrUser">
+            tabItems.push(dashboardTab);
+            </s:if>
+            <s:else >
+            tabItems.splice(0, 0, dashboardTab);
+            </s:else>
             </s:if>
 
             <s:if test="menuAccessibility.isUploadMenuAccessibility">
-                tabItems.push(xmlUploadTab);
+            tabItems.push(xmlUploadTab);
             </s:if>
 
             <s:if test="kbbsDashboardEnabled && isDashboardUser">
-                tabItems.push(kbbsDashboardTab);
+            tabItems.push(kbbsDashboardTab);
             </s:if>
 
             tabs = new Ext.TabPanel({
                 renderTo: 'tabPanel',
                 autoheight: true,
                 activeTab: Ext.state.Manager.get("currentTabIndex"),
-                listeners: { 
+                listeners: {
                     beforerender : updateTaskTab,
                     tabchange : function(tab, activeTab) {
                         Ext.state.Manager.set("currentTabIndex", tab.items.indexOf(activeTab));
@@ -390,20 +381,20 @@
         }
 
         function handleActivate(tab){
-            
+
             Ext.fly('inboxClaimsGridId').addClass('x-hide-display');
             Ext.fly('xmlClaimsStatusGridDiv').addClass('x-hide-display');
             activityMonitor.clearViewingStatus();
 
             if(tab.title.indexOf('Inbox') > -1) {
-                
+
                 Ext.fly('inboxClaimsGridId').removeClass('x-hide-display');
-                
+
                 <s:if test="isChoxAdmin!=true && enableActivityMonitor">
-                        activityMonitor.refreshViewingStatus();
+                activityMonitor.refreshViewingStatus();
                 </s:if>
-                
-            } else if(tab.title.indexOf('Claim/Invoice Upload') > -1) { 
+
+            } else if(tab.title.indexOf('Claim/Invoice Upload') > -1) {
                 Ext.fly('xmlClaimsStatusGridDiv').removeClass('x-hide-display');
             }
         }
@@ -413,28 +404,28 @@
                 return;
             }
             choxExtAjaxRequest({
-                        url: '/prv/p/getVisibleTaskCount.action',
+                url: '/prv/p/getVisibleTaskCount.action',
 //                        timeout : 300000,
-                        success : function(response, opts) {
-                            var resp = Ext.decode(response.responseText);
-                            if (resp && tabs) {
-                                updateTaskTabCount(resp.totalCount, resp.colorCode);
-                            }
-                        },
-                        failure : function(response, opts){
-                            updateTaskTabCount(-1, 'not used');
-                        },
-                        params: {
-                            hideCompleted : true,
-                            showAssignedTasksOnly : true
-                        }
+                success : function(response, opts) {
+                    var resp = Ext.decode(response.responseText);
+                    if (resp && tabs) {
+                        updateTaskTabCount(resp.totalCount, resp.colorCode);
+                    }
+                },
+                failure : function(response, opts){
+                    updateTaskTabCount(-1, 'not used');
+                },
+                params: {
+                    hideCompleted : true,
+                    showAssignedTasksOnly : true
+                }
             });
         }
-        
+
         function updateTaskTabCount(taskCount, colorCode) {
             if (tabs) {
                 var taskTabTitle = 'Tasks';
-                if (taskCount > 0) { 
+                if (taskCount > 0) {
                     if (taskCount < 10) {
                         title = title + '&nbsp';
                     } else if (taskCount < 100) {
@@ -447,8 +438,8 @@
                     taskTabTitle = taskTabTitle + '<div  class = "noti_bubble" style="background-color:red;">'+taskCount +'</div>';
                 } else if (taskCount == -1) {
                     taskTabTitle = taskTabTitle + '<div  class = "noti_bubble" style="background-color:red;">?</div>';
-                } 
-                
+                }
+
                 tabs.getComponent('taskPanelTabId').setTitle(taskTabTitle);
             }
         }
@@ -499,7 +490,7 @@
 
     <div id="claimOwnerSelectionDlgHolder" class="x-hidden">
         <div id="claimOwnerSelectionPanel">
-                <form id="ownershipClaimForm" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form" method="POST">
+            <form id="ownershipClaimForm" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form" method="POST">
                 <input name="selectedClaimIds" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
@@ -522,10 +513,10 @@
             </form>
         </div>
     </div>
-            
+
     <div id="claimOwnerSelectionDlgHolder1" class="x-hidden">
         <div id="claimOwnerSelectionPanel1">
-                <form id="ownershipClaimForm1" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form" method="POST">
+            <form id="ownershipClaimForm1" name="ownershipClaimForm" action="<%=request.getContextPath()%>/prv/processBatchClaims.action?" class="XXentity-form" method="POST">
                 <input name="selectedClaimIds" type="hidden"/>
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0">
                     <tr>
@@ -569,12 +560,12 @@
                 <input name="selectedClaimIds" type="hidden" />
                 <table class="selection-form" cellspacing="0" cellpadding="0" border="0" width="100%">
                     <tr>
-<s:if test="insurerIsWorkgroupEnabled">
-                        <th colspan="2"><label>Please specify the claim(s) new Workgroup and Owner</label></th>
-</s:if>
-<s:else>
-                        <th colspan="2"><label>Please specify the claim(s) new Owner</label></th>
-</s:else>
+                        <s:if test="insurerIsWorkgroupEnabled">
+                            <th colspan="2"><label>Please specify the claim(s) new Workgroup and Owner</label></th>
+                        </s:if>
+                        <s:else>
+                            <th colspan="2"><label>Please specify the claim(s) new Owner</label></th>
+                        </s:else>
                     </tr>
                     <s:if test="AuthenticatedUser.insurer.workgroupEnable">
                         <tr>
@@ -586,11 +577,11 @@
                         <td class="pop-claim-ownership-label" style="height:60px;"><label>Claim Owner:</label></td>
                         <td class="pop-claim-ownership-column"><div id="couClaimHandlerRoleUserDropDownDiv"></div></td>
                     </tr>
-<s:if test="insurerIsWorkgroupEnabled && !enableManualInvoiceWorkgroups">
-                    <tr>
-                        <td colspan="2" ><label>(Note that for Manual Invoices with no workgroup currently assigned, the selected workgroup will be ignored)</label></td>
-                    </tr>
-</s:if>
+                    <s:if test="insurerIsWorkgroupEnabled && !enableManualInvoiceWorkgroups">
+                        <tr>
+                            <td colspan="2" ><label>(Note that for Manual Invoices with no workgroup currently assigned, the selected workgroup will be ignored)</label></td>
+                        </tr>
+                    </s:if>
                     <tr>
                         <td colspan="2"><div id="claimOwnershipUpdateFormMessageBox" class="action-error-msg"></div></td>
                     </tr>

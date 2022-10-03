@@ -5,12 +5,10 @@ import java.math.RoundingMode;
 import java.util.Map;
 import java.util.Date;
 
-import org.mortbay.log.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author John
  */
 public class ExcelInvoice {
@@ -56,18 +54,10 @@ public class ExcelInvoice {
     private String handlingInvoiceNo;
     private BigDecimal claimsHandlingInvoiceAmount;
     private String claimInvoiceNo;
-    private Integer hireRateOriginalDays;
-    private BigDecimal hireRateOriginalRateChargedPerDay;
     private BigDecimal hireRateChargedPerDay;
-    private BigDecimal originalhireNet;
-    private BigDecimal originalhireVat;
-    private BigDecimal originalhireGross;
     private BigDecimal hireNet;
     private BigDecimal hireVat;
     private BigDecimal hireGross;
-    private BigDecimal originalrepairNet;
-    private BigDecimal originalrepairVat;
-    private BigDecimal originalrepairGross;
     private BigDecimal repairNet;
     private BigDecimal repairVat;
     private BigDecimal repairGross;
@@ -77,9 +67,6 @@ public class ExcelInvoice {
     private BigDecimal totalLossFeeNet;
     private BigDecimal totalLossFeeVat;
     private BigDecimal totalLossFeeGross;
-    private BigDecimal originalstorageRecoveryNet;
-    private BigDecimal originalstorageRecoveryVat;
-    private BigDecimal originalstorageRecoveryGross;
     private BigDecimal storageRecoveryNet;
     private BigDecimal storageRecoveryVat;
     private BigDecimal storageRecoveryGross;
@@ -150,7 +137,7 @@ public class ExcelInvoice {
         nonStandardInsurancePremiumQty = (Short) data.get("nonstandardinsurancepremiumqty");
         vedFee = (BigDecimal) data.get("vedfee");
         vedQty = (Short) data.get("vedqty");
-         coverNoteRequired = (Boolean) data.get("covernoterequired");
+        coverNoteRequired = (Boolean) data.get("covernoterequired");
         if (coverNoteRequired == null) {
             coverNoteRequiredDesc = "";
         } else {
@@ -175,24 +162,10 @@ public class ExcelInvoice {
         handlingInvoiceNo = (String) data.get("handlinginvoiceno");
         claimsHandlingInvoiceAmount = (BigDecimal) data.get("claimshandlinginvoiceamount");
         claimInvoiceNo = (String) data.get("claiminvoiceno");
-        BigDecimal temphireRateOriginalDays = (BigDecimal) data.get("orignaldays");
-        BigDecimal tempActualDays = (BigDecimal) data.get("days");
-        if (temphireRateOriginalDays == null) {
-            hireRateOriginalDays = tempActualDays.intValue();
-        } else {
-            hireRateOriginalDays = temphireRateOriginalDays.intValue();
-        }
-        hireRateOriginalRateChargedPerDay = (BigDecimal) data.get("originalhireratechargedperday");
         hireRateChargedPerDay = (BigDecimal) data.get("hireratechargedperday");
-        originalhireNet = (BigDecimal) data.get("originalhirenet");
-        originalhireVat = (BigDecimal) data.get("originalhirevat");
-        originalhireGross = (BigDecimal) data.get("originalhiregross");
         hireNet = (BigDecimal) data.get("hirenet");
         hireVat = (BigDecimal) data.get("hirevat");
         hireGross = (BigDecimal) data.get("hiregross");
-        originalrepairNet = (BigDecimal) data.get("originalrepairnet");
-        originalrepairVat = (BigDecimal) data.get("originalrepairvat");
-        originalrepairGross = (BigDecimal) data.get("originalrepairgross");
         repairNet = (BigDecimal) data.get("repairnet");
         repairVat = (BigDecimal) data.get("repairvat");
         repairGross = (BigDecimal) data.get("repairgross");
@@ -202,9 +175,6 @@ public class ExcelInvoice {
         totalLossFeeNet = (BigDecimal) data.get("totallossfeenet");
         totalLossFeeVat = (BigDecimal) data.get("totallossfeevat");
         totalLossFeeGross = (BigDecimal) data.get("totallossfeegross");
-        originalstorageRecoveryNet = (BigDecimal) data.get("originalstoragerecoverynet");
-        originalstorageRecoveryVat = (BigDecimal) data.get("originalstoragerecoveryvat");
-        originalstorageRecoveryGross = (BigDecimal) data.get("originalstoragerecoverygross");
         storageRecoveryNet = (BigDecimal) data.get("storagerecoverynet");
         storageRecoveryVat = (BigDecimal) data.get("storagerecoveryvat");
         storageRecoveryGross = (BigDecimal) data.get("storagerecoverygross");
@@ -344,50 +314,6 @@ public class ExcelInvoice {
 
     public String getClaimInvoiceNo() {
         return claimInvoiceNo;
-    }
-
-    public BigDecimal getHireRateOriginalRateChargedPerDay() {
-        return hireRateOriginalRateChargedPerDay;
-    }
-
-    public Integer getHireRateOriginalDays() {
-        return hireRateOriginalDays;
-    }
-
-    public BigDecimal getOriginalhireNet() {
-        return originalhireNet;
-    }
-
-    public BigDecimal getOriginalhireVat() {
-        return originalhireVat;
-    }
-
-    public BigDecimal getOriginalhireGross() {
-        return originalhireGross;
-    }
-
-    public BigDecimal getOriginalrepairNet() {
-        return originalrepairNet;
-    }
-
-    public BigDecimal getOriginalrepairVat() {
-        return originalrepairVat;
-    }
-
-    public BigDecimal getOriginalrepairGross() {
-        return originalrepairGross;
-    }
-
-    public BigDecimal getOriginalstorageRecoveryNet() {
-        return originalstorageRecoveryNet;
-    }
-
-    public BigDecimal getOriginalstorageRecoveryVat() {
-        return originalstorageRecoveryVat;
-    }
-
-    public BigDecimal getOriginalstorageRecoveryGross() {
-        return originalstorageRecoveryGross;
     }
 
     public String getClaimStatus() {

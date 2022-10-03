@@ -11,7 +11,6 @@ import idas.chox.core.model.ClaimType;
 import idas.chox.core.model.LiabilityStatus;
 
 /**
- *
  * @author John
  */
 public class ExcelClaim {
@@ -151,11 +150,9 @@ public class ExcelClaim {
     private String claimVehicleHireVehicleManufacturer;
     private String claimVehicleHireVehicleModel;
     private String claimVehicleHireVehicleRegistration;
-    private String claimVehicleHireVehicleOriginalClassName;
     private String claimVehicleHireVehicleClassName;
     private Date claimVehicleHireRentalStart;
     private Date claimVehicleHireRentalEnd;
-    private Integer claimVehicleOriginalDaysHire;
     private Integer claimVehicleHireDays;
     private String claimVehicleHireCollectionReason;
     private String claimVehicleHireHpiVehicleManufacturer;
@@ -218,7 +215,7 @@ public class ExcelClaim {
     private Boolean claimCopleyOfferMade;
     private Date claimCopleyOfferMadeDate;
     private boolean isCopleyOffer;
-    
+
     public ExcelClaim(Map data, Boolean isIns) {
         try {
             claimStatus = (String) data.get("status");
@@ -394,7 +391,7 @@ public class ExcelClaim {
             claimSolicitorPostcode = (String) data.get("injury_solicitor_postcode");
             claimSolicitorTelephone = (String) data.get("injury_solicitor_telephone");
             claimSolicitorEmail = (String) data.get("injury_solicitor_email");
-            
+
             claimEngineerReportLabourAmount = (BigDecimal) data.get("er_labour_amount");
             claimEngineerReportRepairAmount = (BigDecimal) data.get("er_repair_amount");
             BigDecimal days = (BigDecimal) data.get("er_days");
@@ -423,24 +420,13 @@ public class ExcelClaim {
             claimVehicleHireVehicleModel = (String) data.get("vh_vehicle_model");
             claimVehicleHireVehicleRegistration = ((String) data.get("vh_vehicle_registration")) != null && ((String) data.get("vh_vehicle_registration")).startsWith("~~") ? "GDPR: data removed" : (String) data.get("vh_vehicle_registration");
             claimVehicleHireVehicleClassName = (String) data.get("vh_vehicle_class_name");
-            claimVehicleHireVehicleOriginalClassName = (String) data.get("vhn_vehicle_original_class");
-            if(claimVehicleHireVehicleOriginalClassName == null) {
-                claimVehicleHireVehicleOriginalClassName = claimVehicleHireVehicleClassName;
-            }
             claimVehicleHireRentalStart = (Date) data.get("vh_rental_start");
             claimVehicleHireRentalEnd = (Date) data.get("vh_rental_end");
-
             days = (BigDecimal) data.get("vh_days");
             if (days == null) {
                 claimVehicleHireDays = null;
             } else {
                 claimVehicleHireDays = days.intValue();
-            }
-            BigDecimal claimVehicleOrigDaysHire = (BigDecimal) data.get("vh_original_no_days_hire");
-            if (claimVehicleOrigDaysHire == null) {
-                claimVehicleOriginalDaysHire = claimVehicleHireDays;
-            } else {
-                claimVehicleOriginalDaysHire = claimVehicleOrigDaysHire.intValue();
             }
 //        claimVehicleHireDays = ((BigDecimal) data.get("vh_days")).intValue();
             claimVehicleHireCollectionReason = (String) data.get("vh_collection_reason");
@@ -451,7 +437,7 @@ public class ExcelClaim {
             claimVehicleHireHpiVehicleCapacity = (String) data.get("vh_hpi_vehicle_capacity");
             claimVehicleHireHpiVehicleDoorplan = (String) data.get("vh_hpi_vehicle_doorplan");
             claimVehicleHireHpiVehicleTransmission = (String) data.get("vh_hpi_vehicle_transmission");
-            
+
             claimHireMonitoringDetailNameOfRepairer = (String) data.get("hmd_name_of_repairer");
             claimHireMonitoringDetailRepairBookInDate = (Date) data.get("hmd_repair_book_in_date");
             claimHireMonitoringDetailRepairAuthorisedDate = (Date) data.get("hmd_repair_authorised_date");
@@ -460,7 +446,7 @@ public class ExcelClaim {
             claimHireMonitoringDetailInspectionDate = (Date) data.get("hmd_inspection_date");
             claimHireMonitoringDetailNameOfIme = (String) data.get("hmd_name_of_ime");
             claimHireMonitoringDetailRepairCompletionDate = (Date) data.get("hmd_repair_completion_date");
-            
+
             Boolean isTotalLostCheck = (Boolean) data.get("hmd_is_total_lost_check");
             if (isTotalLostCheck == null) {
                 claimHireMonitoringDetailIsTotalLostCheck = "";
@@ -494,12 +480,12 @@ public class ExcelClaim {
             claimHireMonitoringDetailLabourCost = (BigDecimal) data.get("hmd_labour_cost");
             claimHireMonitoringDetailNonProvisionReason = (String) data.get("hmd_non_provision_reason");
             claimHireMonitoringDetailNextReviewDate = (Date) data.get("hmd_next_review_date");
-            
+
             int fraudCheckStatus = (Integer) data.get("fraud_check_status");
             claimFraudScore = isIns != null && isIns && fraudCheckStatus == 3 ? ((Integer) data.get("fraud_score")).toString() : "";
             claimFraudStatus = isIns != null && isIns && fraudCheckStatus == 3 ? (String) data.get("fraud_status") : "";
             isInsurer = isIns == null ? false : isIns;
-            
+
             claimInsHMDRepairBookInDate = (Date) data.get("ihmd_repair_book_in_date");
             claimInsHMDRepairAuthorisedDate = (Date) data.get("ihmd_repair_authorised_date");
             claimInsHMDRepairCommencedDate = (Date) data.get("ihmd_repair_commenced_date");
@@ -526,395 +512,395 @@ public class ExcelClaim {
             LOG.error("Exception thrown export claims grid: \n", ex);
         }
     }
-    
+
     public String getClaimType() {
         return claimType;
     }
-    
+
     public String getClaimChoReference() {
         return claimChoReference;
     }
-    
+
     public String getClaimChorganisationName() {
         return claimChorganisationName;
     }
-    
+
     public String getClaimClaimNumber() {
         return claimClaimNumber;
     }
-    
+
     public String getClaimClaimOwnerDisplayName() {
         return claimClaimOwnerDisplayName;
     }
-    
+
     public String getClaimSupplierClaimOwnerDisplayName() {
         return claimSupplierClaimOwnerDisplayName;
     }
-    
+
     public Date getClaimCreditAgreementDate() {
         return claimCreditAgreementDate;
     }
-    
+
     public String getClaimCustomerAddress1() {
         return claimCustomerAddress1;
     }
-    
+
     public String getClaimCustomerAddress2() {
         return claimCustomerAddress2;
     }
-    
+
     public String getClaimCustomerAddress3() {
         return claimCustomerAddress3;
     }
-    
+
     public String getClaimCustomerAddress4() {
         return claimCustomerAddress4;
     }
-    
+
     public String getClaimCustomerAddress5() {
         return claimCustomerAddress5;
     }
-    
+
     public String getClaimCustomerAverageDailyMileage() {
         return claimCustomerAverageDailyMileage;
     }
-    
+
     public String getClaimCustomerCanAccessOtherVehicleDesc() {
         return claimCustomerCanAccessOtherVehicleDesc;
     }
-    
+
     public String getClaimCustomerClaimReference() {
         return claimCustomerClaimReference;
     }
-    
+
     public String getClaimCustomerComprehensive() {
         return claimCustomerComprehensive;
     }
-    
+
     public String getClaimCustomerCourtesyCarEntitledDesc() {
         return claimCustomerCourtesyCarEntitledDesc;
     }
-    
+
     public String getClaimCustomerDamage() {
         return claimCustomerDamage;
     }
-    
+
     public String getClaimCustomerEmail() {
         return claimCustomerEmail;
     }
-    
+
     public String getClaimCustomerFirstName() {
         return claimCustomerFirstName;
     }
-    
+
     public Date getClaimCustomerHpiFirstRegistration() {
         return claimCustomerHpiFirstRegistration;
     }
-    
+
     public String getClaimCustomerHpiVehicleCapacity() {
         return claimCustomerHpiVehicleCapacity;
     }
-    
+
     public String getClaimCustomerHpiVehicleDoorplan() {
         return claimCustomerHpiVehicleDoorplan;
     }
-    
+
     public String getClaimCustomerHpiVehicleManufacturer() {
         return claimCustomerHpiVehicleManufacturer;
     }
-    
+
     public String getClaimCustomerHpiVehicleModel() {
         return claimCustomerHpiVehicleModel;
     }
-    
+
     public String getClaimCustomerHpiVehicleTransmission() {
         return claimCustomerHpiVehicleTransmission;
     }
-    
+
     public String getClaimCustomerHpiVehicleYear() {
         return claimCustomerHpiVehicleYear;
     }
-    
+
     public Date getClaimCustomerInitialECD() {
         return claimCustomerInitialECD;
     }
-    
+
     public String getClaimCustomerInsurerName() {
         return claimCustomerInsurerName;
     }
-    
+
     public String getClaimCustomerIsTotalLoss() {
         return claimCustomerIsTotalLoss;
     }
-    
+
     public String getClaimCustomerIsUsable() {
         return claimCustomerIsUsable;
     }
-    
+
     public String getClaimCustomerLastName() {
         return claimCustomerLastName;
     }
-    
+
     public String getClaimCustomerLocation() {
         return claimCustomerLocation;
     }
-    
+
     public String getClaimCustomerOtherVehicle() {
         return claimCustomerOtherVehicle;
     }
-    
+
     public String getClaimCustomerOtherVehicleUsedDesc() {
         return claimCustomerOtherVehicleUsedDesc;
     }
-    
+
     public String getClaimCustomerPolicyNumber() {
         return claimCustomerPolicyNumber;
     }
-    
+
     public String getClaimCustomerPostcode() {
         return claimCustomerPostcode;
     }
-    
+
     public String getClaimCustomerSpecialRequirements() {
         return claimCustomerSpecialRequirements;
     }
-    
+
     public String getClaimCustomerSpecificVehicleReason() {
         return claimCustomerSpecificVehicleReason;
     }
-    
+
     public String getClaimCustomerSpecificVehicleRequiredDesc() {
         return claimCustomerSpecificVehicleRequiredDesc;
     }
-    
+
     public String getClaimCustomerTelephoneDay() {
         return claimCustomerTelephoneDay;
     }
-    
+
     public String getClaimCustomerTelephoneEvening() {
         return claimCustomerTelephoneEvening;
     }
-    
+
     public String getClaimCustomerTitle() {
         return claimCustomerTitle;
     }
-    
+
     public String getClaimCustomerTypeVehicleRequired() {
         return claimCustomerTypeVehicleRequired;
     }
-    
+
     public String getClaimCustomerVehicleClassName() {
         return claimCustomerVehicleClassName;
     }
-    
+
     public String getClaimCustomerVehicleManufacturer() {
         return claimCustomerVehicleManufacturer;
     }
-    
+
     public String getClaimCustomerVehicleModel() {
         return claimCustomerVehicleModel;
     }
-    
+
     public String getClaimCustomerVehicleRegistration() {
         return claimCustomerVehicleRegistration;
     }
-    
+
     public String getClaimCustomerVehicleYear() {
         return claimCustomerVehicleYear;
     }
-    
+
     public String getClaimEngineerReportAddress1() {
         return claimEngineerReportAddress1;
     }
-    
+
     public String getClaimEngineerReportAddress2() {
         return claimEngineerReportAddress2;
     }
-    
+
     public String getClaimEngineerReportAddress3() {
         return claimEngineerReportAddress3;
     }
-    
+
     public String getClaimEngineerReportAddress4() {
         return claimEngineerReportAddress4;
     }
-    
+
     public String getClaimEngineerReportAddress5() {
         return claimEngineerReportAddress5;
     }
-    
+
     public String getClaimEngineerReportCompany() {
         return claimEngineerReportCompany;
     }
-    
+
     public Integer getClaimEngineerReportDays() {
         return claimEngineerReportDays;
     }
-    
+
     public String getClaimEngineerReportEmail() {
         return claimEngineerReportEmail;
     }
-    
+
     public String getClaimEngineerReportIsUsable() {
         return claimEngineerReportIsUsable;
     }
-    
+
     public BigDecimal getClaimEngineerReportLabourAmount() {
         return claimEngineerReportLabourAmount;
     }
-    
+
     public String getClaimEngineerReportName() {
         return claimEngineerReportName;
     }
-    
+
     public String getClaimEngineerReportPostcode() {
         return claimEngineerReportPostcode;
     }
-    
+
     public BigDecimal getClaimEngineerReportRepairAmount() {
         return claimEngineerReportRepairAmount;
     }
-    
+
     public String getClaimEngineerReportTelephone() {
         return claimEngineerReportTelephone;
     }
-    
+
     public Date getClaimGtaNoticeDate() {
         return claimGtaNoticeDate;
     }
-    
+
     public Date getClaimHireMonitoringDetailInspectionBookedDate() {
         return claimHireMonitoringDetailInspectionBookedDate;
     }
-    
+
     public Date getClaimHireMonitoringDetailInspectionDate() {
         return claimHireMonitoringDetailInspectionDate;
     }
-    
+
     public String getClaimHireMonitoringDetailIsTotalLostCheck() {
         return claimHireMonitoringDetailIsTotalLostCheck;
     }
-    
+
     public BigDecimal getClaimHireMonitoringDetailLabourCost() {
         return claimHireMonitoringDetailLabourCost;
     }
-    
+
     public BigDecimal getClaimHireMonitoringDetailLabourHour() {
         return claimHireMonitoringDetailLabourHour;
     }
-    
+
     public BigDecimal getClaimHireMonitoringDetailLabourRate() {
         return claimHireMonitoringDetailLabourRate;
     }
-    
+
     public String getClaimHireMonitoringDetailNameOfIme() {
         return claimHireMonitoringDetailNameOfIme;
     }
-    
+
     public String getClaimHireMonitoringDetailNameOfRepairer() {
         return claimHireMonitoringDetailNameOfRepairer;
     }
-    
+
     public Date getClaimHireMonitoringDetailNextReviewDate() {
         return claimHireMonitoringDetailNextReviewDate;
     }
-    
+
     public String getClaimHireMonitoringDetailNonProvisionReason() {
         return claimHireMonitoringDetailNonProvisionReason;
     }
-    
+
     public Date getClaimHireMonitoringDetailRepairAuthorisedDate() {
         return claimHireMonitoringDetailRepairAuthorisedDate;
     }
-    
+
     public Date getClaimHireMonitoringDetailRepairBookInDate() {
         return claimHireMonitoringDetailRepairBookInDate;
     }
-    
+
     public Date getClaimHireMonitoringDetailRepairCommencedDate() {
         return claimHireMonitoringDetailRepairCommencedDate;
     }
-    
+
     public Date getClaimHireMonitoringDetailRepairCompletionDate() {
         return claimHireMonitoringDetailRepairCompletionDate;
     }
-    
+
     public Date getClaimHireMonitoringDetailTotalLossOfferAcceptedDate() {
         return claimHireMonitoringDetailTotalLossOfferAcceptedDate;
     }
-    
+
     public Date getClaimHireMonitoringDetailTotalLossOfferCheckIssuedDate() {
         return claimHireMonitoringDetailTotalLossOfferCheckIssuedDate;
     }
-    
+
     public Date getClaimHireMonitoringDetailTotalLossOfferCheckReceivedDate() {
         return claimHireMonitoringDetailTotalLossOfferCheckReceivedDate;
     }
-    
+
     public Date getClaimHireMonitoringDetailTotalLossOfferMadeDate() {
         return claimHireMonitoringDetailTotalLossOfferMadeDate;
     }
-    
+
     public BigDecimal getClaimIdemnity() {
         return claimIdemnity;
     }
-    
+
     public Date getClaimIncidentDate() {
         return claimIncidentDate;
     }
-    
+
     public String getClaimIncidentIncidentDescription() {
         return claimIncidentIncidentDescription;
     }
-    
+
     public String getClaimIncidentIsPoliceInvolved() {
         return claimIncidentIsPoliceInvolved;
     }
-    
+
     public String getClaimIncidentLocation() {
         return claimIncidentLocation;
     }
-    
+
     public String getClaimInjuryAddress1() {
         return claimInjuryAddress1;
     }
-    
+
     public String getClaimInjuryAddress2() {
         return claimInjuryAddress2;
     }
-    
+
     public String getClaimInjuryAddress3() {
         return claimInjuryAddress3;
     }
-    
+
     public String getClaimInjuryAddress4() {
         return claimInjuryAddress4;
     }
-    
+
     public String getClaimInjuryAddress5() {
         return claimInjuryAddress5;
     }
-    
+
     public String getClaimInjuryEmail() {
         return claimInjuryEmail;
     }
-    
+
     public String getClaimInjuryName() {
         return claimInjuryName;
     }
-    
+
     public String getClaimInjuryPostcode() {
         return claimInjuryPostcode;
     }
-    
+
     public String getClaimInjuryTelephoneDay() {
         return claimInjuryTelephoneDay;
     }
-    
+
     public String getClaimInjuryTelephoneEvening() {
         return claimInjuryTelephoneEvening;
     }
-    
+
     public String getClaimLiabilityStatus() {
         return claimLiabilityStatus;
     }
@@ -922,337 +908,331 @@ public class ExcelClaim {
     public Date getClaimLiabilityAgreedDate() {
         return claimLiabilityAgreedDate;
     }
-    
+
     public String getClaimIndemnityStance() {
         return claimIndemnityStance;
     }
-    
+
     public String getClaimManagingRepair() {
         return claimManagingRepair;
     }
-    
+
     public BigDecimal getClaimPercentageLiabilityAccepted() {
         return claimPercentageLiabilityAccepted;
     }
-    
+
     public BigDecimal getClaimPercentageLiabilityApplied() {
         return claimPercentageLiabilityApplied;
     }
-    
+
     public BigDecimal getClaimPercentageLiabilityCho() {
         return claimPercentageLiabilityCho;
     }
-    
+
     public Date getClaimPolicyHolderContactDate() {
         return claimPolicyHolderContactDate;
     }
-    
+
     public String getClaimSolicitorAddress1() {
         return claimSolicitorAddress1;
     }
-    
+
     public String getClaimSolicitorAddress2() {
         return claimSolicitorAddress2;
     }
-    
+
     public String getClaimSolicitorAddress3() {
         return claimSolicitorAddress3;
     }
-    
+
     public String getClaimSolicitorAddress4() {
         return claimSolicitorAddress4;
     }
-    
+
     public String getClaimSolicitorAddress5() {
         return claimSolicitorAddress5;
     }
-    
+
     public String getClaimSolicitorEmail() {
         return claimSolicitorEmail;
     }
-    
+
     public String getClaimSolicitorName() {
         return claimSolicitorName;
     }
-    
+
     public String getClaimSolicitorPostcode() {
         return claimSolicitorPostcode;
     }
-    
+
     public String getClaimSolicitorTelephone() {
         return claimSolicitorTelephone;
     }
-    
+
     public String getClaimStatus() {
         return claimStatus;
     }
-    
+
     public Date getClaimStatusModifiedDate() {
         return claimStatusModifiedDate;
     }
-    
+
     public Date getClaimLastReviewDate() {
         return claimLastReviewDate;
     }
-    
+
     public String getClaimThirdPartyAddress1() {
         return claimThirdPartyAddress1;
     }
-    
+
     public String getClaimThirdPartyAddress2() {
         return claimThirdPartyAddress2;
     }
-    
+
     public String getClaimThirdPartyAddress3() {
         return claimThirdPartyAddress3;
     }
-    
+
     public String getClaimThirdPartyAddress4() {
         return claimThirdPartyAddress4;
     }
-    
+
     public String getClaimThirdPartyAddress5() {
         return claimThirdPartyAddress5;
     }
-    
+
     public String getClaimThirdPartyEmail() {
         return claimThirdPartyEmail;
     }
-    
+
     public String getClaimThirdPartyFirstName() {
         return claimThirdPartyFirstName;
     }
-    
+
     public String getClaimThirdPartyInsurerName() {
         return claimThirdPartyInsurerName;
     }
-    
+
     public String getClaimThirdPartyLastName() {
         return claimThirdPartyLastName;
     }
-    
+
     public String getClaimThirdPartyPolicyNumber() {
         return claimThirdPartyPolicyNumber;
     }
-    
+
     public String getClaimThirdPartyPostcode() {
         return claimThirdPartyPostcode;
     }
-    
+
     public String getClaimThirdPartyTelephoneDay() {
         return claimThirdPartyTelephoneDay;
     }
-    
+
     public String getClaimThirdPartyTelephoneEvening() {
         return claimThirdPartyTelephoneEvening;
     }
-    
+
     public String getClaimThirdPartyTitle() {
         return claimThirdPartyTitle;
     }
-    
+
     public String getClaimThirdPartyVehicleClassName() {
         return claimThirdPartyVehicleClassName;
     }
-    
+
     public String getClaimThirdPartyVehicleManufacturer() {
         return claimThirdPartyVehicleManufacturer;
     }
-    
+
     public String getClaimThirdPartyVehicleModel() {
         return claimThirdPartyVehicleModel;
     }
-    
+
     public String getClaimVehicleHireCollectionReason() {
         return claimVehicleHireCollectionReason;
     }
-    
+
     public Integer getClaimVehicleHireDays() {
         return claimVehicleHireDays;
     }
-    
+
     public Date getClaimVehicleHireHpiFirstRegistration() {
         return claimVehicleHireHpiFirstRegistration;
     }
-    
+
     public String getClaimVehicleHireHpiVehicleCapacity() {
         return claimVehicleHireHpiVehicleCapacity;
     }
-    
+
     public String getClaimVehicleHireHpiVehicleDoorplan() {
         return claimVehicleHireHpiVehicleDoorplan;
     }
-    
+
     public String getClaimVehicleHireHpiVehicleManufacturer() {
         return claimVehicleHireHpiVehicleManufacturer;
     }
-    
+
     public String getClaimVehicleHireHpiVehicleModel() {
         return claimVehicleHireHpiVehicleModel;
     }
-    
+
     public String getClaimVehicleHireHpiVehicleTransmission() {
         return claimVehicleHireHpiVehicleTransmission;
     }
-    
+
     public String getClaimVehicleHireHpiVehicleYear() {
         return claimVehicleHireHpiVehicleYear;
     }
-    
+
     public Date getClaimVehicleHireRentalEnd() {
         return claimVehicleHireRentalEnd;
     }
-    
+
     public Date getClaimVehicleHireRentalStart() {
         return claimVehicleHireRentalStart;
-    }
-
-    public Integer getClaimVehicleOriginalDaysHire() {
-        return claimVehicleOriginalDaysHire;
     }
 
     public String getClaimVehicleHireVehicleClassName() {
         return claimVehicleHireVehicleClassName;
     }
 
-    public String getClaimVehicleHireVehicleOriginalClassName() {return claimVehicleHireVehicleOriginalClassName; }
-
     public String getClaimVehicleHireVehicleManufacturer() {
         return claimVehicleHireVehicleManufacturer;
     }
-    
+
     public String getClaimVehicleHireVehicleModel() {
         return claimVehicleHireVehicleModel;
     }
-    
+
     public String getClaimVehicleHireVehicleRegistration() {
         return claimVehicleHireVehicleRegistration;
     }
-    
+
     public String getClaimWitnessAddress1() {
         return claimWitnessAddress1;
     }
-    
+
     public String getClaimWitnessAddress2() {
         return claimWitnessAddress2;
     }
-    
+
     public String getClaimWitnessAddress3() {
         return claimWitnessAddress3;
     }
-    
+
     public String getClaimWitnessAddress4() {
         return claimWitnessAddress4;
     }
-    
+
     public String getClaimWitnessAddress5() {
         return claimWitnessAddress5;
     }
-    
+
     public String getClaimWitnessEmail() {
         return claimWitnessEmail;
     }
-    
+
     public String getClaimWitnessName() {
         return claimWitnessName;
     }
-    
+
     public String getClaimWitnessPostcode() {
         return claimWitnessPostcode;
     }
-    
+
     public String getClaimWitnessTelephoneDay() {
         return claimWitnessTelephoneDay;
     }
-    
+
     public String getClaimWitnessTelephoneEvening() {
         return claimWitnessTelephoneEvening;
     }
-    
+
     public String getClaimWorkgroupName() {
         return claimWorkgroupName;
     }
-    
+
     public String getClaimThirdPartyVehicleRegistration() {
         return claimThirdPartyVehicleRegistration;
     }
-    
+
     public Integer getClaimCustomerAge() {
         return claimCustomerAge;
     }
-    
+
     public String getClaimCustomerOccupation() {
         return claimCustomerOccupation;
     }
-    
+
     public String getClaimCustomerPolicyUsage() {
         return claimCustomerPolicyUsage;
     }
-    
+
     public String getClaimRepairOnlyCheck() {
         return claimRepairOnlyCheck;
     }
-    
+
     public String getClaimNonFaultInsurerRepair() {
         return claimNonFaultInsurerRepair;
     }
-    
+
     public String getClaimClientVatRegistered() {
         return claimClientVatRegistered;
     }
-    
+
     public String getClaimFinalReview() {
         return claimFinalReview;
     }
-    
+
     public String getClaimRemainingSlaDays() {
         return claimRemainingSlaDays;
     }
-    
+
     public String getClaimFraudScore() {
         return claimFraudScore;
     }
-    
+
     public String getClaimFraudStatus() {
         return claimFraudStatus;
     }
-    
+
     public boolean isIsInsurer() {
         return isInsurer;
     }
-    
+
     public Date getClaimInsHMDRepairBookInDate() {
         return claimInsHMDRepairBookInDate;
     }
-    
+
     public Date getClaimInsHMDRepairAuthorisedDate() {
         return claimInsHMDRepairAuthorisedDate;
     }
-    
+
     public Date getClaimInsHMDRepairCommencedDate() {
         return claimInsHMDRepairCommencedDate;
     }
-    
+
     public Date getClaimInsHMDInspectionBookedDate() {
         return claimInsHMDInspectionBookedDate;
     }
-    
+
     public Date getClaimInsHMDInspectionDate() {
         return claimInsHMDInspectionDate;
     }
-    
+
     public Date getClaimInsHMDRepairCompletionDate() {
         return claimInsHMDRepairCompletionDate;
     }
-    
+
     public Date getClaimInsHMDTotalLossOfferMadeDate() {
         return claimInsHMDTotalLossOfferMadeDate;
     }
-    
+
     public Date getClaimInsHMDTotalLossOfferAcceptedDate() {
         return claimInsHMDTotalLossOfferAcceptedDate;
     }
-    
+
     public Date getClaimInsHMDTotalLossOfferPaymentIssuedDate() {
         return claimInsHMDTotalLossOfferPaymentIssuedDate;
     }
@@ -1264,61 +1244,69 @@ public class ExcelClaim {
     public Date getClaimInsHMDTotalLossOfferPaymentReceivedDate() {
         return claimInsHMDTotalLossOfferPaymentReceivedDate;
     }
-    
+
     public BigDecimal getClaimInsHMDLabourRate() {
         return claimInsHMDLabourRate;
     }
-    
+
     public BigDecimal getClaimInsHMDLabourHour() {
         return claimInsHMDLabourHour;
     }
-    
+
     public BigDecimal getClaimInsHMDLabourCost() {
         return claimInsHMDLabourCost;
     }
-    
+
     public String getClaimInsHMDClaimantImpecunious() {
         return claimInsHMDClaimantImpecunious == null ? "" : claimInsHMDClaimantImpecunious ? "Yes" : "No";
     }
-    
+
     public String getClaimInsHMDWhoManagedRepair() {
         return claimInsHMDWhoManagedRepair;
     }
-    
+
     public String getClaimInsHMDReplacementVehicleClass() {
         return claimInsHMDReplacementVehicleClass;
     }
-    
+
     public Date getClaimInsHMDRentalStart() {
         return claimInsHMDRentalStart;
     }
-    
+
     public String getClaimCopleyOfferMade() {
         return claimCopleyOfferMade == null ? "" : claimCopleyOfferMade ? "Yes" : "No";
     }
-    
+
     public Date getClaimCopleyOfferMadeDate() {
         return claimCopleyOfferMadeDate;
     }
-    
+
     public boolean isIsCopleyOffer() {
         return isCopleyOffer;
     }
-    
+
     public String getClaimInvoiceReview() {
         return claimInvoiceReview;
     }
-    
+
     public String getClaimInvoiceReviewReason() {
         return claimInvoiceReviewReason;
     }
 
-    public Date getClaimInsHMDTpReportedIncidentToTPI() { return claimInsHMDTpReportedIncidentToTPI; }
+    public Date getClaimInsHMDTpReportedIncidentToTPI() {
+        return claimInsHMDTpReportedIncidentToTPI;
+    }
 
-    public Date getClaimInsHMDTotalLossReportSentToUs() { return claimInsHMDTotalLossReportSentToUs; }
+    public Date getClaimInsHMDTotalLossReportSentToUs() {
+        return claimInsHMDTotalLossReportSentToUs;
+    }
 
-    public Date getClaimInsHMDPartsReceived() { return claimInsHMDPartsReceived; }
+    public Date getClaimInsHMDPartsReceived() {
+        return claimInsHMDPartsReceived;
+    }
 
-    public Date getClaimInsHMDRentalEnd() { return claimInsHMDRentalEnd; }
+    public Date getClaimInsHMDRentalEnd() {
+        return claimInsHMDRentalEnd;
+    }
 
 }
