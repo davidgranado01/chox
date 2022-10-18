@@ -1,3 +1,2 @@
-REC-11375.sql
-REC-10953.sql
-REC-12528.sql
+REC-11375-rollback.sql
+REC-10953-rollback.sql
