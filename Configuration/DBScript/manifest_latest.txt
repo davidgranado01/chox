@@ -1,1 +1,3 @@
 REC-11375.sql
+REC-10953.sql
+REC-12528.sql
