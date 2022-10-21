@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author John
  */
 public class ExcelInvoice {
@@ -138,7 +137,7 @@ public class ExcelInvoice {
         nonStandardInsurancePremiumQty = (Short) data.get("nonstandardinsurancepremiumqty");
         vedFee = (BigDecimal) data.get("vedfee");
         vedQty = (Short) data.get("vedqty");
-         coverNoteRequired = (Boolean) data.get("covernoterequired");
+        coverNoteRequired = (Boolean) data.get("covernoterequired");
         if (coverNoteRequired == null) {
             coverNoteRequiredDesc = "";
         } else {

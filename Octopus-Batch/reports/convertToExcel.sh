@@ -42,8 +42,10 @@ RECIPIENTS_CTE_LV_DASHBOARD_REPORT=#{RECIPIENTS_CTE_LV_DASHBOARD_REPORT}
 RECIPIENTS_CTE_LV_CLOSED_CLAIM_REPORT=#{RECIPIENTS_CTE_LV_CLOSED_CLAIM_REPORT}
 BCC_RECIPIENT_GENERAL=#{BCC_RECIPIENT_GENERAL}
 RECIPIENTS_CTE_KEOGHS_DAILY_REPORT=#{RECIPIENTS_CTE_KEOGHS_DAILY_REPORT}
+RECIPIENTS_DWF_DAILY_REPORT=#{RECIPIENTS_DWF_DAILY_REPORT}
 RECIPIENTS_DEV_TEAM_EMAIL=#{RECIPIENTS_DEV_TEAM_EMAIL}
 RECIPIENTS_CTE_DLG_PRESTIGE_CLAIM_REPORT=#{RECIPIENTS_CTE_DLG_PRESTIGE_CLAIM_REPORT}
+RECIPIENTS_CTE_DLG_WEEKLY_MONTHLY_REPORT=#{RECIPIENTS_CTE_DLG_WEEKLY_MONTHLY_REPORT}
 
 
 function getPassword {
@@ -77,6 +79,8 @@ function getPassword {
             PASSWORD="Kindert0n5";;
         "Keoghs-"* )
             PASSWORD="K30ghsPa33";;
+        "DWF-"* )
+            PASSWORD="DWFchox2022";;
         *)
             PASSWORD="C0mpliance";;
     esac
@@ -126,6 +130,10 @@ function getEmailReceivers {
             ACTIVE=1
             #EMAIL_RECEIVERS=ClaimsAnalytics-motor@directlinegroup.co.uk;;
             EMAIL_RECEIVERS=${RECIPIENTS_CTE_DLG_DUMPS};;
+        "WeeklyReportDataDump-"* |\
+        "MonthlyReportDataDump-"* )
+          ACTIVE=1
+            EMAIL_RECEIVERS=${RECIPIENTS_CTE_DLG_WEEKLY_MONTHLY_REPORT};;
         "Octagon-Monthly_Insurer_Cost_Report-"* )
 	        ACTIVE=1
             #EMAIL_RECEIVERS=carl.cripps@catalystcsl.co.uk,Terry.Clarke@catalystcsl.co.uk,tony.collins@horizon.gi;;
@@ -315,6 +323,9 @@ function getEmailReceivers {
 	        ACTIVE=1
 	        #EMAIL_RECEIVERS=alane@keoghs.co.uk,lkearsley@keoghs.co.uk;;
 	        EMAIL_RECEIVERS=${RECIPIENTS_CTE_KEOGHS_DAILY_REPORT};;
+	    "DWF-DailyReport-"* )
+	        ACTIVE=1
+	        EMAIL_RECEIVERS=${RECIPIENTS_DWF_DAILY_REPORT};;
         *)
             #EMAIL_RECEIVERS=DL-UKBR-Audatex-penguin-reporting@audatex.com;;
             EMAIL_RECEIVERS=${RECIPIENTS_DEV_TEAM_EMAIL};;

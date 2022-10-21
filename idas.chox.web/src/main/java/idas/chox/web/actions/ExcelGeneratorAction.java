@@ -329,39 +329,39 @@ public class ExcelGeneratorAction extends BaseAction {
         LOG.info("'Export to Excel' report file will be written to the following location: {}", reportFile.getAbsolutePath());
 
         Runnable r = () -> {
-        try {
-            // Hide Copley columns where applicable
-            if (getIsInsurer()) {
-                if (!getAuthenticatedUser().getInsurer().isCopleyQuestion()) {
+            try {
+                // Hide Copley columns where applicable
+                if (getIsInsurer()) {
+                    if (!getAuthenticatedUser().getInsurer().isCopleyQuestion()) {
 //                        transformer.setColumnsToHide(new short[]{ (short)117, (short)118} );
-                }
-            }
-            LOG.debug("XLS transform operation called with seperate thread {}", Thread.currentThread().getId());
-            try (InputStream is = new FileInputStream(templateFilePath)) {
-                try (OutputStream os = new FileOutputStream(reportFile)) {
-                    Context context = new Context();
-                    for (Map.Entry<String, Object> entry : excelMap.entrySet()) {
-                        context.putVar(entry.getKey(), entry.getValue());
                     }
-                    LOG.info("Transformming....");
-                    JxlsHelper.getInstance().processTemplate(is, os, context);
-                    LOG.debug("Workbook created - writing to file '{}'...", reportFile.getAbsolutePath());
-                    os.flush();
-                    LOG.info("Transformming done");
-                } catch (Exception ex) {
-                    LOG.error("Exception transforminmg: {}", ex.getMessage(), ex);
-                    throw ex;
+                }
+                LOG.debug("XLS transform operation called with seperate thread {}", Thread.currentThread().getId());
+                try (InputStream is = new FileInputStream(templateFilePath)) {
+                    try (OutputStream os = new FileOutputStream(reportFile)) {
+                        Context context = new Context();
+                        for (Map.Entry<String, Object> entry : excelMap.entrySet()) {
+                            context.putVar(entry.getKey(), entry.getValue());
+                        }
+                        LOG.info("Transformming....");
+                        JxlsHelper.getInstance().processTemplate(is, os, context);
+                        LOG.debug("Workbook created - writing to file '{}'...", reportFile.getAbsolutePath());
+                        os.flush();
+                        LOG.info("Transformming done");
+                    } catch (Exception ex) {
+                        LOG.error("Exception transforminmg: {}", ex.getMessage(), ex);
+                        throw ex;
+                    }
+                }
+            } catch (Exception ex) {
+                LOG.error("Exception thrown transforming report: {}", ex.getMessage());
+                LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
+                synchronized (getSessionLock()) {
+                    getSession().put("exceptionThrown", true);
                 }
             }
-        } catch (Exception ex) {
-            LOG.error("Exception thrown transforming report: {}", ex.getMessage());
-            LOG.error("Report requested by: {}, org name: {}", getAuthenticatedUser().getDisplayName(), getAuthenticatedUser().getOrganisationName());
-            synchronized (getSessionLock()) {
-                getSession().put("exceptionThrown", true);
-            }
-        }
         };
-        ExecutorService executor = (ExecutorService )ServletActionContext.getServletContext().getAttribute("CHOX_EXECUTOR");
+        ExecutorService executor = (ExecutorService) ServletActionContext.getServletContext().getAttribute("CHOX_EXECUTOR");
 
         synchronized (getSessionLock()) {
             getSession().put("writingToFile", true);

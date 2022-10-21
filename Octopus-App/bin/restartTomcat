@@ -10,6 +10,8 @@ export PATH=/bin:${JAVA_HOME}/bin:${CATALINA_HOME}/bin:${PATH}
 export HTTP_PROXY=#{HTTP_PROXY}
 export HTTPS_PROXY=#{HTTPS_PROXY}
 
+NEWRELIC_JVM_OPTS="#{NEWRELIC_JVM_OPTS}"
+
 echo "**************************************************************************"
 echo "**       Restarting Tomcat: `date`      **"
 echo "**************************************************************************"
@@ -38,7 +40,7 @@ CATALINA_OPTS='-XX:+UseStringDeduplication -XX:+OptimizeStringConcat -XX:+Always
 proxy=`echo ${HTTP_PROXY}|sed 's#http://\(.*\):\([0-9]*\).*$#\1#'`
 proxyport=`echo ${HTTP_PROXY}|sed 's#http://\(.*\):\([0-9]*\).*$#\2#'`
 if [ $proxy"a" != "a" ]; then
-       CATALINA_OPTS="${CATALINA_OPTS} -Dhttp.proxyHost=$proxy -Dhttp.proxyPort=$proxyport -Dhttps.proxyHost=$proxy -Dhttps.proxyPort=$proxyport -Dhttp.nonProxyHosts=\"127.0.0.1|127.0.0.1:8848|127.0.0.1:8080|localhost|localhost:8080\""
+       CATALINA_OPTS="${CATALINA_OPTS} -Dhttp.proxyHost=$proxy -Dhttp.proxyPort=$proxyport -Dhttps.proxyHost=$proxy -Dhttps.proxyPort=$proxyport -Dhttp.nonProxyHosts=\"127.0.0.1|127.0.0.1:8848|127.0.0.1:8080|localhost|localhost:8080\"$NEWRELIC_JVM_OPTS"
 fi
 
 # Set max cache buffer size for NIO due to memory leak - see http://www.evanjones.ca/java-bytebuffer-leak.html

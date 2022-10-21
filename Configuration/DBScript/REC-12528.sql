@@ -3,6 +3,9 @@
  *  Example usage:
  *      select * from claimDetailsReportLV(array[6], null::integer[], null::integer[], '2017-01-01', '2017-01-01', 'INS', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['ClaimRejected']);
  */
+
+
+
 DROP FUNCTION if exists claimDetailsReportLV(
     IN insIds INTEGER[],
     IN choIds INTEGER[],
@@ -181,8 +184,8 @@ select
     case when cust.comprehensive then 'Yes' else 'No' end as customer_comprehensive,
     cust.postcode,
     replace(cust.vehicle_manufacturer, '|', '-')::varchar as customer_vehicle_manufacturer,
-    replace(cust.vehicle_model, '|', '-')::varchar as customer_vehicle_model,
-    cust.vehicle_registration as customer_vehicle_registration,
+        replace(cust.vehicle_model, '|', '-')::varchar as customer_vehicle_model,
+        cust.vehicle_registration as customer_vehicle_registration,
     cust.vehicle_year as customer_vehicle_year,
     cust_vc.name as customer_vehicle_class,
     cust.location as customer_location,
@@ -269,34 +272,34 @@ select
     case when c.copley_offer_made is null then '' else case when c.copley_offer_made then 'Yes' else 'No' end end as claim_copley_offer,
     to_char(c.copley_offer_made_date, 'dd/mm/yyyy hh24:mm')
 from claim c
-    join chorganisation cho on (c.chorganisation_id = cho.id)
-    join insurer ins on (c.insurer_id = ins.id)
-    left outer join workgroup w on (c.workgroup_id = w.id)
-    left outer join web_user wu on (c.claim_owner_id = wu.id)
-    left outer join web_user wuc on (c.cho_claim_owner_id = wuc.id)
-    left outer join customer cust on (c.customer_id = cust.id)
-    left outer join vehicle_class cust_vc on (cust.vehicle_class_id = cust_vc.id)
-    left outer join third_party tp on (c.third_party_id = tp.id)
-    left outer join vehicle_class tp_vc on (cust.vehicle_class_id = tp_vc.id)
-    left outer join insurer tp_insurer on (tp.insurer_id = tp_insurer.id)
-    left outer join incident inc on (c.incident_id = inc.id)
-    left outer join witness wit on (inc.id = wit.incident_id)
-    left outer join injury inj on (inc.id = inj.incident_id)
-    left outer join engineer_report er on (c.engineer_report_id = er.id)
-    left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id)
-    left outer join vehicle_class vh_vc on (vh.vehicle_class_id = vh_vc.id)
-    left outer join hire_monitoring_detail hmd on (c.hire_monitoring_detail_id = hmd.id)
+         join chorganisation cho on (c.chorganisation_id = cho.id)
+         join insurer ins on (c.insurer_id = ins.id)
+         left outer join workgroup w on (c.workgroup_id = w.id)
+         left outer join web_user wu on (c.claim_owner_id = wu.id)
+         left outer join web_user wuc on (c.cho_claim_owner_id = wuc.id)
+         left outer join customer cust on (c.customer_id = cust.id)
+         left outer join vehicle_class cust_vc on (cust.vehicle_class_id = cust_vc.id)
+         left outer join third_party tp on (c.third_party_id = tp.id)
+         left outer join vehicle_class tp_vc on (cust.vehicle_class_id = tp_vc.id)
+         left outer join insurer tp_insurer on (tp.insurer_id = tp_insurer.id)
+         left outer join incident inc on (c.incident_id = inc.id)
+         left outer join witness wit on (inc.id = wit.incident_id)
+         left outer join injury inj on (inc.id = inj.incident_id)
+         left outer join engineer_report er on (c.engineer_report_id = er.id)
+         left outer join vehicle_hire vh on (c.vehicle_hire_id = vh.id)
+         left outer join vehicle_class vh_vc on (vh.vehicle_class_id = vh_vc.id)
+         left outer join hire_monitoring_detail hmd on (c.hire_monitoring_detail_id = hmd.id)
 where (insIds is null or c.insurer_id = ANY(insIds))
-    and (choIds is null or c.chorganisation_id = ANY(choIds))
-    and (claimTypes is null or c.claim_type = ANY(claimTypes))
-    and c.created_date >= claimUploadDate::Date
+  and (choIds is null or c.chorganisation_id = ANY(choIds))
+  and (claimTypes is null or c.claim_type = ANY(claimTypes))
+  and c.created_date >= claimUploadDate::Date
     and ((c.status!=ALL(closedClaimStatuses) and (openClaimStatuses is null or c.status!=ALL(openClaimStatuses)))
             or ((c.status=ANY(closedClaimStatuses) or (openClaimStatuses is not null and c.status=ANY(openClaimStatuses))) and c.status_modified_date >= closedClaimDate::Date))
 order by c.created_date, c.cho_reference;
 
 END;
 $BODY$
-  LANGUAGE plpgsql VOLATILE
+LANGUAGE plpgsql VOLATILE
   COST 100;
 
 
@@ -309,7 +312,7 @@ GRANT EXECUTE ON FUNCTION claimDetailsReportLV(
                             IN insOrCHO char(3),
                             IN closedClaimStatuses VARCHAR[],
                             IN openClaimStatuses VARCHAR[])
-TO chox_user;
+TO #{DB_USER.CHOX_USER};
 GRANT EXECUTE ON FUNCTION claimDetailsReportLV(
                             IN insIds INTEGER[],
                             IN choIds INTEGER[],
@@ -319,4 +322,4 @@ GRANT EXECUTE ON FUNCTION claimDetailsReportLV(
                             IN insOrCHO char(3),
                             IN closedClaimStatuses VARCHAR[],
                             IN openClaimStatuses VARCHAR[])
-TO chox_mi;
+TO #{DB_USER.CHOX_MI};

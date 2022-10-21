@@ -5,26 +5,26 @@ var cancelled=false;
 // Change default sort function to be case insensitive
 Ext.override(Ext.data.Store, {
 // override
-createSortFunction : function(field, direction) {
-    direction = direction || "ASC";
-    var directionModifier = direction.toUpperCase() === "DESC" ? -1 : 1;
-    var sortType = this.fields.get(field).sortType;
+    createSortFunction : function(field, direction) {
+        direction = direction || "ASC";
+        var directionModifier = direction.toUpperCase() === "DESC" ? -1 : 1;
+        var sortType = this.fields.get(field).sortType;
 
-    //create a comparison function. Takes 2 records, returns 1 if record 1 is greater,
-    //-1 if record 2 is greater or 0 if they are equal
-    return function(r1, r2) {
-        var v1 = sortType(r1.data[field]),
-            v2 = sortType(r2.data[field]);
+        //create a comparison function. Takes 2 records, returns 1 if record 1 is greater,
+        //-1 if record 2 is greater or 0 if they are equal
+        return function(r1, r2) {
+            var v1 = sortType(r1.data[field]),
+                v2 = sortType(r2.data[field]);
 
-        // To perform case insensitive sort
-        if (v1.toLowerCase) {
-            v1 = v1.toLowerCase();
-            v2 = v2.toLowerCase();
-        }
+            // To perform case insensitive sort
+            if (v1.toLowerCase) {
+                v1 = v1.toLowerCase();
+                v2 = v2.toLowerCase();
+            }
 
-        return directionModifier * (v1 > v2 ? 1 : (v1 < v2 ? -1 : 0));
-    };
-} 
+            return directionModifier * (v1 > v2 ? 1 : (v1 < v2 ? -1 : 0));
+        };
+    }
 });
 
 if (!Ext.isDefined(Ext.webKitVersion)) {
@@ -68,7 +68,7 @@ function doExportExcel(){
         if( claimStore.getTotalCount()<=6000){
             if ( find_MSIE_version() > 0 && find_MSIE_version() < 9  ){
                 Ext.MessageBox.show({
-                    title        : 'Exporting Claims...', 
+                    title        : 'Exporting Claims...',
                     msg          : "Please wait...",
                     width        : 300,
                     closable     : false
@@ -84,12 +84,12 @@ function doExportExcel(){
                     }
                 });
                 Ext.MessageBox.show({
-                    title        : 'Generating Report...', 
+                    title        : 'Generating Report...',
                     buttons      :  Ext.Msg.CANCEL,
                     msg          : "0 claims exported",
                     progressText : 'Export process started...',
                     width        : 300,
-                    progress     : true,                                                 
+                    progress     : true,
                     closable     : false,
                     fn           : cancelExportToExcel
                 });
@@ -101,7 +101,7 @@ function doExportExcel(){
         }
     }
 }
-            
+
 function cancelExportToExcel(btn){
     if (btn === 'cancel'){
         cancelled = true;
@@ -133,9 +133,9 @@ function cancelExportToExcel(btn){
         });
     }
 }
-        
+
 var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
-                
+
     choxExtAjaxRequest({
         url: '/prv/p/updateExportClaimsCount.action',
         callback : function(options,success,response  ){
@@ -163,7 +163,7 @@ var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
                         icon : Ext.MessageBox.ERROR
                     });
                 }else if(!cancelled && claimStore.getTotalCount()>=resp.exportedClaimCount){
-                                
+
                     var i = resp.exportedClaimCount/claimStore.getTotalCount();
                     if(resp.writingToFile){
                         Ext.MessageBox.updateProgress(i, (i*100).toFixed(0) + '% complete', 'Please wait - report is now being exported to an Excel file...');
@@ -178,7 +178,7 @@ var loadLiveExportToExcelClaimCount = function updateExportedClaim(){
 };
 
 function doNotShowBrowserWarning(){
-       
+
     choxExtAjaxRequest({
         url: '/prv/p/userBrowserWarning.action',
         callback : function(options,success,response  ){
@@ -187,12 +187,12 @@ function doNotShowBrowserWarning(){
                 if(resp && resp.isValid){
                     if(resp.resultType && resp.resultType === 'Message')
                     {
-                    //                        Ext.MessageBox.show({
-                    //                            title: '',
-                    //                            msg: resp.result,
-                    //                            width:300,
-                    //                            buttons: Ext.MessageBox.OK
-                    //                        });
+                        //                        Ext.MessageBox.show({
+                        //                            title: '',
+                        //                            msg: resp.result,
+                        //                            width:300,
+                        //                            buttons: Ext.MessageBox.OK
+                        //                        });
                     }else if(!resp.result){
 
                         Ext.MessageBox.show({
@@ -211,13 +211,13 @@ function doNotShowBrowserWarning(){
         }
     });
 }
-            
+
 function loadDirectExportToExcelStatus(){
     choxExtAjaxRequest({
         url: '/prv/p/updateExportClaimsCount.action',
         callback : function(options,success,response  ){
             if(response.responseText){
-                
+
                 var resp = Ext.util.JSON.decode(response.responseText);
                 if(resp.isExportProcessFinished){
                     Ext.MessageBox.hide();
@@ -254,7 +254,7 @@ function doTaskExportExcel(params) {
         if( tasksDataStore.getTotalCount()<=65536){
             if ( find_MSIE_version() > 0 && find_MSIE_version() < 9  ){
                 Ext.MessageBox.show({
-                    title        : 'Exporting Tasks...', 
+                    title        : 'Exporting Tasks...',
                     msg          : "Please wait...",
                     width        : 300,
                     closable     : false
@@ -299,12 +299,12 @@ function doTaskExportExcel(params) {
                     }
                 });
                 Ext.MessageBox.show({
-                    title        : 'Generating Report...', 
+                    title        : 'Generating Report...',
                     buttons      :  Ext.Msg.CANCEL,
                     msg          : "0 tasks exported",
                     progressText : 'Export process started...',
                     width        : 300,
-                    progress     : true,                                                 
+                    progress     : true,
                     closable     : false,
                     fn           : cancelTaskExportToExcel
                 });
@@ -316,7 +316,7 @@ function doTaskExportExcel(params) {
         }
     }
 }
-            
+
 function cancelTaskExportToExcel(btn){
     if (btn == 'cancel'){
         cancelled = true;
