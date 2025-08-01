@@ -399,7 +399,7 @@ echo 'Generating LV Weekly Claim Details Dump CSV export'
 START_DATE=`date -d "last week" +%F`
 DUMPFILE='LV-ClaimDetailsDump-'`date +"%Y%m%d"`.csv
 $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
-\copy (select * from claimDetailsReportLV(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], '2016-01-01', '${START_DATE}', 'INS', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['']))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
+\copy (select * from claimDetailsReportLV(array[26], array[1081,1046,1155,1210,1214,1225,1232,1263,1693,1341,1008,1123,1021,1016,1025,1028,1151,1125,1015,1797,1735,1828,1830,1829,1834,1833,1007], null::integer[], '2016-01-01', '${START_DATE}', 'INS', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['']))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
 --EOF--
 
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
@@ -436,7 +436,7 @@ echo 'Generating LV Weekly Invoice Details Dump CSV export'
 START_DATE=`date -d "last week" +%F`
 DUMPFILE='LV-InvoiceDetailsDump-'`date +"%Y%m%d"`.csv
 $PSQL_COMMAND -h ${HOST} -U ${USER} -d ${DB} << --EOF--
-\copy (select * from invoiceDetailsReportLV(array[26], array[1007,1015,1125,1735,1008,1025,1123,1021,1016,1797], null::integer[], '2016-01-01', '${START_DATE}', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['']))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
+\copy (select * from invoiceDetailsReportLV(array[26], array[1081,1046,1155,1210,1214,1225,1232,1263,1693,1341,1008,1123,1021,1016,1025,1028,1151,1125,1015,1797,1735,1828,1830,1829,1834,1833,1007], null::integer[], '2016-01-01', '${START_DATE}', array['ClaimClosed','PaymentReceived','ManualInvoicePaid','ClaimRejectionAccepted','InvoiceRejectionAccepted'], array['']))  TO '${DUMPFILE}' DELIMITER ',' CSV HEADER;
 --EOF--
 
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
