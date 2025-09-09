@@ -488,6 +488,15 @@ $PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE}" << --EOF-
 
 /bin/mv ${DUMPFILE} ${MI_DIRECTORY}
 
+echo 'Generating Tesco Weekly Invoice Details XLS export'
+DUMPFILE='Tesco-InvoiceDetailsDump-'`date +"%Y%m%d"`.xls
+OUTPUT_FILE=${MI_DIRECTORY}${DUMPFILE}
+$PSQL_COMMAND -h "${HOST}" -U "${USER}" -d "${DB}" -o "${OUTPUT_FILE}" << --EOF--
+\copy (select * from invoiceDetailsReport(array[27], null::array[], null::integer[], '2023-01-01', '2024-01-08', array[''], array['']));
+--EOF--
+
+/bin/mv ${DUMPFILE} ${MI_DIRECTORY}
+
 echo '***********************************************************'
 echo 'Finished generating weekly Monday reports'
 echo '***********************************************************'
