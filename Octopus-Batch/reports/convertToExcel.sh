@@ -227,7 +227,7 @@ function getEmailReceivers {
             #BCC_RECIPIENTS=MichaelPaul.Kemp@Valexa.com,Robert.Hon@audatex.co.uk--> chox@audatex.co.uk;;
             BCC_RECIPIENTS=${BCC_CTE_TESCO_INSURER_USER_REPORT};;
         "Tesco-ClaimDetailsDump-"* )
-          ACTIVE=0
+          ACTIVE=1
             EMAIL_RECEIVERS=${RECIPIENTS_CTE_TESCO_CLAIM_REPORT};;
 #        "RSA-Average_Time_To_Allocate_Work-"* )
 #            EMAIL_RECEIVERS=MichaelPaul.Kemp@valexa.com;;
