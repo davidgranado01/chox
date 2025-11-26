@@ -44,11 +44,13 @@ public class AdminAction extends BaseAction {
     public String loadAdminPanel() {
         // Check User has access to Admin Panel name requested
         if (("ChoxInsurerMgmtPanel".equals(adminPanelName) && !getAdminAccessibility().getIsInsurerCompaniesAdminAccessibility())
-            || ("ChoxCreditHireMgmtPanel".equals(adminPanelName) && !getAdminAccessibility().getIsCreditHireOrgAdminAccessibility())
-            || ("UserMgmt".equals(adminPanelName) && !getAdminAccessibility().getIsUserManagementAdminAccessibility())
-            || ("UserroleMapping".equals(adminPanelName) && !getAdminAccessibility().getIsUserManagementAdminAccessibility())
-            || ("InsurerPanelMgmt".equals(adminPanelName) && !getIsChoxAdmin() && (!getIsInsurer() || !getIsAdmin()))
-            || ("SupplierRate".equals(adminPanelName) && !getIsChoxAdmin())) {
+                || ("ChoxCreditHireMgmtPanel".equals(adminPanelName) && !getAdminAccessibility().getIsCreditHireOrgAdminAccessibility())
+                || ("UserMgmt".equals(adminPanelName) && !getAdminAccessibility().getIsUserManagementAdminAccessibility())
+                || ("UserroleMapping".equals(adminPanelName) && !getAdminAccessibility().getIsUserManagementAdminAccessibility())
+                || ("InsurerPanelMgmt".equals(adminPanelName) && !getIsChoxAdmin() && (!getIsInsurer() || !getIsAdmin()))
+                || ("SupplierRate".equals(adminPanelName) && !getIsChoxAdmin())
+                || ("GTARate".equals(adminPanelName) && !getIsChoxAdmin())
+        ) {
             throw new AccessDeniedException("You do not have the privileges to access the requested resource. You will now be logged out.");
         } 
                     

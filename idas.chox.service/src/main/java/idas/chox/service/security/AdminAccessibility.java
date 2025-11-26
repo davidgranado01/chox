@@ -15,6 +15,7 @@ public class AdminAccessibility {
     private boolean isInsurerBreManagementAdminAccessibility;
     private boolean billingAdminAccessibility;
     private boolean supplierRateAccessibility;
+    private boolean isGTARateAccessibility;
 
     public AdminAccessibility(ApplicationAccessibility applicationAccessibility, WebUser user) {
         insurerCompaniesAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ADMIN_INSURER_COMPANIES, user) > 0;
@@ -23,6 +24,7 @@ public class AdminAccessibility {
         isInsurerBreManagementAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ADMIN_INSURER_BRE_MANAGEMENT, user) > 0;
         billingAdminAccessibility = applicationAccessibility.checkAdminAccessibility(ADMIN_BILLING, user) > 0;
         supplierRateAccessibility = user.isInRoleOf("ROLE_CHOX_ADMIN");
+        isGTARateAccessibility = user.isInRoleOf("ROLE_CHOX_ADMIN");
     }
 
     public boolean getIsCreditHireOrgAdminAccessibility() {
@@ -44,7 +46,13 @@ public class AdminAccessibility {
     public boolean getIsBillingAdminAccessibility() {
         return billingAdminAccessibility;
     }
+
     public boolean getIsSupplierRateAccessibility() {
         return supplierRateAccessibility;
     }
+
+    public boolean isGTARateAccessibility() {
+        return isGTARateAccessibility;
+    }
+
 }

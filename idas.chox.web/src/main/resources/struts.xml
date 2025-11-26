@@ -444,6 +444,7 @@
             <result name="InsurerPanelMgmt">/jsp/adminPanel/p_insurers_panel.jsp</result>
             <result name="BillingBand">/jsp/adminPanel/p_billing_band_setup_panel.jsp</result>
             <result name="SupplierRate">/jsp/adminPanel/p_supplier_rate_panel.jsp</result>
+            <result name="GTARate">/jsp/adminPanel/p_gta_rate_panel.jsp</result>
             <result name="NONE">/jsp/p_action_response_json_data.jsp</result>
         </action>
         
@@ -1390,33 +1391,57 @@
         </action>
 
         <!-- START VEHICLE CLASS  SPECIAL RATES-->
-        <action name="getVehicleClassSpecialRatePage" class="idas.chox.web.actions.VehicleClassPriceSpecialRateAction" method="doRenderActionPage">
+        <action name="getVehicleClassSpecialRatePage" class="idas.chox.web.actions.VehicleClassPriceSpecialRateAction"
+                method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_supplier_rate_panel.jsp</result>
         </action>
 
-        <action name="getVehicleClassSpecialRates" class="idas.chox.web.actions.VehicleClassPriceSpecialRateAction" method="getVehicleClassSpecialRates">
+        <action name="getVehicleClassSpecialRates" class="idas.chox.web.actions.VehicleClassPriceSpecialRateAction"
+                method="getVehicleClassSpecialRates">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
 
-        <action name="deleteVehicleClassSpecialRate" class="idas.chox.web.actions.VehicleClassPriceSpecialRateAction" method="deleteVehicleClassSpecialRate">
+        <action name="getVehicleClassGTARates" class="idas.chox.web.actions.VehicleClassPriceAction"
+                method="getVehiclePriceRates">
+            <result name="success">/jsp/p_jsonData.jsp</result>
+        </action>
+
+        <action name="deleteVehicleClassSpecialRate" class="idas.chox.web.actions.VehicleClassPriceSpecialRateAction"
+                method="deleteVehicleClassSpecialRate">
             <result>/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
 
-        <action name="uploadSupplierRates" class="idas.chox.web.actions.VehicleClassPriceSpecialRateAction" method="uploadSupplierRates">
+        <action name="deleteVehicleClassPriceRate" class="idas.chox.web.actions.VehicleClassPriceAction"
+                method="deleteVehiclePriceRate">
+            <result>/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+
+        <action name="uploadSupplierRates" class="idas.chox.web.actions.VehicleClassPriceSpecialRateAction"
+                method="uploadSupplierRates">
+            <result name="success">/jsp/p_action_response_json_data.jsp</result>
+            <result name="error">/jsp/p_action_response_json_data.jsp</result>
+        </action>
+
+        <action name="uploadGTARates" class="idas.chox.web.actions.VehicleClassPriceAction" method="uploadGTARates">
             <result name="success">/jsp/p_action_response_json_data.jsp</result>
             <result name="error">/jsp/p_action_response_json_data.jsp</result>
         </action>
 
         <!-- START INSURER AUTOMATIC ROUTING -->
-        <action name="getInsurerAutomaticRoutingPage" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="doRenderActionPage">
+        <action name="getInsurerAutomaticRoutingPage" class="idas.chox.web.actions.InsurerAutomaticRoutingAction"
+                method="doRenderActionPage">
             <result name="success">/jsp/adminPanel/p_insurer_automatic_routing.jsp</result>
         </action>
-        <action name="getInsurerAutomaticRouting" class="idas.chox.web.actions.InsurerAutomaticRoutingAction" method="getInsurerAutomaticRouting">
+        <action name="getInsurerAutomaticRouting" class="idas.chox.web.actions.InsurerAutomaticRoutingAction"
+                method="getInsurerAutomaticRouting">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
 
-        <action name="getInsurerAutomaticRoutingByPrice" class="idas.chox.web.actions.InsurerAutomaticRoutingByPriceAction" method="getInsurerAutomaticRoutingByPrice">
+        <action name="getInsurerAutomaticRoutingByPrice"
+                class="idas.chox.web.actions.InsurerAutomaticRoutingByPriceAction"
+                method="getInsurerAutomaticRoutingByPrice">
             <result name="success">/jsp/p_jsonData.jsp</result>
         </action>
    

@@ -58,11 +58,14 @@
                     <s:if test="adminAccessibility.isSupplierRateAccessibility">
                         <li><a href="javascript:renderAdminParameterPanel('SupplierRate');">Supplier Rates</a></li>
                     </s:if>
+                    <s:if test="adminAccessibility.isGTARateAccessibility">
+                        <li><a href="javascript:renderAdminParameterPanel('GTARate');">GTA Rates</a></li>
+                    </s:if>
                 </ul>
             </div>
         </div>
         <div id="chox-admin-right-col">
-            <div id="admin_param_panel" ></div>
+            <div id="admin_param_panel"></div>
         </div>
     </div>
 </div>

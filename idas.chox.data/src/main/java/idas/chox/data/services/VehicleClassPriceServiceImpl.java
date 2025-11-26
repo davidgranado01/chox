@@ -5,6 +5,8 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 
+import idas.chox.core.search.SearchResult;
+import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Order;
@@ -17,6 +19,8 @@ import idas.chox.core.model.ClaimType;
 import idas.chox.core.services.VehicleClassPriceService;
 import idas.chox.core.services.BreBandService;
 import idas.chox.core.services.VehicleClassPriceSpecialRateService;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -97,15 +101,61 @@ public class VehicleClassPriceServiceImpl extends SecureDataService implements V
                 throw new Exception(MessageFormat.format("No rate found for vehicle class ''{0}'' at age {1}", vehicleClass.getName(), age.setScale(2, BigDecimal.ROUND_HALF_UP)));
             }
             BigDecimal price = ((VehicleClassPrice) vehicleClassPrices.get(0)).getPrice();
-            
+
             LOG.debug("Returning price={} for vehicle class '{}', with start date '{}', age={}, insId={}, choId={})",
-                    new Object[] {vehicleClass.getName(), price,
-                                  ((VehicleClassPrice) vehicleClassPrices.get(0)).getStartDate(),
-                                  age.setScale(2, BigDecimal.ROUND_HALF_UP).toString(),
-                                  insId, choId
+                    new Object[]{vehicleClass.getName(), price,
+                            ((VehicleClassPrice) vehicleClassPrices.get(0)).getStartDate(),
+                            age.setScale(2, BigDecimal.ROUND_HALF_UP).toString(),
+                            insId, choId
                     });
             return price;
         }
+    }
+
+    @Override
+    public SearchResult getVehicleClassPriceRatesPagination(int start, int limit, String sort, String dir) {
+        Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(VehicleClassPrice.class);
+
+        Integer totalCount = totalCount(criteria);
+
+        criteria.setFirstResult(start);
+        criteria.setMaxResults(limit);
+        if (!sort.isEmpty() && !dir.isEmpty()) {
+            if (sort.equalsIgnoreCase("startDate")) {
+                addSort(criteria, "startDate", dir);
+            } else if (sort.equalsIgnoreCase("createdDate")) {
+                addSort(criteria, "createdDate", dir);
+            }
+        } else {
+            criteria.addOrder(Order.desc("startDate"));
+        }
+
+        List<VehicleClassPrice> vehicleClassPrices = criteria.list();
+
+        return new SearchResult(vehicleClassPrices, totalCount, null);
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
+    @Override
+    public void deleteVehicleClassPriceRate(int id) throws Exception {
+        if (id > 0) {
+            try {
+                DetachedCriteria mapping = DetachedCriteria.forClass(VehicleClassPrice.class);
+                mapping.add(Restrictions.eq("id", id));
+
+                VehicleClassPrice vehicleClassPrice = (VehicleClassPrice) getByCriteria(mapping);
+                delete(vehicleClassPrice);
+            } catch (Exception ex) {
+                LOG.warn("Exception thrown removing rate: {}", ex.getMessage(), ex);
+                throw new Exception("An error occured removing the rate - please try again");
+            }
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, value = "transactionManager")
+    public void saveGTARates(List<VehicleClassPrice> gtaRates) {
+        saveCollections(gtaRates);
     }
 
 }
