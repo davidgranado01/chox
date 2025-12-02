@@ -114,7 +114,7 @@
                 }
             }
             else {
-                Ext.MessageBox.alert('Error', 'Error updating user: '+ response.errors + '\nPlease try again.', function() {
+                Ext.MessageBox.alert('Error', 'Error updating user: '+ response.errors, function() {
                             var target = "#admin_param_panel";
                             var url = "/prv/p/updateUserDetailPanel.action";
                             var param = {"objectId":<s:property value="objectId"/>,"organisationTypeId":selectedOrganisationTypeId};
@@ -229,7 +229,7 @@
         <div class="sub-admin-tab-css">
 
             <form autocomplete="off" id="formUpdateUserDetail" name="formUpdateUserDetail" action="<%= request.getContextPath()%>/prv/p/updateUserDetail.action" class="XXentity-form" method="post">
-                <input name="organisationTypeId" id="organisationTypeId" type="hidden" value="<s:property value="organisationTypeId" />">
+                <input name="organisationTypeId" id="userOrganisationTypeId" type="hidden" value="<s:property value="organisationTypeId" />">
                 <input type="hidden" name="objectId" id="objectId" value='<s:property value="objectId"/>'>
                 <div class="form-container">
                     <div class="chox-form-item">

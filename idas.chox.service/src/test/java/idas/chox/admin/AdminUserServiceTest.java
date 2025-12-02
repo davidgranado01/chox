@@ -1,5 +1,10 @@
 package idas.chox.admin;
 
+import java.util.List;
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
+
 import idas.chox.test.BaseTest;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
@@ -10,10 +15,6 @@ import idas.chox.core.model.WebUserUserRole;
 import idas.chox.core.model.WebUserWorkgroup;
 import idas.chox.core.search.SearchResult;
 import idas.chox.service.ActionResponse;
-import java.util.List;
-import org.junit.Assert;
-import org.junit.Test;
-import org.springframework.transaction.annotation.Transactional;
 
 public class AdminUserServiceTest extends BaseTest {
 
@@ -37,9 +38,10 @@ public class AdminUserServiceTest extends BaseTest {
 
     @Test
     @Transactional
-    public void testUser_AddNewUserWithNewUserName() {
+    public void testUser_AddNewUserWithNewUserName() throws Exception {
         WebUser newUser = new WebUser();
         newUser.setUserName("jenny.jackson");
+        newUser.setPassword("Abc1234567890");
         newUser.setEmail("jenny@abc.com");
         newUser.setFirstName("Jenny");
         newUser.setLastName("Jackson");
@@ -50,12 +52,13 @@ public class AdminUserServiceTest extends BaseTest {
         Assert.assertTrue(response.getIsValid());
     }
 
-    @Test
+    @Test(expected = Exception.class)
     @Transactional
-    public void testUser_AddNewUserWithOldUserName() {
+    public void testUser_AddNewUserWithOldUserName() throws Exception {
         WebUser existingUser = userService.getUsers().get(0);
         WebUser newUser = new WebUser();
         newUser.setUserName(existingUser.getUserName());
+        newUser.setPassword("Abc1234567890");
         newUser.setEmail("jenny@abc.com");
         newUser.setFirstName("Jenny");
         newUser.setLastName("Jackson");
@@ -63,9 +66,13 @@ public class AdminUserServiceTest extends BaseTest {
         newUser.setStatus(true);
         int insurerId = insurerService.getInsurers().get(0).getId();
         int supplierId = -1;
-        ActionResponse response = adminUserService.doAddNewUser(newUser, insurerId, supplierId, 2);
-        Assert.assertFalse(response.getIsValid());
-        Assert.assertEquals("User Name already exists in CHOX", response.getErrors().get(0));
+        ActionResponse response;
+        try {
+            response = adminUserService.doAddNewUser(newUser, insurerId, supplierId, 2);
+        } catch (Exception ex) {
+            junit.framework.Assert.assertEquals("User Name already exists in CHOX", ex.getMessage());
+            throw ex;
+        }
     }
 
     @Test
@@ -77,12 +84,13 @@ public class AdminUserServiceTest extends BaseTest {
         webUser.setPassword(newPassword);
         ActionResponse response = adminUserService.updateUserPassword(webUser);
         Assert.assertTrue(response.getIsValid());
-        Assert.assertEquals(encodedNewPassword, webUser.getPassword());
+// Passwords no longer equal due to switch to bcrypt (and use of salt) in java 11 upgrade
+//        Assert.assertEquals(encodedNewPassword, webUser.getPassword());
     }
 
     @Test
     @Transactional
-    public void testUser_TriggerPasswordExpiredStatus() {
+    public void testUser_TriggerPasswordExpiredStatus() throws Exception {
         Insurer insurer = insurerService.getInsurerByName("RSA");
         SearchResult searchResult = userService.getUsers(insurer.getId(), 2, -1, 0, 20, "", "", true);
         List<WebUser> userData = searchResult.getResult();
@@ -97,7 +105,7 @@ public class AdminUserServiceTest extends BaseTest {
     // TRUE to FALSE: WITH OPEN ITEM
     @Test
     @Transactional
-    public void testUser_TriggerUserStatusToFalseWithOpenClaim() {
+    public void testUser_TriggerUserStatusToFalseWithOpenClaim() throws Exception {
 
         Insurer insurer = insurerService.getInsurerByName("RSA");
         SearchResult searchResult = userService.getUsers(insurer.getId(), 2, -1, 0, 20, "", "", true);
@@ -122,13 +130,13 @@ public class AdminUserServiceTest extends BaseTest {
 
         // CHECK PROCESSED RESULT
         Assert.assertTrue(response2.getIsValid());
-        Assert.assertEquals(response2.getResult(), "This user currently has assigned claims. Please reassign these claims before de-activating this user account");
+        Assert.assertEquals("This user currently has assigned claims. Please reassign these claims before de-activating this user account", response2.getResult());
     }
 
     // TRUE to FALSE: WITHOUT OPEN ITEM
     @Test
     @Transactional
-    public void testUser_TriggerUserStatusToFalseWithoutOpenClaim() {
+    public void testUser_TriggerUserStatusToFalseWithoutOpenClaim() throws Exception {
 
         Insurer insurer = insurerService.getInsurerByName("RSA");
         SearchResult searchResult = userService.getUsers(insurer.getId(), 2, -1, 0, 20, "", "", true);
@@ -160,7 +168,7 @@ public class AdminUserServiceTest extends BaseTest {
     // FALSE TO TRUE: WITHOUT OPEN ITEM
     @Test
     @Transactional
-    public void testUser_TriggerUserStatusToTrue() {
+    public void testUser_TriggerUserStatusToTrue() throws Exception {
 
         // SETUP TEST USER
         WebUser webUser = userService.getUsers().get(0);

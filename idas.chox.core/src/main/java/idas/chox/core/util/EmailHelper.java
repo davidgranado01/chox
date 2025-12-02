@@ -71,6 +71,9 @@ public class EmailHelper {
         } catch (UnsupportedEncodingException | MessagingException ex) {
             LOG.warn("Error posting email with subject '{}': \n{}\n", subject, message, ex);
             throw ex;
+        } catch (Exception ex) {
+            LOG.warn("Exception posting email with subject '{}': \n{}\n", subject, message, ex);
+            throw ex;
         }
     }
 

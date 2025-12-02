@@ -1,12 +1,12 @@
 #!/bin/bash
 
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
 export JAVA_OPTS=${JAVA_OPTS}' -Djava.util.prefs.systemRoot=/home/chox/.java -Djava.util.prefs.userRoot=/home/chox/.java/.userPrefs'
 export TOMCAT_HOME=/opt/tomcat/
 export CATALINA_HOME=/opt/tomcat
 export CATALINA_BASE=/home/chox/tomcat/chox_9080
 export LD_LIBRARY_PATH=:${CATALINA_HOME}/lib
-export PATH=${PATH}:/bin:${JAVA_HOME}/bin:${CATALINA_HOME}/bin
+export PATH=/bin:${JAVA_HOME}/bin:${CATALINA_HOME}/bin:${PATH}
 export HTTP_PROXY=#{HTTP_PROXY}
 export HTTPS_PROXY=#{HTTPS_PROXY}
 
@@ -51,7 +51,7 @@ CATALINA_OPTS=${CATALINA_OPTS}' -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath
 CATALINA_OPTS=${CATALINA_OPTS}' -XX:NativeMemoryTracking=detail -XX:+UnlockDiagnosticVMOptions -XX:+PrintNMTStatistics'
 
 # Add GC logging options
-CATALINA_OPTS=${CATALINA_OPTS}' -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -XX:+PrintAdaptiveSizePolicy -Xloggc:/home/chox/logs/chox-gc-$(date +%Y_%m_%d-%H_%M).log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=100M'
+CATALINA_OPTS=${CATALINA_OPTS}' -Xlog:gc*:chox-gc-verbose.log:time'
 
 # Metaspace options
 #maxMetaspaceSize=#{TOMCAT_MAXMETA} # maximum size of metaspace

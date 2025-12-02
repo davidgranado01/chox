@@ -62,17 +62,11 @@
                             <vmArgs>
                                 <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
                             </vmArgs>
-                            <!--wsdlFiles>
-                                <wsdlFile>test.idaschox.com_8443/services/UploadService.wsdl</wsdlFile>
-                            </wsdlFiles -->
-                            <wsdlUrls>
-                                <wsdlUrl>https://www.idaschox.com/services/UploadService?wsdl</wsdlUrl>
-                                <!--                                <wsdlUrl>https://localhost:8443/services/UploadService?wsdl</wsdlUrl>-->
-                                <!--                                <wsdlUrl>https://test.idaschox.com/services/UploadService?wsdl</wsdlUrl>-->
-                            </wsdlUrls>
-                            <wsdlLocation>https://www.idaschox.com/services/UploadService?wsdl</wsdlLocation>
-                            <!--                           <wsdlLocation>https://localhost:8443/services/UploadService?wsdl</wsdlLocation>-->
-                            <!--                            <wsdlLocation>https://test.idaschox.com/services/UploadService?wsdl</wsdlLocation> -->
+                            <wsdlDirectory>../idas.chox.web/src/main/resources/wsdl/</wsdlDirectory>
+                            <wsdlFiles>
+                                <wsdlFile>chox-webservices.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <wsdlLocation>wsdl/*</wsdlLocation>
                             <staleFile>${project.build.directory}/jaxws/stale/UploadService.stale</staleFile>
                         </configuration>
                     </execution>
@@ -105,7 +99,7 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.dstovall</groupId>
+                <groupId>com.jolira</groupId>
                 <artifactId>onejar-maven-plugin</artifactId>
                 <version>1.4.4</version>
                 <executions>
@@ -153,7 +147,16 @@
                     <groupId>com.sun.xml.bind</groupId>
                     <artifactId>jaxb-impl</artifactId>
                 </exclusion>
-            </exclusions>        </dependency>
+                <exclusion>
+                    <groupId>com.sun.activation</groupId>
+                    <artifactId>javax.activation</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>jakarta.activation</groupId>
+                    <artifactId>jakarta.activation-api</artifactId>
+                </exclusion>
+            </exclusions>        
+        </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http-jetty</artifactId>
@@ -162,6 +165,10 @@
                 <exclusion>
                     <groupId>commons-logging</groupId>
                     <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.activation</groupId>
+                    <artifactId>javax.activation</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -178,6 +185,10 @@
                 <exclusion>
                     <groupId>org.codehaus.woodstox</groupId>
                     <artifactId>woodstox-core-asl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.activation</groupId>
+                    <artifactId>javax.activation</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -224,6 +235,10 @@
                 <exclusion>
                     <groupId>commons-logging</groupId>
                     <artifactId>commons-logging</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-jcl</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>                

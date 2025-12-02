@@ -1,21 +1,25 @@
 package idas.chox.bre;
 
-import idas.chox.core.model.Invoice;
-import idas.chox.core.model.ClaimType;
+import java.io.IOException;
+import java.math.BigDecimal;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 import org.springframework.transaction.annotation.Transactional;
-import idas.chox.service.bre.rules.SubscriberAcquisitionFeeCheck;
-import idas.chox.test.BaseTest;
+
 import idas.chox.bre.mock.MockObjects;
 import idas.chox.core.bre.RuleEvaluation;
 import idas.chox.core.bre.RuleEvaluationResult;
 import idas.chox.core.model.Claim;
 import idas.chox.core.model.ClaimStatus;
-import java.io.IOException;
-import java.math.BigDecimal;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import idas.chox.core.model.ClaimType;
+import idas.chox.core.model.Insurer;
+import idas.chox.core.model.Invoice;
+import idas.chox.service.bre.rules.SubscriberAcquisitionFeeCheck;
+import idas.chox.test.BaseTest;
 
 /**
  *
@@ -53,6 +57,7 @@ public class Rule072SubscriberAcquisitionFeeCheckTest extends BaseTest {
 
     
     @Test
+    @Transactional
     public void testSkipped_1() throws IOException {
         Claim claim = getTestClaim();
         claim.getBreBand().setSubscriberAcquisitionFeeCheck(false);
@@ -65,6 +70,7 @@ public class Rule072SubscriberAcquisitionFeeCheckTest extends BaseTest {
     }
     
     @Test
+    @Transactional
     public void testSkipped_2() throws IOException {
         Claim claim = getTestClaim();
         claim.setClaimType(ClaimType.GTA);
@@ -79,11 +85,14 @@ public class Rule072SubscriberAcquisitionFeeCheckTest extends BaseTest {
     
     
     @Test
+    @Transactional
     public void testPassed_1() throws IOException {
         Claim claim = getTestClaim();
+        Insurer insurer = insurerService.getInsurer(3);
+        claim.setInsurer(insurer);
         claim.getBreBand().setSubscriberAcquisitionFeeCheck(true);
 
-        Invoice invoice = new Invoice();
+        Invoice invoice = invoiceService.getInvoice(999);
         invoice.setMiscellaneousFee(BigDecimal.ZERO);
         claim.setInvoice(invoice);
         
@@ -105,12 +114,15 @@ public class Rule072SubscriberAcquisitionFeeCheckTest extends BaseTest {
 
     
     @Test
+    @Transactional
     public void testFailed() throws IOException {
         Claim claim = getTestClaim();
+        Insurer insurer = insurerService.getInsurer(3);
+        claim.setInsurer(insurer);
         claim.getBreBand().setSubscriberAcquisitionFeeCheck(true);
 
-        Invoice invoice = new Invoice();
-        invoice.setMiscellaneousFee(new BigDecimal(10.0));
+        Invoice invoice = invoiceService.getInvoice(999);
+        invoice.setMiscellaneousFee(BigDecimal.TEN);
         claim.setInvoice(invoice);
         
         // set-up audit trail

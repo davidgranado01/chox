@@ -20,6 +20,7 @@ import org.springframework.security.access.annotation.Secured;
 
 import idas.chox.core.model.*;
 import idas.chox.core.services.InsurerDiscountService;
+import idas.chox.core.services.InsurerService;
 import idas.chox.core.services.LookupService;
 import idas.chox.web.viewdata.InsurerDiscountViewData;
 
@@ -28,6 +29,7 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
     private static final Logger LOG = LoggerFactory.getLogger(InsurerDiscountAction.class);
     private LookupService lookupService;
     private InsurerDiscountService insurerDiscountService;
+    private InsurerService insurerService;
     private List<Chorganisation> suppliers;
     private InsurerDiscount model;
     private int discountId;
@@ -61,6 +63,10 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
 
     public void setInsurerDiscountService(InsurerDiscountService insurerDiscountService) {
         this.insurerDiscountService = insurerDiscountService;
+    }
+
+    public void setInsurerService(InsurerService insurerService) {
+        this.insurerService = insurerService;
     }
 
     public int getInsurerId() {
@@ -140,6 +146,11 @@ public class InsurerDiscountAction extends BaseAction implements ModelDriven<Ins
         Map result = new HashMap();
         if (getIsInsurer()) {
             insurerId = getAuthenticatedUser().getInsurer().getId();
+        }
+        // Check Discounts active for Insurer
+        if (!this.insurerService.getInsurer(insurerId).isInsurerDiscountEnable()) {
+            LOG.error("Trying to add an insurer discount when discounts are disabled (POSSIBLE HACK ATTEMPT)");
+            throw new AccessDeniedException("Trying to add an insurer discount when discounts are disabled");
         }
         if(model.getDiscountPercentage().compareTo(BigDecimal.ZERO)<=0){
             Map error = new HashMap();

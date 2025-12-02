@@ -43,6 +43,15 @@
 
     function doClaimReviewByEngFormSubmit(action){
         actionPanel.registerAction(action);
+<s:if test="reviewReasonsEnabled">
+        var selectedComboValue = $('#reviewReasonsComboId').val();
+        if ($('#RBELisInvoiceReviewRequiredId').prop('checked') && selectedComboValue === '' && selectedComboValue <= 0) {
+            var mesBox = $("#formClaimReviewByEngActionMessageBox");
+            mesBox.empty();
+            mesBox.append("You Must Select an Invoice Review Reason").show();
+            return false;
+        }
+</s:if>
 
         if($("#formClaimReviewByEngAction").valid()){
             Ext.get('claimDetailScreenDiv').mask("Reloading Claim...");

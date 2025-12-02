@@ -69,8 +69,8 @@ public class AttachmentUpload extends BaseScheduleActivity {
         // First lets check that we have at least one valid attachment
         if (attachments != null && attachments.size() > 0) {
             noAttachments = attachments.stream().filter((ea) -> (ea.getName().length() > 4)).map((_item) -> 1).reduce(noAttachments, Integer::sum);
+            LOG.debug("Processing Attachment Upload email with {} attachments ({} valid)", attachments.size(), noAttachments);
         }
-        LOG.debug("Processing Attachment Upload email with {} attachments ({} valid)", attachments.size(), noAttachments);
         
         if (noAttachments==0) {
             LOG.debug("No valid attachments found in email '{}'", subject);

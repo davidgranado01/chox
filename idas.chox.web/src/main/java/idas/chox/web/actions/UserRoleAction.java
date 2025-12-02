@@ -259,7 +259,8 @@ public class UserRoleAction extends BaseAction {
                     throw new AccessDeniedException("Trying to add a role to a user not of my organisation (POSSIBLE HACK ATTEMPT)");
                 }
                 // Check that the role is one we can add
-                if (!isRoleAvailable(webUserRoleId, OrganisationType.getOrganisationTypeId(user.getOrganisationType()))) {
+                if ((user.getOrganisationType() == OrganisationType.CHO && !isCHORoleAvailable(webUserRoleId))
+                        || (user.getOrganisationType() == OrganisationType.INS && !isInsurerRoleAvailable(webUserRoleId))) {
                     throw new AccessDeniedException("Trying to add a role not available (POSSIBLE HACK ATTEMPT)");
 //                    throw new Exception("Record was updated by another transaction/user, please try again.",
 //                            new StaleObjectStateException(WebUserUserRole.class.getSimpleName().concat("Version"), 0));
@@ -277,9 +278,29 @@ public class UserRoleAction extends BaseAction {
         return SUCCESS;
     }
 
-    private boolean isRoleAvailable(int webUserRoleId, int orgType) {
+    private boolean isCHORoleAvailable(int webUserRoleId) {
         LOG.debug("Is role {} available to this user?", webUserRoleId);
-        List<IdLookupItem> availableRoles = adminUserService.getAvailableUserRoles(orgType, webUserId);
+        Chorganisation cho = adminUserService.getUser(webUserId).getChorganisation();
+
+        List<IdLookupItem> availableRoles = adminUserService.getAvailableUserRoles(OrganisationType.getOrganisationTypeId(OrganisationType.CHO), webUserId,
+                false, cho.isClaimOwnershipEnable(), false, 
+                false, false,  cho.isSupervisorEnable(), true);
+        LOG.debug("We have {} roles available:", availableRoles.size());
+        for (IdLookupItem lu : availableRoles) {
+            LOG.debug("Role available: {} - '{}'", lu.getId(), lu.getName());
+            if (lu.getId() == webUserRoleId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isInsurerRoleAvailable(int webUserRoleId) {
+        LOG.debug("Is role {} available to this user?", webUserRoleId);
+        Insurer ins = adminUserService.getUser(webUserId).getInsurer();
+        List<IdLookupItem> availableRoles = adminUserService.getAvailableUserRoles(OrganisationType.getOrganisationTypeId(OrganisationType.INS), webUserId,
+                ins.isWorkgroupEnable(), ins.isClaimOwnershipEnable(), ins.isFnolEnable(), 
+                ins.isEngineersEnable(), ins.isInvoiceUploadEnabled(),  ins.isSupervisorEnable(), true);
         LOG.debug("We have {} roles available:", availableRoles.size());
         for (IdLookupItem lu : availableRoles) {
             LOG.debug("Role available: {} - '{}'", lu.getId(), lu.getName());
