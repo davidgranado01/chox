@@ -141,7 +141,7 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
         try {
             session = sessionFactory.getCurrentSession();
         } catch (HibernateException ex) {
-            LOG.debug("Exception thrown getting current session: {}", ex.getMessage());
+            LOG.trace("Exception thrown getting current session: {}", ex.getMessage());
             session = sessionFactory.openSession();
         }
         TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
@@ -164,6 +164,7 @@ public abstract class SchedulerJobBase implements Scheduler, ApplicationContextA
         if (hibernateTransaction != null && hibernateTransaction.getStatus() == TransactionStatus.ACTIVE) {
             hibernateTransaction.commit();
             LOG.debug("Hibernate Transaction committed: {}", hibernateTransaction);
+            hibernateTransaction = null;
         } else if (hibernateTransaction != null) {
             LOG.debug("Hibernate Transaction status={}, ", hibernateTransaction.getStatus());
         } else if (TransactionSynchronizationManager.isActualTransactionActive()) {

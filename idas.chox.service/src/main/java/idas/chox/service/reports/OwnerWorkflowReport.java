@@ -596,11 +596,18 @@ public class OwnerWorkflowReport implements Report {
     @Override
     public String getReportTemplateFileName() {
         user = ((WebUser) externalParameter.get("CurrentUser"));
-        if (user.getInsurer().isWorkgroupEnable()) {
-            return "template_WorkgroupOwnerWorkflowReport.xls";
-        }
-        else {
-            return "template_OwnerWorkflowReport.xls";
+        if (isInsurerInvoiceUploadEnabled) {
+            if (user.getInsurer().isWorkgroupEnable()) {
+                return "template_WorkgroupOwnerWorkflowReport.xls";
+            } else {
+                return "template_OwnerWorkflowReport.xls";
+            }
+        } else {
+            if (user.getInsurer().isWorkgroupEnable()) {
+                return "template_WorkgroupOwnerWorkflowReport_InsurerInvoiceUploadDisabled.xls";
+            } else {
+                return "template_OwnerWorkflowReport_InsurerInvoiceUploadDisabled.xls";
+            }
         }
     }
 
